@@ -1,0 +1,50 @@
+.productLine {
+  border-top: 1px solid #565656;
+  padding: 1.2rem 1.2rem;
+  text-transform: uppercase;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.productName {
+  width: 5.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-content: flex-start;
+}
+
+.productName,
+.productPrice,
+.productStockQuantity {
+  display: flex;
+  align-items: center;
+}
+
+.productItemButtons {
+  display: flex;
+  gap: 1.2rem;
+}
+.removeButton,
+.editButton {
+  width: 2rem;
+  height: 2rem;
+  background-color: #f42b56;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeButton ion-icon,
+.editButton ion-icon {
+  width: 1.2rem;
+}
+
+.removeButton:hover .editButton:hover {
+  background-color: #fc6182;
+  transition: all 0.2s;
+}

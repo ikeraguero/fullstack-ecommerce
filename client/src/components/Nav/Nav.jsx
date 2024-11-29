@@ -1,5 +1,5 @@
 import styles from "./Nav.module.css";
-import SearchBar from "../SearchBar/SearchBar";
+import SearchBar from "./SearchBar/SearchBar";
 
 function Nav() {
   return (

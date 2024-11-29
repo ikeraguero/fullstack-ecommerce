@@ -22,3 +22,7 @@
   background-color: #f42b56;
   border: none;
 }
+
+.searchBar ion-icon:hover {
+  background-color: #fc6182;
+}

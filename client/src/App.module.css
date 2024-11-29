@@ -2,3 +2,9 @@
   display: flex;
   justify-content: center;
 }
+
+.productGrid {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}

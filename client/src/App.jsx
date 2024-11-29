@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import PageNotFound from "./pages/PageNotFound";
-import AddProduct from "./pages/AddProduct";
+import ManageProduct from "./pages/ManageProduct";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/*" element={<PageNotFound />} />
-        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="/addproduct" element={<ManageProduct />} />
       </Routes>
     </BrowserRouter>
   );
