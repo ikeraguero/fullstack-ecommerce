@@ -11,7 +11,8 @@
   align-items: flex-end;
 }
 
-.addFormInput {
+.addFormInput,
+.addFormSelect {
   padding: 0.8rem 5.4rem 0.8rem 0.4rem;
   border-radius: 0.4rem;
   border: 1px solid #646464;
@@ -35,4 +36,11 @@
   display: flex;
   flex-direction: column;
   gap: 5.2rem;
+}
+
+.emptyMessage {
+  color: #646464;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
 }
