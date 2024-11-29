@@ -1,13 +1,12 @@
 .productCard {
   display: flex;
-  background-color: rgb(251, 255, 255);
+  background-color: #ffffff;
   color: #212121;
   flex-direction: column;
-  border: 0.04rem solid #696969;
-  width: 16.4rem;
+
+  min-width: 16.4rem;
+  box-shadow: 0.1rem 0.1rem 0.4rem #888888;
   border-radius: 0.6rem;
-  box-shadow: 0.2rem 0.2rem 1rem #888888;
-  margin: 10rem;
 }
 
 .productCardBody {

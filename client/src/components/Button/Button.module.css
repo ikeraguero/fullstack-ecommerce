@@ -4,8 +4,10 @@
   border: 1px solid #9999;
   border-radius: 9px;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 .button:hover {
-  background-color: #dedede99;
+  background-color: #f42b56;
+  transition: all 0.2s;
 }

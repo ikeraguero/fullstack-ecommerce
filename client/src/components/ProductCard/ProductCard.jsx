@@ -1,7 +1,7 @@
-import styles from "./Product.module.css";
+import styles from "./ProductCard.module.css";
 import Button from "../Button/Button";
 
-function Product() {
+function ProductCard({ productName, productPrice }) {
   return (
     <div className={styles.productCard}>
       <div className={styles.productCardImage}>
@@ -16,8 +16,8 @@ function Product() {
             <h3>clothing</h3>
           </div>
           <div className={styles.productCardTitle}>
-            <h1>Nike Shoes</h1>
-            <h2>R$ 10,00</h2>
+            <h1>{productName}</h1>
+            <h2>R${productPrice},00</h2>
           </div>
         </div>
         <div className={styles.productCardBottom}>
@@ -29,4 +29,4 @@ function Product() {
   );
 }
 
-export default Product;
+export default ProductCard;

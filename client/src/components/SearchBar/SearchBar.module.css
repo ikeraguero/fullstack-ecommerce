@@ -1,4 +1,24 @@
-.searchBar {
+.input {
   padding: 0.2rem 15.4rem 0.2rem 0.2rem;
-  border-radius: 0.2rem;
+  background-color: none;
+  border: none;
+  outline: none;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  padding: 0rem 0rem 0rem 0.8rem;
+}
+
+.searchBar ion-icon {
+  color: #181818;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  border-top-right-radius: 0.6em;
+  border-bottom-right-radius: 0.6em;
+  background-color: #f42b56;
+  border: none;
 }

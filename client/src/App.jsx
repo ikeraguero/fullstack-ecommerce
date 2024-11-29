@@ -1,13 +1,18 @@
-import Nav from "./components/Nav/Nav";
-import Main from "./components/Main/Main";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import PageNotFound from "./pages/PageNotFound";
+import AddProduct from "./pages/AddProduct";
 
-function name() {
+function App() {
   return (
-    <div>
-      <Nav />
-      <Main />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/*" element={<PageNotFound />} />
+        <Route path="/addproduct" element={<AddProduct />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default name;
+export default App;
