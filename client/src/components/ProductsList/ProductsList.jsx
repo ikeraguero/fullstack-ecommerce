@@ -9,7 +9,8 @@ function ProductsList({ products, removeProduct }) {
         <ProductLine
           productName={product.name}
           productPrice={product.price}
-          productStockQuantity={product.stock_quantty}
+          productStockQuantity={product.stock_quantity}
+          productCategory={product.category_id}
           productId={product.id}
           removeProduct={removeProduct}
           key={product.id}

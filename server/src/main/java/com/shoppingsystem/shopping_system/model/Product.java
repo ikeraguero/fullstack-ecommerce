@@ -20,6 +20,12 @@ public class Product {
     @Column(name="product_stock_quantity")
     private int stock_quantity;
 
+    @Column(name="category_id")
+    private int category_id;
+
+    @Column(name="image_id")
+    private int image_id;
+
     public int getId() {
         return id;
     }
@@ -44,11 +50,38 @@ public class Product {
         this.price = price;
     }
 
-    public int getStock_quantty() {
+    public int getStock_quantity() {
         return stock_quantity;
     }
 
-    public void setStock_quantity(int stock_quantiy) {
-        this.stock_quantity = stock_quantiy;
+    public void setStock_quantity(int stock_quantity) {
+        this.stock_quantity = stock_quantity;
+    }
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
+    }
+
+    public int getImage_id() {
+        return image_id;
+    }
+
+    public void setImage_id(int image_id) {
+        this.image_id = image_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", stock_quantity=" + stock_quantity +
+                ", category_id=" + category_id +
+                '}';
     }
 }

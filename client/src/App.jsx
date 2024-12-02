@@ -7,7 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route index element={<Home />} />
         <Route path="/*" element={<PageNotFound />} />
         <Route path="/addproduct" element={<ManageProduct />} />
       </Routes>

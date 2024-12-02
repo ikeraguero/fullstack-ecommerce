@@ -5,31 +5,75 @@ import styles from "./ManageProduct.module.css";
 import ProductsList from "../components/ProductsList/ProductsList";
 import { useEffect, useState } from "react";
 
+const BASE_URL = "http://localhost:8080/api";
+
 function ManageProduct() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [image, setImage] = useState({});
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/products")
+      .get(`${BASE_URL}/products`)
       .then((res) => {
         setProducts(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  function send(formData) {
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/categories`)
+      .then((res) => setCategories(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  async function handleImageChange(e) {
+    const file = e.target.files[0];
+    setImage(file);
+  }
+
+  async function send(formData) {
     const productName = formData.get("productName");
     const productPrice = parseFloat(formData.get("productPrice"));
     const productStockQuantity = Number(formData.get("productStockQuantity"));
+    const productCategory = Number(formData.get("productCategory"));
+    let imageId = null;
+
+    const formDt = new FormData();
+    formDt.append("image", image);
+
+    try {
+      const response = await axios.post(`${BASE_URL}/images/upload`, formDt, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Image uploaded successfully:", response.data);
+      imageId = response.data.id;
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (
+      !productName ||
+      !productPrice ||
+      !productStockQuantity ||
+      !productCategory
+    )
+      return alert("Empty fields are not allowed");
 
     const productData = {
       name: productName,
       price: productPrice,
       stock_quantity: productStockQuantity,
+      category_id: productCategory,
+      image_id: imageId,
     };
+    console.log(productData);
 
     axios
-      .post("http://localhost:8080/api/products", productData)
+      .post(`${BASE_URL}/products`, productData)
       .then((res) => setProducts(() => [...products, res.data]))
       .catch((error) => console.log(error));
   }
@@ -37,7 +81,7 @@ function ManageProduct() {
   function remove(productId) {
     /// TODO: Add confirmation for product deletion
     axios
-      .delete(`http://localhost:8080/api/products/${productId}`)
+      .delete(`${BASE_URL}/products/${productId}`)
       .catch((err) => console.log(err));
     setProducts(products.filter((product) => product.id !== productId));
   }
@@ -77,11 +121,18 @@ function ManageProduct() {
               <select
                 name="productCategory"
                 id="productCategory"
-                className={styles.addFormInput}
+                className={styles.addFormSelect}
               >
-                <option value="electronics">Electronics</option>
-                <option value="clothing">Clothing</option>
+                {categories.map((category) => (
+                  <option value={category.id} key={category.id}>
+                    {category.name[0].toUpperCase() + category.name.slice(1)}
+                  </option>
+                ))}
               </select>
+            </div>
+            <div className={styles.formItem}>
+              <label htmlFor="productImage">Product Image</label>
+              <input type="file" onChange={handleImageChange} />
             </div>
             <button type="submit" className={styles.sendButton}>
               +

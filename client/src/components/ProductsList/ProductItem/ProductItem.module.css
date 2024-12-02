@@ -3,7 +3,7 @@
   padding: 1.2rem 1.2rem;
   text-transform: uppercase;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .productName {
@@ -12,11 +12,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   justify-content: flex-start;
+  display: flex;
 }
 
 .productName,
 .productPrice,
-.productStockQuantity {
+.productStockQuantity,
+.productCategory {
   display: flex;
   align-items: center;
 }

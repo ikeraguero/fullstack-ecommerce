@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 function Home() {
   const [products, setProducts] = useState([]);
 
+  const BASE_URL = "http://localhost:8080/api";
+
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/products")
+      .get(`${BASE_URL}/products`)
       .then((res) => {
         console.log(res.data);
         setProducts(res.data);
@@ -27,6 +29,7 @@ function Home() {
             <ProductCard
               key={product}
               productName={product.name}
+              productImageId={product.image_id}
               productPrice={product.price}
             />
           ))}

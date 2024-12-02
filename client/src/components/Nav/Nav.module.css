@@ -17,3 +17,8 @@
 .rightSide {
   gap: 2.4rem;
 }
+
+.navLink {
+  color: #ffffff;
+  text-decoration: none;
+}

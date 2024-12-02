@@ -4,11 +4,13 @@ import com.shoppingsystem.shopping_system.model.Category;
 import com.shoppingsystem.shopping_system.model.Product;
 import com.shoppingsystem.shopping_system.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
     CategoryRepository categoryRepository;
@@ -36,11 +38,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Category save(Category category) {
         return (Category) categoryRepository.save(category);
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
         categoryRepository.deleteById(id);
     }
