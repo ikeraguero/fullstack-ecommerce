@@ -27,6 +27,11 @@ public class ProductController {
         return productService.findAll();
     }
 
+    @GetMapping("/products/{productId}")
+    Product getProductById(@PathVariable int productId) {
+        return productService.findById(productId);
+    }
+
     @PostMapping("/products")
     Product addProduct(@RequestBody Product product) {
         System.out.println(product.toString());

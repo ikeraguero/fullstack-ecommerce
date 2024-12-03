@@ -1,0 +1,64 @@
+.mainContainer {
+  margin: 5.4rem 0 5.4rem 0;
+  width: 80%;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  gap: 3.6rem;
+}
+
+.productPhoto img {
+  width: 28.2rem;
+  height: 21.6rem;
+  border: 1px solid #2b2b2b;
+  align-self: flex-start;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  font-size: 1rem;
+}
+
+.buttonBuy,
+.buttonAddToCart {
+  border-radius: 99px;
+  cursor: pointer;
+  border: none;
+  padding: 0.4rem 3.6rem;
+  font-weight: 600;
+}
+
+.buttonBuy {
+  background-color: #f42b56;
+}
+
+.buttonAddToCart {
+  background-color: #f36584;
+}
+
+.interactive,
+.interactiveButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.option {
+  border: none;
+}
+
+.select {
+  border-radius: 99px;
+}
+
+.select option {
+  padding: 1.2rem 0.8rem;
+}
+
+.productCategory {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #5d5d5d;
+}

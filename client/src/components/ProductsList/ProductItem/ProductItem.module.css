@@ -44,9 +44,21 @@
 .removeButton ion-icon,
 .editButton ion-icon {
   width: 1.2rem;
+  background-color: #f42b56;
 }
 
 .removeButton:hover .editButton:hover {
   background-color: #fc6182;
   transition: all 0.2s;
+}
+
+.editForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.editInputForm {
+  padding: 0.4rem 5.4rem 0.4rem 0.4rem;
+  border-radius: 0.4rem;
+  border: 1px solid #646464;
 }

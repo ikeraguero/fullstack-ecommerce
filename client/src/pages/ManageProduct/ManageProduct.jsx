@@ -1,32 +1,27 @@
-import Main from "../components/Main/Main";
-import Nav from "../components/Nav/Nav";
+import Main from "../../components/Main/Main";
 import axios from "axios";
 import styles from "./ManageProduct.module.css";
-import ProductsList from "../components/ProductsList/ProductsList";
+import ProductsList from "../../components/ProductsList/ProductsList";
 import { useEffect, useState } from "react";
 
 const BASE_URL = "http://localhost:8080/api";
 
-function ManageProduct() {
+function ManageProduct({ categories }) {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [image, setImage] = useState({});
 
   useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  function fetchProducts() {
     axios
       .get(`${BASE_URL}/products`)
       .then((res) => {
         setProducts(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/categories`)
-      .then((res) => setCategories(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  }
 
   async function handleImageChange(e) {
     const file = e.target.files[0];
@@ -87,8 +82,7 @@ function ManageProduct() {
   }
 
   return (
-    <div>
-      <Nav />
+    <>
       <Main>
         <div className={styles.addProductContainer}>
           <form
@@ -143,10 +137,14 @@ function ManageProduct() {
               There are no products registered!
             </div>
           )}
-          <ProductsList products={products} removeProduct={remove} />
+          <ProductsList
+            products={products}
+            removeProduct={remove}
+            fetchProducts={fetchProducts}
+          />
         </div>
       </Main>
-    </div>
+    </>
   );
 }
 

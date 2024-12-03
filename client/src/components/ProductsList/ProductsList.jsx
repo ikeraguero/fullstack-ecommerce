@@ -1,17 +1,19 @@
-import ProductLine from "./ProductItem/ProductItem";
+import ProductItem from "./ProductItem/ProductItem";
 
-function ProductsList({ products, removeProduct }) {
+function ProductsList({ products, removeProduct, fetchProducts }) {
   // check for creating a hook that fetches the products
 
   return (
     <ul>
       {products.map((product) => (
-        <ProductLine
+        <ProductItem
           productName={product.name}
           productPrice={product.price}
           productStockQuantity={product.stock_quantity}
           productCategory={product.category_id}
+          productImageId={product.image_id}
           productId={product.id}
+          fetchProducts={fetchProducts}
           removeProduct={removeProduct}
           key={product.id}
         />

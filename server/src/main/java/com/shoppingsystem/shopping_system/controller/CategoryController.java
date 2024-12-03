@@ -16,8 +16,6 @@ import java.util.List;
 @RestController
 public class CategoryController {
 
-    //TODO: implement category controller
-
     CategoryService categoryService;
 
     @Autowired

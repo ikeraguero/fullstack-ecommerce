@@ -8,9 +8,10 @@
 .searchBar {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #fafafa;
   border-radius: 0.6rem;
   padding: 0rem 0rem 0rem 0.8rem;
+  border: solid 1px #a2a2a2;
 }
 
 .searchBar ion-icon {
@@ -25,4 +26,8 @@
 
 .searchBar ion-icon:hover {
   background-color: #fc6182;
+}
+
+.searchBar:focus {
+  border: 1px solid #f42b56;
 }

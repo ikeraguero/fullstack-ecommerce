@@ -1,4 +1,3 @@
-import Nav from "../components/Nav/Nav";
 import Main from "../components/Main/Main";
 import styles from "../App.module.css";
 import axios from "axios";
@@ -22,15 +21,16 @@ function Home() {
 
   return (
     <>
-      <Nav />
       <Main className={styles.container}>
         <div className={styles.productGrid}>
           {products.map((product) => (
             <ProductCard
-              key={product}
+              key={product.id}
+              productId={product.id}
               productName={product.name}
               productImageId={product.image_id}
               productPrice={product.price}
+              productCategoryId={product.category_id}
             />
           ))}
         </div>

@@ -5,6 +5,6 @@
 
 .productGrid {
   display: grid;
-  gap: 1.6rem;
+  gap: 2.4rem;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
