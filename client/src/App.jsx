@@ -2,9 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav/Nav";
 import axios from "axios";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
-import PageNotFound from "./pages/PageNotFound";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ManageProduct from "./pages/ManageProduct/ManageProduct";
 
 const BASE_URL = "http://localhost:8080/api";

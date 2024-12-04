@@ -1,3 +1,15 @@
+/* Dimmed background overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  transition: all 1s;
+}
+
 .formItem {
   display: flex;
   flex-direction: column;
@@ -7,8 +19,17 @@
 
 .form {
   display: flex;
+  flex-direction: column;
   gap: 1.6rem;
-  align-items: flex-end;
+  background-color: #fafafa;
+  padding: 1.2rem 3.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+}
+
+.hide {
+  display: none;
 }
 
 .addFormInput,
@@ -36,6 +57,7 @@
   display: flex;
   flex-direction: column;
   gap: 5.2rem;
+  width: 100%;
 }
 
 .emptyMessage {
@@ -43,4 +65,16 @@
   font-size: 1.4rem;
   display: flex;
   justify-content: center;
+}
+
+.openAddProductButton {
+  color: #f42b56;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.formBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
 }

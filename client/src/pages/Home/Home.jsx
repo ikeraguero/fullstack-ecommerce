@@ -1,7 +1,7 @@
-import Main from "../components/Main/Main";
-import styles from "../App.module.css";
+import Main from "../../components/Main/Main";
+import styles from "./Home.module.css";
 import axios from "axios";
-import ProductCard from "../components/ProductCard/ProductCard";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import { useEffect, useState } from "react";
 
 function Home() {
