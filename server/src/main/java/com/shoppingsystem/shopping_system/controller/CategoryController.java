@@ -1,6 +1,7 @@
 package com.shoppingsystem.shopping_system.controller;
 
 
+import com.shoppingsystem.shopping_system.dto.CategoryDTO;
 import com.shoppingsystem.shopping_system.model.Category;
 import com.shoppingsystem.shopping_system.service.CategoryService;
 import com.shoppingsystem.shopping_system.service.ProductService;
@@ -27,7 +28,7 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    List<Category> getCategories() {
+    List<CategoryDTO> getCategories() {
         return categoryService.findAll();
     }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./ProductItem.module.css";
 import axios from "axios";
 
-function ProductItem({ dispatch, product, fetchProducts, removeProduct }) {
+function ProductItem({ dispatch, product, refetch, removeProduct }) {
   const [categoryName, setCategoryName] = useState("");
 
   const BASE_URL = "http://localhost:8080/api";

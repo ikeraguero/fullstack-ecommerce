@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.service;
 
+import com.shoppingsystem.shopping_system.dto.ProductImageDTO;
 import com.shoppingsystem.shopping_system.model.Product;
 import com.shoppingsystem.shopping_system.model.ProductImage;
 import com.shoppingsystem.shopping_system.repository.ProductImageRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ProductImageService {
 
     List<ProductImage> findAll();
-    ProductImage findById(Long id);
+    ProductImageDTO findById(Long id);
     ProductImage save(ProductImage product);
     void deleteById(Long id);
     ProductImage uploadImage(MultipartFile file) throws IOException;

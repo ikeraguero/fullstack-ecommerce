@@ -1,25 +1,18 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Nav from "./components/Nav/Nav";
-import axios from "axios";
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ManageProduct from "./pages/ManageProduct/ManageProduct";
+import axios from "axios";
+import useSWR from "swr";
+import { BASE_URL } from "./config";
 
-const BASE_URL = "http://localhost:8080/api";
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 function App() {
-  const [categories, setCategories] = useState([]);
+  const { data: categories } = useSWR(`${BASE_URL}/categories`, fetcher);
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/categories`)
-      .then((res) => setCategories(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  console.log(categories);
   return (
     <BrowserRouter>
       <Nav categories={categories} />

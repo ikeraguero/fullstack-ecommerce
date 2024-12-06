@@ -10,3 +10,26 @@
 html {
   font-family: sans-serif;
 }
+
+.swiper-pagination {
+  background: none;
+}
+
+.swiper-pagination-bullet-active {
+  color: #ff5733;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #f42b56 !important;
+  opacity: 1;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  background: none;
+  color: #000000 !important;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: none;
+}

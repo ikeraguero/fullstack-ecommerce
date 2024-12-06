@@ -1,7 +1,12 @@
 package com.shoppingsystem.shopping_system.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name="product", schema = "ecommerce_project")
 public class Product {
@@ -20,11 +25,15 @@ public class Product {
     @Column(name="product_stock_quantity")
     private int stock_quantity;
 
-    @Column(name="category_id")
-    private int category_id;
-
     @Column(name="image_id")
-    private int image_id;
+    private Long image_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id", referencedColumnName = "category_id")
+    private Category category;
+
+    @Column(name="product_description")
+    private String product_description;
 
     public int getId() {
         return id;
@@ -58,20 +67,28 @@ public class Product {
         this.stock_quantity = stock_quantity;
     }
 
-    public int getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-    }
-
-    public int getImage_id() {
+    public Long getImage_id() {
         return image_id;
     }
 
-    public void setImage_id(int image_id) {
+    public void setImage_id(Long image_id) {
         this.image_id = image_id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getProduct_description() {
+        return product_description;
+    }
+
+    public void setProduct_description(String product_description) {
+        this.product_description = product_description;
     }
 
     @Override
@@ -81,7 +98,10 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", stock_quantity=" + stock_quantity +
-                ", category_id=" + category_id +
+                ", image_id=" + image_id +
+                ", category=" + category +
+                ", product_description='" + product_description + '\'' +
                 '}';
     }
 }
+

@@ -3,8 +3,8 @@ import axios from "axios";
 import styles from "./ManageProduct.module.css";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import { useEffect, useRef, useReducer } from "react";
-
-const BASE_URL = "http://localhost:8080/api";
+import { BASE_URL } from "../../config";
+import useProducts from "../../api/products.api";
 
 const initialState = {
   products: [],
@@ -54,13 +54,17 @@ function reducer(state, action) {
       return { ...state, productCategory: action.payload };
     case "changeQuantity":
       return { ...state, productQuantity: action.payload };
+    case "changeDescription":
+      return { ...state, productDescription: action.payload };
+    default:
+      return new Error("Unknown option");
   }
 }
 
 function ManageProduct({ categories }) {
-  const formRef = useRef();
-
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { data: initialProducts, refetch, error, isLoading } = useProducts();
+  const formRef = useRef();
   const {
     products,
     image,
@@ -71,20 +75,14 @@ function ManageProduct({ categories }) {
     productPrice,
     productCategory,
     productQuantity,
+    productDescription,
   } = state;
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  function fetchProducts() {
-    axios
-      .get(`${BASE_URL}/products`)
-      .then((res) => {
-        dispatch({ type: "loadProducts", payload: res.data });
-      })
-      .catch((err) => console.log(err));
-  }
+    if (initialProducts && initialProducts.length > 0) {
+      dispatch({ type: "loadProducts", payload: initialProducts });
+    }
+  }, [initialProducts]);
 
   async function handleImageChange(e) {
     const file = e.target.files[0];
@@ -96,6 +94,7 @@ function ManageProduct({ categories }) {
     const productPrice = parseFloat(formData.get("productPrice"));
     const productStockQuantity = Number(formData.get("productStockQuantity"));
     const productCategory = Number(formData.get("productCategory"));
+
     let imageId = null;
     imageId = editProduct?.image_id;
 
@@ -115,18 +114,14 @@ function ManageProduct({ categories }) {
         console.log(err);
       }
     }
-    console.log(
-      productName,
-      productPrice,
-      productStockQuantity,
-      productCategory
-    );
 
     if (
       !productName ||
       !productPrice ||
       !productStockQuantity ||
-      !productCategory
+      !productCategory ||
+      !productDescription ||
+      !imageId
     )
       return alert("Empty fields are not allowed");
 
@@ -135,41 +130,30 @@ function ManageProduct({ categories }) {
       price: productPrice,
       stock_quantity: productStockQuantity,
       category_id: productCategory,
-      image_id: isEditing && !image ? editProduct.image_id : imageId,
+      image_id: isEditing && !image ? editProduct?.image_id : imageId,
+      product_description: productDescription,
     };
 
     if (type === "post") {
-      console.log(productData);
       axios
         .post(`${BASE_URL}/products`, productData)
-        .then(
-          (res) =>
-            dispatch({
-              type: "loadProducts",
-              payload: [...products, res.data],
-            }),
-          formRef.current.reset()
-        )
+        .then(() => {
+          refetch();
+          formRef.current.reset();
+        })
         .catch((error) => console.log(error));
 
       dispatch({ type: "toggleAdd" });
     }
-    if (isEditing) {
-      productData = { id: editProduct.id, ...productData };
+    if (type === "put") {
+      productData = { id: editProduct?.id, ...productData };
       console.log(productData);
       axios
         .put(`${BASE_URL}/products`, productData)
-        .then(
-          (res) =>
-            dispatch({
-              type: "loadProducts",
-              payload: [
-                ...products.filter((product) => product.id != editProduct.id),
-                res.data,
-              ],
-            }),
-          formRef.current.reset()
-        )
+        .then(() => {
+          refetch();
+          formRef.current.reset();
+        })
         .catch((error) => console.log(error));
 
       dispatch({ type: "closeEdit" });
@@ -186,17 +170,13 @@ function ManageProduct({ categories }) {
       payload: products.filter((product) => product.id !== productId),
     });
   }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // function update(productId, formData) {
-  //  formData.append("id", productId);
-  //  formData.forEach((value, key) => {
-  //     console.log(`${key}: ${value}`);
-  //   });
-  //  axios
-  //    .put(`${BASE_URL}/products`, formData)
-  //    .then((res) => console.log(res.data))
-  //   .catch((err) => console.log(err));
-  // }
+  if (error) {
+    return <div>Error loading products: {error.message}</div>;
+  }
 
   return (
     <>
@@ -279,9 +259,10 @@ function ManageProduct({ categories }) {
                   value={isEditing ? productCategory : null}
                   className={styles.addFormSelect}
                 >
-                  {categories.map((category) => (
-                    <option value={category.id} key={category.id}>
-                      {category.name[0].toUpperCase() + category.name.slice(1)}
+                  {categories?.map((category) => (
+                    <option value={category?.id} key={category?.id}>
+                      {category?.name[0].toUpperCase() +
+                        category?.name.slice(1)}
                     </option>
                   ))}
                 </select>
@@ -290,6 +271,13 @@ function ManageProduct({ categories }) {
                 <label htmlFor="productDescription">Product Description</label>
                 <input
                   name="productDescription"
+                  value={isEditing ? productDescription : null}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "changeDescription",
+                      payload: e.target.value,
+                    })
+                  }
                   className={styles.addFormInput}
                 />
               </div>
@@ -303,7 +291,7 @@ function ManageProduct({ categories }) {
             </form>
           </div>
 
-          {products.length === 0 && (
+          {products?.length === 0 && (
             <div className={styles.emptyMessage}>
               There are no products registered!
             </div>
@@ -312,7 +300,7 @@ function ManageProduct({ categories }) {
             products={products}
             dispatch={dispatch}
             removeProduct={remove}
-            fetchProducts={fetchProducts}
+            refetch={refetch}
           />
         </div>
       </Main>

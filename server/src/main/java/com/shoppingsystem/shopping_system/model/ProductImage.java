@@ -1,7 +1,11 @@
 package com.shoppingsystem.shopping_system.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name="product_image", schema = "ecommerce_project")
 public class ProductImage {

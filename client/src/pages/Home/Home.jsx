@@ -1,41 +1,29 @@
 import Main from "../../components/Main/Main";
 import styles from "./Home.module.css";
-import axios from "axios";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { useEffect, useState } from "react";
+import Carousel from "../../components/Carousel/Carousel";
+import useProducts from "../../api/products.api";
 
 function Home() {
-  const [products, setProducts] = useState([]);
+  const { data: products, error, isLoading } = useProducts();
 
-  const BASE_URL = "http://localhost:8080/api";
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/products`)
-      .then((res) => {
-        console.log(res.data);
-        setProducts(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  if (error) {
+    return <div>Error loading products: {error.message}</div>;
+  }
 
   return (
-    <>
-      <Main className={styles.container}>
-        <div className={styles.productGrid}>
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              productId={product.id}
-              productName={product.name}
-              productImageId={product.image_id}
-              productPrice={product.price}
-              productCategoryId={product.category_id}
-            />
-          ))}
-        </div>
-      </Main>
-    </>
+    <Main className={styles.container}>
+      <Carousel />
+      <div className={styles.productGrid}>
+        {products.map((product) => (
+          <ProductCard key={product.id} {...product} />
+        ))}
+      </div>
+    </Main>
   );
 }
 
