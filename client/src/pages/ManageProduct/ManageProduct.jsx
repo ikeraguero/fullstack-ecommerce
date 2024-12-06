@@ -1,146 +1,165 @@
-import Main from "../../components/Main/Main";
+import { useEffect, useRef } from "react";
 import axios from "axios";
-import styles from "./ManageProduct.module.css";
+import { useFormContext } from "../../hooks/useFormContext";
+import { BASE_URL } from "../../config";
+import useProducts from "../../api/products.api";
+import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
-import { useEffect, useState } from "react";
+import ProductForm from "../../components/ProductForm/ProductForm";
+import styles from "./ManageProduct.module.css";
 
-const BASE_URL = "http://localhost:8080/api";
+function ManageProduct() {
+  const { state, dispatch } = useFormContext();
 
-function ManageProduct({ categories }) {
-  const [products, setProducts] = useState([]);
-  const [image, setImage] = useState({});
+  const {
+    products,
+    image,
+    isAdding,
+    isEditing,
+    editProduct,
+    productDescription,
+  } = state;
+  const formRef = useRef();
+
+  const { data: initialProducts, refetch, error, isLoading } = useProducts();
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (initialProducts && initialProducts.length > 0) {
+      dispatch({ type: "loadProducts", payload: initialProducts });
+    }
+  }, [initialProducts, dispatch]);
 
-  function fetchProducts() {
-    axios
-      .get(`${BASE_URL}/products`)
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => console.log(err));
+  function toggleAddForm() {
+    dispatch({ type: "toggleAdd" });
   }
 
   async function handleImageChange(e) {
     const file = e.target.files[0];
-    setImage(file);
+    dispatch({ type: "setImage", payload: file });
   }
 
-  async function send(formData) {
+  async function send(type, formData) {
     const productName = formData.get("productName");
     const productPrice = parseFloat(formData.get("productPrice"));
     const productStockQuantity = Number(formData.get("productStockQuantity"));
     const productCategory = Number(formData.get("productCategory"));
+
     let imageId = null;
+    imageId = editProduct?.image_id;
 
-    const formDt = new FormData();
-    formDt.append("image", image);
+    // Handle image upload
+    if (!isEditing || image) {
+      const formDt = new FormData();
+      formDt.append("image", image);
 
-    try {
-      const response = await axios.post(`${BASE_URL}/images/upload`, formDt, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Image uploaded successfully:", response.data);
-      imageId = response.data.id;
-    } catch (err) {
-      console.log(err);
+      try {
+        const response = await axios.post(`${BASE_URL}/images/upload`, formDt, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        imageId = response.data.id;
+      } catch (err) {
+        console.log(err);
+      }
     }
+
 
     if (
       !productName ||
       !productPrice ||
       !productStockQuantity ||
-      !productCategory
-    )
+      !productCategory ||
+      !productDescription ||
+      !imageId
+    ) {
       return alert("Empty fields are not allowed");
+    }
 
-    const productData = {
+    let productData = {
       name: productName,
       price: productPrice,
       stock_quantity: productStockQuantity,
       category_id: productCategory,
-      image_id: imageId,
+      image_id: isEditing && !image ? editProduct?.image_id : imageId,
+      product_description: productDescription,
     };
-    console.log(productData);
 
-    axios
-      .post(`${BASE_URL}/products`, productData)
-      .then((res) => setProducts(() => [...products, res.data]))
-      .catch((error) => console.log(error));
+
+    if (type === "post") {
+      axios
+        .post(`${BASE_URL}/products`, productData)
+        .then(() => {
+          refetch();
+          formRef.current.reset();
+        })
+        .catch((error) => console.log(error));
+
+      dispatch({ type: "toggleAdd" });
+    }
+
+
+    if (type === "put") {
+      productData = { id: editProduct?.id, ...productData };
+      axios
+        .put(`${BASE_URL}/products`, productData)
+        .then(() => {
+          refetch();
+          formRef.current.reset();
+        })
+        .catch((error) => console.log(error));
+
+      dispatch({ type: "closeEdit" });
+    }
   }
 
+
   function remove(productId) {
-    /// TODO: Add confirmation for product deletion
+
     axios
       .delete(`${BASE_URL}/products/${productId}`)
       .catch((err) => console.log(err));
-    setProducts(products.filter((product) => product.id !== productId));
+    dispatch({
+      type: "loadProducts",
+      payload: products.filter((product) => product.id !== productId),
+    });
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading products: {error.message}</div>;
   }
 
   return (
     <>
       <Main>
+        {(isAdding || isEditing) && <div className={styles.overlay} />}
+
         <div className={styles.addProductContainer}>
-          <form
-            className={styles.form}
-            onSubmit={(e) => {
-              e.preventDefault();
-              const formData = new FormData(e.target);
-              send(formData);
-            }}
-          >
-            <div className={styles.formItem}>
-              <label htmlFor="productName">Product Name</label>
-              <input name="productName" className={styles.addFormInput} />
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="productPrice">Product Price</label>
-              <input name="productPrice" className={styles.addFormInput} />
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="productStockQuantity">
-                Product Stock Quantity
-              </label>
-              <input
-                name="productStockQuantity"
-                className={styles.addFormInput}
-              />
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="productCategory">Product Category</label>
-              <select
-                name="productCategory"
-                id="productCategory"
-                className={styles.addFormSelect}
-              >
-                {categories.map((category) => (
-                  <option value={category.id} key={category.id}>
-                    {category.name[0].toUpperCase() + category.name.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formItem}>
-              <label htmlFor="productImage">Product Image</label>
-              <input type="file" onChange={handleImageChange} />
-            </div>
-            <button type="submit" className={styles.sendButton}>
-              +
-            </button>
-          </form>
-          {products.length === 0 && (
+          <span onClick={toggleAddForm} className={styles.openAddProductButton}>
+            Add Product +
+          </span>
+
+          <ProductForm
+            formRef={formRef}
+            handleImageChange={handleImageChange}
+            send={send}
+          />
+
+          {products?.length === 0 && (
             <div className={styles.emptyMessage}>
               There are no products registered!
             </div>
           )}
+
           <ProductsList
             products={products}
+            dispatch={dispatch}
             removeProduct={remove}
-            fetchProducts={fetchProducts}
+            refetch={refetch}
           />
         </div>
       </Main>

@@ -1,12 +1,22 @@
 import { Link } from "react-router-dom";
 import styles from "./Nav.module.css";
 import SearchBar from "./SearchBar/SearchBar";
+import { useEffect, useState } from "react";
 
 function Nav({ categories }) {
-  if (!categories || categories.length === 0) {
-    return <div>Loading...</div>; // 
+  const [loadedCategories, setLoadedCategories] = useState(null);
+
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setLoadedCategories(categories);
+
+    }
+  }, [categories]);
+
+  if (!loadedCategories) {
+    return <div>Loading...</div>;
   }
-  
+
   return (
     <nav className={styles.nav}>
       <div className={styles.navTop}>
@@ -22,7 +32,7 @@ function Nav({ categories }) {
       <div className={styles.navBottom}>
         <div className={styles.navBottomLeft}>
           <span>SHOP ALL</span>
-          {categories.map((category) => (
+          {loadedCategories.map((category) => (
             <Link to="/product" key={category.id} className={styles.navLink}>
               {category.name}
             </Link>
@@ -32,6 +42,7 @@ function Nav({ categories }) {
           </Link>
         </div>
         <div className={styles.navBottomRight}>
+          <span>Hello, username!</span>
           <div className={styles.navBottomRightUser}>
             <ion-icon name="caret-down-outline"></ion-icon>
             <ion-icon name="person-circle-outline"></ion-icon>

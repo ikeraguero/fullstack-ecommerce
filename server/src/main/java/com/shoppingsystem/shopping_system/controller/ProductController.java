@@ -1,6 +1,9 @@
 package com.shoppingsystem.shopping_system.controller;
 
+import com.shoppingsystem.shopping_system.dto.ProductDTO;
+import com.shoppingsystem.shopping_system.model.Category;
 import com.shoppingsystem.shopping_system.model.Product;
+import com.shoppingsystem.shopping_system.repository.CategoryRepository;
 import com.shoppingsystem.shopping_system.service.ProductService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,11 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    ProductService productService;
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -23,24 +30,51 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    List<Product> getProducts() {
+    List<ProductDTO> getProducts() {
         return productService.findAll();
     }
 
     @GetMapping("/products/{productId}")
-    Product getProductById(@PathVariable int productId) {
+    ProductDTO getProductById(@PathVariable int productId) {
         return productService.findById(productId);
     }
 
     @PostMapping("/products")
-    Product addProduct(@RequestBody Product product) {
-        System.out.println(product.toString());
+    Product addProduct(@RequestBody ProductDTO productDTO) {
+        Category category = categoryRepository.findById(productDTO.getCategory_id())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        System.out.println(category.getName());
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setImage_id(productDTO.getImage_id());
+        product.setPrice(productDTO.getPrice());
+        product.setStock_quantity(productDTO.getStock_quantity());
+        product.setProduct_description(productDTO.getProduct_description());
+        product.setCategory(category);
+
+        // Save the product
         return productService.save(product);
     }
 
     @PutMapping("/products")
-    Product updateProduct(@RequestBody Product product) {
-        return productService.save(product);
+    Product updateProduct(@RequestBody ProductDTO productDTO) {
+
+        Product existingProduct = productService.findByIdEntity(productDTO.getId()).orElseThrow(() -> new RuntimeException("Product not found!"));
+
+        // Fetch the category
+        Category category = categoryRepository.findById(productDTO.getCategory_id())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        // Update the product fields
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setImage_id(productDTO.getImage_id());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setStock_quantity(productDTO.getStock_quantity());
+        existingProduct.setProduct_description(productDTO.getProduct_description());
+        existingProduct.setCategory(category);
+
+        return productService.save(existingProduct); // Save the updated produ
     }
 
     @DeleteMapping("/products/{productId}")

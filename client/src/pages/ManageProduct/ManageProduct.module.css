@@ -1,32 +1,17 @@
-.formItem {
-  display: flex;
-  flex-direction: column;
-  font-size: 1.2rem;
-  gap: 0.4rem;
+/* Dimmed background overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  transition: all 1s;
 }
 
-.form {
-  display: flex;
-  gap: 1.6rem;
-  align-items: flex-end;
-}
 
-.addFormInput,
-.addFormSelect {
-  padding: 0.8rem 5.4rem 0.8rem 0.4rem;
-  border-radius: 0.4rem;
-  border: 1px solid #646464;
-}
 
-.sendButton {
-  width: 2.4rem;
-  height: 2.4rem;
-  background-color: #f42b56;
-  border: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-size: 1.8rem;
-}
 
 .sendButton:hover {
   background-color: #fc6182;
@@ -36,6 +21,7 @@
   display: flex;
   flex-direction: column;
   gap: 5.2rem;
+  width: 100%;
 }
 
 .emptyMessage {
@@ -44,3 +30,11 @@
   display: flex;
   justify-content: center;
 }
+
+.openAddProductButton {
+  color: #f42b56;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+

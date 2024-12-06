@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.controller;
 
+import com.shoppingsystem.shopping_system.dto.ProductImageDTO;
 import com.shoppingsystem.shopping_system.model.ProductImage;
 import com.shoppingsystem.shopping_system.service.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ProductImageController {
     }
 
     @GetMapping("/{imageId}")
-    public ProductImage getImageById(@PathVariable Long imageId) {
+    public ProductImageDTO getImageById(@PathVariable Long imageId) {
         return productImageService.findById(imageId);
     }
 

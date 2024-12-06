@@ -1,7 +1,14 @@
 package com.shoppingsystem.shopping_system.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 @Table(name="category", schema = "ecommerce_project")
 public class Category {
@@ -13,6 +20,9 @@ public class Category {
 
     @Column(name= "category_name")
     private String name;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> products;
 
     public int getId() {
         return id;

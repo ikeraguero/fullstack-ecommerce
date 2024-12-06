@@ -66,8 +66,8 @@ function Product() {
           <h1>{product?.name}</h1>
           <h2>R${product?.price}</h2>
         </div>
-        <span>In stock: {product?.stock_quantity}</span>
-        <span>Short Description</span>
+        <span>Stock Available: {product?.stock_quantity}</span>
+        <span>{product.product_description}</span>
         <select name="" id="" className={styles.select}>
           {options.map((option) => (
             <option key={option}>{option}</option>
