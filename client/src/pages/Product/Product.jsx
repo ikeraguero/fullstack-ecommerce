@@ -1,10 +1,12 @@
 import styles from "./Product.module.css";
 import { useParams } from "react-router-dom";
 import { useProduct } from "../../api/products.api";
+import { useState } from "react";
 
-function Product() {
+function Product({ setCart, cart }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
+  const [quantity, setQuantity] = useState(1);
 
   const options = Array.from(
     { length: product?.stock_quantity },
@@ -19,7 +21,16 @@ function Product() {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  console.log(product);
+  function handleAddToCart(product) {
+    const cartItem = {
+      ...product,
+      quantity,
+    };
+
+    setCart((cart) => [...cart, cartItem]);
+    console.log(cart);
+  }
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productPhoto}>
@@ -36,7 +47,13 @@ function Product() {
         </div>
         <span>Stock Available: {product?.stock_quantity}</span>
         <span>{product.product_description}</span>
-        <select name="" id="" className={styles.select}>
+        <select
+          name="quantity"
+          id=""
+          className={styles.select}
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        >
           {options.map((option) => (
             <option key={option}>{option}</option>
           ))}
@@ -44,7 +61,12 @@ function Product() {
         <div className={styles.interactive}>
           <div className={styles.interactiveQuantity}></div>
           <div className={styles.interactiveButtons}>
-            <button className={styles.buttonAddToCart}>Add to Cart</button>
+            <button
+              className={styles.buttonAddToCart}
+              onClick={() => handleAddToCart(product)}
+            >
+              Add to Cart
+            </button>
             <button className={styles.buttonBuy}>Buy Now</button>
           </div>
         </div>
