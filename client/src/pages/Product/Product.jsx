@@ -1,68 +1,36 @@
-import axios from "axios";
 import styles from "./Product.module.css";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useProduct } from "../../api/products.api";
 
 function Product() {
   const { id } = useParams();
-  const [product, setProduct] = useState();
-  const [image, setImage] = useState();
-  const [category, setCategory] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: product, error, isLoading } = useProduct(id);
+
   const options = Array.from(
     { length: product?.stock_quantity },
     (_, i) => i + 1
   );
 
-  useEffect(
-    function () {
-      async function fetchProduct() {
-        await axios
-          .get(`http://localhost:8080/api/products/${id}`)
-          .then((res) => setProduct(res.data))
-          .catch((err) => console.log(err));
-      }
-      fetchProduct();
-    },
-    [id]
-  );
-
-  useEffect(
-    function () {
-      async function fetchImage() {
-        await axios
-          .get(`http://localhost:8080/api/images/${product.image_id}`)
-          .then((res) => setImage(res.data))
-          .catch((err) => console.log(err));
-      }
-      fetchImage();
-    },
-    [product]
-  );
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/categories/${product?.category_id}`)
-      .then((res) => setCategory(res.data.name))
-      .catch((err) => console.log(err));
-
-    setIsLoading(false);
-  }, [product?.category_id]);
-
-  if (isLoading || !product || !image || !category) {
-    return <di>Loading...</di>;
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
+
+  if (error) {
+    return <div>Error loading products: {error.message}</div>;
+  }
+
+  console.log(product);
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productPhoto}>
         <img
-          src={`data:${image?.type};base64,${image?.imageData}`}
+          src={`data:${product?.image_type};base64,${product?.image_data}`}
           alt={product?.name}
         />
       </div>
       <div className={styles.productDetails}>
         <div className={styles.productDetailsTop}>
-          <h3 className={styles.productCategory}>{category}</h3>
+          <h3 className={styles.productCategory}>{product.category}</h3>
           <h1>{product?.name}</h1>
           <h2>R${product?.price}</h2>
         </div>

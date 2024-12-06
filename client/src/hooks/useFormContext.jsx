@@ -22,6 +22,7 @@ function formReducer(state, action) {
     case "setImage":
       return { ...state, image: action.payload };
     case "openEdit":
+      console.log(action.payload);
       return {
         ...state,
         isEditing: true,
@@ -30,6 +31,7 @@ function formReducer(state, action) {
         productPrice: action.payload.price,
         productCategory: action.payload.category,
         productQuantity: action.payload.stock_quantity,
+        productDescription: action.payload.product_description,
       };
     case "closeEdit":
       return {

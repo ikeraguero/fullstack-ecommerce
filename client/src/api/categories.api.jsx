@@ -10,6 +10,22 @@ async function fetchCategories() {
   return res.data;
 }
 
+async function fetchCategoryById(categoryId) {
+  const res = await axios.get(`${BASE_URL}/categories/${categoryId}`);
+  if (res.status !== 200) {
+    throw new Error("Problem fetching the data");
+  }
+  console.log(res.data);
+  return res.data;
+}
+
 export default function useCategories() {
   return useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
+}
+
+export function useCategoryById(categoryId) {
+  return useQuery({
+    queryKey: ["category"],
+    queryFn: () => fetchCategoryById(categoryId),
+  });
 }

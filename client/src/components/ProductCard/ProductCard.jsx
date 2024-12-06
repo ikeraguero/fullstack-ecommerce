@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 function ProductCard({
   id,
   name,
-  image_id,
   price,
   category_name,
   image_data,

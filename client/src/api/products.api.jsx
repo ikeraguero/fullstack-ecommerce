@@ -10,6 +10,22 @@ async function fetchProducts() {
   return res.data;
 }
 
+async function fetchProductById(productId) {
+  const res = await axios.get(`${BASE_URL}/products/${productId}`);
+  if (res.status !== 200) {
+    throw new Error("Problem fetching the data");
+  }
+  console.log(res.data);
+  return res.data;
+}
+
 export default function useProducts() {
-  return useQuery({queryKey: ["products"], queryFn: fetchProducts});
+  return useQuery({ queryKey: ["products"], queryFn: fetchProducts });
+}
+
+export function useProduct(productId) {
+  return useQuery({
+    queryKey: ["product"],
+    queryFn: () => fetchProductById(productId),
+  });
 }

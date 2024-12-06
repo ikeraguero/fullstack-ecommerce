@@ -10,6 +10,7 @@ import styles from "./ManageProduct.module.css";
 
 function ManageProduct() {
   const { state, dispatch } = useFormContext();
+  const { data: initialProducts, refetch, error, isLoading } = useProducts();
 
   const {
     products,
@@ -20,8 +21,6 @@ function ManageProduct() {
     productDescription,
   } = state;
   const formRef = useRef();
-
-  const { data: initialProducts, refetch, error, isLoading } = useProducts();
 
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
@@ -64,7 +63,6 @@ function ManageProduct() {
       }
     }
 
-
     if (
       !productName ||
       !productPrice ||
@@ -85,7 +83,6 @@ function ManageProduct() {
       product_description: productDescription,
     };
 
-
     if (type === "post") {
       axios
         .post(`${BASE_URL}/products`, productData)
@@ -97,7 +94,6 @@ function ManageProduct() {
 
       dispatch({ type: "toggleAdd" });
     }
-
 
     if (type === "put") {
       productData = { id: editProduct?.id, ...productData };
@@ -113,9 +109,7 @@ function ManageProduct() {
     }
   }
 
-
   function remove(productId) {
-
     axios
       .delete(`${BASE_URL}/products/${productId}`)
       .catch((err) => console.log(err));
