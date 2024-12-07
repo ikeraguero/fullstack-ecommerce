@@ -4,12 +4,8 @@ package com.shoppingsystem.shopping_system.controller;
 import com.shoppingsystem.shopping_system.dto.CategoryDTO;
 import com.shoppingsystem.shopping_system.model.Category;
 import com.shoppingsystem.shopping_system.service.CategoryService;
-import com.shoppingsystem.shopping_system.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +31,11 @@ public class CategoryController {
     @GetMapping("/categories/{categoryId}")
     Category getCategory(@PathVariable int categoryId) {
         return categoryService.findById(categoryId);
+    }
+
+    @PostMapping("/categories")
+    void createCategory(@RequestBody Category category) {
+        categoryService.save(category);
     }
 
 }

@@ -6,12 +6,21 @@ import Product from "./pages/Product/Product";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import ManageProduct from "./pages/ManageProduct/ManageProduct";
 import useCategories from "./api/categories.api";
-import { useState } from "react";
 import Cart from "./pages/Cart/Cart";
+import useCart from "./api/cart.api";
 
 function App() {
   const { data: categories } = useCategories();
-  const [cart, setCart] = useState([]);
+  const userId = 1;
+  const { data: cart, error, isLoading } = useCart(userId);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data</div>;
+  }
 
   return (
     <FormProvider>
@@ -20,13 +29,10 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/*" element={<PageNotFound />} />
-          <Route
-            path="/cart"
-            element={<Cart cart={cart} setCart={setCart} />}
-          />
+          <Route path="/cart" element={<Cart cart={cart} />} />
           <Route
             path="products/:id"
-            element={<Product setCart={setCart} cart={cart} />}
+            element={<Product cart={cart} userId={userId} />}
           />
           <Route
             path="/addproduct"

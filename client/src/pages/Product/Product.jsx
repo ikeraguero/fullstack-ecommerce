@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useProduct } from "../../api/products.api";
 import { useState } from "react";
 
-function Product({ setCart, cart }) {
+function Product({ setCart, cart, userId }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
