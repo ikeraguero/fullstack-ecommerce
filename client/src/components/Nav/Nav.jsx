@@ -9,7 +9,6 @@ function Nav({ categories }) {
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
-
     }
   }, [categories]);
 
@@ -48,7 +47,9 @@ function Nav({ categories }) {
             <ion-icon name="person-circle-outline"></ion-icon>
           </div>
           <div className={styles.navBottomRightCart}>
-            <ion-icon name="cart-outline"></ion-icon>
+            <Link to={"/cart"}>
+              <ion-icon name="cart-outline"></ion-icon>
+            </Link>
           </div>
         </div>
       </div>

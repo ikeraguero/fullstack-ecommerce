@@ -1,7 +1,8 @@
 import styles from "./ProductCard.module.css";
 import Button from "../Button/Button";
-
 import { Link } from "react-router-dom";
+import { checkProductInUserCart } from "../../api/cart.api";
+import { useEffect, useState } from "react";
 
 function ProductCard({
   id,
@@ -10,7 +11,20 @@ function ProductCard({
   category_name,
   image_data,
   image_type,
+  userId,
 }) {
+  const [isOnCart, setIsOnCart] = useState(false);
+
+  useEffect(() => {
+    async function checkIsOnCart() {
+      const res = await checkProductInUserCart(id, userId);
+      setIsOnCart(res);
+    }
+    checkIsOnCart();
+  }, [id, userId]);
+
+  console.log(isOnCart);
+
   return (
     <div className={styles.productCard}>
       <div className={styles.productCardImage}>
@@ -30,7 +44,7 @@ function ProductCard({
           <Link to={`/products/${id}`}>
             <Button>See details</Button>
           </Link>
-          <Button>Add to cart</Button>
+          <Button>{!isOnCart ? "Add to cart" : "Remove from cart"}</Button>
         </div>
       </div>
     </div>

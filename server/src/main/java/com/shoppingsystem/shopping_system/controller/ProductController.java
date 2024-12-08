@@ -5,9 +5,7 @@ import com.shoppingsystem.shopping_system.model.Category;
 import com.shoppingsystem.shopping_system.model.Product;
 import com.shoppingsystem.shopping_system.repository.CategoryRepository;
 import com.shoppingsystem.shopping_system.service.ProductService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    ProductDTO getProductById(@PathVariable int productId) {
+    ProductDTO getProductById(@PathVariable Long productId) {
         return productService.findById(productId);
     }
 
@@ -78,7 +76,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{productId}")
-    void deleteProduct(@PathVariable int productId) {
+    void deleteProduct(@PathVariable Long productId) {
         productService.deleteById(productId);
     }
 

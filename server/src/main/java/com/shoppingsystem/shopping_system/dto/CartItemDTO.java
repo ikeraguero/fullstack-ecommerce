@@ -7,7 +7,10 @@ import lombok.Setter;
 @Setter
 public class CartItemDTO {
 
-    public CartItemDTO(String product_name, int quantity, double price, byte[] image_data, String image_type) {
+    public CartItemDTO(Long cart_Id, Long product_id, String product_name,
+                       int quantity, double price, byte[] image_data, String image_type) {
+        this.cart_id = cart_id;
+        this.product_id = product_id;
         this.product_name = product_name;
         this.quantity = quantity;
         this.price = price;
@@ -15,6 +18,8 @@ public class CartItemDTO {
         this.image_type = image_type;
     }
 
+    private Long cart_id;
+    private Long product_id;
     private String product_name;
     private int quantity;
     private double price;
@@ -59,5 +64,21 @@ public class CartItemDTO {
 
     public void setImage_type(String image_type) {
         this.image_type = image_type;
+    }
+
+    public Long getCart_id() {
+        return cart_id;
+    }
+
+    public void setCart_id(Long cart_id) {
+        this.cart_id = cart_id;
+    }
+
+    public Long getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
     }
 }

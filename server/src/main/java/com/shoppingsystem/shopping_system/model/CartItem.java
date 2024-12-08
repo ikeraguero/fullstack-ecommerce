@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,14 +10,16 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="cart_item_id")
-    private int cartItemId;
+    private Long cartItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cart_id", referencedColumnName = "cart_id")
+    @JsonIgnore
     private Cart cart;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="product_id", referencedColumnName = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Column(name = "price")
@@ -25,11 +28,11 @@ public class CartItem {
     @Column(name="quantity")
     private int quantity;
 
-    public int getCartItemId() {
+    public Long getCartItemId() {
         return cartItemId;
     }
 
-    public void setCartItemId(int cartItemId) {
+    public void setCartItemId(Long cartItemId) {
         this.cartItemId = cartItemId;
     }
 

@@ -1,6 +1,5 @@
 package com.shoppingsystem.shopping_system.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class ProductDTO {
 
-    public ProductDTO(int id, String name, double price, int stock_quantity, int category_id, String category_name,
+    public ProductDTO(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
                       String product_description, Long image_id, byte[] image_data, String image_type) {
         this.id = id;
         this.name = name;
@@ -23,7 +22,7 @@ public class ProductDTO {
         this.image_type = image_type;
     }
 
-    private int id;
+    private Long id;
     private String name;
     private double price;
     private int stock_quantity;
@@ -34,11 +33,11 @@ public class ProductDTO {
     private byte[] image_data;
     private String image_type;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

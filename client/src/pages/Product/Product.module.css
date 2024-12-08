@@ -62,3 +62,12 @@
   font-size: 0.8rem;
   color: #5d5d5d;
 }
+
+.productQuantity {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.productQuantity select {
+  padding: 0rem 1.2rem;
+}

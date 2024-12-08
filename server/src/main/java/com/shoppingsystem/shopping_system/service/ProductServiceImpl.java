@@ -8,7 +8,6 @@ import com.shoppingsystem.shopping_system.repository.CategoryRepository;
 import com.shoppingsystem.shopping_system.repository.ProductImageRepository;
 import com.shoppingsystem.shopping_system.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +37,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductDTO findById(int id) {
+    public ProductDTO findById(Long id) {
         Optional<Product> result = productRepository.findById(id);
         Product theProduct = null;
         if(result.isPresent()) {
@@ -57,11 +56,11 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
-    public Optional<Product> findByIdEntity(int id) {
+    public Optional<Product> findByIdEntity(Long id) {
         return productRepository.findById(id);
     }
 

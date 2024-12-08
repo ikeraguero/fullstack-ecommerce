@@ -8,10 +8,12 @@ import ManageProduct from "./pages/ManageProduct/ManageProduct";
 import useCategories from "./api/categories.api";
 import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 function App() {
+  const userId = 6;
+  const queryClient = new QueryClient();
   const { data: categories } = useCategories();
-  const userId = 1;
   const { data: cart, error, isLoading } = useCart(userId);
 
   if (isLoading) {
@@ -23,24 +25,26 @@ function App() {
   }
 
   return (
-    <FormProvider>
-      <BrowserRouter>
-        <Nav categories={categories} />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="/*" element={<PageNotFound />} />
-          <Route path="/cart" element={<Cart cart={cart} />} />
-          <Route
-            path="products/:id"
-            element={<Product cart={cart} userId={userId} />}
-          />
-          <Route
-            path="/addproduct"
-            element={<ManageProduct categories={categories} />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </FormProvider>
+    <QueryClientProvider client={queryClient}>
+      <FormProvider>
+        <BrowserRouter>
+          <Nav categories={categories} />
+          <Routes>
+            <Route index element={<Home userId={userId} />} />
+            <Route path="/*" element={<PageNotFound />} />
+            <Route path="/cart" element={<Cart cart={cart} />} />
+            <Route
+              path="products/:id"
+              element={<Product cart={cart} userId={userId} />}
+            />
+            <Route
+              path="/addproduct"
+              element={<ManageProduct categories={categories} />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </FormProvider>
+    </QueryClientProvider>
   );
 }
 

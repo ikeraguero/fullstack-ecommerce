@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ProductService {
 
     List<ProductDTO> findAll();
-    ProductDTO findById(int id);
+    ProductDTO findById(Long id);
     Product save(Product product);
-    void deleteById(int id);
-    Optional<Product> findByIdEntity(int id);
+    void deleteById(Long id);
+    Optional<Product> findByIdEntity(Long id);
 }

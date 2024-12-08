@@ -34,9 +34,20 @@ public class CartServiceImpl implements CartService{
 
 
     @Override
-    public CartDTO findByUserId(int id) {
-        Cart cart = cartRepository.findAll()
-                .stream().filter((c) -> c.getUserId() == id).toList().getFirst();
+    public Boolean isProductInUserCart(Long userId, Long productId) {
+        return cartRepository.isProductInUserCart(userId, productId);
+    }
+
+    @Override
+    public CartDTO findByUserId(Long id) {
+        Cart cart = cartRepository.findByUserId(id);
+
+        // if no cart is found, create a new one for the user
+        if(cart == null) {
+            cart = new Cart(null, "active",
+                    id);
+            cartRepository.save(cart);
+        }
 
         List<CartItemDTO> cartItemDTOList = new LinkedList<>();
 
@@ -49,6 +60,8 @@ public class CartServiceImpl implements CartService{
                         orElseThrow(()-> new RuntimeException("Image not found"));
 
                 CartItemDTO newCartItemDTO = new CartItemDTO(
+                        cart.getId(),
+                        product.getId(),
                         product.getName(),
                         cartItem.getQuantity(),
                         cartItem.getPrice(),
@@ -67,7 +80,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public Cart findById(int id) {
+    public Cart findById(Long id) {
         Optional<Cart> result = cartRepository.findById(id);
         Cart theCart = null;
         if(result.isPresent()) {

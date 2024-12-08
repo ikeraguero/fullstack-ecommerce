@@ -1,5 +1,11 @@
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./Carousel.module.css";
 
@@ -9,13 +15,21 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 function Carousel() {
+  const SPACE_BETWEEN_SLIDES = 50;
+  const SLIDER_PER_VIEW = 1;
+  const AUTOPLAY_DELAY = 3500;
+
   return (
     <Swiper
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      spaceBetween={50}
-      slidesPerView={1}
+      modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
+      spaceBetween={SPACE_BETWEEN_SLIDES}
+      slidesPerView={SLIDER_PER_VIEW}
       navigation
       pagination={{ clickable: true }}
+      autoplay={{
+        delay: AUTOPLAY_DELAY,
+        disableOnInteraction: false,
+      }}
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log("slide change")}
       style={{ width: "100%", height: "24.2rem", marginBottom: "2.6rem" }}

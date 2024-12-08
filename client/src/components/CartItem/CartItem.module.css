@@ -1,0 +1,11 @@
+.cartItem {
+  display: flex;
+  gap: 5.6rem;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.cartItemImg img {
+  width: 3.6rem;
+  height: 3.6rem;
+}

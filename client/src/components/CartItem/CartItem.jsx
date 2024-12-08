@@ -1,17 +1,18 @@
-function CartItem({
-  name,
-  price,
-  quantity,
-  category_name,
-  image_data,
-  image_type,
-}) {
+import styles from "./CartItem.module.css";
+
+function CartItem({ product_name, price, quantity, image_data, image_type }) {
   const totalPrice = price * quantity;
+
   return (
-    <div>
-      <div className="image"></div>
-      <div className="name">Name</div>
-      <div className="totalPrice">{totalPrice}</div>
+    <div className={styles.cartItem}>
+      <div className={styles.cartItemImg}>
+        <img src={`data:${image_type};base64,${image_data}`} alt="" />
+      </div>
+      <div className="name">{product_name}</div>
+      <div className="quantity">
+        {quantity} {quantity > 1 ? "units" : "unit"}
+      </div>
+      <div className="totalPrice">R${totalPrice}</div>
     </div>
   );
 }

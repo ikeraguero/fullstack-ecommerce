@@ -4,7 +4,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Carousel from "../../components/Carousel/Carousel";
 import useProducts from "../../api/products.api";
 
-function Home() {
+function Home({ userId }) {
   const { data: products, error, isLoading } = useProducts();
 
   if (isLoading) {
@@ -20,7 +20,7 @@ function Home() {
       <Carousel />
       <div className={styles.productGrid}>
         {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCard key={product.id} {...product} userId={userId} />
         ))}
       </div>
     </Main>

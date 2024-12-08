@@ -10,6 +10,14 @@ async function fetchCart(userId) {
   return res.data;
 }
 
+export async function checkProductInUserCart(productId, userId) {
+  const res = await axios.get(`${BASE_URL}/cart/${userId}/${productId}`)
+  if (res.status !== 200) {
+    throw new Error("Problem fetching the data");
+  }
+  return res.data;
+}
+
 export default function useCart(userId) {
   return useQuery({
     queryKey: ["category"],
