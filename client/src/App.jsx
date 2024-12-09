@@ -9,6 +9,7 @@ import useCategories from "./api/categories.api";
 import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import Login from "./pages/Login/Login";
 
 function App() {
   const userId = 6;
@@ -37,7 +38,7 @@ function App() {
               element={<Cart cart={cart} refetch={refetch} />}
             />
             <Route
-              path="products/:id"
+              path="/products/:id"
               element={
                 <Product cart={cart} userId={userId} refetch={refetch} />
               }
@@ -46,6 +47,7 @@ function App() {
               path="/addproduct"
               element={<ManageProduct categories={categories} />}
             />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
       </FormProvider>

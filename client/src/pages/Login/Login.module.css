@@ -1,0 +1,57 @@
+.mainContainer {
+  margin: 5.4rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2.1rem;
+
+  align-items: center;
+  width: 40%;
+  padding: 2rem;
+}
+
+.loginField {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginField input {
+  width: 20.4rem;
+  height: 2.6rem;
+  padding: 0.8rem;
+}
+
+.loginButton,
+.registerButton {
+  padding: 0.4rem 2rem;
+  font-weight: 600;
+  background-color: #f42b56;
+  border: none;
+  color: #ffffff;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0.4rem;
+}
+
+.loginButton:hover,
+.registerButton:hover {
+  background-color: #fe3a65;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.loginBoxContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
