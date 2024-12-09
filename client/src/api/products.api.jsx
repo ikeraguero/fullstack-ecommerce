@@ -15,7 +15,6 @@ async function fetchProductById(productId) {
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
-  console.log(res.data);
   return res.data;
 }
 

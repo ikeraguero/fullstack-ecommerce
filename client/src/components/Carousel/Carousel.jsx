@@ -30,8 +30,6 @@ function Carousel() {
         delay: AUTOPLAY_DELAY,
         disableOnInteraction: false,
       }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
       style={{ width: "100%", height: "24.2rem", marginBottom: "2.6rem" }}
     >
       <SwiperSlide slot="container-end">

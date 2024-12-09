@@ -23,7 +23,6 @@ function ProductCard({
     checkIsOnCart();
   }, [id, userId]);
 
-  console.log(isOnCart);
 
   return (
     <div className={styles.productCard}>
