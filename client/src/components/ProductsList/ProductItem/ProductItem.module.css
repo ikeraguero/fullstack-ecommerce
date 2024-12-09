@@ -12,7 +12,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   justify-content: flex-start;
-  display: flex;
+  display: block;
 }
 
 .productName,

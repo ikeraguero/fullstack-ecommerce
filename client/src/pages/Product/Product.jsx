@@ -14,7 +14,7 @@ async function postData(data) {
   return res.data;
 }
 
-function Product({ cart, userId }) {
+function Product({ cart, userId, refetch }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
@@ -27,7 +27,7 @@ function Product({ cart, userId }) {
   const mutation = useMutation({
     mutationFn: postData,
     onSuccess: (data) => {
-      console.log("Data successfully posted:", data);
+      refetch();
     },
     onError: (error) => {
       console.error("Error posting data:", error);
@@ -45,6 +45,7 @@ function Product({ cart, userId }) {
       image_type: product.image_type,
     };
     mutation.mutate(cartItem);
+    console.log("a");
   }
 
   if (isLoading) {

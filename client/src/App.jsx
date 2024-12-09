@@ -14,7 +14,7 @@ function App() {
   const userId = 6;
   const queryClient = new QueryClient();
   const { data: categories } = useCategories();
-  const { data: cart, error, isLoading } = useCart(userId);
+  const { data: cart, error, refetch, isLoading } = useCart(userId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -35,7 +35,7 @@ function App() {
             <Route path="/cart" element={<Cart cart={cart} />} />
             <Route
               path="products/:id"
-              element={<Product cart={cart} userId={userId} />}
+              element={<Product cart={cart} userId={userId} refetch={refetch}/>}
             />
             <Route
               path="/addproduct"
