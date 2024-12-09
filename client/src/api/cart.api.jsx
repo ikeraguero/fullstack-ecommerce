@@ -11,11 +11,15 @@ async function fetchCart(userId) {
 }
 
 export async function checkProductInUserCart(productId, userId) {
-  const res = await axios.get(`${BASE_URL}/cart/${userId}/${productId}`)
+  const res = await axios.get(`${BASE_URL}/cart/${userId}/${productId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
   return res.data;
+}
+
+export async function deleteCartItem(cartItemId) {
+  await axios.delete(`${BASE_URL}/cart/${cartItemId}`);
 }
 
 export default function useCart(userId) {

@@ -58,9 +58,11 @@ public class CartItemServiceImpl implements CartItemService {
                 orElseThrow(()-> new RuntimeException("Image not found"));
 
         return new CartItemDTO(
+                cartItem.getCartItemId(),
                 cart.getId(),
                 product.getId(),
                 product.getName(),
+                product.getCategory().getName(),
                 cartItem.getQuantity(),
                 cartItem.getPrice(),
                 productImage.getImageData(),
@@ -73,5 +75,10 @@ public class CartItemServiceImpl implements CartItemService {
 
     public CartItem findCartItemByCartAndProduct(Long cartId, Long productId) {
         return cartItemRepository.findCartItemByCartAndProduct(cartId, productId);
+    }
+
+    @Override
+    public void delete(Long cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
     }
 }

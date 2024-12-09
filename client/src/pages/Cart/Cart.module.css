@@ -1,8 +1,126 @@
-.mainContainer {
-    margin: 5.4rem 0 5.4rem 0;
-    width: 80%;
-    justify-self: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  
+.cartMainContainer {
+  margin: 5.4rem 0 5.4rem 0;
+  width: 80%;
+  justify-self: center;
+  justify-content: center;
+  flex-direction: column;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  border-radius: 0.8rem;
+  box-shadow: 0.1rem 0.1rem 0.8rem #888888;
+}
+
+.cartLeftTitle,
+.cartSummaryTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cartLeftTitle h1,
+.cartRightTitle h1 {
+  padding: 1.8rem 0rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.cartRightTitle {
+  background-color: none;
+}
+
+.cartRightSide {
+  background-color: #aeaeae47;
+  border-top-right-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+}
+
+.cartLeftSide,
+.cartRightSide {
+  padding: 3.2rem;
+}
+
+.cartLeftSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cartItem {
+  padding: 3.2rem 1.2rem;
+}
+
+.cartList:nth-of-type(1) {
+  border-top: #64646447 1px solid;
+}
+
+.cartBackArrow {
+  margin-top: 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.cartBackArrow Link {
+  text-decoration: none;
+}
+
+.cartRightSummary h2 {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cartRightSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+  font-weight: bold;
+  padding: 2rem 0 0 0;
+  border-top: #64646447 1px solid;
+  border-bottom: #64646447 1px solid;
+}
+
+.cartSummaryItem {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cartSummaryItemShipping select,
+.cartSummaryItemDiscount input {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.4rem;
+  border: 1px solid #646464c3;
+}
+
+.cartSummaryItemDiscount input {
+  border: 1px solid #646464;
+}
+
+.cartSummaryItemDiscount {
+  margin-bottom: 2.6rem;
+}
+
+.cartSummaryTotal {
+  padding: 2.8rem 0 0 0;
+}
+
+.checkoutButton {
+  margin-top: 1.2rem;
+  padding: 1rem 0rem;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 0.1rem;
+  font-size: 1.2rem;
+  border: none;
+  background-color: #f42b56;
+}
+
+.checkoutButton:hover {
+  background-color: #fe3a65;
+}

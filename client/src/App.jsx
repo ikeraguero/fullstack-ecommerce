@@ -32,10 +32,15 @@ function App() {
           <Routes>
             <Route index element={<Home userId={userId} />} />
             <Route path="/*" element={<PageNotFound />} />
-            <Route path="/cart" element={<Cart cart={cart} />} />
+            <Route
+              path="/cart"
+              element={<Cart cart={cart} refetch={refetch} />}
+            />
             <Route
               path="products/:id"
-              element={<Product cart={cart} userId={userId} refetch={refetch}/>}
+              element={
+                <Product cart={cart} userId={userId} refetch={refetch} />
+              }
             />
             <Route
               path="/addproduct"

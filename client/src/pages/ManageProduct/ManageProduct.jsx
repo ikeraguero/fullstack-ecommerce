@@ -136,19 +136,16 @@ function ManageProduct() {
           <span onClick={toggleAddForm} className={styles.openAddProductButton}>
             Add Product +
           </span>
-
           <ProductForm
             formRef={formRef}
             handleImageChange={handleImageChange}
             send={send}
           />
-
           {products?.length === 0 && (
             <div className={styles.emptyMessage}>
               There are no products registered!
             </div>
           )}
-
           <ProductsList
             products={products}
             dispatch={dispatch}

@@ -9,20 +9,24 @@ import java.util.Arrays;
 @Setter
 public class CartItemDTO {
 
-    public CartItemDTO(Long cart_Id, Long product_id, String product_name,
+    public CartItemDTO(Long id, Long cart_id, Long product_id, String product_name, String category_name,
                        int quantity, double price, byte[] image_data, String image_type) {
+        this.id = id;
         this.cart_id = cart_id;
         this.product_id = product_id;
         this.product_name = product_name;
+        this.category_name = category_name;
         this.quantity = quantity;
         this.price = price;
         this.image_data = image_data;
         this.image_type = image_type;
     }
 
+    private Long id;
     private Long cart_id;
     private Long product_id;
     private String product_name;
+    private String category_name;
     private int quantity;
     private double price;
     private byte[] image_data;
@@ -84,6 +88,21 @@ public class CartItemDTO {
         this.product_id = product_id;
     }
 
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {

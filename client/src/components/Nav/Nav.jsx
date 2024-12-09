@@ -37,7 +37,7 @@ function Nav({ categories }) {
             </Link>
           ))}
           <Link to="/addproduct" className={styles.navLink}>
-            Add Products
+            Manage Products
           </Link>
         </div>
         <div className={styles.navBottomRight}>

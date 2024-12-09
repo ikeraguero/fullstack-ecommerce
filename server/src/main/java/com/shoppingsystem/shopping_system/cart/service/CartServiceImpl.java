@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService {
         List<CartItemDTO> cartItemDTOList = new LinkedList<>();
 
         for(CartItem cartItem : cartItemRepository.findAll()) {
-            if(cartItem.getCart().getUserId() == id) {
+            if(cartItem.getCart().getUserId().equals(id)) {
                 Product product = productRepository.findById(cartItem.getProduct().getId())
                         .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -60,9 +60,11 @@ public class CartServiceImpl implements CartService {
                         orElseThrow(()-> new RuntimeException("Image not found"));
 
                 CartItemDTO newCartItemDTO = new CartItemDTO(
+                        cartItem.getCartItemId(),
                         cart.getId(),
                         product.getId(),
                         product.getName(),
+                        product.getCategory().getName(),
                         cartItem.getQuantity(),
                         cartItem.getPrice(),
                         productImage.getImageData(),
