@@ -2,6 +2,7 @@ package com.shoppingsystem.shopping_system.auth.controller;
 
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
+import com.shoppingsystem.shopping_system.user.service.UserService;
 import com.shoppingsystem.shopping_system.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,33 +26,25 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    @Autowired
-    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, UserService userService) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        if(loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
-            return ResponseEntity.badRequest().body("Username and password are required.");
-        }
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(), loginRequest.getPassword()
-                    )
-            );
-
-            String token = jwtUtil.generateToken(loginRequest.getEmail());
-            return ResponseEntity.ok(new JwtResponse(token));
-        } catch (Exception e ) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+        if (userService.loginUser(password, email)) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
 
@@ -63,7 +56,7 @@ public class AuthController {
 
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
-        newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        newUser.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setFirstName(registerRequest.getFirst_name());
         newUser.setLastName(registerRequest.getLast_name());
 

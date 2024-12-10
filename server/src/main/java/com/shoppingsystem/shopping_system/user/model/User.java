@@ -18,7 +18,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash")
-    private String password;
+    private String passwordHash;
 
     @Column(name = "first_name")
     private String firstName;
@@ -62,12 +62,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getRole() {
