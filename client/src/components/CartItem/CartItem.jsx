@@ -31,7 +31,7 @@ function CartItem({
           <div className={styles.cartItemName}>{product_name}</div>
         </div>
       </div>
-      <div className="quantity">
+      <div className={styles.quantity}>
         {quantity} {quantity > 1 ? "units" : "unit"}
       </div>
       <div className={styles.totalPrice}>R${totalPrice}</div>

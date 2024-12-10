@@ -45,6 +45,7 @@
 .editButton ion-icon {
   width: 1.2rem;
   background-color: #f42b56;
+  color: #ffff;
 }
 
 .removeButton:hover .editButton:hover {

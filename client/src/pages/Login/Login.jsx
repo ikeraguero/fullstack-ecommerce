@@ -1,13 +1,14 @@
+import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 function Login() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.loginBox}>
         <div className={styles.loginBoxContainer}>
-          <h1>Login</h1>
+          <h1>Sign In</h1>
           <div className={styles.loginField}>
-            <label>Username</label>
-            <input type="text" />
+            <label>Email</label>
+            <input type="email" />
           </div>
           <div className={styles.loginField}>
             <label>Password</label>
@@ -15,7 +16,9 @@ function Login() {
           </div>
           <div className={styles.buttons}>
             <button className={styles.loginButton}>Login</button>
-            <button className={styles.registerButton}>Register</button>
+            <Link to={"/register"} className={styles.btnLink}>
+              <button className={styles.registerButton}>Register</button>
+            </Link>
           </div>
         </div>
       </div>
