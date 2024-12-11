@@ -2,8 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../config";
 import axios from "axios";
 
+const createAxiosInstance = () => {
+  const token = localStorage.getItem("authToken");
+  console.log(token);
+  const instance = axios.create({
+    baseURL: BASE_URL,
+  });
+
+  if (token) {
+    instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
+  return instance;
+};
+
 async function fetchProducts() {
-  const res = await axios.get(`${BASE_URL}/products`);
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`${BASE_URL}/products`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
@@ -11,7 +26,8 @@ async function fetchProducts() {
 }
 
 async function fetchProductById(productId) {
-  const res = await axios.get(`${BASE_URL}/products/${productId}`);
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`${BASE_URL}/products/${productId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }

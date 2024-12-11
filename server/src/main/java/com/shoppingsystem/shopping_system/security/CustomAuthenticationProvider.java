@@ -18,11 +18,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = (String) authentication.getCredentials();
-        String username = jwtUtil.extractUsername(token);
+        String email = jwtUtil.extractEmail(token);
 
-        if(jwtUtil.validateToken(token, username)) {
+        if(jwtUtil.validateToken(token, email)) {
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, null);
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             return authenticationToken;

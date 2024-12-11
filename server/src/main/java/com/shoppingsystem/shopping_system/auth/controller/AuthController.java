@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -37,12 +39,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
+        List<String> roles = new LinkedList<>();
+        roles.add("USER");
+
         if (userService.loginUser(password, email)) {
-            return ResponseEntity.ok("Login successful");
+            String token = jwtUtil.generateToken(email, roles);
+            return ResponseEntity.ok(new JwtResponse(token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
@@ -64,9 +70,14 @@ public class AuthController {
         newUser.setActive(true);
         newUser.setCreatedAt(new Date());
         newUser.setUpdatedAt(new Date());
-        userRepository.save(newUser);  // Save user to database
+        userRepository.save(newUser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully.");
+        List<String> roles = new LinkedList<>();
+        roles.add("USER");
+
+        String token = jwtUtil.generateToken(newUser.getEmail(), roles);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new JwtResponse(token));
     }
 
 }

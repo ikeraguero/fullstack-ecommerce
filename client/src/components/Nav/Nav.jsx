@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 function Nav({ categories }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
+  console.log("oi");
 
   useEffect(() => {
     if (categories && categories.length > 0) {

@@ -10,7 +10,6 @@ import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
 
 function App() {
   const userId = 6;
@@ -49,7 +48,6 @@ function App() {
               element={<ManageProduct categories={categories} />}
             />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
           </Routes>
         </BrowserRouter>
       </FormProvider>

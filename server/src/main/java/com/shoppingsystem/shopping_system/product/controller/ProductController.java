@@ -6,6 +6,7 @@ import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.category.repository.CategoryRepository;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class ProductController {
     public ProductController() {
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/products")
     List<ProductDTO> getProducts() {
         return productService.findAll();
