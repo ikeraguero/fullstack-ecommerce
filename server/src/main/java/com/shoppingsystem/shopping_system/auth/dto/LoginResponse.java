@@ -1,4 +1,4 @@
-package com.shoppingsystem.shopping_system.auth.controller;
+package com.shoppingsystem.shopping_system.auth.dto;
 
 public class LoginResponse {
     private String token;

@@ -1,17 +1,18 @@
 package com.shoppingsystem.shopping_system.auth.controller;
 
+import com.shoppingsystem.shopping_system.auth.dto.JwtResponse;
+import com.shoppingsystem.shopping_system.auth.dto.LoginRequest;
+import com.shoppingsystem.shopping_system.auth.dto.LoginResponse;
+import com.shoppingsystem.shopping_system.auth.dto.RegisterRequest;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import com.shoppingsystem.shopping_system.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
