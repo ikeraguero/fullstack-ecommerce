@@ -4,7 +4,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Carousel from "../../components/Carousel/Carousel";
 import useProducts from "../../api/products.api";
 
-function Home({ userId, refetch }) {
+function Home({ userId, refetch, cart }) {
   const { data: products, error, isLoading } = useProducts();
 
   if (isLoading) {
@@ -25,6 +25,7 @@ function Home({ userId, refetch }) {
             {...product}
             userId={userId}
             refetch={refetch}
+            cart={cart}
           />
         ))}
       </div>

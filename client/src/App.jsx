@@ -31,7 +31,10 @@ function App() {
         <BrowserRouter>
           <Nav categories={categories} />
           <Routes>
-            <Route index element={<Home userId={userId} refetch={refetch} />} />
+            <Route
+              index
+              element={<Home userId={userId} refetch={refetch} cart={cart} />}
+            />
             <Route path="/*" element={<PageNotFound />} />
             <Route
               path="/cart"

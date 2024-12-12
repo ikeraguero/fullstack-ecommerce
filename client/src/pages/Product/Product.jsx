@@ -2,41 +2,33 @@ import styles from "./Product.module.css";
 import { useParams } from "react-router-dom";
 import { useProduct } from "../../api/products.api";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { BASE_URL } from "../../config";
-import axios from "axios";
-
-async function postData(data) {
-  const res = await axios.post(`${BASE_URL}/cartItem`, data);
-  if (res.status !== 200) {
-    throw new Error("Error fetching the data");
-  }
-  return res.data;
-}
+import { useAddToCart } from "../../hooks/useAddToCart";
+import { createCart } from "../../api/cart.api";
 
 function Product({ cart, userId, refetch }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
+  let userCart = cart;
 
   const options = Array.from(
     { length: product?.stock_quantity },
     (_, i) => i + 1
   );
 
-  const mutation = useMutation({
-    mutationFn: postData,
-    onSuccess: (data) => {
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error posting data:", error);
-    },
-  });
+  const mutation = useAddToCart(refetch);
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
+    if (!cart) {
+      const createCartData = {
+        status: "active",
+        user_id: userId,
+      };
+
+      userCart = await createCart(createCartData);
+    }
     const cartItem = {
-      cart_id: cart.id,
+      cart_id: userCart.id,
       product_id: product.id,
       product_name: product.name,
       quantity: Number(quantity),

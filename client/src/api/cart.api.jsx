@@ -32,16 +32,17 @@ export async function checkProductInUserCart(productId, userId) {
   return res.data;
 }
 
+export async function createCartItem(data) {
+  const res = await axios.post(`${BASE_URL}/cartItem`, data);
+  if (res.status !== 200) {
+    throw new Error("Error fetching the data");
+  }
+  return res;
+}
+
 export async function deleteCartItem(cartItemId) {
   await axios.delete(`${BASE_URL}/cart/${cartItemId}`);
 }
-
-
-const res = await axios.post(`${BASE_URL}/cartItem`, data);
-if (res.status !== 200) {
-  throw new Error("Error fetching the data");
-}
-
 
 export default function useCart(userId) {
   return useQuery({
