@@ -53,3 +53,9 @@
   align-items: center;
   margin-bottom: 1.2rem;
 }
+
+.productCardTitle h1 {
+  width: 6.8rem;
+  overflow: visible;
+  overflow-wrap: break-word;
+}

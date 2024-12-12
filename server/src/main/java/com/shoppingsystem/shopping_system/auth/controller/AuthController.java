@@ -4,6 +4,8 @@ import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import com.shoppingsystem.shopping_system.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,16 +40,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
+        User user = userRepository.findByEmail(email);
 
         List<String> roles = new LinkedList<>();
-        roles.add("USER");
 
+        roles.add(user.getRole());
+        System.out.println(roles);
         if (userService.loginUser(password, email)) {
             String token = jwtUtil.generateToken(email, roles);
-            return ResponseEntity.ok(new JwtResponse(token));
+
+            Cookie cookie = new Cookie("authToken", token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(3600); // 1 hour
+
+            response.addCookie(cookie);
+
+            return ResponseEntity.ok(new LoginResponse(token, user.getFirstName(), user.getLastName(),
+                    user.getEmail(), user.getRole()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
@@ -78,6 +91,18 @@ public class AuthController {
         String token = jwtUtil.generateToken(newUser.getEmail(), roles);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new JwtResponse(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("authToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+        return ResponseEntity.ok().body("Logged out successfully");
     }
 
 }

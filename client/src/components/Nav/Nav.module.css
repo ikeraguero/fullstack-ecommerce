@@ -46,3 +46,13 @@
   display: flex;
   align-items: center;
 }
+
+.loginLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoutLink {
+  cursor: pointer;
+}

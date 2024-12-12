@@ -84,6 +84,7 @@ function ManageProduct() {
     };
 
     if (type === "post") {
+      console.log(productData)
       axios
         .post(`${BASE_URL}/products`, productData)
         .then(() => {

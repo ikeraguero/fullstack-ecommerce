@@ -45,7 +45,6 @@ function Product({ cart, userId, refetch }) {
       image_type: product.image_type,
     };
     mutation.mutate(cartItem);
-    console.log("a");
   }
 
   if (isLoading) {

@@ -43,7 +43,7 @@ public class JwtUtil {
                 .subject(email)
                 .claim("roles", prefixedRoles)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 100 * 60 * 60)) // 1 hour
+                .expiration(new Date(System.currentTimeMillis() + 100 * 60 * 60 * 24)) // 1 hour
                 .signWith(secretKeyForSigning, SignatureAlgorithm.HS256)
                 .compact();
     }

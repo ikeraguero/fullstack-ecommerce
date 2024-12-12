@@ -31,8 +31,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(c->c.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authz -> authz
-                .requestMatchers("/auth/login", "/auth/register",  "/public/**", "/api/categories", "/api/cart/**").permitAll()
-                        .requestMatchers("/api/products").hasRole("USER")
+                .requestMatchers(
+                        "/auth/login",
+                        "/auth/register",
+                        "/api/cart/**",
+                        "/api/categories",
+                        "/api/products",
+                        "/api/products/**"
+                        ).permitAll()
+                        .requestMatchers("/api/images/upload").hasRole("ADMIN")
+                        .anyRequest().authenticated()
         ).addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         System.out.println(jwtUtil);
         return http.build();

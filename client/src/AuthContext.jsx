@@ -1,19 +1,36 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [authToken, setAuthToken] = useState(Cookies.get("authToken"));
 
   const login = (token) => {
-    localStorage.setItem("authToken", token);
+    Cookies.set("authToken", token, {
+      expires: 1,
+      secure: true,
+      sameSite: "Strict",
+    });
     setAuthToken(token);
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    Cookies.remove("authToken");
     setAuthToken(null);
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      Cookies.remove("authToken");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  });
 
   return (
     <AuthContext.Provider value={{ authToken, login, logout }}>

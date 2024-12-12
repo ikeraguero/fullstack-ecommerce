@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../config";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const createAxiosInstance = () => {
-  const token = localStorage.getItem("authToken");
-  console.log(token);
+  const token = Cookies.get("authToken");
   const instance = axios.create({
     baseURL: BASE_URL,
   });

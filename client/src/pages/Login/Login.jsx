@@ -1,11 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { useState } from "react";
+import { useAuth } from "../../AuthContext";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../actions/AuthActions";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -14,11 +20,25 @@ function Login() {
       password: password,
     };
 
-    const res = await axios.post("http://localhost:8080/auth/login", loginData);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/auth/login",
+        loginData,
+        {
+          withCredentials: true,
+        }
+      );
 
-    const token = res.data.token;
-    localStorage.setItem("authToken", token);
-    console.log(res);
+      const token = res.data.token;
+      const username = res.data.first_name;
+      const role = res.data.role;
+      console.log(res);
+      login(token);
+      dispatch(loginSuccess(username, role, token));
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

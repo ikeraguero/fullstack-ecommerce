@@ -4,7 +4,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Carousel from "../../components/Carousel/Carousel";
 import useProducts from "../../api/products.api";
 
-function Home({ userId }) {
+function Home({ userId, refetch }) {
   const { data: products, error, isLoading } = useProducts();
 
   if (isLoading) {
@@ -20,7 +20,12 @@ function Home({ userId }) {
       <Carousel />
       <div className={styles.productGrid}>
         {products.map((product) => (
-          <ProductCard key={product.id} {...product} userId={userId} />
+          <ProductCard
+            key={product.id}
+            {...product}
+            userId={userId}
+            refetch={refetch}
+          />
         ))}
       </div>
     </Main>
