@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ProductDTO {
 
     public ProductDTO(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
-                      String product_description, Long image_id, byte[] image_data, String image_type) {
+                      String product_description, byte[] image_data) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -17,9 +17,7 @@ public class ProductDTO {
         this.category_id = category_id;
         this.category_name = category_name;
         this.product_description = product_description;
-        this.image_id = image_id;
         this.image_data = image_data;
-        this.image_type = image_type;
     }
 
     private Long id;
@@ -29,9 +27,7 @@ public class ProductDTO {
     private int category_id;
     private String category_name;
     private String product_description;
-    private Long image_id;
     private byte[] image_data;
-    private String image_type;
 
     public Long getId() {
         return id;
@@ -89,13 +85,6 @@ public class ProductDTO {
         this.image_data = image_data;
     }
 
-    public String getImage_type() {
-        return image_type;
-    }
-
-    public void setImage_type(String image_type) {
-        this.image_type = image_type;
-    }
 
     public int getCategory_id() {
         return category_id;
@@ -105,11 +94,4 @@ public class ProductDTO {
         this.category_id = category_id;
     }
 
-    public Long getImage_id() {
-        return image_id;
-    }
-
-    public void setImage_id(Long image_id) {
-        this.image_id = image_id;
-    }
 }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../config/config";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -10,6 +10,11 @@ if (token) {
 }
 
 async function fetchCart(userId) {
+  console.log(userId);
+  if (userId === 0) {
+    return { items: [] };
+  }
+
   const res = await axios.get(`${BASE_URL}/cart/${userId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
@@ -25,6 +30,10 @@ export async function createCart(formData) {
 }
 
 export async function checkProductInUserCart(productId, userId) {
+  if (!userId) {
+    return { items: [] };
+  }
+
   const res = await axios.get(`${BASE_URL}/cart/${userId}/${productId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
@@ -46,7 +55,7 @@ export async function deleteCartItem(cartItemId) {
 
 export default function useCart(userId) {
   return useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", userId],
     queryFn: () => fetchCart(userId),
   });
 }

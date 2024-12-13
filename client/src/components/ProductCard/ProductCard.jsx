@@ -32,7 +32,7 @@ function ProductCard({
   const mutation = useAddToCart(refetch);
 
   async function handleAddToCart() {
-    if (!cart) {
+    if (!userCart) {
       const createCartData = {
         status: "active",
         user_id: userId,
@@ -49,6 +49,7 @@ function ProductCard({
       image_data: image_data,
       image_type: image_type,
     };
+
     mutation.mutate(cartItem);
   }
 
@@ -71,14 +72,8 @@ function ProductCard({
           <Link to={`/products/${id}`}>
             <Button>See details</Button>
           </Link>
-          {!isLoggedIn ? (
-            <Link to={"/login"}>
-              <Button>Add to cart</Button>
-            </Link>
-          ) : isOnCart ? (
-            <Button onClick={handleAddToCart}>Add to cart</Button>
-          ) : (
-            <Button>Remove from cart</Button>
+          {(!isOnCart || isLoggedIn) && (
+            <Button handler={handleAddToCart}>Add to cart</Button>
           )}
         </div>
       </div>

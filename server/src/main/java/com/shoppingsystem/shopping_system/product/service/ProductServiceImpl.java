@@ -81,9 +81,7 @@ public class ProductServiceImpl implements ProductService{
                 category.getId(),
                 category.getName(),
                 product.getProduct_description(),
-                product.getImage_id(),
-                productImage.getImageData(),
-                productImage.getType()
+                productImage.getImageData()
         );
     }
 }

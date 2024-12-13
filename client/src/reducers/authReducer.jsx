@@ -10,8 +10,9 @@ function authReducer(state = initialState, action) {
       return {
         ...state,
         isLoggedIn: true,
+        id: action.payload.id,
         username: action.payload.username,
-        role:action.payload.role,
+        role: action.payload.role,
         token: action.payload.token,
       };
     case "LOGOUT":

@@ -1,16 +1,19 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useFormContext } from "../../hooks/useFormContext";
-import { BASE_URL } from "../../config";
+import { BASE_URL } from "../../config/config";
 import useProducts from "../../api/products.api";
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
 import styles from "./ManageProduct.module.css";
+import { useAuth } from "../../context/AuthContext";
 
 function ManageProduct() {
   const { state, dispatch } = useFormContext();
   const { data: initialProducts, refetch, error, isLoading } = useProducts();
+  const { authToken: token } = useAuth();
+  console.log(token);
 
   const {
     products,
@@ -42,26 +45,7 @@ function ManageProduct() {
     const productPrice = parseFloat(formData.get("productPrice"));
     const productStockQuantity = Number(formData.get("productStockQuantity"));
     const productCategory = Number(formData.get("productCategory"));
-
-    let imageId = null;
-    imageId = editProduct?.image_id;
-
-    // Handle image upload
-    if (!isEditing || image) {
-      const formDt = new FormData();
-      formDt.append("image", image);
-
-      try {
-        const response = await axios.post(`${BASE_URL}/images/upload`, formDt, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        imageId = response.data.id;
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    console.log(image);
 
     if (
       !productName ||
@@ -69,7 +53,7 @@ function ManageProduct() {
       !productStockQuantity ||
       !productCategory ||
       !productDescription ||
-      !imageId
+      !image
     ) {
       return alert("Empty fields are not allowed");
     }
@@ -79,14 +63,17 @@ function ManageProduct() {
       price: productPrice,
       stock_quantity: productStockQuantity,
       category_id: productCategory,
-      image_id: isEditing && !image ? editProduct?.image_id : imageId,
       product_description: productDescription,
     };
 
+    const createProductForm = new FormData();
+    createProductForm.append("productDTO", JSON.stringify(productData));
+    createProductForm.append("image", image);
+
     if (type === "post") {
-      console.log(productData)
+      console.log(productData);
       axios
-        .post(`${BASE_URL}/products`, productData)
+        .post(`${BASE_URL}/products`, createProductForm)
         .then(() => {
           refetch();
           formRef.current.reset();

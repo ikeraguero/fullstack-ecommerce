@@ -13,7 +13,7 @@ function Nav({ categories }) {
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
 
-  console.log()
+  console.log();
 
   useEffect(() => {
     if (categories && categories.length > 0) {
@@ -80,7 +80,7 @@ function Nav({ categories }) {
             <ion-icon name="person-circle-outline"></ion-icon>
           </div>
           <div className={styles.navBottomRightCart}>
-            <Link to={"/cart"}>
+            <Link to={isLoggedIn ? "/cart" : "/login"}>
               <ion-icon name="cart-outline"></ion-icon>
             </Link>
           </div>

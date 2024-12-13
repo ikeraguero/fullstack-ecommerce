@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { useState } from "react";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../actions/AuthActions";
 
-function Login() {
+function Login({ refetchCart }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
@@ -29,13 +29,13 @@ function Login() {
         }
       );
 
-      const token = res.data.token;
-      const username = res.data.first_name;
-      const role = res.data.role;
+      const { token, first_name: username, role, id } = res.data;
+
       console.log(res);
       login(token);
-      dispatch(loginSuccess(username, role, token));
+      dispatch(loginSuccess(username, role, token, id));
       navigate("/");
+      refetchCart();
     } catch (err) {
       console.log(err);
     }

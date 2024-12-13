@@ -3,14 +3,14 @@
   background-color: #ffffff;
   color: #212121;
   flex-direction: column;
-
+  position: relative;
   min-width: 18.4rem;
   min-height: 8.2rem;
   box-shadow: 0.1rem 0.1rem 0.8rem #888888;
 }
 
 .productCardBody {
-  padding: 0.4rem 1.2rem;
+  padding: 0.4rem 1.2rem 8.4rem;
   display: flex;
   flex-direction: column;
   gap: 3.6rem;
@@ -52,6 +52,11 @@
   gap: 0.4rem;
   align-items: center;
   margin-bottom: 1.2rem;
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%);
 }
 
 .productCardTitle h1 {

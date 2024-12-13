@@ -37,11 +37,12 @@ public class SecurityConfig {
                         "/api/cart/**",
                         "/api/categories",
                         "/api/products",
-                        "/api/products/**"
+                        "/api/products/**",
+                        "/api/cartItem"
                         ).permitAll()
                         .requestMatchers("/api/images/upload").hasRole("ADMIN")
                         .anyRequest().authenticated()
-        ).addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        ).addFilterBefore(new com.shoppingsystem.shopping_system.security.JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         System.out.println(jwtUtil);
         return http.build();
     }
@@ -55,7 +56,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new CustomAuthenticationProvider(jwtUtil);
+        return new com.shoppingsystem.shopping_system.security.CustomAuthenticationProvider(jwtUtil);
     }
 
     @Bean

@@ -10,12 +10,19 @@ import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import Login from "./pages/Login/Login";
+import { useSelector } from "react-redux";
 
 function App() {
-  const userId = 6;
+  const userId = useSelector((state) => state.auth.id);
   const queryClient = new QueryClient();
   const { data: categories } = useCategories();
-  const { data: cart, error, refetch, isLoading } = useCart(userId);
+  console.log(userId === undefined ? 0 : userId);
+  const {
+    data: cart,
+    error,
+    refetch,
+    isLoading,
+  } = useCart(userId === undefined ? 0 : userId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -50,7 +57,7 @@ function App() {
               path="/addproduct"
               element={<ManageProduct categories={categories} />}
             />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login refetchCart={refetch} />} />
           </Routes>
         </BrowserRouter>
       </FormProvider>

@@ -1,20 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "../config";
+import { BASE_URL } from "../config/config";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const createAxiosInstance = () => {
-  const token = Cookies.get("authToken");
   const instance = axios.create({
     baseURL: BASE_URL,
+    withCredentials: true,
   });
-
-  if (token) {
-    instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
 
   return instance;
 };
+
+export async function uploadProductImage(data) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.post(`${BASE_URL}/images/upload`, data);
+  if (res.status !== 201) {
+    throw new Error("Problem fetching the data");
+  }
+  return res.data;
+}
 
 async function fetchProducts() {
   const axiosInstance = createAxiosInstance();

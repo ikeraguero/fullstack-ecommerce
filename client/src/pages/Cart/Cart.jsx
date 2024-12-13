@@ -1,15 +1,18 @@
 import styles from "./Cart.module.css";
 import CartItem from "../../components/CartItem/CartItem";
 import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
-  const totalPrice = cart.cartItems.reduce(
-    (acc, cur) => acc + cur.price * cur.quantity,
-    0
+  const [totalPrice, setTotalPrice] = useState(
+    cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
+  const initialPriceRef = useRef(totalPrice);
 
-  console.log(cart.cartItems);
+  function handleShippingChange(e) {
+    setTotalPrice(initialPriceRef.current + Number(e.target.value));
+  }
 
   return (
     <div className={styles.cartMainContainer}>
@@ -42,7 +45,10 @@ function Cart({ cart, refetch }) {
           </Link>
         </div>
       </div>
-      <div className={styles.cartRightSide}>
+      <form
+        className={styles.cartRightSide}
+        onSubmit={(e) => e.preventDefault()}
+      >
         <div className={styles.cartRightTitle}>
           <h1>Summary</h1>
         </div>
@@ -57,10 +63,16 @@ function Cart({ cart, refetch }) {
             <div className="cartItemName">
               <h2>SHIPPING</h2>
             </div>
-            <select name="shipping" id="">
-              <option>Shipping 1 - R$5</option>
-              <option>Shipping 2 - R$10</option>
-              <option>Shipping 3 - R$15</option>
+            <select
+              name="shipping"
+              id=""
+              onChange={(e) => handleShippingChange(e)}
+              required
+            >
+              <option value={0}></option>
+              <option value={5}>Shipping 1 - R$5</option>
+              <option value={10}>Shipping 2 - R$10</option>
+              <option value={15}>Shipping 3 - R$15</option>
             </select>
           </div>
           <div className={styles.cartSummaryItemDiscount}>
@@ -77,7 +89,7 @@ function Cart({ cart, refetch }) {
           <div className="cartItemPrice">R${totalPrice}</div>
         </div>
         <button className={styles.checkoutButton}>CHECKOUT</button>
-      </div>
+      </form>
     </div>
   );
 }

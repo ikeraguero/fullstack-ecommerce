@@ -11,8 +11,10 @@ export const AuthProvider = ({ children }) => {
       expires: 1,
       secure: true,
       sameSite: "Strict",
+      path: "/",
     });
     setAuthToken(token);
+    console.log(token);
   };
 
   const logout = () => {

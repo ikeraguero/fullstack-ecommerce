@@ -1,14 +1,16 @@
 import styles from "./Product.module.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useProduct } from "../../api/products.api";
 import { useState } from "react";
 import { useAddToCart } from "../../hooks/useAddToCart";
 import { createCart } from "../../api/cart.api";
+import { useSelector } from "react-redux";
 
 function Product({ cart, userId, refetch }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   let userCart = cart;
 
   const options = Array.from(
@@ -19,6 +21,7 @@ function Product({ cart, userId, refetch }) {
   const mutation = useAddToCart(refetch);
 
   async function handleAddToCart() {
+    console.log("oi");
     if (!cart) {
       const createCartData = {
         status: "active",
@@ -80,12 +83,18 @@ function Product({ cart, userId, refetch }) {
         <div className={styles.interactive}>
           <div className={styles.interactiveQuantity}></div>
           <div className={styles.interactiveButtons}>
-            <button
-              className={styles.buttonAddToCart}
-              onClick={handleAddToCart}
-            >
-              Add to cart
-            </button>
+            {isLoggedIn ? (
+              <button
+                className={styles.buttonAddToCart}
+                onClick={handleAddToCart}
+              >
+                Add to cart
+              </button>
+            ) : (
+              <Link to={"/login"}>
+                <button className={styles.buttonAddToCart}>Add to cart</button>
+              </Link>
+            )}
             <button className={styles.buttonBuy}>Buy Now</button>
           </div>
         </div>

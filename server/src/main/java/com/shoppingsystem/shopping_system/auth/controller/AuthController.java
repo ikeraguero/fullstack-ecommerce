@@ -61,7 +61,7 @@ public class AuthController {
 
             response.addCookie(cookie);
 
-            return ResponseEntity.ok(new LoginResponse(token, user.getFirstName(), user.getLastName(),
+            return ResponseEntity.ok(new LoginResponse(user.getId(), token, user.getFirstName(), user.getLastName(),
                     user.getEmail(), user.getRole()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

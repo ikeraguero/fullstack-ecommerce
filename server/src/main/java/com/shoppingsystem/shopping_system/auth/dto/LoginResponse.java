@@ -1,13 +1,15 @@
 package com.shoppingsystem.shopping_system.auth.dto;
 
 public class LoginResponse {
+    private Long id;
     private String token;
     private String first_name;
     private String last_name;
     private String email;
     private String role;
 
-    public LoginResponse(String token, String first_name, String last_name, String email, String role) {
+    public LoginResponse(Long id, String token, String first_name, String last_name, String email, String role) {
+        this.id = id;
         this.token = token;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -53,6 +55,14 @@ public class LoginResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
 
