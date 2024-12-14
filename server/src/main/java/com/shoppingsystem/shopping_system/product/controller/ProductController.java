@@ -1,12 +1,12 @@
 package com.shoppingsystem.shopping_system.product.controller;
 
 import com.shoppingsystem.shopping_system.category.model.Category;
-import com.shoppingsystem.shopping_system.category.repository.CategoryRepository;
+import com.shoppingsystem.shopping_system.category.service.CategoryService;
 import com.shoppingsystem.shopping_system.product.dto.ProductDTO;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
-import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
+import com.shoppingsystem.shopping_system.product.service.ProductImageService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,10 +24,10 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @Autowired
-    private ProductImageRepository productImageRepository;
+    private ProductImageService productImageService;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -53,15 +53,14 @@ public class ProductController {
 
     @PostMapping("/products")
     Product addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException {
-        Category category = categoryRepository.findById(productDTO.getCategory_id())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryService.findById(productDTO.getCategory_id());
 
         ProductImage productImage = new ProductImage(
                 image.getOriginalFilename(), image.getContentType(),
                 image.getSize(), image.getBytes()
         );
 
-        productImageRepository.save(productImage);
+        productImageService.save(productImage);
 
         System.out.println(category.getName());
         Product product = new Product();
@@ -87,8 +86,7 @@ public class ProductController {
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
         // Fetch the category
-        Category category = categoryRepository.findById(productDTO.getCategory_id())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryService.findById(productDTO.getCategory_id());
 
 
         // Update the product fields

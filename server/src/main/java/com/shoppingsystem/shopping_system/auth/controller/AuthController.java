@@ -73,6 +73,9 @@ public class AuthController {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is already taken.");
         }
+        System.out.println(registerRequest.getEmail());
+        System.out.println(registerRequest.getPassword());
+        System.out.println(registerRequest.getLast_name());
 
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());

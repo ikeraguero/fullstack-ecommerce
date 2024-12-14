@@ -1,17 +1,14 @@
 package com.shoppingsystem.shopping_system.category.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class CategoryDTO {
-
-    public CategoryDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
+    
     private int id;
     private String name;
 
