@@ -7,15 +7,12 @@ import useProducts, { createProduct } from "../../api/products.api";
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
-import { useAuth } from "../../context/AuthContext";
 
 import styles from "./ManageProduct.module.css";
 
 function ManageProduct() {
   const { state, dispatch } = useFormContext();
   const { data: initialProducts, refetch, error, isLoading } = useProducts();
-  const { authToken: token } = useAuth();
-  console.log(token);
 
   const {
     products,
@@ -47,7 +44,6 @@ function ManageProduct() {
     const productPrice = parseFloat(formData.get("productPrice"));
     const productStockQuantity = Number(formData.get("productStockQuantity"));
     const productCategory = Number(formData.get("productCategory"));
-    console.log(image);
 
     if (
       !productName ||
@@ -117,6 +113,8 @@ function ManageProduct() {
   if (error) {
     return <div>Error loading products: {error.message}</div>;
   }
+
+  console.log(products);
 
   return (
     <>

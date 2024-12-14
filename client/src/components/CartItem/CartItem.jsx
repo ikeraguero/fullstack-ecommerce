@@ -12,11 +12,11 @@ function CartItem({
   image_type,
 }) {
   const totalPrice = price * quantity;
-  console.log(category_name);
+
 
   async function handleDelete() {
     await deleteCartItem(id);
-    console.log("io");
+
     refetch();
   }
 

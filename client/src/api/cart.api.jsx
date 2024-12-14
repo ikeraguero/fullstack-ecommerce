@@ -10,7 +10,7 @@ if (token) {
 }
 
 async function fetchCart(userId) {
-  console.log(userId);
+
   if (userId === 0) {
     return { items: [] };
   }

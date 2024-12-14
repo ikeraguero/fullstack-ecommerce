@@ -23,7 +23,6 @@ function Product({ cart, userId, refetch }) {
   const mutation = useAddToCart(refetch);
 
   async function handleAddToCart() {
-    console.log("oi");
     if (!cart) {
       const createCartData = {
         status: "active",

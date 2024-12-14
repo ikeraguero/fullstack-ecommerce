@@ -15,7 +15,7 @@ function Nav({ categories }) {
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
 
-  console.log(role);
+
 
   useEffect(() => {
     if (categories && categories.length > 0) {
@@ -53,8 +53,8 @@ function Nav({ categories }) {
             </Link>
           ))}
           {role === "ADMIN" ? (
-            <Link to="/addproduct" className={styles.navLink}>
-              Manage Products
+            <Link to="/dashboard" className={styles.navLink}>
+              Dashboard
             </Link>
           ) : (
             ""

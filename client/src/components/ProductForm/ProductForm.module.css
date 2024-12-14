@@ -13,6 +13,18 @@
   display: none;
 }
 
+.formTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formTop ion-icon {
+  cursor: pointer;
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
 .formBody {
   display: grid;
   grid-template-columns: 1fr 1fr;

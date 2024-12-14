@@ -18,7 +18,6 @@ function App() {
   const userId = useSelector((state) => state.auth.id);
   const queryClient = new QueryClient();
   const { data: categories } = useCategories();
-  console.log(userId === undefined ? 0 : userId);
   const {
     data: cart,
     error,
@@ -56,7 +55,7 @@ function App() {
               }
             />
             <Route
-              path="/addproduct"
+              path="/dashboard"
               element={<ManageProduct categories={categories} />}
             />
             <Route path="/login" element={<Login refetchCart={refetch} />} />

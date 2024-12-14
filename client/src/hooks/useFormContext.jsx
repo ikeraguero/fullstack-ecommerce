@@ -33,6 +33,7 @@ function formReducer(state, action) {
         productDescription: action.payload.product_description,
       };
     case "closeEdit":
+      console.log(state);
       return {
         ...state,
         isEditing: false,

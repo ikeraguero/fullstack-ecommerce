@@ -33,7 +33,7 @@ function Login({ refetchCart }) {
 
       const { token, first_name: username, role, id } = res.data;
 
-      console.log(res);
+  
       login(token);
       dispatch(loginSuccess(username, role, token, id));
       navigate("/");

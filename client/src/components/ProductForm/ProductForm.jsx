@@ -25,10 +25,18 @@ function Form({ formRef, handleImageChange, send }) {
     productPrice,
     productQuantity,
   } = state;
+  console.log(isAdding, isEditing);
+
   return (
     <div className={isAdding || isEditing ? styles.form : styles.hide}>
-      <span>
+      <span className={styles.formTop}>
         {!isEditing ? "Add New Product" : `Edit ${editProduct?.name}`}
+        <ion-icon
+          name="close-outline"
+          onClick={() =>
+            dispatch({ type: isAdding ? "toggleAdd" : "closeEdit" })
+          }
+        ></ion-icon>
       </span>
       <form
         ref={formRef}
