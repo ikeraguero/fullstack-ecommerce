@@ -1,4 +1,7 @@
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import { FormProvider } from "./hooks/useFormContext";
 import Nav from "./components/Nav/Nav";
 import Home from "./pages/Home/Home";
@@ -8,9 +11,7 @@ import ManageProduct from "./pages/ManageProduct/ManageProduct";
 import useCategories from "./api/categories.api";
 import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import Login from "./pages/Login/Login";
-import { useSelector } from "react-redux";
 import Register from "./pages/Register/Register";
 
 function App() {

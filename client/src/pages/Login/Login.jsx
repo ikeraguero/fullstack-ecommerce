@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Login.module.css";
 import axios from "axios";
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import { useDispatch } from "react-redux";
+
+import { useAuth } from "../../context/AuthContext";
 import { loginSuccess } from "../../actions/AuthActions";
+
+import styles from "./Login.module.css";
 
 function Login({ refetchCart }) {
   const [email, setEmail] = useState("");

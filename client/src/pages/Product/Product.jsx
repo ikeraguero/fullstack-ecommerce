@@ -1,10 +1,12 @@
-import styles from "./Product.module.css";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useProduct } from "../../api/products.api";
 import { useState } from "react";
+
+import { useProduct } from "../../api/products.api";
 import { useAddToCart } from "../../hooks/useAddToCart";
 import { createCart } from "../../api/cart.api";
-import { useSelector } from "react-redux";
+
+import styles from "./Product.module.css";
 
 function Product({ cart, userId, refetch }) {
   const { id } = useParams();

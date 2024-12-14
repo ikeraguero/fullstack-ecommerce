@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
+
 import { useFormContext } from "../../hooks/useFormContext";
 import { BASE_URL } from "../../config/config";
 import useProducts, { createProduct } from "../../api/products.api";
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
-import styles from "./ManageProduct.module.css";
 import { useAuth } from "../../context/AuthContext";
+
+import styles from "./ManageProduct.module.css";
 
 function ManageProduct() {
   const { state, dispatch } = useFormContext();

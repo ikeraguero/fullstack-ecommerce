@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import styles from "./Nav.module.css";
-import SearchBar from "./SearchBar/SearchBar";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+
 import { logout } from "../../actions/AuthActions";
+import SearchBar from "./SearchBar/SearchBar";
+
+import styles from "./Nav.module.css";
 
 function Nav({ categories }) {
   const [loadedCategories, setLoadedCategories] = useState(null);

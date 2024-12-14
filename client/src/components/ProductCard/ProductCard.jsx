@@ -1,10 +1,12 @@
-import styles from "./ProductCard.module.css";
-import Button from "../Button/Button";
-import { Link } from "react-router-dom";
-import { checkProductInUserCart, createCart } from "../../api/cart.api";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import Button from "../Button/Button";
+import { checkProductInUserCart, createCart } from "../../api/cart.api";
 import { useAddToCart } from "../../hooks/useAddToCart";
+
+import styles from "./ProductCard.module.css";
 
 function ProductCard({
   id,

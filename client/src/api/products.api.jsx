@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "../config/config";
 import axios from "axios";
+import { BASE_URL } from "../config/config";
 
 const createAxiosInstance = () => {
   const instance = axios.create({

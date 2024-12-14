@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "../config/config";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { BASE_URL } from "../config/config";
 
 const token = Cookies.get("authToken");
 

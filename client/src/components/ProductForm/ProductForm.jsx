@@ -1,5 +1,6 @@
 import useCategories from "../../api/categories.api";
 import { useFormContext } from "../../hooks/useFormContext";
+
 import styles from "./ProductForm.module.css";
 
 function Form({ formRef, handleImageChange, send }) {

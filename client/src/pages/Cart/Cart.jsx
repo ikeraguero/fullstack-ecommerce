@@ -1,7 +1,9 @@
-import styles from "./Cart.module.css";
-import CartItem from "../../components/CartItem/CartItem";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import CartItem from "../../components/CartItem/CartItem";
+
+import styles from "./Cart.module.css";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;

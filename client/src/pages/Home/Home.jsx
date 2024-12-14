@@ -1,8 +1,9 @@
 import Main from "../../components/Main/Main";
-import styles from "./Home.module.css";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Carousel from "../../components/Carousel/Carousel";
 import useProducts from "../../api/products.api";
+
+import styles from "./Home.module.css";
 
 function Home({ userId, refetch, cart }) {
   const { data: products, error, isLoading } = useProducts();
