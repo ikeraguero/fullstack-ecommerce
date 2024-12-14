@@ -1,18 +1,25 @@
 import styles from "./Cart.module.css";
 import CartItem from "../../components/CartItem/CartItem";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
   const [totalPrice, setTotalPrice] = useState(
     cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
-  const initialPriceRef = useRef(totalPrice);
+  const [shippingPrice, setShippingPrice] = useState(0);
 
-  function handleShippingChange(e) {
-    setTotalPrice(initialPriceRef.current + Number(e.target.value));
-  }
+  useEffect(
+    function () {
+      if (itemsLength === 0) setShippingPrice(0);
+      setTotalPrice(
+        cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0) +
+          shippingPrice
+      );
+    },
+    [cart, shippingPrice, itemsLength]
+  );
 
   return (
     <div className={styles.cartMainContainer}>
@@ -24,19 +31,14 @@ function Cart({ cart, refetch }) {
           </div>
           {cart.cartItems.length === 0 && "Cart is empty"}
           <ul className={styles.cartList}>
-            {cart.cartItems.map(
-              (product) => (
-                console.log(product),
-                (
-                  <CartItem
-                    {...product}
-                    refetch={refetch}
-                    key={product.id}
-                    className={styles.cartItem}
-                  />
-                )
-              )
-            )}
+            {cart.cartItems.map((product) => (
+              <CartItem
+                {...product}
+                refetch={refetch}
+                key={product.id}
+                className={styles.cartItem}
+              />
+            ))}
           </ul>
         </div>
         <div className={styles.cartBackArrow}>
@@ -66,7 +68,9 @@ function Cart({ cart, refetch }) {
             <select
               name="shipping"
               id=""
-              onChange={(e) => handleShippingChange(e)}
+              value={shippingPrice}
+              onChange={(e) => setShippingPrice(Number(e.target.value))}
+              disabled={itemsLength === 0}
               required
             >
               <option value={0}></option>

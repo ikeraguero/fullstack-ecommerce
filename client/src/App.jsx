@@ -11,6 +11,7 @@ import useCart from "./api/cart.api";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import Login from "./pages/Login/Login";
 import { useSelector } from "react-redux";
+import Register from "./pages/Register/Register";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -58,6 +59,7 @@ function App() {
               element={<ManageProduct categories={categories} />}
             />
             <Route path="/login" element={<Login refetchCart={refetch} />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </BrowserRouter>
       </FormProvider>
