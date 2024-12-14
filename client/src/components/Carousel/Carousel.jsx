@@ -34,7 +34,7 @@ function Carousel() {
     >
       <SwiperSlide slot="container-end">
         <img
-          src="../../public/img4.jpg"
+          src="../../public/img5.jpg"
           alt=""
           className={styles.carouselImg}
         />

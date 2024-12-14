@@ -36,6 +36,10 @@
   color: #454545;
 }
 
+.productCardSubtitle h3 {
+  color: #838383;
+}
+
 .productCardImage img {
   height: 12.8rem;
   width: 100%;

@@ -67,7 +67,9 @@ function Product({ cart, userId, refetch }) {
           <h2>R${product?.price}</h2>
         </div>
         <span>Stock Available: {product?.stock_quantity}</span>
-        <span>{product.product_description}</span>
+        <div className={styles.productDescription}>
+          {product.product_description}
+        </div>
         <div className={styles.productQuantity}>
           <label htmlFor="quantity">Quantity:</label>
           <select

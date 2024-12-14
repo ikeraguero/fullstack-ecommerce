@@ -4,7 +4,7 @@
   display: flex;
   justify-self: center;
   justify-content: center;
-  gap: 3.6rem;
+  gap: 5.6rem;
 }
 
 .productPhoto img {
@@ -21,21 +21,38 @@
   font-size: 1rem;
 }
 
+.productDescription {
+  width: 14.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .buttonBuy,
 .buttonAddToCart {
+  width: 100%;
   border-radius: 99px;
   cursor: pointer;
   border: none;
   padding: 0.4rem 3.6rem;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .buttonBuy {
   background-color: #f42b56;
 }
 
+.buttonBuy:hover {
+  background-color: #ff5f82;
+}
+
 .buttonAddToCart {
   background-color: #f36584;
+}
+
+.buttonAddToCart:hover {
+  background-color: #f0829a;
 }
 
 .interactive,
