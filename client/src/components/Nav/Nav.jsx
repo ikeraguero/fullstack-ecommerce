@@ -13,7 +13,7 @@ function Nav({ categories }) {
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
 
-  console.log();
+  console.log(role);
 
   useEffect(() => {
     if (categories && categories.length > 0) {

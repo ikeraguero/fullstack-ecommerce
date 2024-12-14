@@ -7,11 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,11 +34,10 @@ public class SecurityConfig {
                         "/auth/register",
                         "/api/cart/**",
                         "/api/categories",
-                        "/api/products",
                         "/api/products/**",
                         "/api/cartItem"
                         ).permitAll()
-                        .requestMatchers("/api/images/upload").hasRole("ADMIN")
+                        .requestMatchers("/api/products").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).addFilterBefore(new com.shoppingsystem.shopping_system.security.JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         System.out.println(jwtUtil);

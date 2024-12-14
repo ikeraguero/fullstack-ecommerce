@@ -11,10 +11,15 @@ const createAxiosInstance = () => {
   return instance;
 };
 
-export async function uploadProductImage(data) {
+export async function createProduct(data) {
   const axiosInstance = createAxiosInstance();
-  const res = await axiosInstance.post(`${BASE_URL}/images/upload`, data);
-  if (res.status !== 201) {
+  const res = await axiosInstance.post(`/products`, data, {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
   return res.data;

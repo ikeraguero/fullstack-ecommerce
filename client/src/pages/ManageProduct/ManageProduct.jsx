@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useFormContext } from "../../hooks/useFormContext";
 import { BASE_URL } from "../../config/config";
-import useProducts from "../../api/products.api";
+import useProducts, { createProduct } from "../../api/products.api";
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
@@ -66,14 +66,15 @@ function ManageProduct() {
       product_description: productDescription,
     };
 
-    const createProductForm = new FormData();
-    createProductForm.append("productDTO", JSON.stringify(productData));
-    createProductForm.append("image", image);
+    const createData = new FormData();
+    createData.append("image", image);
+    createData.append(
+      "product",
+      new Blob([JSON.stringify(productData)], { type: "application/json" })
+    );
 
     if (type === "post") {
-      console.log(productData);
-      axios
-        .post(`${BASE_URL}/products`, createProductForm)
+      await createProduct(createData)
         .then(() => {
           refetch();
           formRef.current.reset();

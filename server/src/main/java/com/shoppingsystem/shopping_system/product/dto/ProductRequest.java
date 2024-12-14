@@ -1,7 +1,5 @@
 package com.shoppingsystem.shopping_system.product.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.shoppingsystem.shopping_system.config.MultipartFileDeserializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,9 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductRequest {
 
-    public ProductDTO(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
+    public ProductRequest(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
                       String product_description, MultipartFile image) {
         this.id = id;
         this.name = name;
@@ -30,8 +28,6 @@ public class ProductDTO {
     private int category_id;
     private String category_name;
     private String product_description;
-
-    @JsonDeserialize(using = MultipartFileDeserializer.class)
     private MultipartFile image;
 
     public Long getId() {

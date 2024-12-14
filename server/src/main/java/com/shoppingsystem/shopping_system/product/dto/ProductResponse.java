@@ -1,18 +1,15 @@
 package com.shoppingsystem.shopping_system.product.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.shoppingsystem.shopping_system.config.MultipartFileDeserializer;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductResponse {
 
-    public ProductDTO(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
-                      String product_description, MultipartFile image) {
+    public ProductResponse(Long id, String name, double price, int stock_quantity, int category_id, String category_name,
+                      String product_description, String image_type, byte[] image_data) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -20,7 +17,8 @@ public class ProductDTO {
         this.category_id = category_id;
         this.category_name = category_name;
         this.product_description = product_description;
-        this.image = image;
+        this.image_type = image_type;
+        this.image_data = image_data;
     }
 
     private Long id;
@@ -30,9 +28,9 @@ public class ProductDTO {
     private int category_id;
     private String category_name;
     private String product_description;
+    private String image_type;
+    private byte[] image_data;
 
-    @JsonDeserialize(using = MultipartFileDeserializer.class)
-    private MultipartFile image;
 
     public Long getId() {
         return id;
@@ -91,11 +89,19 @@ public class ProductDTO {
         this.category_id = category_id;
     }
 
-    public MultipartFile getImage() {
-        return image;
+    public String getImage_type() {
+        return image_type;
     }
 
-    public void setImage(MultipartFile image) {
-        this.image = image;
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
+    }
+
+    public byte[] getImage_data() {
+        return image_data;
+    }
+
+    public void setImage_data(byte[] image_data) {
+        this.image_data = image_data;
     }
 }

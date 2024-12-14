@@ -1,10 +1,10 @@
 package com.shoppingsystem.shopping_system.product.service;
 
-import com.shoppingsystem.shopping_system.product.dto.ProductDTO;
 import com.shoppingsystem.shopping_system.category.model.Category;
+import com.shoppingsystem.shopping_system.category.repository.CategoryRepository;
+import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
-import com.shoppingsystem.shopping_system.category.repository.CategoryRepository;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDTO> findAll() {
+    public List<ProductResponse> findAll() {
         List<Product> products = productRepository.findAll();
         return products.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public ProductDTO findById(Long id) {
+    public ProductResponse findById(Long id) {
         Optional<Product> result = productRepository.findById(id);
         Product theProduct = null;
         if(result.isPresent()) {
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
 
-    public ProductDTO convertToDTO(Product product) {
+    public ProductResponse convertToDTO(Product product) {
         System.out.println(product);
         Category category = categoryRepository.findById(product.getCategory().getId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
         ProductImage productImage = productImageRepository.findById(product.getImage_id())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        return new ProductDTO(
+        return new ProductResponse(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
@@ -81,7 +81,8 @@ public class ProductServiceImpl implements ProductService{
                 category.getId(),
                 category.getName(),
                 product.getProduct_description(),
-                productImage.getImageData()
+                productImageRepository.findById(product.getImage_id()).get().getType(),
+                productImageRepository.findById(product.getImage_id()).get().getImageData()
         );
     }
 }
