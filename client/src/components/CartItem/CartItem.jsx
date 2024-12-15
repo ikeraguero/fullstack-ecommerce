@@ -1,5 +1,5 @@
 import styles from "./CartItem.module.css";
-import { deleteCartItem } from "../../api/cart.api";
+import { useDeleteCartItem } from "../../api/cart.api";
 
 function CartItem({
   refetch,
@@ -13,11 +13,10 @@ function CartItem({
 }) {
   const totalPrice = price * quantity;
 
+  const { mutate: deleteItem } = useDeleteCartItem();
 
-  async function handleDelete() {
-    await deleteCartItem(id);
-
-    refetch();
+  function handleDelete() {
+    deleteItem(id);
   }
 
   return (

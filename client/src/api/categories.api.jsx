@@ -1,26 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../config/config";
-import { useAuth } from "../context/AuthContext";
 
-const createAxiosInstance = (authToken) => {
+const createAxiosInstance = () => {
   const instance = axios.create({
     baseURL: BASE_URL,
+    withCredentials: true,
   });
-
-  if (authToken) {
-    instance.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
-    console.log("Token added to headers:", authToken);
-  } else {
-    console.log("No token found");
-  }
 
   return instance;
 };
 
-async function fetchCategories(authToken) {
-  const axiosInstance = createAxiosInstance(authToken);
-  const res = await axiosInstance.get(`${BASE_URL}/categories`);
+async function fetchCategories() {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`/categories`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
@@ -29,7 +22,7 @@ async function fetchCategories(authToken) {
 
 async function fetchCategoryById(categoryId) {
   const axiosInstance = createAxiosInstance();
-  const res = await axiosInstance.get(`${BASE_URL}/categories/${categoryId}`);
+  const res = await axiosInstance.get(`/categories/${categoryId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
@@ -37,10 +30,9 @@ async function fetchCategoryById(categoryId) {
 }
 
 export default function useCategories() {
-  const { authToken } = useAuth();
   return useQuery({
     queryKey: ["categories"],
-    queryFn: () => fetchCategories(authToken),
+    queryFn: () => fetchCategories(),
   });
 }
 

@@ -1,4 +1,3 @@
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -16,7 +15,6 @@ import Register from "./pages/Register/Register";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
-  const queryClient = new QueryClient();
   const { data: categories } = useCategories();
   const {
     data: cart,
@@ -34,36 +32,32 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <FormProvider>
-        <BrowserRouter>
-          <Nav categories={categories} />
-          <Routes>
-            <Route
-              index
-              element={<Home userId={userId} refetch={refetch} cart={cart} />}
-            />
-            <Route path="/*" element={<PageNotFound />} />
-            <Route
-              path="/cart"
-              element={<Cart cart={cart} refetch={refetch} />}
-            />
-            <Route
-              path="/products/:id"
-              element={
-                <Product cart={cart} userId={userId} refetch={refetch} />
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={<ManageProduct categories={categories} />}
-            />
-            <Route path="/login" element={<Login refetchCart={refetch} />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </BrowserRouter>
-      </FormProvider>
-    </QueryClientProvider>
+    <FormProvider>
+      <BrowserRouter>
+        <Nav categories={categories} />
+        <Routes>
+          <Route
+            index
+            element={<Home userId={userId} refetch={refetch} cart={cart} />}
+          />
+          <Route path="/*" element={<PageNotFound />} />
+          <Route
+            path="/cart"
+            element={<Cart cart={cart} refetch={refetch} />}
+          />
+          <Route
+            path="/products/:id"
+            element={<Product cart={cart} userId={userId} refetch={refetch} />}
+          />
+          <Route
+            path="/dashboard"
+            element={<ManageProduct categories={categories} />}
+          />
+          <Route path="/login" element={<Login refetchCart={refetch} />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </FormProvider>
   );
 }
 

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
-import { createUser } from "../../api/user.api";
+import { useCreateUser } from "../../api/user.api";
 
 function Register() {
+  const { mutate: createUser } = useCreateUser();
+
   function handleRegister(e) {
     const formData = new FormData(e.target);
     const email = formData.get("email");

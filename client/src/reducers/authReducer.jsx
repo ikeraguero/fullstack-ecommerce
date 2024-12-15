@@ -2,6 +2,8 @@ const initialState = {
   isLoggedIn: false,
   username: null,
   token: null,
+  id: null,
+  role: null,
 };
 
 function authReducer(state = initialState, action) {

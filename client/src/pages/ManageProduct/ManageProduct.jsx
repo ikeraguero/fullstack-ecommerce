@@ -3,7 +3,10 @@ import axios from "axios";
 
 import { useFormContext } from "../../hooks/useFormContext";
 import { BASE_URL } from "../../config/config";
-import useProducts, { createProduct } from "../../api/products.api";
+import useProducts, {
+  useCreateProduct,
+  useUpdateProduct,
+} from "../../api/products.api";
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
@@ -13,6 +16,8 @@ import styles from "./ManageProduct.module.css";
 function ManageProduct() {
   const { state, dispatch } = useFormContext();
   const { data: initialProducts, refetch, error, isLoading } = useProducts();
+  const { mutate: createProduct } = useCreateProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
 
   const {
     products,
@@ -64,34 +69,30 @@ function ManageProduct() {
       product_description: productDescription,
     };
 
-    const createData = new FormData();
-    createData.append("image", image);
-    createData.append(
+    if (type === "put") {
+      productData.id = editProduct?.id;
+    }
+
+    const sendData = new FormData();
+    sendData.append("image", image);
+    sendData.append(
       "product",
       new Blob([JSON.stringify(productData)], { type: "application/json" })
     );
 
     if (type === "post") {
-      await createProduct(createData)
-        .then(() => {
-          refetch();
-          formRef.current.reset();
-        })
-        .catch((error) => console.log(error));
-
+      for (const [key, value] of sendData.entries()) {
+        console.log(`${key}:`, value);
+      }
+      createProduct(sendData);
       dispatch({ type: "toggleAdd" });
     }
 
     if (type === "put") {
-      productData = { id: editProduct?.id, ...productData };
-      axios
-        .put(`${BASE_URL}/products`, productData)
-        .then(() => {
-          refetch();
-          formRef.current.reset();
-        })
-        .catch((error) => console.log(error));
-
+      for (const [key, value] of sendData.entries()) {
+        console.log(`${key}:`, value);
+      }
+      updateProduct(sendData);
       dispatch({ type: "closeEdit" });
     }
   }

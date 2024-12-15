@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 
 import { useProduct } from "../../api/products.api";
-import { useAddToCart } from "../../hooks/useAddToCart";
-import { createCart } from "../../api/cart.api";
+import { useAddToCart } from "../../api/cart.api";
+import useCart from "../../api/cart.api";
 
 import styles from "./Product.module.css";
 
@@ -13,24 +13,16 @@ function Product({ cart, userId, refetch }) {
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  let userCart = cart;
+  let userCart = useCart(userId).data;
 
   const options = Array.from(
     { length: product?.stock_quantity },
     (_, i) => i + 1
   );
 
-  const mutation = useAddToCart(refetch);
+  const { mutate: addToCart } = useAddToCart();
 
   async function handleAddToCart() {
-    if (!cart) {
-      const createCartData = {
-        status: "active",
-        user_id: userId,
-      };
-
-      userCart = await createCart(createCartData);
-    }
     const cartItem = {
       cart_id: userCart.id,
       product_id: product.id,
@@ -40,7 +32,7 @@ function Product({ cart, userId, refetch }) {
       image_data: product.image_data,
       image_type: product.image_type,
     };
-    mutation.mutate(cartItem);
+    addToCart(cartItem);
   }
 
   if (isLoading) {

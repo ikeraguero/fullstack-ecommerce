@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Button from "../Button/Button";
-import { checkProductInUserCart, createCart } from "../../api/cart.api";
-import { useAddToCart } from "../../hooks/useAddToCart";
+import { useIsProductInUserCart } from "../../api/cart.api";
+import { useAddToCart } from "../../api/cart.api";
 
 import styles from "./ProductCard.module.css";
 
@@ -19,29 +19,13 @@ function ProductCard({
   refetch,
   cart,
 }) {
-  const [isOnCart, setIsOnCart] = useState(false);
+  const [isOnCart, setIsOnCart] = useState(useIsProductInUserCart(id, userId));
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   let userCart = cart;
 
-  useEffect(() => {
-    async function checkIsOnCart() {
-      const res = await checkProductInUserCart(id, userId);
-      setIsOnCart(res);
-    }
-    checkIsOnCart();
-  }, [id, userId]);
-
-  const mutation = useAddToCart(refetch);
+  const { mutate: addToCart } = useAddToCart();
 
   async function handleAddToCart() {
-    if (!userCart) {
-      const createCartData = {
-        status: "active",
-        user_id: userId,
-      };
-
-      userCart = await createCart(createCartData);
-    }
     const cartItem = {
       cart_id: userCart.id,
       product_id: id,
@@ -51,8 +35,8 @@ function ProductCard({
       image_data: image_data,
       image_type: image_type,
     };
-
-    mutation.mutate(cartItem);
+    setIsOnCart(true);
+    addToCart(cartItem);
   }
 
   return (

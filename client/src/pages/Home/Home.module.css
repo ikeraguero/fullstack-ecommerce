@@ -7,6 +7,6 @@
 
 .productGrid {
   display: grid;
-  gap: 2.4rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 }

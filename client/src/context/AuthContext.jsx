@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
       path: "/",
     });
     setAuthToken(token);
-
   };
 
   const logout = () => {

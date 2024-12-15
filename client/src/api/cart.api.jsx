@@ -1,56 +1,91 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { BASE_URL } from "../config/config";
 
-const token = Cookies.get("authToken");
+const createAxiosInstance = () => {
+  const instance = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+  });
 
-if (token) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+  return instance;
+};
 
 async function fetchCart(userId) {
-
-  if (userId === 0) {
+  console.log(userId);
+  if (userId == null) {
     return { items: [] };
   }
 
-  const res = await axios.get(`${BASE_URL}/cart/${userId}`);
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`/cart/${userId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
   return res.data;
 }
 
-export async function createCart(formData) {
-  const res = await axios.post(`${BASE_URL}/cart/`, formData);
-  if (res.status !== 200) {
-    throw new Error("Problem fetching the data");
-  }
-}
-
 export async function checkProductInUserCart(productId, userId) {
+  const axiosInstance = createAxiosInstance();
   if (!userId) {
     return { items: [] };
   }
 
-  const res = await axios.get(`${BASE_URL}/cart/${userId}/${productId}`);
+  const res = await axiosInstance.get(`/cart/${userId}/${productId}`);
   if (res.status !== 200) {
     throw new Error("Problem fetching the data");
   }
   return res.data;
 }
 
-export async function createCartItem(data) {
-  const res = await axios.post(`${BASE_URL}/cartItem`, data);
+async function createCartItem(data) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.post(`/cartItem`, data);
   if (res.status !== 200) {
     throw new Error("Error fetching the data");
   }
   return res;
 }
 
-export async function deleteCartItem(cartItemId) {
-  await axios.delete(`${BASE_URL}/cart/${cartItemId}`);
+async function deleteCartItem(cartItemId) {
+  const axiosInstance = createAxiosInstance();
+  await axiosInstance.delete(`/cart/${cartItemId}`);
+}
+
+export function useIsProductInUserCart() {
+  return useQuery({
+    queryKey: ["isProductInUserCart"],
+    queryFn: () => checkProductInUserCart(),
+  });
+}
+
+//hook for createCartItem
+export function useAddToCart() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (postData) => {
+      const res = await createCartItem(postData);
+      return res;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["cart"]);
+    },
+    onError: (error) => {
+      console.error("Error posting data:", error);
+    },
+  });
+
+  return mutation;
+}
+
+export function useDeleteCartItem() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (cartItemId) => deleteCartItem(cartItemId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cart"]);
+    },
+  });
 }
 
 export default function useCart(userId) {
