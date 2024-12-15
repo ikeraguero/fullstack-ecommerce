@@ -77,11 +77,19 @@ public class ProductController {
 
 
     @PutMapping("/products")
-    Product updateProduct(@RequestBody ProductDTO productDTO) {
+    Product updateProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException{
 
         if (productDTO.getId() == null) {
             throw new IllegalArgumentException("Product ID must not be null");
         }
+
+        ProductImage productImage = new ProductImage(
+                image.getOriginalFilename(), image.getContentType(),
+                image.getSize(), image.getBytes()
+        );
+
+        productImageService.save(productImage);
+
         Product existingProduct = productService.findByIdEntity(productDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
@@ -95,6 +103,7 @@ public class ProductController {
         existingProduct.setStock_quantity(productDTO.getStock_quantity());
         existingProduct.setProduct_description(productDTO.getProduct_description());
         existingProduct.setCategory(category);
+        existingProduct.setImage_id(productImage.getId());
 
         return productService.save(existingProduct); // Save the updated produ
     }

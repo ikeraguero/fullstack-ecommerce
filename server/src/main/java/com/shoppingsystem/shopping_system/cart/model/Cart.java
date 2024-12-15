@@ -25,4 +25,8 @@ public class Cart {
     @Column(name="user_id")
     private Long userId;
 
+    public Cart(String status, Long userId) {
+        this.status = status;
+        this.userId = userId;
+    }
 }

@@ -16,6 +16,12 @@ public class CartController {
 
     @GetMapping("/cart/{userId}")
     public CartDTO getCart(@PathVariable Long userId) {
+        CartDTO cartDTO = cartService.findByUserId(userId);;
+        if(cartDTO == null) {
+            Cart cart = new Cart("active", userId);
+            cartService.save(cart);
+        }
+
         return cartService.findByUserId(userId);
     }
 

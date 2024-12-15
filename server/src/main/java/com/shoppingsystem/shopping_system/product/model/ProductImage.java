@@ -31,4 +31,11 @@ public class ProductImage {
     @Column(name = "image_data")
     private byte[] imageData;
 
+    public ProductImage(String name, String type, long size, byte[] imageData) {
+        this.name = name;
+        this.type = type;
+        this.size = size;
+        this.imageData = imageData;
+    }
+
 }
