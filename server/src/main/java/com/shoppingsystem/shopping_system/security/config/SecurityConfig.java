@@ -1,4 +1,4 @@
-package com.shoppingsystem.shopping_system.security;
+package com.shoppingsystem.shopping_system.security.config;
 
 import com.shoppingsystem.shopping_system.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

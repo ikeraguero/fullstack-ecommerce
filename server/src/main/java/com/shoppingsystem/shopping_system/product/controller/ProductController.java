@@ -50,6 +50,11 @@ public class ProductController {
         return productService.findById(productId);
     }
 
+    @GetMapping("/products/search")
+    public List<ProductResponse> searchProducts(@RequestParam String query) {
+        return productService.searchProducts(query);
+    }
+
 
     @PostMapping("/products")
     Product addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException {

@@ -1,6 +1,7 @@
 package com.shoppingsystem.shopping_system.product.service;
 
 import com.shoppingsystem.shopping_system.product.dto.ProductImageDTO;
+import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import org.springframework.web.multipart.MultipartFile;
 

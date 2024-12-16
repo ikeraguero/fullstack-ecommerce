@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,6 +56,24 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public List<ProductResponse> searchProducts(String query) {
+        List<Product> products = productRepository.searchProducts(query);
+        List<ProductResponse> productResponseList = new LinkedList<>();
+
+        for(Product product : products) {
+            ProductImage productImage = productImageRepository.findById(product.getImage_id()).get();
+            ProductResponse productResponse = new ProductResponse(
+                    product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
+                    product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
+                    productImage.getType(), productImage.getImageData()
+            );
+            productResponseList.add(productResponse);
+        }
+
+        return productResponseList;
+    }
+
+    @Override
     @Transactional
     public void deleteById(Long id) {
         productRepository.deleteById(id);
@@ -69,6 +88,10 @@ public class ProductServiceImpl implements ProductService{
         System.out.println(product);
         Category category = categoryRepository.findById(product.getCategory().getId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        if (product.getImage_id() == null) {
+            throw new RuntimeException("Product image ID cannot be null");
+        }
 
         ProductImage productImage = productImageRepository.findById(product.getImage_id())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
