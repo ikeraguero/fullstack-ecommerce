@@ -13,9 +13,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
       </AuthProvider>
     </Provider>
   </React.StrictMode>

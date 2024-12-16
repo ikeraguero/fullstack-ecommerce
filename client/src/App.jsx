@@ -6,15 +6,18 @@ import Nav from "./components/Nav/Nav";
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import SearchResults from "./pages/SearchResults/SearchResults";
 import ManageProduct from "./pages/ManageProduct/ManageProduct";
 import useCategories from "./api/categories.api";
 import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import { useState } from "react";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
+  const [searchProducts, setSearchProducts] = useState([]);
   const { data: categories } = useCategories();
   const {
     data: cart,
@@ -31,10 +34,12 @@ function App() {
     return <div>Error loading data</div>;
   }
 
+  console.log(searchProducts);
+
   return (
     <FormProvider>
       <BrowserRouter>
-        <Nav categories={categories} />
+        <Nav categories={categories} setSearchProducts={setSearchProducts} />
         <Routes>
           <Route
             index
@@ -52,6 +57,10 @@ function App() {
           <Route
             path="/dashboard"
             element={<ManageProduct categories={categories} />}
+          />
+          <Route
+            path="/search"
+            element={<SearchResults searchProducts={searchProducts} />}
           />
           <Route path="/login" element={<Login refetchCart={refetch} />} />
           <Route path="/register" element={<Register />} />

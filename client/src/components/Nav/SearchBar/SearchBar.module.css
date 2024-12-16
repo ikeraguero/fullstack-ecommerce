@@ -1,8 +1,14 @@
 .input {
-  padding: 0.2rem 15.4rem 0.2rem 0.2rem;
+  padding: 0.2rem 1rem;
   background-color: none;
   border: none;
   outline: none;
+  flex-grow: 1;
+  font-size: 1rem;
+  resize: vertical;
+  overflow: auto;
+  min-height: 2rem;
+  width: 23.2rem;
 }
 
 .searchBar {

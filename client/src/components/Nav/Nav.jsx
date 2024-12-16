@@ -8,14 +8,12 @@ import SearchBar from "./SearchBar/SearchBar";
 
 import styles from "./Nav.module.css";
 
-function Nav({ categories }) {
+function Nav({ categories, setSearchProducts }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const username = useSelector((state) => state.auth.username);
   const role = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
-
-
 
   useEffect(() => {
     if (categories && categories.length > 0) {
@@ -41,7 +39,7 @@ function Nav({ categories }) {
           </Link>
         </div>
         <div className={styles.rightSide}>
-          <SearchBar />
+          <SearchBar setSearchProducts={setSearchProducts} />
         </div>
       </div>
       <div className={styles.navBottom}>
