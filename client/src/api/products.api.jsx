@@ -77,6 +77,8 @@ async function fetchProductById(productId) {
   return res.data;
 }
 
+
+
 export default function useProducts() {
   return useQuery({ queryKey: ["products"], queryFn: fetchProducts });
 }

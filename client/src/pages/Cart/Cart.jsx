@@ -7,9 +7,16 @@ import styles from "./Cart.module.css";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
+  console.log(cart.cartItems);
   const [totalPrice, setTotalPrice] = useState(
     cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
+  // const teste = useMemo(() => {
+  //   return cart.cartItems.reduce(
+  //     (acc, cur) => acc + cur.price * cur.quantity,
+  //     0
+  //   );
+  // }, [cart.cartItems]);
   const [shippingPrice, setShippingPrice] = useState(0);
 
   useEffect(
@@ -38,6 +45,9 @@ function Cart({ cart, refetch }) {
                 {...product}
                 refetch={refetch}
                 key={product.id}
+                cart={cart}
+                setTotalPrice={setTotalPrice}
+                totalPrice={totalPrice}
                 className={styles.cartItem}
               />
             ))}

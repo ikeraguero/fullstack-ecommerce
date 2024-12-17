@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { FormProvider } from "./hooks/useFormContext";
+import { ProductFormProvider } from "./hooks/useProductsFormContext";
 import Nav from "./components/Nav/Nav";
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
@@ -13,11 +13,13 @@ import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import { useState } from "react";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
   const [searchProducts, setSearchProducts] = useState([]);
+
   const { data: categories } = useCategories();
   const {
     data: cart,
@@ -25,6 +27,14 @@ function App() {
     refetch,
     isLoading,
   } = useCart(userId === undefined ? 0 : userId);
+  const [successOpen, setSuccessOpen] = useState(false);
+
+  const openSuccess = () => {
+    setSuccessOpen(true);
+    setTimeout(() => {
+      setSuccessOpen(false);
+    }, 4000);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -34,16 +44,28 @@ function App() {
     return <div>Error loading data</div>;
   }
 
-  console.log(searchProducts);
-
   return (
-    <FormProvider>
+    <ProductFormProvider>
       <BrowserRouter>
+        <SuccessAlert
+          successOpen={successOpen}
+          setOpen={setSuccessOpen}
+          message={"Product added to cart successfully"}
+        />
         <Nav categories={categories} setSearchProducts={setSearchProducts} />
         <Routes>
           <Route
             index
-            element={<Home userId={userId} refetch={refetch} cart={cart} />}
+            element={
+              <Home
+                userId={userId}
+                refetch={refetch}
+                cart={cart}
+                successOpen={successOpen}
+                openSuccess={openSuccess}
+                setSuccessOpen={setSuccessOpen}
+              />
+            }
           />
           <Route path="/*" element={<PageNotFound />} />
           <Route
@@ -52,7 +74,14 @@ function App() {
           />
           <Route
             path="/products/:id"
-            element={<Product cart={cart} userId={userId} refetch={refetch} />}
+            element={
+              <Product
+                cart={cart}
+                userId={userId}
+                refetch={refetch}
+                openSuccess={openSuccess}
+              />
+            }
           />
           <Route
             path="/dashboard"
@@ -66,7 +95,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
-    </FormProvider>
+    </ProductFormProvider>
   );
 }
 

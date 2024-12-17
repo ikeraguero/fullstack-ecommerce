@@ -16,7 +16,6 @@ async function search(query) {
   const res = await axiosInstance.get("/products/search", {
     params: { query: query },
   });
-  console.log(res.data);
   return res.data;
 }
 

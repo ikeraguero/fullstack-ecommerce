@@ -56,3 +56,8 @@
 .logoutLink {
   cursor: pointer;
 }
+
+.navBottomRightUser Menu {
+  display: flex !important;
+  flex-direction: column !important;
+}

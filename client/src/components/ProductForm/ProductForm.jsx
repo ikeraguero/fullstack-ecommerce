@@ -1,10 +1,10 @@
 import useCategories from "../../api/categories.api";
-import { useFormContext } from "../../hooks/useFormContext";
+import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";
 
 function Form({ formRef, handleImageChange, send }) {
-  const { state, dispatch } = useFormContext();
+  const { state, dispatch } = useProductFormContext();
   const { data: categories, error, isLoading } = useCategories();
 
   if (isLoading) {
@@ -25,7 +25,6 @@ function Form({ formRef, handleImageChange, send }) {
     productPrice,
     productQuantity,
   } = state;
-  console.log(isAdding, isEditing);
 
   return (
     <div className={isAdding || isEditing ? styles.form : styles.hide}>

@@ -1,8 +1,10 @@
 import styles from "./CartItem.module.css";
-import { useDeleteCartItem } from "../../api/cart.api";
+import { useDeleteCartItem, useUpdateCartItem } from "../../api/cart.api";
+import { useState } from "react";
 
 function CartItem({
   refetch,
+  product_id,
   id,
   product_name,
   category_name,
@@ -10,13 +12,39 @@ function CartItem({
   quantity,
   image_data,
   image_type,
+  cart,
+  setTotalPrice,
+  totalPrice,
 }) {
-  const totalPrice = price * quantity;
-
   const { mutate: deleteItem } = useDeleteCartItem();
+  const { mutate: updateItem } = useUpdateCartItem();
+  const [localQuantity, setLocalQuantity] = useState(quantity);
+  const productPrice = price;
 
   function handleDelete() {
     deleteItem(id);
+  }
+
+  function handleQuantityUpdate(type) {
+    const newQuantity =
+      type === "increase" ? localQuantity + 1 : localQuantity - 1;
+
+    if (newQuantity === 0) deleteItem(id);
+    const putData = {
+      cart_id: cart.id,
+      product_id: product_id,
+      product_name,
+      price,
+      quantity: newQuantity,
+      image_data,
+      image_type,
+    };
+    console.log(putData);
+    setLocalQuantity(newQuantity);
+    updateItem(putData);
+    setTotalPrice((price) =>
+      type === "increase" ? price + productPrice : price - productPrice
+    );
   }
 
   return (
@@ -31,9 +59,17 @@ function CartItem({
         </div>
       </div>
       <div className={styles.quantity}>
-        {quantity} {quantity > 1 ? "units" : "unit"}
+        <ion-icon
+          name="remove-circle-outline"
+          onClick={() => handleQuantityUpdate("decrease")}
+        ></ion-icon>
+        {localQuantity < 10 ? "0" + localQuantity : localQuantity}
+        <ion-icon
+          name="add-circle-outline"
+          onClick={() => handleQuantityUpdate("increase")}
+        ></ion-icon>
       </div>
-      <div className={styles.totalPrice}>R${totalPrice}</div>
+      <div className={styles.totalPrice}>R${localQuantity * price}</div>
       <div className={styles.cartItemRemove}>
         <ion-icon name="close-circle-outline" onClick={handleDelete}></ion-icon>
       </div>

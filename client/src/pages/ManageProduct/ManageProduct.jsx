@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 
-import { useFormContext } from "../../hooks/useFormContext";
+import { useProductFormContext } from "../../hooks/useProductsFormContext";
+
 import { BASE_URL } from "../../config/config";
 import useProducts, {
   useCreateProduct,
@@ -10,14 +11,21 @@ import useProducts, {
 import Main from "../../components/Main/Main";
 import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
+import UserList from "../../components/UserList/UserList";
 
 import styles from "./ManageProduct.module.css";
+import { useDeleteUsers, useUsers } from "../../api/user.api";
+import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 
 function ManageProduct() {
-  const { state, dispatch } = useFormContext();
+  const { state: productsState, dispatch: productsDispatch } =
+    useProductFormContext();
+  const { state: usersState, dispatch: usersDispatch } = useUsersFormContext();
   const { data: initialProducts, refetch, error, isLoading } = useProducts();
+  const { data: initialUsers, refetch: userRefetch } = useUsers();
   const { mutate: createProduct } = useCreateProduct();
   const { mutate: updateProduct } = useUpdateProduct();
+  const { mutate: deleteUser } = useDeleteUsers();
 
   const {
     products,
@@ -26,22 +34,30 @@ function ManageProduct() {
     isEditing,
     editProduct,
     productDescription,
-  } = state;
+  } = productsState;
+
+  const { users } = usersState;
   const formRef = useRef();
 
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
-      dispatch({ type: "loadProducts", payload: initialProducts });
+      productsDispatch({ type: "loadProducts", payload: initialProducts });
     }
-  }, [initialProducts, dispatch]);
+  }, [initialProducts, productsDispatch]);
+
+  useEffect(() => {
+    if (initialUsers && initialUsers.length > 0) {
+      usersDispatch({ type: "loadUsers", payload: initialUsers });
+    }
+  }, [initialUsers, usersDispatch]);
 
   function toggleAddForm() {
-    dispatch({ type: "toggleAdd" });
+    productsDispatch({ type: "toggleAdd" });
   }
 
   async function handleImageChange(e) {
     const file = e.target.files[0];
-    dispatch({ type: "setImage", payload: file });
+    productsDispatch({ type: "setImage", payload: file });
   }
 
   async function send(type, formData) {
@@ -85,7 +101,7 @@ function ManageProduct() {
         console.log(`${key}:`, value);
       }
       createProduct(sendData);
-      dispatch({ type: "toggleAdd" });
+      productsDispatch({ type: "toggleAdd" });
     }
 
     if (type === "put") {
@@ -93,18 +109,25 @@ function ManageProduct() {
         console.log(`${key}:`, value);
       }
       updateProduct(sendData);
-      dispatch({ type: "closeEdit" });
+      productsDispatch({ type: "closeEdit" });
     }
   }
 
-  function remove(productId) {
+  function removeProduct(productId) {
     axios
       .delete(`${BASE_URL}/products/${productId}`)
       .catch((err) => console.log(err));
-    dispatch({
+    productsDispatch({
       type: "loadProducts",
       payload: products.filter((product) => product.id !== productId),
     });
+  }
+
+  function removeUser(userId) {
+    deleteUser(userId);
+    userRefetch();
+    const newUserData = users.filter((user) => user.id !== userId);
+    usersDispatch({ type: "loadUsers", payload: newUserData });
   }
 
   if (isLoading) {
@@ -115,14 +138,13 @@ function ManageProduct() {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  console.log(products);
-
   return (
     <>
       <Main>
         {(isAdding || isEditing) && <div className={styles.overlay} />}
 
         <div className={styles.addProductContainer}>
+          <h2>Products</h2>
           <span onClick={toggleAddForm} className={styles.openAddProductButton}>
             Add Product +
           </span>
@@ -138,8 +160,47 @@ function ManageProduct() {
           )}
           <ProductsList
             products={products}
-            dispatch={dispatch}
-            removeProduct={remove}
+            dispatch={productsDispatch}
+            removeProduct={removeProduct}
+            refetch={refetch}
+          />
+        </div>
+
+        <div className={styles.addProductContainer}>
+          <h2>Users</h2>
+          <span onClick={toggleAddForm} className={styles.openAddProductButton}>
+            Add User +
+          </span>
+          <ProductForm
+            formRef={formRef}
+            handleImageChange={handleImageChange}
+            send={send}
+          />
+          {users?.length === 0 && (
+            <div className={styles.emptyMessage}>
+              There are no products registered!
+            </div>
+          )}
+
+          <UserList users={users} removeUser={removeUser} />
+        </div>
+
+        <div className={styles.addProductContainer}>
+          <h2>Orders</h2>
+          <ProductForm
+            formRef={formRef}
+            handleImageChange={handleImageChange}
+            send={send}
+          />
+          {products?.length === 0 && (
+            <div className={styles.emptyMessage}>
+              There are no products registered!
+            </div>
+          )}
+          <ProductsList
+            products={products}
+            dispatch={productsDispatch}
+            removeProduct={removeProduct}
             refetch={refetch}
           />
         </div>

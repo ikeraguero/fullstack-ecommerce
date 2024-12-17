@@ -33,7 +33,6 @@ function formReducer(state, action) {
         productDescription: action.payload.product_description,
       };
     case "closeEdit":
-      console.log(state);
       return {
         ...state,
         isEditing: false,
@@ -61,7 +60,7 @@ function formReducer(state, action) {
 
 const FormContext = createContext();
 
-export function FormProvider({ children }) {
+export function ProductFormProvider({ children }) {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
   return (
@@ -71,7 +70,6 @@ export function FormProvider({ children }) {
   );
 }
 
-// Custom hook to access the form context
-export function useFormContext() {
+export function useProductFormContext() {
   return useContext(FormContext);
 }

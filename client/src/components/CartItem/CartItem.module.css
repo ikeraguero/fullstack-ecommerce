@@ -62,3 +62,15 @@
 .totalPrice {
   font-weight: bold;
 }
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.quantity ion-icon {
+  min-width: 1rem;
+  min-height: 1rem;
+  cursor: pointer;
+}

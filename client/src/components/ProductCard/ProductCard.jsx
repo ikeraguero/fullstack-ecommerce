@@ -18,6 +18,7 @@ function ProductCard({
   userId,
   refetch,
   cart,
+  openSuccess,
 }) {
   const [isOnCart, setIsOnCart] = useState(useIsProductInUserCart(id, userId));
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -37,6 +38,7 @@ function ProductCard({
     };
     setIsOnCart(true);
     addToCart(cartItem);
+    openSuccess();
   }
 
   return (

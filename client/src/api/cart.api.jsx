@@ -12,7 +12,6 @@ const createAxiosInstance = () => {
 };
 
 async function fetchCart(userId) {
-  console.log(userId);
   if (userId == null) {
     return { items: [] };
   }
@@ -36,6 +35,14 @@ export async function checkProductInUserCart(productId, userId) {
     throw new Error("Problem fetching the data");
   }
   return res.data;
+}
+
+async function updateCartItem(data) {
+  const axiosInstance = createAxiosInstance();
+  const res = axiosInstance.put("/cartItem", data);
+  if (res.status !== 200) {
+    throw new Error("Error fetching the data");
+  }
 }
 
 async function createCartItem(data) {
@@ -76,6 +83,14 @@ export function useAddToCart() {
   });
 
   return mutation;
+}
+
+export function useUpdateCartItem() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => updateCartItem(data),
+    onSuccess: () => queryClient.invalidateQueries(["cart"]),
+  });
 }
 
 export function useDeleteCartItem() {

@@ -15,7 +15,7 @@ function ProductItem({ dispatch, product, refetch, removeProduct }) {
       <div className={styles.productPrice}>R${product.price}</div>
       <div className={styles.productCategory}>{product.category_name}</div>
       <div className={styles.productStockQuantity}>
-        {product.stock_quantity}
+        {product.stock_quantity} units
       </div>
       <div className={styles.productItemButtons}>
         <button

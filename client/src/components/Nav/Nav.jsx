@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
+import { Menu, MenuItem } from "../../components/DropdownMenu/DropdownMenu";
 import { logout } from "../../actions/AuthActions";
 import SearchBar from "./SearchBar/SearchBar";
 
@@ -76,7 +77,30 @@ function Nav({ categories, setSearchProducts }) {
             ""
           )}
           <div className={styles.navBottomRightUser}>
-            <ion-icon name="caret-down-outline"></ion-icon>
+            <Menu
+              label={<ion-icon name="caret-down-outline"></ion-icon>}
+              className={styles.profileMenu}
+            >
+              <MenuItem label="Undo" onClick={() => console.log("Undo")} />
+              <MenuItem label="Redo" disabled />
+              <MenuItem label="Cut" />
+              <Menu label="Copy as">
+                <MenuItem label="Text" />
+                <MenuItem label="Video" />
+                <Menu label="Image">
+                  <MenuItem label=".png" />
+                  <MenuItem label=".jpg" />
+                  <MenuItem label=".svg" />
+                  <MenuItem label=".gif" />
+                </Menu>
+                <MenuItem label="Audio" />
+              </Menu>
+              <Menu label="Share">
+                <MenuItem label="Mail" />
+                <MenuItem label="Instagram" />
+              </Menu>
+            </Menu>
+
             <ion-icon name="person-circle-outline"></ion-icon>
           </div>
           <div className={styles.navBottomRightCart}>

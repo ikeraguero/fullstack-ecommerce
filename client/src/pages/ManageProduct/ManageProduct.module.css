@@ -10,9 +10,6 @@
   transition: all 1s;
 }
 
-
-
-
 .sendButton:hover {
   background-color: #fc6182;
 }
@@ -20,8 +17,9 @@
 .addProductContainer {
   display: flex;
   flex-direction: column;
-  gap: 5.2rem;
+  gap: 1.4rem;
   width: 100%;
+  margin-bottom: 3.5rem;
 }
 
 .emptyMessage {
@@ -36,5 +34,3 @@
   font-weight: 600;
   cursor: pointer;
 }
-
-

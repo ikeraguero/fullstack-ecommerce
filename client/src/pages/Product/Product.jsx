@@ -8,7 +8,7 @@ import useCart from "../../api/cart.api";
 
 import styles from "./Product.module.css";
 
-function Product({ cart, userId, refetch }) {
+function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
   const { data: product, error, isLoading } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
@@ -33,6 +33,7 @@ function Product({ cart, userId, refetch }) {
       image_type: product.image_type,
     };
     addToCart(cartItem);
+    openSuccess();
   }
 
   if (isLoading) {
