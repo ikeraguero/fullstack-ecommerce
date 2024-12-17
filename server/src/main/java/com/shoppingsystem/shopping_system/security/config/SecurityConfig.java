@@ -35,9 +35,10 @@ public class SecurityConfig {
                         "/api/cart/**",
                         "/api/categories",
                         "/api/products/**",
+                        "/api/users",
                         "/api/cartItem"
                         ).permitAll()
-                        .requestMatchers("/api/products").hasRole("ADMIN")
+                        .requestMatchers("/api/products", "/api/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).addFilterBefore(new com.shoppingsystem.shopping_system.security.JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         System.out.println(jwtUtil);

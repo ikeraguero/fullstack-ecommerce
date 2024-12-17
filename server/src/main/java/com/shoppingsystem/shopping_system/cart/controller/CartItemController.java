@@ -58,6 +58,15 @@ public class CartItemController {
         return cartItemService.save(cartItem);
     }
 
+    @PutMapping("/cartItem")
+    void updateCartItem(@RequestBody CartItemDTO cartItemDTO) {
+            CartItem cartItem = cartItemService.findCartItemByCartAndProduct(cartItemDTO.getCart_id(),
+                    cartItemDTO.getProduct_id());
+
+            cartItem.setQuantity(cartItemDTO.getQuantity());
+            cartItemService.save(cartItem);
+    }
+
     @DeleteMapping("/cart/{cartItemId}")
     public void deleteCartItem(@PathVariable Long cartItemId) {
         cartItemService.delete(cartItemId);
