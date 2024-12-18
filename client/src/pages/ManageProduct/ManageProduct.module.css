@@ -14,23 +14,4 @@
   background-color: #fc6182;
 }
 
-.addProductContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-  width: 100%;
-  margin-bottom: 3.5rem;
-}
 
-.emptyMessage {
-  color: #646464;
-  font-size: 1.4rem;
-  display: flex;
-  justify-content: center;
-}
-
-.openAddProductButton {
-  color: #f42b56;
-  font-weight: 600;
-  cursor: pointer;
-}

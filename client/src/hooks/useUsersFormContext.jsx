@@ -3,46 +3,47 @@ import { createContext, useReducer, useContext } from "react";
 const initialState = {
   users: [],
   image: {},
-  isAdding: false,
-  isEditing: false,
-  editProduct: null,
-  productName: null,
-  productPrice: null,
-  productCategory: null,
-  productQuantity: null,
-  productDescription: null,
+  isAddingUser: false,
+  isEditingUser: false,
+  editUser: null,
+  userFirstName: null,
+  userLastName: null,
+  userEmail: null,
+  userRole: null,
+  userStatus: null,
+  userPassword: null,
 };
 
 function formReducer(state, action) {
   switch (action.type) {
     case "loadUsers":
-      console.log(action.payload);
       return { ...state, users: action.payload };
     case "toggleAdd":
-      return { ...state, isAdding: !state.isAdding };
-    case "setImage":
-      return { ...state, image: action.payload };
+      return { ...state, isAddingUser: !state.isAddingUser };
     case "openEdit":
       return {
         ...state,
-        isEditing: true,
-        editProduct: action.payload,
-        productName: action.payload.name,
-        productPrice: action.payload.price,
-        productCategory: action.payload.category,
-        productQuantity: action.payload.stock_quantity,
-        productDescription: action.payload.product_description,
+        isEditingUser: true,
+        editUser: action.payload,
+        userFirstName: action.payload.first_name,
+        userLastName: action.payload.last_name,
+        userEmail: action.payload.email,
+        userRole: action.payload.role,
+        userStatus: action.payload.status,
+        userPassword: action.payload.hash_password,
       };
     case "closeEdit":
+      console.log(state);
       return {
         ...state,
-        isEditing: false,
-        editProduct: null,
-        productName: null,
-        productPrice: null,
-        productCategory: null,
-        productQuantity: null,
-        productDescription: null,
+        isEditingUser: false,
+        editUser: null,
+        userFirstName: null,
+        userLastName: null,
+        userEmail: null,
+        userRole: null,
+        userStatus: null,
+        userPassword: null,
       };
     case "changeName":
       return { ...state, productName: action.payload };

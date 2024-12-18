@@ -9,10 +9,9 @@ import useProducts, {
   useUpdateProduct,
 } from "../../api/products.api";
 import Main from "../../components/Main/Main";
-import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
-import UserList from "../../components/UserList/UserList";
-
+import UserForm from "../../components/UserForm/UserForm";
+import DashboardItem from "../../components/DashboardItem/DashboardItem";
 import styles from "./ManageProduct.module.css";
 import { useDeleteUsers, useUsers } from "../../api/user.api";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
@@ -21,7 +20,7 @@ function ManageProduct() {
   const { state: productsState, dispatch: productsDispatch } =
     useProductFormContext();
   const { state: usersState, dispatch: usersDispatch } = useUsersFormContext();
-  const { data: initialProducts, refetch, error, isLoading } = useProducts();
+  const { data: initialProducts, error, isLoading } = useProducts();
   const { data: initialUsers, refetch: userRefetch } = useUsers();
   const { mutate: createProduct } = useCreateProduct();
   const { mutate: updateProduct } = useUpdateProduct();
@@ -30,14 +29,18 @@ function ManageProduct() {
   const {
     products,
     image,
-    isAdding,
-    isEditing,
+    isAddingProduct,
+    isEditingProduct,
     editProduct,
     productDescription,
   } = productsState;
 
-  const { users } = usersState;
+  const { users, isAddingUser, isEditingUser, editUser } = usersState;
+  console.log(editUser);
   const formRef = useRef();
+
+  const isProductFormOpen = isAddingProduct || isEditingProduct;
+  const isUsersFormOpen = isEditingUser || isAddingUser;
 
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
@@ -51,8 +54,14 @@ function ManageProduct() {
     }
   }, [initialUsers, usersDispatch]);
 
-  function toggleAddForm() {
+  function toggleProductAddForm() {
+    formRef.current.reset();
     productsDispatch({ type: "toggleAdd" });
+  }
+
+  function toggleUserAddForm() {
+    formRef.current.reset();
+    usersDispatch({ type: "toggleAdd" });
   }
 
   async function handleImageChange(e) {
@@ -97,17 +106,11 @@ function ManageProduct() {
     );
 
     if (type === "post") {
-      for (const [key, value] of sendData.entries()) {
-        console.log(`${key}:`, value);
-      }
       createProduct(sendData);
       productsDispatch({ type: "toggleAdd" });
     }
 
     if (type === "put") {
-      for (const [key, value] of sendData.entries()) {
-        console.log(`${key}:`, value);
-      }
       updateProduct(sendData);
       productsDispatch({ type: "closeEdit" });
     }
@@ -141,68 +144,38 @@ function ManageProduct() {
   return (
     <>
       <Main>
-        {(isAdding || isEditing) && <div className={styles.overlay} />}
+        {(isProductFormOpen || isUsersFormOpen) && (
+          <div className={styles.overlay} />
+        )}
 
-        <div className={styles.addProductContainer}>
-          <h2>Products</h2>
-          <span onClick={toggleAddForm} className={styles.openAddProductButton}>
-            Add Product +
-          </span>
-          <ProductForm
-            formRef={formRef}
-            handleImageChange={handleImageChange}
-            send={send}
-          />
-          {products?.length === 0 && (
-            <div className={styles.emptyMessage}>
-              There are no products registered!
-            </div>
-          )}
-          <ProductsList
-            products={products}
-            dispatch={productsDispatch}
-            removeProduct={removeProduct}
-            refetch={refetch}
-          />
-        </div>
+        <DashboardItem
+          title={"products"}
+          toggleAddForm={toggleProductAddForm}
+          isFormOpen={isProductFormOpen}
+          Form={ProductForm}
+          formRef={formRef}
+          handleImageChange={handleImageChange}
+          send={send}
+          list={products}
+          dispatch={productsDispatch}
+          product={removeProduct}
+        />
 
-        <div className={styles.addProductContainer}>
-          <h2>Users</h2>
-          <span onClick={toggleAddForm} className={styles.openAddProductButton}>
-            Add User +
-          </span>
-          <ProductForm
-            formRef={formRef}
-            handleImageChange={handleImageChange}
-            send={send}
-          />
-          {users?.length === 0 && (
-            <div className={styles.emptyMessage}>
-              There are no products registered!
-            </div>
-          )}
-
-          <UserList users={users} removeUser={removeUser} />
-        </div>
+        <DashboardItem
+          title={"users"}
+          toggleAddForm={toggleUserAddForm}
+          isFormOpen={isUsersFormOpen}
+          Form={UserForm}
+          formRef={formRef}
+          handleImageChange={handleImageChange}
+          send={send}
+          list={users}
+          dispatch={usersDispatch}
+          remove={removeUser}
+        />
 
         <div className={styles.addProductContainer}>
           <h2>Orders</h2>
-          <ProductForm
-            formRef={formRef}
-            handleImageChange={handleImageChange}
-            send={send}
-          />
-          {products?.length === 0 && (
-            <div className={styles.emptyMessage}>
-              There are no products registered!
-            </div>
-          )}
-          <ProductsList
-            products={products}
-            dispatch={productsDispatch}
-            removeProduct={removeProduct}
-            refetch={refetch}
-          />
         </div>
       </Main>
     </>

@@ -1,6 +1,10 @@
 import styles from "./UserItem.module.css";
 
-function UserItem({ user, removeUser }) {
+function UserItem({ user, removeUser, usersDispatch }) {
+  function handleEdit() {
+    usersDispatch({ type: "openEdit", payload: user });
+  }
+
   return (
     <li className={styles.productLine}>
       <div className={styles.productName}>{user.email}</div>
@@ -16,7 +20,7 @@ function UserItem({ user, removeUser }) {
         >
           <ion-icon name="trash-outline"></ion-icon>
         </button>
-        <button className={styles.editButton} onClick={() => console.log("oi")}>
+        <button className={styles.editButton} onClick={handleEdit}>
           <ion-icon name="pencil-outline"></ion-icon>
         </button>
       </div>

@@ -1,6 +1,6 @@
 import styles from "./ProductItem.module.css";
 
-function ProductItem({ dispatch, product, refetch, removeProduct }) {
+function ProductItem({ dispatch, product, removeProduct }) {
   function handleDelete(productId) {
     removeProduct(productId);
   }

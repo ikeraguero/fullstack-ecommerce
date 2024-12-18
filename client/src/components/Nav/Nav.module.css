@@ -45,6 +45,7 @@
 .navBottomRightCart {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .loginLink {
@@ -60,4 +61,8 @@
 .navBottomRightUser Menu {
   display: flex !important;
   flex-direction: column !important;
+}
+
+.Dropdown {
+  z-index: 999999999;
 }

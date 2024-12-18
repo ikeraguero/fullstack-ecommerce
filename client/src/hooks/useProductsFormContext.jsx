@@ -3,8 +3,8 @@ import { createContext, useReducer, useContext } from "react";
 const initialState = {
   products: [],
   image: {},
-  isAdding: false,
-  isEditing: false,
+  isAddingProduct: false,
+  isEditingProduct: false,
   editProduct: null,
   productName: null,
   productPrice: null,
@@ -18,13 +18,14 @@ function formReducer(state, action) {
     case "loadProducts":
       return { ...state, products: action.payload };
     case "toggleAdd":
-      return { ...state, isAdding: !state.isAdding };
+      return { ...state, isAddingProduct: !state.isAddingProduct };
     case "setImage":
       return { ...state, image: action.payload };
     case "openEdit":
+      console.log("product reducer")
       return {
         ...state,
-        isEditing: true,
+        isEditingProduct: true,
         editProduct: action.payload,
         productName: action.payload.name,
         productPrice: action.payload.price,
@@ -35,7 +36,7 @@ function formReducer(state, action) {
     case "closeEdit":
       return {
         ...state,
-        isEditing: false,
+        isEditingProduct: false,
         editProduct: null,
         productName: null,
         productPrice: null,

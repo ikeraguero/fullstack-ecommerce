@@ -3,7 +3,7 @@ import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";
 
-function Form({ formRef, handleImageChange, send }) {
+function ProductForm({ formRef, handleImageChange, send }) {
   const { state, dispatch } = useProductFormContext();
   const { data: categories, error, isLoading } = useCategories();
 
@@ -16,8 +16,8 @@ function Form({ formRef, handleImageChange, send }) {
   }
 
   const {
-    isAdding,
-    isEditing,
+    isAddingProduct,
+    isEditingProduct,
     editProduct,
     productName,
     productCategory,
@@ -27,13 +27,13 @@ function Form({ formRef, handleImageChange, send }) {
   } = state;
 
   return (
-    <div className={isAdding || isEditing ? styles.form : styles.hide}>
+    <div>
       <span className={styles.formTop}>
-        {!isEditing ? "Add New Product" : `Edit ${editProduct?.name}`}
+        {!isEditingProduct ? "Add New Product" : `Edit ${editProduct?.name}`}
         <ion-icon
           name="close-outline"
           onClick={() =>
-            dispatch({ type: isAdding ? "toggleAdd" : "closeEdit" })
+            dispatch({ type: isAddingProduct ? "toggleAdd" : "closeEdit" })
           }
         ></ion-icon>
       </span>
@@ -43,7 +43,7 @@ function Form({ formRef, handleImageChange, send }) {
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target);
-          if (isEditing) {
+          if (isEditingProduct) {
             send("put", formData);
             return;
           }
@@ -58,7 +58,7 @@ function Form({ formRef, handleImageChange, send }) {
             }
             name="productName"
             className={styles.addFormInput}
-            value={isEditing ? productName : null}
+            value={isEditingProduct ? productName : null}
           />
         </div>
         <div className={styles.formItem}>
@@ -69,7 +69,7 @@ function Form({ formRef, handleImageChange, send }) {
             }
             name="productPrice"
             className={styles.addFormInput}
-            value={isEditing ? productPrice : null}
+            value={isEditingProduct ? productPrice : null}
           />
         </div>
         <div className={styles.formItem}>
@@ -82,7 +82,7 @@ function Form({ formRef, handleImageChange, send }) {
               })
             }
             name="productStockQuantity"
-            value={isEditing ? productQuantity : null}
+            value={isEditingProduct ? productQuantity : null}
             className={styles.addFormInput}
           />
         </div>
@@ -97,7 +97,7 @@ function Form({ formRef, handleImageChange, send }) {
             }
             name="productCategory"
             id="productCategory"
-            value={isEditing ? productCategory : null}
+            value={isEditingProduct ? productCategory : null}
             className={styles.addFormSelect}
           >
             {categories?.map((category) => (
@@ -111,7 +111,7 @@ function Form({ formRef, handleImageChange, send }) {
           <label htmlFor="productDescription">Product Description</label>
           <input
             name="productDescription"
-            value={isEditing ? productDescription : null}
+            value={isEditingProduct ? productDescription : null}
             onChange={(e) =>
               dispatch({
                 type: "changeDescription",
@@ -131,4 +131,4 @@ function Form({ formRef, handleImageChange, send }) {
   );
 }
 
-export default Form;
+export default ProductForm;

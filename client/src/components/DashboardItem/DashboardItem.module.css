@@ -1,0 +1,35 @@
+.addProductContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  width: 100%;
+  margin-bottom: 3.5rem;
+}
+
+.openAddProductButton {
+  color: #f42b56;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  background-color: #fafafa;
+  padding: 1.2rem 3.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+}
+
+.hide {
+  display: none;
+}
+
+.emptyMessage {
+  color: #646464;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+}

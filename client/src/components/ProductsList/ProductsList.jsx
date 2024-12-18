@@ -1,14 +1,14 @@
 import ProductItem from "./ProductItem/ProductItem";
 
-function ProductsList({ products, dispatch, removeProduct, refetch }) {
+function ProductsList({ products, dispatch, remove }) {
+
   return (
     <ul>
       {products?.map((product) => (
         <ProductItem
           dispatch={dispatch}
           product={product}
-          refetch={refetch}
-          removeProduct={removeProduct}
+          removeProduct={remove}
           key={product.id}
         />
       ))}

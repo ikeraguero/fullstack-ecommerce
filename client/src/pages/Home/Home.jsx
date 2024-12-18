@@ -18,7 +18,7 @@ function Home({ userId, refetch, cart, openSuccess }) {
 
   return (
     <Main className={styles.container}>
-      <Carousel />
+      <Carousel className={styles.carousel} />
       <div className={styles.productGrid}>
         {products.map((product) => (
           <ProductCard
