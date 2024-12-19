@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.2",
+    "react-spinners": "^0.15.0",
     "redux": "^5.0.1",
     "swiper": "^11.1.15",
     "swr": "^2.2.5"

@@ -15,6 +15,7 @@ import DashboardItem from "../../components/DashboardItem/DashboardItem";
 import styles from "./ManageProduct.module.css";
 import { useDeleteUsers, useUsers } from "../../api/user.api";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
+import { MoonLoader } from "react-spinners";
 
 function ManageProduct() {
   const { state: productsState, dispatch: productsDispatch } =
@@ -134,7 +135,13 @@ function ManageProduct() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className={styles.spinnerContainer}>
+          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -158,7 +165,7 @@ function ManageProduct() {
           send={send}
           list={products}
           dispatch={productsDispatch}
-          product={removeProduct}
+          remove={removeProduct}
         />
 
         <DashboardItem

@@ -8,6 +8,7 @@ import Product from "./pages/Product/Product";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import ManageProduct from "./pages/ManageProduct/ManageProduct";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import useCategories from "./api/categories.api";
 import Cart from "./pages/Cart/Cart";
 import useCart from "./api/cart.api";
@@ -15,6 +16,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -37,7 +39,11 @@ function App() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   if (error) {
@@ -91,6 +97,7 @@ function App() {
             path="/search"
             element={<SearchResults searchProducts={searchProducts} />}
           />
+          <Route path="categories/:name" element={<CategoryPage />} />
           <Route path="/login" element={<Login refetchCart={refetch} />} />
           <Route path="/register" element={<Register />} />
         </Routes>

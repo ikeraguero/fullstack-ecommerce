@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 
 import Dropdown from "../../components/Dropdown/Dropdown";
-import { logout } from "../../actions/AuthActions";
+
 import SearchBar from "./SearchBar/SearchBar";
 
 import styles from "./Nav.module.css";
@@ -14,18 +13,12 @@ function Nav({ categories, setSearchProducts }) {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const username = useSelector((state) => state.auth.username);
   const role = useSelector((state) => state.auth.role);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
     }
   }, [categories]);
-
-  function handleLogout() {
-    dispatch(logout);
-    window.location.reload();
-  }
 
   if (!loadedCategories) {
     return <div>Loading...</div>;
@@ -45,9 +38,11 @@ function Nav({ categories, setSearchProducts }) {
       </div>
       <div className={styles.navBottom}>
         <div className={styles.navBottomLeft}>
-          <span>SHOP ALL</span>
+          <Link to={"/"} className={styles.navLink}>
+            Shop All
+          </Link>
           {loadedCategories.map((category) => (
-            <Link to="/product" key={category.id} className={styles.navLink}>
+            <Link to={`categories/${category.name}`} key={category.id} className={styles.navLink}>
               {category.name}
             </Link>
           ))}
@@ -60,27 +55,21 @@ function Nav({ categories, setSearchProducts }) {
           )}
         </div>
         <div className={styles.navBottomRight}>
-          <span>
-            {isLoggedIn ? (
-              `Hello, ${username}!`
-            ) : (
-              <Link to={"/login"} className={styles.loginLink}>
-                Log In
-              </Link>
-            )}
-          </span>
           {isLoggedIn ? (
-            <span onClick={handleLogout} className={styles.logoutLink}>
-              Logout
-            </span>
-          ) : (
-            ""
-          )}
-          <div className={styles.navBottomRightUser}>
-            <Dropdown className={styles.Dropdown} />
+            <>
+              <span>{`Hello, ${username}!`}</span>
+              <div className={styles.navBottomRightUser}>
+                <Dropdown className={styles.Dropdown} />
 
-            <ion-icon name="person-circle-outline"></ion-icon>
-          </div>
+                <ion-icon name="person-circle-outline"></ion-icon>
+              </div>
+            </>
+          ) : (
+            <Link to={"/login"} className={styles.loginLink}>
+              Log In
+            </Link>
+          )}
+
           <div className={styles.navBottomRightCart}>
             <Link to={isLoggedIn ? "/cart" : "/login"}>
               <ion-icon name="cart-outline"></ion-icon>

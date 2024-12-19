@@ -77,10 +77,24 @@ async function fetchProductById(productId) {
   return res.data;
 }
 
-
+async function fetchProductByCategory(categoryName) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`/products/categories/${categoryName}`);
+  if (res.status !== 200) {
+    throw new Error("Problem fetching the data");
+  }
+  return res.data;
+}
 
 export default function useProducts() {
   return useQuery({ queryKey: ["products"], queryFn: fetchProducts });
+}
+
+export function useProductsByCategory(categoryName) {
+  return useQuery({
+    queryKey: ["productsByCategory"],
+    queryFn: () => fetchProductByCategory(categoryName),
+  });
 }
 
 export function useProduct(productId) {

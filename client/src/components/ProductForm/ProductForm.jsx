@@ -1,3 +1,4 @@
+import { MoonLoader } from "react-spinners";
 import useCategories from "../../api/categories.api";
 import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
@@ -8,7 +9,13 @@ function ProductForm({ formRef, handleImageChange, send }) {
   const { data: categories, error, isLoading } = useCategories();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className={styles.spinnerContainer}>
+          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -25,6 +32,8 @@ function ProductForm({ formRef, handleImageChange, send }) {
     productPrice,
     productQuantity,
   } = state;
+
+  console.log(isEditingProduct);
 
   return (
     <div>
@@ -51,7 +60,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
         }}
       >
         <div className={styles.formItem}>
-          <label htmlFor="productName">Product Name</label>
+          <label htmlFor="productName">Name</label>
           <input
             onChange={(e) =>
               dispatch({ type: "changeName", payload: e.target.value })
@@ -62,7 +71,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
           />
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="productPrice">Product Price</label>
+          <label htmlFor="productPrice">Price</label>
           <input
             onChange={(e) =>
               dispatch({ type: "changePrice", payload: e.target.value })
@@ -73,7 +82,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
           />
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="productStockQuantity">Product Stock Quantity</label>
+          <label htmlFor="productStockQuantity">Stock Quantity</label>
           <input
             onChange={(e) =>
               dispatch({
@@ -87,7 +96,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
           />
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="productCategory">Product Category</label>
+          <label htmlFor="productCategory">Category</label>
           <select
             onChange={(e) =>
               dispatch({
@@ -108,7 +117,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
           </select>
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="productDescription">Product Description</label>
+          <label htmlFor="productDescription">Description</label>
           <input
             name="productDescription"
             value={isEditingProduct ? productDescription : null}
@@ -122,7 +131,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
           />
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="productImage">Product Image</label>
+          <label htmlFor="productImage">Image</label>
           <input type="file" onChange={handleImageChange} />
         </div>
         <button className={styles.sendButton}>+</button>

@@ -1,14 +1,21 @@
-import useCategories from "../../api/categories.api";
+import { MoonLoader } from "react-spinners";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 
 import styles from "./UserForm.module.css";
+import { useRoles } from "../../api/roles.api";
 
 function UserForm({ formRef, handleImageChange, send }) {
   const { state, dispatch } = useUsersFormContext();
-  const { data: categories, error, isLoading } = useCategories();
+  const { data: roles, error, isLoading } = useRoles();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className={styles.spinnerContainer}>
+          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -100,9 +107,9 @@ function UserForm({ formRef, handleImageChange, send }) {
               value={isEditingUser ? productCategory : null}
               className={styles.addFormSelect}
             >
-              {categories?.map((category) => (
-                <option value={category?.id} key={category?.id}>
-                  {category?.name[0].toUpperCase() + category?.name.slice(1)}
+              {roles?.map((role) => (
+                <option value={role?.id} key={role?.id}>
+                  {role?.name[0].toUpperCase() + role?.name.slice(1)}
                 </option>
               ))}
             </select>

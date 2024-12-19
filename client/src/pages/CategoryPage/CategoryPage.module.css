@@ -1,0 +1,26 @@
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
+
+.mainContainer {
+  margin: 5.4rem 0 5.4rem 0;
+  width: 80%;
+  justify-self: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.productGrid {
+  display: grid;
+  gap: 1.8rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}

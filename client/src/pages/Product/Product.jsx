@@ -7,6 +7,7 @@ import { useAddToCart } from "../../api/cart.api";
 import useCart from "../../api/cart.api";
 
 import styles from "./Product.module.css";
+import { MoonLoader } from "react-spinners";
 
 function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
@@ -37,7 +38,13 @@ function Product({ cart, userId, refetch, openSuccess }) {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <div className={styles.spinnerContainer}>
+          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
+        </div>
+      </div>
+    );
   }
 
   if (error) {

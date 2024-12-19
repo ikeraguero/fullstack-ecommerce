@@ -7,28 +7,25 @@ import styles from "./Cart.module.css";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
-  console.log(cart.cartItems);
   const [totalPrice, setTotalPrice] = useState(
     cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
-  // const teste = useMemo(() => {
-  //   return cart.cartItems.reduce(
-  //     (acc, cur) => acc + cur.price * cur.quantity,
-  //     0
-  //   );
-  // }, [cart.cartItems]);
+
   const [shippingPrice, setShippingPrice] = useState(0);
 
   useEffect(
     function () {
-      if (itemsLength === 0) setShippingPrice(0);
-      setTotalPrice(
-        cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0) +
-          shippingPrice
-      );
+      if (itemsLength === 0) {
+        setShippingPrice(0);
+        setTotalPrice(0);
+      }
+      console.log(cart.cartItems);
+      setTotalPrice(totalPrice + shippingPrice);
     },
     [cart, shippingPrice, itemsLength]
   );
+
+  useEffect(function () {});
 
   return (
     <div className={styles.cartMainContainer}>
@@ -81,7 +78,11 @@ function Cart({ cart, refetch }) {
               name="shipping"
               id=""
               value={shippingPrice}
-              onChange={(e) => setShippingPrice(Number(e.target.value))}
+              onChange={(e) => {
+                e.preventDefault();
+                setTotalPrice((price) => price - shippingPrice);
+                setShippingPrice(Number(e.target.value));
+              }}
               disabled={itemsLength === 0}
               required
             >
