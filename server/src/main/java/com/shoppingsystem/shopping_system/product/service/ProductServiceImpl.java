@@ -50,6 +50,24 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public List<ProductResponse> findProductsByCategory(String categoryName) {
+        List<Product> products=  productRepository.findProductsByCategory(categoryName);
+        List<ProductResponse> productResponseList = new LinkedList<>();
+
+        for(Product product : products) {
+            ProductImage productImage = productImageRepository.findById(product.getImage_id()).get();
+            ProductResponse productResponse = new ProductResponse(
+                    product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
+                    product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
+                    productImage.getType(), productImage.getImageData()
+            );
+            productResponseList.add(productResponse);
+        }
+
+        return productResponseList;
+    }
+
+    @Override
     @Transactional
     public Product save(Product product) {
         return (Product) productRepository.save(product);

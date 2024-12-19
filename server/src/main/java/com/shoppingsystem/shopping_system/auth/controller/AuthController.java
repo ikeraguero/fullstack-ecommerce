@@ -53,6 +53,7 @@ public class AuthController {
         if (userService.loginUser(password, email)) {
             String token = jwtUtil.generateToken(email, roles);
 
+            System.out.println(token);
             Cookie cookie = new Cookie("authToken", token);
             cookie.setHttpOnly(true);
             cookie.setSecure(true);

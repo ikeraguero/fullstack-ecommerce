@@ -20,6 +20,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String token = (String) authentication.getCredentials();
         String email = jwtUtil.extractEmail(token);
 
+        System.out.println(token);
+
         if(jwtUtil.validateToken(token, email)) {
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, null);

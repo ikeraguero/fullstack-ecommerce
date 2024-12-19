@@ -55,6 +55,11 @@ public class ProductController {
         return productService.searchProducts(query);
     }
 
+    @GetMapping("/products/categories/{categoryName}")
+    public List<ProductResponse> searchProductsByCategory(@PathVariable String categoryName) {
+        return productService.findProductsByCategory(categoryName);
+    }
+
 
     @PostMapping("/products")
     Product addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException {

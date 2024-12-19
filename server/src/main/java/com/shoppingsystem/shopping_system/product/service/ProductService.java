@@ -13,6 +13,7 @@ public interface ProductService {
 
     List<ProductResponse> findAll();
     ProductResponse findById(Long id);
+    List<ProductResponse> findProductsByCategory(String categoryName);
     Product save(Product product);
     List<ProductResponse>  searchProducts(String query);
     void deleteById(Long id);
