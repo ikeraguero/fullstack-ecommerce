@@ -50,6 +50,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target);
+          console.log(formData)
           if (isEditingProduct) {
             send("put", formData);
             return;
