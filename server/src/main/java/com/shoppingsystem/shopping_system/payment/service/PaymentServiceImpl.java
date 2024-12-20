@@ -56,19 +56,20 @@ public class PaymentServiceImpl implements PaymentService {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:5173/success")
+                .setSuccessUrl("http://localhost:5173/payment/success/" + 1)
                 .setCancelUrl("http://localhost:5173/failure")
                 .addLineItem(SessionCreateParams.LineItem.builder().setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
-                                .setCurrency("USD")
+                                .setCurrency("BRL")
                                 .setUnitAmount((long) order.getTotalPrice()*100)
                                 .setProductData(SessionCreateParams.LineItem.PriceData
-                                        .ProductData.builder().setName("sneaker")
+                                        .ProductData.builder().setName("CART")
                                         .build())
                                 .build()
                         )
                         .build()
                 )
+                .setLocale(SessionCreateParams.Locale.EN)
                 .build();
 
         Session session = Session.create(params);
