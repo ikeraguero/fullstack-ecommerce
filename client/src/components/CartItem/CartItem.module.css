@@ -59,6 +59,10 @@
   cursor: pointer;
 }
 
+.cartItemRemove ion-icon:hover {
+  color: #7d7d7d;
+}
+
 .totalPrice {
   font-weight: bold;
 }
@@ -73,4 +77,8 @@
   min-width: 1rem;
   min-height: 1rem;
   cursor: pointer;
+}
+
+.quantity ion-icon:hover {
+  color: #7d7d7d;
 }

@@ -1,0 +1,36 @@
+.mainContainer {
+  margin: 5.4rem 0 5.4rem 0;
+  width: 80%;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.successCard {
+  width: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3.6rem 1.2rem;
+}
+
+.successCardTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.successCardTop ion-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #095f20;
+}
+
+.successCardBody {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}

@@ -39,7 +39,6 @@ function CartItem({
       image_data,
       image_type,
     };
-    console.log(putData);
     setLocalQuantity(newQuantity);
     updateItem(putData);
     setTotalPrice((price) =>

@@ -36,8 +36,7 @@ function ManageProduct() {
     productDescription,
   } = productsState;
 
-  const { users, isAddingUser, isEditingUser, editUser } = usersState;
-  console.log(editUser);
+  const { users, isAddingUser, isEditingUser } = usersState;
   const formRef = useRef();
 
   const isProductFormOpen = isAddingProduct || isEditingProduct;

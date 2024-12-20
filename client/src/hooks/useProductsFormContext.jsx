@@ -22,7 +22,6 @@ function formReducer(state, action) {
     case "setImage":
       return { ...state, image: action.payload };
     case "openEdit":
-      console.log("product reducer")
       return {
         ...state,
         isEditingProduct: true,

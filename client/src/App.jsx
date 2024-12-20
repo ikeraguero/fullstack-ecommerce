@@ -17,6 +17,7 @@ import Register from "./pages/Register/Register";
 import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import { useState } from "react";
 import { Spinner } from "@nextui-org/react";
+import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -100,6 +101,10 @@ function App() {
           <Route path="categories/:name" element={<CategoryPage />} />
           <Route path="/login" element={<Login refetchCart={refetch} />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/payment/success/:id"
+            element={<PaymentSuccess />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </ProductFormProvider>

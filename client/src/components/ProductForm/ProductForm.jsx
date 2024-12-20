@@ -33,8 +33,6 @@ function ProductForm({ formRef, handleImageChange, send }) {
     productQuantity,
   } = state;
 
-  console.log(isEditingProduct);
-
   return (
     <div>
       <span className={styles.formTop}>

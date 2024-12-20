@@ -14,7 +14,6 @@ function DashboardItem({
   dispatch,
   remove,
 }) {
-  console.log(list);
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
   return (
     <div className={styles.addProductContainer}>

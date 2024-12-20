@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CartItem from "../../components/CartItem/CartItem";
 
 import styles from "./Cart.module.css";
+import { useCreateOrder } from "../../api/order.api";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
@@ -12,6 +13,7 @@ function Cart({ cart, refetch }) {
   );
 
   const [shippingPrice, setShippingPrice] = useState(0);
+  const { mutate: createOrder } = useCreateOrder();
 
   useEffect(
     function () {
@@ -19,13 +21,22 @@ function Cart({ cart, refetch }) {
         setShippingPrice(0);
         setTotalPrice(0);
       }
-      console.log(cart.cartItems);
       setTotalPrice(totalPrice + shippingPrice);
     },
     [cart, shippingPrice, itemsLength]
   );
 
-  useEffect(function () {});
+  function handleCreateOrder() {
+    const orderData = {
+      userId: 3,
+      totalPrice,
+      date: "2024-12-20T15:30:00",
+      discount: 0,
+      shippingAddress: "Rua",
+    };
+    console.log(orderData);
+    createOrder(orderData);
+  }
 
   return (
     <div className={styles.cartMainContainer}>
@@ -105,7 +116,9 @@ function Cart({ cart, refetch }) {
           </div>
           <div className="cartItemPrice">R${totalPrice}</div>
         </div>
-        <button className={styles.checkoutButton}>CHECKOUT</button>
+        <button className={styles.checkoutButton} onClick={handleCreateOrder}>
+          CHECKOUT
+        </button>
       </form>
     </div>
   );

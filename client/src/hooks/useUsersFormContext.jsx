@@ -33,7 +33,6 @@ function formReducer(state, action) {
         userPassword: action.payload.hash_password,
       };
     case "closeEdit":
-      console.log(state);
       return {
         ...state,
         isEditingUser: false,
