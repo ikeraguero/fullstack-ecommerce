@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.user.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Data
+@Getter
 @Entity
 @Table(name = "order", schema = "ecommerce_project")
 public class Order {
@@ -16,11 +18,14 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long order_id;
+    private Long orderId;
 
-    @Column(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
+    @Getter
     @Column(name = "total_price")
     private double totalPrice;
 
@@ -30,6 +35,14 @@ public class Order {
     @Column(name = "discount")
     private double discount;
 
-    @Column(name = "shipping address")
-    private double shippingAddress;
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+
+    public Order(User user, double totalPrice, Date date, double discount, String shippingAddress) {
+        this.user = user;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.discount = discount;
+        this.shippingAddress = shippingAddress;
+    }
 }

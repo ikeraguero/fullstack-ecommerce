@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserService {
     boolean loginUser(String enteredPassword, String email);
     void save(User user);
+    User findById(Long id);
     List<User> findAll();
     void delete(Long userId);
 }

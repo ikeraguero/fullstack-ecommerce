@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import jakarta.persistence.*;
 
@@ -12,10 +13,14 @@ public class OrderItem {
     @Column(name = "id")
     private Long orderItem;
 
-    @Column(name = "order_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JsonIgnore
     private Order order;
 
-    @Column(name = "product_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="product_id", referencedColumnName = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Column(name= "price")

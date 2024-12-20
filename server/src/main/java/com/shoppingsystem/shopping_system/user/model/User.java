@@ -45,7 +45,7 @@ public class User {
     protected void onCreate() {
         this.createdAt = new Date();
         this.updatedAt = this.createdAt;
-        this.isActive = true;  // Default to active
-        this.role = "USER";    // Default role
+        this.isActive = true;
+        this.role = "USER";
     }
 }
