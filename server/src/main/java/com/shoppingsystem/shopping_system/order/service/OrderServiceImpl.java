@@ -15,4 +15,9 @@ public class OrderServiceImpl implements OrderService {
     public void save(Order order) {
         orderRepository.save(order);
     }
+
+    @Override
+    public Long countItemsInOrder(Long orderId) {
+        return orderRepository.countItemsInOrder(orderId);
+    }
 }

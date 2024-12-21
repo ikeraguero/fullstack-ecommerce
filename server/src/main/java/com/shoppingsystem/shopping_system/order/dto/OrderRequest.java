@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class OrderRequest {
     private double discount;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
+    private List<OrderItemRequest> cartItemsList;
 
     @Override
     public String toString() {
@@ -28,6 +30,7 @@ public class OrderRequest {
                 ", shippingAddress='" + shippingAddress + '\'' +
                 ", discount=" + discount +
                 ", date=" + date +
+                ", cartItemList=" + cartItemsList +
                 '}';
     }
 }

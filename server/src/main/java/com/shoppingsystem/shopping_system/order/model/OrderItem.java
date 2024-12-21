@@ -10,8 +10,8 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long orderItem;
+    @Column(name = "order_item_id")
+    private Long orderItemId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
@@ -26,11 +26,21 @@ public class OrderItem {
     @Column(name= "price")
     private double price;
 
+    @Column(name = "quantity")
+    private int quantity;
+
     @Column(name="discount")
     private double discount;
 
     @Column(name = "total_price")
     private double totalPrice;
 
-
+    public OrderItem(Order order, Product product, double price, int quantity, double discount, double totalPrice) {
+        this.order = order;
+        this.product = product;
+        this.price = price;
+        this.quantity = quantity;
+        this.discount = discount;
+        this.totalPrice = totalPrice;
+    }
 }

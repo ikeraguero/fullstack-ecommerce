@@ -21,8 +21,7 @@ public class StripeWebhookController {
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
 
-    @Value("${webhook.secretkey}")
-    private String stripeWebhookSecret;
+    private String stripeWebhookSecret = "dsadasdasdasd";
 
     @Autowired
     private final OrderRepository orderRepository;

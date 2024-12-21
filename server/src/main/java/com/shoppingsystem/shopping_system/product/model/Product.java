@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.category.model.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name="product", schema = "ecommerce_project")
 public class Product {
 
@@ -36,5 +38,15 @@ public class Product {
 
     @Column(name="product_description")
     private String product_description;
+
+    public Product(Long id, String name, Double price, int stock_quantity, Long image_id, Category category, String product_description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock_quantity = stock_quantity;
+        this.image_id = image_id;
+        this.category = category;
+        this.product_description = product_description;
+    }
 }
 

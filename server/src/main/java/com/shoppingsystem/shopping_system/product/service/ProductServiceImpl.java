@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService{
             ProductResponse productResponse = new ProductResponse(
                     product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
                     product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
-                    productImage.getType(), productImage.getImageData()
+                    productImage.getType(), productImage.getImageData(), productImage.getId()
             );
             productResponseList.add(productResponse);
         }
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService{
             ProductResponse productResponse = new ProductResponse(
                     product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
                     product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
-                    productImage.getType(), productImage.getImageData()
+                    productImage.getType(), productImage.getImageData(), productImage.getId()
             );
             productResponseList.add(productResponse);
         }
@@ -123,7 +123,8 @@ public class ProductServiceImpl implements ProductService{
                 category.getName(),
                 product.getProduct_description(),
                 productImageRepository.findById(product.getImage_id()).get().getType(),
-                productImageRepository.findById(product.getImage_id()).get().getImageData()
+                productImageRepository.findById(product.getImage_id()).get().getImageData(),
+                productImageRepository.findById(product.getImage_id()).get().getId()
         );
     }
 }

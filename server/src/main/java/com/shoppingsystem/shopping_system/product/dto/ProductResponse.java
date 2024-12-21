@@ -18,4 +18,5 @@ public class ProductResponse {
     private String product_description;
     private String image_type;
     private byte[] image_data;
+    private Long image_id;
 }
