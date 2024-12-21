@@ -18,6 +18,7 @@ import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import { useState } from "react";
 import { Spinner } from "@nextui-org/react";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
+import CheckoutShipping from "./pages/CheckoutShipping/CheckoutShipping";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -105,6 +106,7 @@ function App() {
             path="/payment/success/:id"
             element={<PaymentSuccess />}
           ></Route>
+          <Route path="/checkout/:id/" element={<CheckoutShipping />} />
         </Routes>
       </BrowserRouter>
     </ProductFormProvider>

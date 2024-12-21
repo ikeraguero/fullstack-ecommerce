@@ -59,6 +59,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  justify-content: space-between;
   text-decoration: none;
 }
 
@@ -75,7 +76,7 @@
 .cartRightSummary {
   display: flex;
   flex-direction: column;
-  gap: 2.8rem;
+
   font-weight: bold;
   padding: 2rem 0 0 0;
   border-top: #64646447 1px solid;
@@ -130,3 +131,67 @@
 .checkoutButton:hover {
   background-color: #fe3a65;
 }
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.formItem input,
+.formItem select {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #d1d1d1;
+  border-radius: 0.4rem;
+}
+
+.shippingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.calculateShippingButton {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1rem;
+  border: none;
+  background-color: #f42b56;
+  border-radius: 0.4rem;
+}
+
+.formItemBottom {
+  display: flex;
+}
+
+.formItemBottom input {
+  width: 50%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+}
+
+.cardDate {
+  border-bottom-right-radius: 0 !important;
+  border-right: none;
+}
+
+.cardCvc {
+  border-bottom-left-radius: 0 !important;
+}
+
+.cardInformation {
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.paymentMethod {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+

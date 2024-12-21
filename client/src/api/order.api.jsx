@@ -13,14 +13,12 @@ const createAxiosInstance = () => {
 
 async function createOrder(orderData) {
   const axiosInstance = createAxiosInstance();
-  const { data } = await axiosInstance.post(`/order`, orderData, {
+  const res = await axiosInstance.post(`/order`, orderData, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  if (data.payment_url) {
-    window.location.href = data.payment_url;
-  }
+  return res.data;
 }
 
 export function useCreateOrder() {

@@ -15,7 +15,7 @@ function Nav({ categories, setSearchProducts }) {
   const [activeCategory, setActiveCategory] = useState();
   const role = useSelector((state) => state.auth.role);
   const formattedUser =
-    username.toUpperCase().slice(0, 1) + username.toLowerCase().slice(1);
+    username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
   useEffect(() => {
     if (categories && categories.length > 0) {

@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import CartItem from "../../components/CartItem/CartItem";
 
 import styles from "./Cart.module.css";
 import { useCreateOrder } from "../../api/order.api";
+import { useCheckout } from "../../context/CheckoutContext";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
@@ -14,6 +15,8 @@ function Cart({ cart, refetch }) {
 
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutate: createOrder } = useCreateOrder();
+  const navigate = useNavigate();
+  const { setItemsQuantity, setItemsPrice } = useCheckout();
 
   useEffect(
     function () {
@@ -33,9 +36,19 @@ function Cart({ cart, refetch }) {
       date: "2024-12-20T15:30:00",
       discount: 0,
       shippingAddress: "Rua",
+      cartItemsList: cart.cartItems.map((item) => {
+        const itemObject = {
+          productId: item.product_id,
+          quantity: item.quantity,
+          totalPrice: item.price * item.quantity,
+        };
+        return itemObject;
+      }),
     };
-    console.log(orderData);
     createOrder(orderData);
+    setItemsQuantity(itemsLength);
+    setItemsPrice(totalPrice);
+    navigate("/checkout/1");
   }
 
   return (
@@ -79,9 +92,10 @@ function Cart({ cart, refetch }) {
             <div className="cartItemName">
               <h2>Items {itemsLength}</h2>
             </div>
-            <div className="cartItemPrice">R${totalPrice}</div>
+            <div className="cartItemPrice">${totalPrice}</div>
           </div>
-          <div className={styles.cartSummaryItemShipping}>
+
+          {/* <div className={styles.cartSummaryItemShipping}>
             <div className="cartItemName">
               <h2>SHIPPING</h2>
             </div>
@@ -102,13 +116,7 @@ function Cart({ cart, refetch }) {
               <option value={10}>Shipping 2 - R$10</option>
               <option value={15}>Shipping 3 - R$15</option>
             </select>
-          </div>
-          <div className={styles.cartSummaryItemDiscount}>
-            <div className="cartItemName">
-              <h2>DISCOUNT CODE</h2>
-            </div>
-            <input type="text" placeholder="Enter your code" />
-          </div>
+          </div> */}
         </div>
         <div className={styles.cartSummaryTotal}>
           <div className="cartItemName">
