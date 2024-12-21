@@ -4,6 +4,7 @@ import Carousel from "../../components/Carousel/Carousel";
 import useProducts from "../../api/products.api";
 import styles from "./Home.module.css";
 import { MoonLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 function Home({ userId, refetch, cart, openSuccess }) {
   const { data: products, error, isLoading } = useProducts();
@@ -25,18 +26,32 @@ function Home({ userId, refetch, cart, openSuccess }) {
   return (
     <Main className={styles.container}>
       <Carousel className={styles.carousel} />
-      <div className={styles.productGrid}>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            {...product}
-            userId={userId}
-            refetch={refetch}
-            cart={cart}
-            openSuccess={openSuccess}
-          />
-        ))}
-      </div>
+      <section className={styles.bestDeals}>
+        <div className={styles.bestDealsHeader}>
+          <h2>
+            Grab the best deals on{" "}
+            <span className={styles.bestDealCategory}>Smartphones</span>
+          </h2>
+          <div className={styles.bestDealsViewAll}>View All</div>
+        </div>
+        <div className={styles.productGrid}>
+          {products.map((product) => (
+            <Link
+              to={`products/${product.id}`}
+              key={product.id}
+              className={styles.productLink}
+            >
+              <ProductCard
+                {...product}
+                userId={userId}
+                refetch={refetch}
+                cart={cart}
+                openSuccess={openSuccess}
+              />
+            </Link>
+          ))}
+        </div>
+      </section>
     </Main>
   );
 }

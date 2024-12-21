@@ -1,71 +1,23 @@
 .productCard {
-  display: flex;
-  background-color: #ffffff;
-  color: #212121;
-  flex-direction: column;
-  position: relative;
-  min-width: 18.4rem;
-  min-height: 8.2rem;
-  box-shadow: 0.1rem 0.1rem 0.8rem #888888;
+  border-radius: 0.8rem;
+  width: 14.2rem;
+  border: 1px solid #dfdfdf;
 }
 
 .productCardBody {
-  padding: 0.4rem 1.2rem 8.4rem;
   display: flex;
   flex-direction: column;
-  gap: 3.6rem;
-}
-
-.productCardTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.productCardTitle h1 {
-  font-size: 1.2rem;
-}
-
-.productCardTitle h2 {
-  font-size: 1rem;
-}
-
-.productCardSubtitle {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  color: #454545;
-  letter-spacing: 0.04rem;
-}
-
-.productCardSubtitle h3 {
-  color: #838383;
+  padding: 0.4rem 0.8rem;
+  font-weight: 500;
 }
 
 .productCardImage img {
-  height: 12.8rem;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+  height: 10.8rem;
   width: 100%;
 }
 
-.productCardTop {
-  display: flex;
-  flex-direction: column;
-}
-
-.productCardBottom {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  align-items: center;
-  margin-bottom: 1.2rem;
-  position: absolute;
-  bottom: 1px;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%);
-}
-
-.productCardTitle h1 {
-  width: 6.8rem;
-  overflow: visible;
-  overflow-wrap: break-word;
+.productCard:hover {
+  border: 2px solid #f42b56;
 }

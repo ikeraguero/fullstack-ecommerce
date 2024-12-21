@@ -27,7 +27,7 @@ function SearchBar({ setSearchProducts }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className={styles.input}
-        placeholder="Search for an item"
+        placeholder="Search for essentials, groceries, and more..."
         id="input"
       ></input>
       <ion-icon name="search-outline" onClick={handleSearch}></ion-icon>

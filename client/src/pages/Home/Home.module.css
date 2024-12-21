@@ -8,7 +8,7 @@
 .productGrid {
   display: grid;
   gap: 1.8rem;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 
 .carousel {
@@ -26,4 +26,24 @@
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.7);
   z-index: 9999;
+}
+
+.bestDeals {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.bestDeals h2 {
+  color: #4b4b4b;
+}
+
+.bestDealCategory {
+  color: #f42b56;
+}
+
+.bestDealsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

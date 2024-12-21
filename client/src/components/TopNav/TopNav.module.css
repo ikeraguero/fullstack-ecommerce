@@ -1,0 +1,23 @@
+.TopNav {
+  background-color: #e7e7e7;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0.4rem;
+}
+
+.rightSide {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.rightSideOption {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.optionIcon {
+  display: flex;
+  align-items: center;
+}

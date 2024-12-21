@@ -5,26 +5,19 @@
 
 .navTop {
   display: flex;
-  border-bottom: solid 1px #2b2b2b;
+  border-bottom: solid 1px #dfdfdf;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 2.4rem;
-}
-
-.navTop {
-  display: flex;
-  border-bottom: solid 1px #2b2b2b;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 1.2rem 2.4rem;
 }
 
 .navBottom {
   text-transform: uppercase;
+  border-bottom: solid 1px #dfdfdf;
   display: flex;
   padding: 1.2rem 1.8rem;
   font-weight: 600;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .navBottomLeft {
@@ -36,6 +29,15 @@
 .navLink {
   text-decoration: none;
   color: #2b2b2b;
+}
+
+.categoryItem {
+  text-decoration: none;
+  color: #2b2b2b;
+  background-color: #ffdae2;
+  font-weight: 500;
+  padding: 0.4rem 1.2rem;
+  border-radius: 99999999rem;
 }
 
 .navLink:hover,
@@ -78,4 +80,62 @@
 
 .Dropdown {
   z-index: 999999999;
+}
+
+.rightSide {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.authAndCart {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.auth,
+.cart {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.leftSide ion-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  cursor: pointer;
+}
+
+.activeCategoryItem {
+  background-color: #f42b56;
+
+  text-decoration: none;
+  color: #ffffff;
+
+  font-weight: 500;
+  padding: 0.4rem 1.2rem;
+  border-radius: 99999999rem;
+}
+
+.loginLink,
+.cartLink {
+  text-decoration: none;
+}
+
+.navBottom {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease-in-out, 0.4s ease-in-out;
+  opacity: 0;
+}
+
+.navBottom.open {
+  max-height: 200px;
+  opacity: 1;
 }
