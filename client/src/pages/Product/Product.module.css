@@ -8,8 +8,8 @@
 }
 
 .productPhoto img {
-  width: 28.2rem;
-  height: 21.6rem;
+  width: 36.2rem;
+  height: 28.6rem;
   border: 1px solid #2b2b2b;
   align-self: flex-start;
 }
@@ -26,6 +26,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 1.2rem;
 }
 
 .buttonBuy,
@@ -82,7 +83,6 @@
 
 .productQuantity {
   display: flex;
-  gap: 0.8rem;
 }
 
 .productQuantity select {
@@ -100,4 +100,60 @@
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.7);
   z-index: 9999;
+}
+
+.productDetailsTop {
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.productQuantityDisplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0rem 1.8rem;
+  border: 1px solid #d4d4d4;
+  width: 4rem;
+}
+
+.productQuantity button {
+  background: none;
+  padding: 0rem 0.6rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  border: 1px solid #d4d4d4;
+}
+
+.productQuantity button:hover {
+  background-color: #f42b56;
+  color: #ffff;
+  border: none;
+  border: 1px solid #f42b56;
+}
+
+.productQuantityAndWishlist {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wishlistButton {
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d4d4d4;
+  background: none;
+  cursor: pointer;
+}
+
+.wishlistButton:hover {
+  background-color: #f42b56;
+}
+
+.wishlistButton:hover ion-icon {
+  color: #ffff;
+  stroke: #ffff;
+}
+
+.wishlistButton ion-icon {
+  width: 1.6rem;
+  height: 1.6rem;
 }

@@ -8,6 +8,7 @@ import useCart from "../../api/cart.api";
 
 import styles from "./Product.module.css";
 import { MoonLoader } from "react-spinners";
+import SuccessAlert from "../../components/SuccessAlert/SuccessAlert";
 
 function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
@@ -15,11 +16,6 @@ function Product({ cart, userId, refetch, openSuccess }) {
   const [quantity, setQuantity] = useState(1);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   let userCart = useCart(userId).data;
-
-  const options = Array.from(
-    { length: product?.stock_quantity },
-    (_, i) => i + 1
-  );
 
   const { mutate: addToCart } = useAddToCart();
 
@@ -34,7 +30,18 @@ function Product({ cart, userId, refetch, openSuccess }) {
       image_type: product.image_type,
     };
     addToCart(cartItem);
+    <SuccessAlert />;
     openSuccess();
+  }
+
+  function handleDecreaseQuantity() {
+    if (quantity - 1 <= 0) return;
+    setQuantity(quantity - 1);
+  }
+
+  function handleIncreaseQuantity() {
+    if (quantity + 1 > product?.stock_quantity) return;
+    setQuantity(quantity + 1);
   }
 
   if (isLoading) {
@@ -63,14 +70,30 @@ function Product({ cart, userId, refetch, openSuccess }) {
         <div className={styles.productDetailsTop}>
           <h3 className={styles.productCategory}>{product.category}</h3>
           <h1>{product?.name}</h1>
+          <span>Rating | In stock</span>
           <h2>R${product?.price}</h2>
+          <div className={styles.productDescription}>
+            {product.product_description}
+          </div>
         </div>
-        <span>Stock Available: {product?.stock_quantity}</span>
-        <div className={styles.productDescription}>
-          {product.product_description}
-        </div>
-        <div className={styles.productQuantity}>
-          <label htmlFor="quantity">Quantity:</label>
+        <div className={styles.productQuantityAndWishlist}>
+          <div className={styles.productQuantity}>
+            <button
+              className={styles.productQuantityDecrease}
+              onClick={handleDecreaseQuantity}
+            >
+              -
+            </button>
+            <div className={styles.productQuantityDisplay}>
+              {quantity < 10 ? "0" + quantity : quantity}
+            </div>
+            <button
+              className={styles.productQuantityIncrease}
+              onClick={handleIncreaseQuantity}
+            >
+              +
+            </button>
+            {/* <label htmlFor="quantity">Quantity:</label>
           <select
             name="quantity"
             id=""
@@ -81,7 +104,11 @@ function Product({ cart, userId, refetch, openSuccess }) {
             {options.map((option) => (
               <option key={option}>{option}</option>
             ))}
-          </select>
+          </select> */}
+          </div>
+          <button className={styles.wishlistButton}>
+            <ion-icon name="heart-outline"></ion-icon>
+          </button>
         </div>
         <div className={styles.interactive}>
           <div className={styles.interactiveQuantity}></div>

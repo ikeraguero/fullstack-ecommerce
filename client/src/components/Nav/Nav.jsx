@@ -10,10 +10,12 @@ import styles from "./Nav.module.css";
 function Nav({ categories, setSearchProducts }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  // const username = useSelector((state) => state.auth.username);
+  const username = useSelector((state) => state.auth.username);
   const [isBottomOpen, setIsBottomOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState();
   const role = useSelector((state) => state.auth.role);
+  const formattedUser =
+    username.toUpperCase().slice(0, 1) + username.toLowerCase().slice(1);
 
   useEffect(() => {
     if (categories && categories.length > 0) {
@@ -48,8 +50,13 @@ function Nav({ categories, setSearchProducts }) {
           <div className={styles.authAndCart}>
             <div className={styles.auth}>
               <ion-icon name="person-outline"></ion-icon>
-              <Link to={"/login"} className={styles.loginLink}>
-                <span>Sign In/Sign Up</span>
+              <Link
+                to={isLoggedIn ? " " : "/login"}
+                className={styles.loginLink}
+              >
+                <span>
+                  {isLoggedIn ? `Hello, ${formattedUser}` : "Sign In/Sign Up"}
+                </span>
               </Link>
             </div>
             <div className={styles.cart}>

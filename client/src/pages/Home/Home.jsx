@@ -52,6 +52,14 @@ function Home({ userId, refetch, cart, openSuccess }) {
           ))}
         </div>
       </section>
+      <section className={styles.topCategories}>
+        <div className={styles.topCategoriesHeader}>
+          <h2>
+            Shop From{" "}
+            <span className={styles.topCategoriesTitle}>Top Categories</span>
+          </h2>
+        </div>
+      </section>
     </Main>
   );
 }
