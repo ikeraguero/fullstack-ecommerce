@@ -18,6 +18,7 @@ public class OrderRequest {
     private double totalPrice;
     private String shippingAddress;
     private double discount;
+    private String status;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
     private List<OrderItemRequest> cartItemsList;

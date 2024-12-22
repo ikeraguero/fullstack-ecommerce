@@ -20,10 +20,7 @@ import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -49,6 +46,11 @@ public class OrderController {
 
     @Autowired
     private ProductImageService productImageService;
+
+    @GetMapping("/order/{orderId}")
+    ResponseEntity<OrderResponse> findOrder(@PathVariable Long orderId) {
+        return orderService.findById(orderId);
+    }
 
     @PostMapping("/order")
     ResponseEntity<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) throws StripeException {
@@ -80,4 +82,21 @@ public class OrderController {
 
        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
     }
+
+    @PutMapping("/order/{orderId}")
+    public void updateOrder(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
+        // Fetch the existing order
+        Order existingOrder = orderService.findByIdEntity(orderId);
+
+        // Update the order details
+        existingOrder.setStatus(orderRequest.getStatus());
+        existingOrder.setTotalPrice(orderRequest.getTotalPrice());
+        existingOrder.setShippingAddress(orderRequest.getShippingAddress());
+        existingOrder.setDate(orderRequest.getDate());
+        existingOrder.setDiscount(orderRequest.getDiscount());
+
+        orderService.save(existingOrder);
+
+    }
 }
+

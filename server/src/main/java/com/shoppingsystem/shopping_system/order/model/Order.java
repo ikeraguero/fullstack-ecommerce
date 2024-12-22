@@ -3,15 +3,15 @@ package com.shoppingsystem.shopping_system.order.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.user.model.User;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
 @Getter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "order", schema = "ecommerce_project")
 public class Order {
 
