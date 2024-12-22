@@ -6,6 +6,8 @@ import CartItem from "../../components/CartItem/CartItem";
 import styles from "./Cart.module.css";
 import { useCreateOrder } from "../../api/order.api";
 import { useCheckout } from "../../context/CheckoutContext";
+import { useDispatch } from "react-redux";
+import { setOrder } from "../../actions/OrderActions";
 
 function Cart({ cart, refetch }) {
   const itemsLength = cart.cartItems.length;
@@ -14,9 +16,10 @@ function Cart({ cart, refetch }) {
   );
 
   const [shippingPrice, setShippingPrice] = useState(0);
-  const { mutate: createOrder } = useCreateOrder();
+  const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
   const { setItemsQuantity, setItemsPrice } = useCheckout();
+  const dispatch = useDispatch();
 
   useEffect(
     function () {
@@ -29,11 +32,12 @@ function Cart({ cart, refetch }) {
     [cart, shippingPrice, itemsLength]
   );
 
-  function handleCreateOrder() {
+  async function handleCreateOrder() {
     const orderData = {
       userId: 3,
       totalPrice,
       date: "2024-12-20T15:30:00",
+      status: "pending",
       discount: 0,
       shippingAddress: "Rua",
       cartItemsList: cart.cartItems.map((item) => {
@@ -45,10 +49,11 @@ function Cart({ cart, refetch }) {
         return itemObject;
       }),
     };
-    createOrder(orderData);
+    const { orderId } = await createOrder(orderData);
     setItemsQuantity(itemsLength);
     setItemsPrice(totalPrice);
-    navigate("/checkout/1");
+    dispatch(setOrder(orderData));
+    navigate(`/checkout/${orderId}`);
   }
 
   return (

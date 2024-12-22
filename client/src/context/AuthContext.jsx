@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove("authToken");
+    localStorage.clear();
     setAuthToken(null);
   };
 

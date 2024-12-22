@@ -1,18 +1,73 @@
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./CheckoutShipping.module.css";
 import { useCountries } from "../../api/countries.api";
-import { useState } from "react";
-import { useCheckout } from "../../context/CheckoutContext";
+import { useEffect, useState } from "react";
+import { useOrder, usePayOrder } from "../../api/order.api";
+import { useSelector } from "react-redux";
 
 function CheckoutShipping({ cart, refetch }) {
-  const { data: countries, isLoading } = useCountries();
+  const { data: countries } = useCountries();
   const [checkoutStep, setCheckoutStep] = useState("shipping");
   const [shippingPrice, setShippingPrice] = useState(0);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { itemsQuantity, itemsPrice } = useCheckout();
+  const params = useParams();
+  const { data: order } = useOrder(params.id);
+  const { mutate: payOrder } = usePayOrder();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const SHIPPING_PRICE = 15;
+  const navigate = useNavigate();
+  const updateOrder = useSelector((state) => state.order.order);
+
+  useEffect(() => {
+    const storedShippingPrice = localStorage.getItem("shippingPrice");
+    const storedTotalPrice = localStorage.getItem("totalPrice");
+
+    if (storedShippingPrice && storedTotalPrice) {
+      setShippingPrice(Number(storedShippingPrice));
+      setTotalPrice(Number(storedTotalPrice));
+    }
+  }, []);
+
+  useEffect(
+    function () {
+      if (order) {
+        const updatedTotalPrice = order.totalPrice + shippingPrice;
+        setTotalPrice(updatedTotalPrice);
+        localStorage.setItem("shippingPrice", shippingPrice);
+        localStorage.setItem("totalPrice", updatedTotalPrice);
+      }
+    },
+    [order, shippingPrice]
+  );
+
+  if (!updateOrder) return "AAAAAAAAAAAAAAAAAAAAAAA";
+
+  function handlePay() {
+    setIsProcessingPayment(true);
+    if (!order && !updateOrder) {
+      console.error("Order data is not available");
+      return;
+    }
+
+    const payData = {
+      ...updateOrder,
+      status: "paid",
+      totalPrice,
+    };
+
+    console.log("Pay data:", payData);
+
+    payOrder({ orderData: payData, orderId: order?.orderId });
+  }
 
   function handleContinue() {
     if (checkoutStep === "shipping") setCheckoutStep("payment");
+  }
+
+  function handleBack() {
+    if (checkoutStep === "payment") setCheckoutStep("shipping");
+    if (checkoutStep === "shipping") navigate("/");
   }
 
   function handleCalculatePrice(e) {
@@ -24,12 +79,11 @@ function CheckoutShipping({ cart, refetch }) {
     setLoading(true);
 
     setTimeout(() => {
-      setShippingPrice(15);
+      setShippingPrice(SHIPPING_PRICE);
       setLoading(false);
     }, 2000);
   }
 
-  if (isLoading) return <div>Loading...</div>;
   return (
     <div className={styles.cartMainContainer}>
       <div className={styles.cartLeftSide}>
@@ -57,7 +111,7 @@ function CheckoutShipping({ cart, refetch }) {
               <div className={styles.formItem}>
                 <label htmlFor="country">Country</label>
                 <select name="country" id="">
-                  {countries.map((country) => (
+                  {countries?.map((country) => (
                     <option key={country.flag}>{country.name.common}</option>
                   ))}
                 </select>
@@ -71,9 +125,18 @@ function CheckoutShipping({ cart, refetch }) {
                 <input type="text" />
               </div>
             </div>
-            <button className={styles.calculateShippingButton}>
-              Calculate Shipping
-            </button>
+            <div className={styles.calculateShippingAndBackButton}>
+              <div className={styles.cartBackArrow}>
+                <ion-icon
+                  name="arrow-back-outline"
+                  onClick={handleBack}
+                ></ion-icon>{" "}
+                Back
+              </div>
+              <button className={styles.calculateShippingButton}>
+                Calculate Shipping
+              </button>
+            </div>
           </form>
         )}
         {checkoutStep === "payment" && (
@@ -117,15 +180,16 @@ function CheckoutShipping({ cart, refetch }) {
                 <label htmlFor="Cardholder Name">Cardholder Name</label>
                 <input type="text" />
               </div>
+              <div className={styles.cartBackArrow}>
+                <ion-icon
+                  name="arrow-back-outline"
+                  onClick={handleBack}
+                ></ion-icon>{" "}
+                Back
+              </div>
             </div>
           </div>
         )}
-
-        <div className={styles.cartBackArrow}>
-          <Link to="/">
-            <ion-icon name="arrow-back-outline"></ion-icon> Back to the shop
-          </Link>
-        </div>
       </div>
       <form
         className={styles.cartRightSide}
@@ -137,9 +201,9 @@ function CheckoutShipping({ cart, refetch }) {
         <div className={styles.cartRightSummary}>
           <div className={styles.cartSummaryItem}>
             <div className="cartItemName">
-              <h2>Items {itemsQuantity}</h2>
+              <h2>Items {order?.items}</h2>
             </div>
-            <div className="cartItemPrice">${itemsPrice}</div>
+            <div className="cartItemPrice">${order?.totalPrice}</div>
           </div>
           <div className={styles.cartSummaryItem}>
             <div className="cartItemName">
@@ -177,10 +241,17 @@ function CheckoutShipping({ cart, refetch }) {
           <div className="cartItemName">
             <h2>TOTAL PRICE</h2>
           </div>
-          <div className="cartItemPrice">${itemsPrice}</div>
+          <div className="cartItemPrice">${totalPrice}</div>
         </div>
-        <button className={styles.checkoutButton} onClick={handleContinue}>
-          {checkoutStep === "shipping" ? "CONTINUE" : "PAY"}
+        <button
+          className={styles.checkoutButton}
+          onClick={checkoutStep === "shipping" ? handleContinue : handlePay}
+        >
+          {checkoutStep === "shipping"
+            ? "CONTINUE"
+            : isProcessingPayment
+            ? "PROCESSING PAYMENT..."
+            : "PAY"}
         </button>
       </form>
     </div>
