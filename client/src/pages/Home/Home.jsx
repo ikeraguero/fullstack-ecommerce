@@ -32,7 +32,10 @@ function Home({ userId, refetch, cart, openSuccess }) {
             Grab the best deals on{" "}
             <span className={styles.bestDealCategory}>Smartphones</span>
           </h2>
-          <div className={styles.bestDealsViewAll}>View All</div>
+          <div className={styles.bestDealsViewAll}>
+            <span>View All</span>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
         </div>
         <div className={styles.productGrid}>
           {products.map((product) => (

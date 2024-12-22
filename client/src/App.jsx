@@ -19,6 +19,7 @@ import { useState } from "react";
 import { Spinner } from "@nextui-org/react";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "./pages/CheckoutShipping/CheckoutShipping";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -112,6 +113,7 @@ function App() {
             path="/search"
             element={<SearchResults searchProducts={searchProducts} />}
           />
+          <Route path="profile" element={<Profile />} />
           <Route
             path="categories/:name"
             element={<CategoryPage activeCategory={activeCategory} />}

@@ -55,15 +55,15 @@ function Nav({
           <div className={styles.authAndCart}>
             <div className={styles.auth}>
               <ion-icon name="person-outline"></ion-icon>
-              <Link
-                to={isLoggedIn ? " " : "/login"}
-                className={styles.loginLink}
-              >
-                <span>
+              <span>
+                <Link
+                  to={isLoggedIn ? "/profile" : "/login"}
+                  className={styles.loginLink}
+                >
                   {isLoggedIn ? `Hello, ` : "Sign In/Sign Up"}
                   {isLoggedIn && <strong>{formattedUser}</strong>}
-                </span>
-              </Link>
+                </Link>
+              </span>
             </div>
             <div className={styles.cart}>
               <ion-icon name="cart-outline"></ion-icon>

@@ -40,7 +40,8 @@
 }
 
 .bestDealCategory,
-.topCategoriesTitle {
+.topCategoriesTitle,
+.bestDealsViewAll ion-icon {
   color: #f42b56;
 }
 
@@ -52,4 +53,9 @@
 
 .productLink {
   text-decoration: none;
+}
+
+.bestDealsViewAll {
+  display: flex;
+  align-items: center;
 }
