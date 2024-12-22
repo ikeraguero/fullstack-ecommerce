@@ -9,12 +9,12 @@ import { useCheckout } from "../../context/CheckoutContext";
 import { useDispatch } from "react-redux";
 import { setOrder } from "../../actions/OrderActions";
 
-function Cart({ cart, refetch }) {
-  const itemsLength = cart.cartItems.length;
+function Cart({ cartId, cartItems, refetch }) {
+  const itemsLength = cartItems?.length;
   const [totalPrice, setTotalPrice] = useState(
-    cart.cartItems.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+    cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
-
+  console.log(cartItems);
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
@@ -29,18 +29,18 @@ function Cart({ cart, refetch }) {
       }
       setTotalPrice(totalPrice + shippingPrice);
     },
-    [cart, shippingPrice, itemsLength]
+    [cartItems, shippingPrice, itemsLength, totalPrice]
   );
 
   async function handleCreateOrder() {
     const orderData = {
-      userId: 3,
+      userId: 1,
       totalPrice,
       date: "2024-12-20T15:30:00",
       status: "pending",
       discount: 0,
       shippingAddress: "Rua",
-      cartItemsList: cart.cartItems.map((item) => {
+      cartItemsList: cartItems.map((item) => {
         const itemObject = {
           productId: item.product_id,
           quantity: item.quantity,
@@ -64,14 +64,15 @@ function Cart({ cart, refetch }) {
             <h1>Your Cart</h1>
             <div className="cartItemTotal">{itemsLength} items</div>
           </div>
-          {cart.cartItems.length === 0 && "Cart is empty"}
+          {cartItems?.length === 0 && "Cart is empty"}
           <ul className={styles.cartList}>
-            {cart.cartItems.map((product) => (
+            {cartItems?.map((product) => (
               <CartItem
                 {...product}
                 refetch={refetch}
                 key={product.id}
-                cart={cart}
+                cartId={cartId}
+                cartItems={cartItems}
                 setTotalPrice={setTotalPrice}
                 totalPrice={totalPrice}
                 className={styles.cartItem}
@@ -89,49 +90,30 @@ function Cart({ cart, refetch }) {
         className={styles.cartRightSide}
         onSubmit={(e) => e.preventDefault()}
       >
-        <div className={styles.cartRightTitle}>
-          <h1>Summary</h1>
-        </div>
-        <div className={styles.cartRightSummary}>
-          <div className={styles.cartSummaryItem}>
-            <div className="cartItemName">
-              <h2>Items {itemsLength}</h2>
-            </div>
-            <div className="cartItemPrice">${totalPrice}</div>
+        <div className={styles.cartSummaryTop}>
+          <div className={styles.cartRightTitle}>
+            <h1>Summary</h1>
           </div>
-
-          {/* <div className={styles.cartSummaryItemShipping}>
-            <div className="cartItemName">
-              <h2>SHIPPING</h2>
+          <div className={styles.cartRightSummary}>
+            <div className={styles.cartSummaryItem}>
+              <div className="cartItemName">
+                <h2>Items {itemsLength}</h2>
+              </div>
+              <div className="cartItemPrice">${totalPrice}</div>
             </div>
-            <select
-              name="shipping"
-              id=""
-              value={shippingPrice}
-              onChange={(e) => {
-                e.preventDefault();
-                setTotalPrice((price) => price - shippingPrice);
-                setShippingPrice(Number(e.target.value));
-              }}
-              disabled={itemsLength === 0}
-              required
-            >
-              <option value={0}></option>
-              <option value={5}>Shipping 1 - R$5</option>
-              <option value={10}>Shipping 2 - R$10</option>
-              <option value={15}>Shipping 3 - R$15</option>
-            </select>
-          </div> */}
-        </div>
-        <div className={styles.cartSummaryTotal}>
-          <div className="cartItemName">
-            <h2>TOTAL PRICE</h2>
           </div>
-          <div className="cartItemPrice">R${totalPrice}</div>
         </div>
-        <button className={styles.checkoutButton} onClick={handleCreateOrder}>
-          CHECKOUT
-        </button>
+        <div className={styles.cartSummaryBottom}>
+          <div className={styles.cartSummaryTotal}>
+            <div className="cartItemName">
+              <h2>TOTAL PRICE</h2>
+            </div>
+            <div className="cartItemPrice">R${totalPrice}</div>
+          </div>
+          <button className={styles.checkoutButton} onClick={handleCreateOrder}>
+            CHECKOUT
+          </button>
+        </div>
       </form>
     </div>
   );

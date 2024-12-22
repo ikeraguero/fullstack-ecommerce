@@ -47,6 +47,7 @@ async function updateCartItem(data) {
 
 async function createCartItem(data) {
   const axiosInstance = createAxiosInstance();
+  console.log(data);
   const res = await axiosInstance.post(`/cartItem`, data);
   if (res.status !== 200) {
     throw new Error("Error fetching the data");

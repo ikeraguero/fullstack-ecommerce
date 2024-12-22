@@ -33,6 +33,9 @@
   background-color: #aeaeae47;
   border-top-right-radius: 0.8rem;
   border-bottom-right-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cartLeftSide,
@@ -103,6 +106,9 @@
 
 .cartSummaryItemDiscount {
   margin-bottom: 2.6rem;
+}
+
+.cartSummaryBottom {
 }
 
 .cartSummaryTotal {

@@ -30,6 +30,7 @@ function Product({ cart, userId, refetch, openSuccess }) {
       image_type: product.image_type,
     };
     addToCart(cartItem);
+    refetch();
     <SuccessAlert />;
     openSuccess();
   }

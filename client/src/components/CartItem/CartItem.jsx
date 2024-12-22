@@ -12,7 +12,8 @@ function CartItem({
   quantity,
   image_data,
   image_type,
-  cart,
+  cartId,
+  cartItems,
   setTotalPrice,
   totalPrice,
 }) {
@@ -23,15 +24,20 @@ function CartItem({
 
   function handleDelete() {
     deleteItem(id);
+    setTotalPrice((price) => price - productPrice * localQuantity);
   }
 
   function handleQuantityUpdate(type) {
     const newQuantity =
       type === "increase" ? localQuantity + 1 : localQuantity - 1;
 
-    if (newQuantity === 0) deleteItem(id);
+    if (newQuantity === 0) {
+      deleteItem(id);
+      setTotalPrice(0);
+      return;
+    }
     const putData = {
-      cart_id: cart.id,
+      cart_id: cartId,
       product_id: product_id,
       product_name,
       price,

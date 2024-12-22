@@ -34,10 +34,17 @@
 .categoryItem {
   text-decoration: none;
   color: #2b2b2b;
-  background-color: #ffdae2;
+  background-color: #fde6eb;
   font-weight: 500;
   padding: 0.4rem 1.2rem;
   border-radius: 99999999rem;
+}
+
+.categoryItem:hover {
+  background-color: #f42b56;
+
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .navLink:hover,

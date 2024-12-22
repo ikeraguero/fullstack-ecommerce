@@ -48,6 +48,8 @@ function App() {
     );
   }
 
+  console.log(cart);
+
   if (error) {
     return <div>Error loading data</div>;
   }
@@ -78,13 +80,20 @@ function App() {
           <Route path="/*" element={<PageNotFound />} />
           <Route
             path="/cart"
-            element={<Cart cart={cart} refetch={refetch} />}
+            element={
+              <Cart
+                cartItems={cart.cartItems}
+                cartId={cart.id}
+                refetch={refetch}
+              />
+            }
           />
           <Route
             path="/products/:id"
             element={
               <Product
-                cart={cart}
+                cartItems={cart.cartItems}
+                cartId={cart.id}
                 userId={userId}
                 refetch={refetch}
                 openSuccess={openSuccess}
