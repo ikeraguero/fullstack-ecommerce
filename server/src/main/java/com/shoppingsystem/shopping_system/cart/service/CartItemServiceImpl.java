@@ -12,6 +12,7 @@ import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -81,4 +82,11 @@ public class CartItemServiceImpl implements CartItemService {
     public void delete(Long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
     }
+
+    @Override
+    public List<CartItem> findCartItemsByUser(Long userId) {
+        return cartItemRepository.findCartItemsByUser(userId);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.shoppingsystem.shopping_system.order.controller;
 
-import com.shoppingsystem.shopping_system.category.model.Category;
+import com.shoppingsystem.shopping_system.cart.model.CartItem;
+import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.category.service.CategoryService;
 import com.shoppingsystem.shopping_system.order.dto.OrderItemRequest;
 import com.shoppingsystem.shopping_system.order.dto.OrderRequest;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -45,6 +48,9 @@ public class OrderController {
     private OrderItemService orderItemService;
 
     @Autowired
+    private CartItemService cartItemService;
+
+    @Autowired
     private ProductImageService productImageService;
 
     @GetMapping("/order/{orderId}")
@@ -66,10 +72,7 @@ public class OrderController {
 
         for(OrderItemRequest orderItem : orderRequest.getCartItemsList()) {
         ProductResponse productResponse = productService.findById(orderItem.getProductId());
-            Category category = categoryService.findById(productResponse.getCategory_id());
-            Product product = new Product(productResponse.getId(), productResponse.getName(), productResponse.getPrice(),
-                    productResponse.getStock_quantity(),
-                    productResponse.getImage_id(), category, productResponse.getProduct_description());
+            Product product = productService.findByIdEntity(productResponse.getId());
 
             OrderItem orderItem1 = new OrderItem(order, product, orderItem.getTotalPrice(), orderItem.getQuantity(),
                     0, orderItem.getTotalPrice());
@@ -85,10 +88,8 @@ public class OrderController {
 
     @PutMapping("/order/{orderId}")
     public void updateOrder(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
-        // Fetch the existing order
         Order existingOrder = orderService.findByIdEntity(orderId);
 
-        // Update the order details
         existingOrder.setStatus(orderRequest.getStatus());
         existingOrder.setTotalPrice(orderRequest.getTotalPrice());
         existingOrder.setShippingAddress(orderRequest.getShippingAddress());
@@ -96,6 +97,20 @@ public class OrderController {
         existingOrder.setDiscount(orderRequest.getDiscount());
 
         orderService.save(existingOrder);
+
+        // update product and removing cart item
+        List<OrderItem> orderItemList = orderService.findAllOrderItems(existingOrder.getOrderId());
+        List<CartItem> cartItemList = cartItemService.findCartItemsByUser(existingOrder.getUser().getId());
+            System.out.println(existingOrder.getUser().getId());
+        for(CartItem cartItem : cartItemList) {
+            cartItemService.delete(cartItem.getCartItemId());
+        }
+        for(OrderItem orderItem : orderItemList) {
+            Product existingProduct = productService.findByIdEntity(orderItem.getProduct().getId());
+            existingProduct.setStock_quantity(existingProduct.getStock_quantity() - orderItem.getQuantity());
+            productService.save(existingProduct);
+
+        }
 
     }
 }

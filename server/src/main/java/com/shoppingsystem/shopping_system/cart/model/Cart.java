@@ -1,5 +1,7 @@
 package com.shoppingsystem.shopping_system.cart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingsystem.shopping_system.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,11 +24,13 @@ public class Cart {
     @Column(name="status")
     private String status;
 
-    @Column(name="user_id")
-    private Long userId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
 
-    public Cart(String status, Long userId) {
+    public Cart(String status, User user) {
         this.status = status;
-        this.userId = userId;
+        this.user = user;
     }
 }

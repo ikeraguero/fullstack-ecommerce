@@ -100,8 +100,7 @@ public class ProductController {
 
         productImageService.save(productImage);
 
-        Product existingProduct = productService.findByIdEntity(productDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Product not found!"));
+        Product existingProduct = productService.findByIdEntity(productDTO.getId());
 
         // Fetch the category
         Category category = categoryService.findById(productDTO.getCategory_id());

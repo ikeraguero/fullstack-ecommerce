@@ -97,8 +97,8 @@ public class ProductServiceImpl implements ProductService{
         productRepository.deleteById(id);
     }
 
-    public Optional<Product> findByIdEntity(Long id) {
-        return productRepository.findById(id);
+    public Product findByIdEntity(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
 

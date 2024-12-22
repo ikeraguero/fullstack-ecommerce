@@ -3,12 +3,9 @@ package com.shoppingsystem.shopping_system.cart.controller;
 import com.shoppingsystem.shopping_system.cart.dto.CartItemDTO;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
-import com.shoppingsystem.shopping_system.cart.repository.CartItemRepository;
+import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.cart.service.CartService;
 import com.shoppingsystem.shopping_system.product.model.Product;
-import com.shoppingsystem.shopping_system.cart.repository.CartRepository;
-import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
-import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +30,7 @@ public class CartItemController {
 
     @PostMapping("cartItem")
     CartItem addCartItem(@RequestBody CartItemDTO cartItemDTO) {
-        if(cartService.isProductInUserCart((cartService.findById(cartItemDTO.getCart_id())).getUserId(),
+        if(cartService.isProductInUserCart((cartService.findById(cartItemDTO.getCart_id())).getUser().getId(),
                 cartItemDTO.getProduct_id())) {
 
             // query to find cartItem by product_id
@@ -44,8 +41,7 @@ public class CartItemController {
             return cartItemService.save(cartItem);
         }
 
-        Product product = productService.findByIdEntity(cartItemDTO.getProduct_id())
-                .orElseThrow(() -> new RuntimeException("Couldn't find product"));
+        Product product = productService.findByIdEntity(cartItemDTO.getProduct_id());
 
         Cart cart = cartService.findById(cartItemDTO.getCart_id());
 

@@ -3,8 +3,16 @@ package com.shoppingsystem.shopping_system.order.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "order_item", schema = "ecommerce_project")
 public class OrderItem {
 

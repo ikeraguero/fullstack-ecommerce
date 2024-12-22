@@ -1,12 +1,15 @@
 package com.shoppingsystem.shopping_system.order.service;
 
 import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
+import com.shoppingsystem.shopping_system.order.model.OrderItem;
 import com.shoppingsystem.shopping_system.order.repository.OrderRepository;
 import com.shoppingsystem.shopping_system.order.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -33,5 +36,10 @@ public class OrderServiceImpl implements OrderService {
 
     public Order findByIdEntity(Long orderId) {
         return orderRepository.findById(orderId).orElseThrow(()->new RuntimeException("Couldn't find order"));
+    }
+
+    @Override
+    public List<OrderItem> findAllOrderItems(Long orderId) {
+        return orderRepository.findAllOrderItems(orderId);
     }
 }

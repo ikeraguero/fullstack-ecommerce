@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    @Query("SELECT c FROM Cart c WHERE c.userId = :userId")
+    @Query("SELECT c FROM Cart c WHERE c.user.id = :userId")
     Cart findByUserId(@Param("userId") Long userId);
 
     // check if a specific product is in a specific users cart
     @Query("SELECT CASE WHEN COUNT(ci) > 0 THEN true ELSE false END " +
             "FROM CartItem ci JOIN ci.cart c " +
-            "WHERE c.userId = :userId AND ci.product.id = :productId")
+            "WHERE c.user.id = :userId AND ci.product.id = :productId")
     Boolean isProductInUserCart(@Param("userId") Long userId, @Param("productId") Long productId);
 }
