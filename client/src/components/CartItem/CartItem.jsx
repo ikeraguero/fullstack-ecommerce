@@ -16,6 +16,7 @@ function CartItem({
   cartItems,
   setTotalPrice,
   totalPrice,
+  
 }) {
   const { mutate: deleteItem } = useDeleteCartItem();
   const { mutate: updateItem } = useUpdateCartItem();

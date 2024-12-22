@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../config/config";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ async function payOrder(orderData, orderId) {
 
 export function usePayOrder() {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ orderData, orderId }) => {
       console.log(orderData, orderId);
@@ -51,6 +51,7 @@ export function usePayOrder() {
     },
     onSuccess: (data, variables) => {
       setTimeout(() => {
+        queryClient.invalidateQueries(["cart"]);
         navigate(`/payment/success/${variables.orderId}`);
       }, 3000);
     },
