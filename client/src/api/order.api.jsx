@@ -46,7 +46,6 @@ export function usePayOrder() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ orderData, orderId }) => {
-      console.log(orderData, orderId);
       payOrder(orderData, orderId);
     },
     onSuccess: (data, variables) => {

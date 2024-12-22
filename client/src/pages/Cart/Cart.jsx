@@ -14,7 +14,6 @@ function Cart({ cartId, cartItems, refetch }) {
   const [totalPrice, setTotalPrice] = useState(
     cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
-  console.log(cartItems);
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
@@ -81,8 +80,9 @@ function Cart({ cartId, cartItems, refetch }) {
           </ul>
         </div>
         <div className={styles.cartBackArrow}>
-          <Link to="/">
-            <ion-icon name="arrow-back-outline"></ion-icon> Back to the shop
+          <Link to="/" className={styles.backToShop}>
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            <span> Back to the shop</span>
           </Link>
         </div>
       </div>

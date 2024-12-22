@@ -1,25 +1,21 @@
-import { useParams } from "react-router-dom";
 import { useProductsByCategory } from "../../api/products.api";
 import { MoonLoader } from "react-spinners";
 import styles from "./CategoryPage.module.css";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-function CategoryPage() {
-  // todo: component has to rerender data when params are changed
-  const params = useParams();
-  const [categoryName, setCategoryName] = useState(params.name);
+function CategoryPage({ activeCategory }) {
   const {
     data: categoryProducts,
     isLoading,
     refetch,
-  } = useProductsByCategory(categoryName);
+  } = useProductsByCategory(activeCategory);
 
   useEffect(
     function () {
-      setCategoryName(params.name);
+      refetch();
     },
-    [params]
+    [activeCategory]
   );
 
   if (isLoading) {

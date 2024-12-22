@@ -67,7 +67,7 @@ function CheckoutShipping({ cart, refetch }) {
 
   function handleBack() {
     if (checkoutStep === "payment") setCheckoutStep("shipping");
-    if (checkoutStep === "shipping") navigate("/");
+    if (checkoutStep === "shipping") navigate("/cart");
   }
 
   function handleCalculatePrice(e) {
@@ -126,12 +126,8 @@ function CheckoutShipping({ cart, refetch }) {
               </div>
             </div>
             <div className={styles.calculateShippingAndBackButton}>
-              <div className={styles.cartBackArrow}>
-                <ion-icon
-                  name="arrow-back-outline"
-                  onClick={handleBack}
-                ></ion-icon>{" "}
-                Back
+              <div className={styles.cartBackArrow} onClick={handleBack}>
+                <ion-icon name="arrow-back-outline"></ion-icon> Back
               </div>
               <button className={styles.calculateShippingButton}>
                 Calculate Shipping

@@ -7,12 +7,17 @@ import SearchBar from "./SearchBar/SearchBar";
 
 import styles from "./Nav.module.css";
 
-function Nav({ categories, setSearchProducts }) {
+function Nav({
+  categories,
+  setSearchProducts,
+  setActiveCategory,
+  activeCategory,
+}) {
+  console.log(activeCategory);
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const username = useSelector((state) => state.auth.username);
   const [isBottomOpen, setIsBottomOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState();
   const role = useSelector((state) => state.auth.role);
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
@@ -55,7 +60,8 @@ function Nav({ categories, setSearchProducts }) {
                 className={styles.loginLink}
               >
                 <span>
-                  {isLoggedIn ? `Hello, ${formattedUser}` : "Sign In/Sign Up"}
+                  {isLoggedIn ? `Hello, ` : "Sign In/Sign Up"}
+                  {isLoggedIn && <strong>{formattedUser}</strong>}
                 </span>
               </Link>
             </div>

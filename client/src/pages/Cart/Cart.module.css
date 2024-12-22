@@ -136,3 +136,10 @@
 .checkoutButton:hover {
   background-color: #fe3a65;
 }
+
+.backToShop {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}

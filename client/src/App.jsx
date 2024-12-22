@@ -22,6 +22,7 @@ import CheckoutShipping from "./pages/CheckoutShipping/CheckoutShipping";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [searchProducts, setSearchProducts] = useState([]);
 
   const { data: categories } = useCategories();
@@ -48,8 +49,6 @@ function App() {
     );
   }
 
-  console.log(cart);
-
   if (error) {
     return <div>Error loading data</div>;
   }
@@ -62,7 +61,12 @@ function App() {
           setOpen={setSuccessOpen}
           message={"Product added to cart successfully"}
         />
-        <Nav categories={categories} setSearchProducts={setSearchProducts} />
+        <Nav
+          categories={categories}
+          setSearchProducts={setSearchProducts}
+          setActiveCategory={setActiveCategory}
+          activeCategory={activeCategory}
+        />
         <Routes>
           <Route
             index
@@ -108,7 +112,10 @@ function App() {
             path="/search"
             element={<SearchResults searchProducts={searchProducts} />}
           />
-          <Route path="categories/:name" element={<CategoryPage />} />
+          <Route
+            path="categories/:name"
+            element={<CategoryPage activeCategory={activeCategory} />}
+          />
           <Route path="/login" element={<Login refetchCart={refetch} />} />
           <Route path="/register" element={<Register />} />
           <Route

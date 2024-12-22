@@ -1,5 +1,5 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+
 import { logout } from "../../actions/AuthActions";
 
 import styles from "./Dropdown.module.css";
@@ -14,9 +14,10 @@ const Dropdown = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className={styles.IconButton} aria-label="Customise options">
-          <HamburgerMenuIcon />
-        </button>
+        <button
+          className={styles.IconButton}
+          aria-label="Customise options"
+        ></button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
