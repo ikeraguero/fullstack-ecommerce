@@ -72,7 +72,7 @@ function Product({ cart, userId, refetch, openSuccess }) {
           <h3 className={styles.productCategory}>{product.category}</h3>
           <h1>{product?.name}</h1>
           <span>Rating | In stock</span>
-          <h2>R${product?.price}</h2>
+          <h2>${product?.price}</h2>
           <div className={styles.productDescription}>
             {product.product_description}
           </div>

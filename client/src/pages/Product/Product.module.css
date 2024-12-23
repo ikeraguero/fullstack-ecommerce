@@ -32,7 +32,7 @@
 .buttonBuy,
 .buttonAddToCart {
   width: 100%;
-  border-radius: 99px;
+  border-radius: 0.6rem;
   cursor: pointer;
   border: none;
   padding: 0.4rem 3.6rem;

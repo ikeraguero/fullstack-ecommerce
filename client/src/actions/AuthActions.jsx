@@ -3,6 +3,6 @@ export const loginSuccess = (username, role, token, id) => ({
   payload: { username, role, token, id },
 });
 
-export const logout = () => ({
+export const logoutSuccess = () => ({
   type: "LOGOUT",
 });
