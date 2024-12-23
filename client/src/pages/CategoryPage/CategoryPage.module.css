@@ -22,5 +22,5 @@
 .productGrid {
   display: grid;
   gap: 1.8rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
 }

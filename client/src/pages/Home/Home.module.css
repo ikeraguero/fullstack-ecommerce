@@ -8,7 +8,7 @@
 .productGrid {
   display: grid;
   gap: 1.8rem;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .carousel {
@@ -24,7 +24,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: #ffffffb3;
   z-index: 9999;
 }
 

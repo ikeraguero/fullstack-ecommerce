@@ -13,6 +13,7 @@ function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   function handleClick(e) {
     const option = e.target.closest(`.${styles.leftPanelOption}`);
     if (option) {

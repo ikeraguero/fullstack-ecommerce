@@ -31,11 +31,11 @@ function Login({ refetchCart }) {
         }
       );
 
-      const { token, first_name: username, role, id } = res.data;
+      const { token, first_name, last_name, email, role, id } = res.data;
+      const username = `${first_name} ${last_name}`;
 
-  
       login(token);
-      dispatch(loginSuccess(username, role, token, id));
+      dispatch(loginSuccess(username, role, token, id, email, last_name, first_name));
       navigate("/");
       refetchCart();
     } catch (err) {

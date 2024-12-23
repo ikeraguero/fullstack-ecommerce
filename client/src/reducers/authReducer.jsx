@@ -4,6 +4,9 @@ const initialState = {
   token: null,
   id: null,
   role: null,
+  firstName: null,
+  lastName: null,
+  email: null,
 };
 
 function authReducer(state = initialState, action) {
@@ -16,7 +19,11 @@ function authReducer(state = initialState, action) {
         username: action.payload.username,
         role: action.payload.role,
         token: action.payload.token,
+        firstName: action.payload.first_name,
+        lastName: action.payload.last_name,
+        email: action.payload.email,
       };
+
     case "LOGOUT":
       return {
         ...state,

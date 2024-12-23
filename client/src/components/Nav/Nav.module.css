@@ -48,7 +48,8 @@
 }
 
 .navLink:hover,
-.navBottomRight ion-icon:hover {
+.navBottomRight ion-icon:hover,
+.cart:hover span {
   color: #7d7d7d;
 }
 

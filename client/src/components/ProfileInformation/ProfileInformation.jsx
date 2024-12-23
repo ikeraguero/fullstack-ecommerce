@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
 import styles from "./ProfileInformation.module.css";
 
 function ProfileInformation() {
+  const username = useSelector((state) => state.auth.username);
+  const email = useSelector((state) => state.auth.email);
+  const firstName = useSelector((state) => state.auth.firstName);
+  console.log(email, username);
   return (
     <div>
       <h1>Profile</h1>
@@ -10,19 +15,19 @@ function ProfileInformation() {
             <img src="../../../profile-img.jpg" alt="" />
           </div>
           <div className={styles.profileLeftEmailAndName}>
-            <span>Full Name</span>
-            <span>Email</span>
+            <span className={styles.profileUsername}>{username}</span>
+            <span className={styles.profileEmail}>{email}</span>
           </div>
         </div>
         <div className={styles.profileTopRight}>
-          <button>Edit</button>
+          <button className={styles.profileTopRightButton}>Edit</button>
         </div>
       </div>
       <div className={styles.profileBody}>
         <form action="submit" className={styles.profileBodyForm}>
           <div className={styles.profileFormItem}>
             <label htmlFor="firstName">First Name</label>
-            <input type="text" />
+            <input type="text" value={firstName} />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="lastName">Last Name</label>

@@ -61,7 +61,7 @@ function Nav({
                   className={styles.loginLink}
                 >
                   {isLoggedIn ? `Hello, ` : "Sign In/Sign Up"}
-                  {isLoggedIn && <strong>{formattedUser}</strong>}
+                  {isLoggedIn && <strong>{formattedUser.split(" ")[0]}</strong>}
                 </Link>
               </span>
             </div>

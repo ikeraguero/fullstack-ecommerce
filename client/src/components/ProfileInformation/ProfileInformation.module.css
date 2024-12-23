@@ -50,3 +50,11 @@
   margin-top: 2.4rem;
   gap: 1.2rem;
 }
+
+.profileUsername {
+  font-weight: 600;
+}
+
+.profileTopRight button:hover {
+  background-color: #fd5277;
+}
