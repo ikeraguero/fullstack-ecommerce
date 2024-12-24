@@ -12,6 +12,15 @@ const createAxiosInstance = () => {
   return instance;
 };
 
+async function fetchOrdersByUser(userId) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.get(`/orders/user/${userId}`);
+  if (res.status !== 200) {
+    return new Error("Problem fetching the data");
+  }
+  return res.data;
+}
+
 async function createOrder(orderData) {
   const axiosInstance = createAxiosInstance();
   const res = await axiosInstance.post(`/order`, orderData, {
@@ -54,6 +63,13 @@ export function usePayOrder() {
         navigate(`/payment/success/${variables.orderId}`);
       }, 3000);
     },
+  });
+}
+
+export function useOrdersByUser(userId) {
+  return useQuery({
+    queryFn: () => fetchOrdersByUser(userId),
+    queryKey: ["userOrders"],
   });
 }
 

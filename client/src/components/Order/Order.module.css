@@ -1,0 +1,24 @@
+.order {
+  border: 1px solid #e0e0e0;
+  padding: 1.4rem 1.8rem;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.order ion-icon {
+}
+
+.orderItem {
+  border: 1px solid red;
+  padding: 1rem 0rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order span {
+  font-weight: 500;
+}

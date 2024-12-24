@@ -6,10 +6,11 @@ import CartItem from "../../components/CartItem/CartItem";
 import styles from "./Cart.module.css";
 import { useCreateOrder } from "../../api/order.api";
 import { useCheckout } from "../../context/CheckoutContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOrder } from "../../actions/OrderActions";
 
 function Cart({ cartId, cartItems, refetch }) {
+  const id = useSelector((state) => state.auth.id);
   const itemsLength = cartItems?.length;
   const [totalPrice, setTotalPrice] = useState(
     cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
@@ -33,7 +34,7 @@ function Cart({ cartId, cartItems, refetch }) {
 
   async function handleCreateOrder() {
     const orderData = {
-      userId: 1,
+      userId: id,
       totalPrice,
       date: "2024-12-20T15:30:00",
       status: "pending",

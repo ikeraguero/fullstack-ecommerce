@@ -1,0 +1,12 @@
+.order {
+  border: 1px solid red;
+  padding: 1.4rem 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.order ion-icon {
+  cursor: pointer;
+}
