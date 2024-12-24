@@ -13,7 +13,10 @@ function Order({ orderItems, orderId }) {
 
   return (
     <div>
-      <div className={styles.order} onClick={handleOpenOrder}>
+      <div
+        className={isOpen ? styles.orderOpened : styles.orderClosed}
+        onClick={handleOpenOrder}
+      >
         <span>Order #{orderId}</span>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </div>

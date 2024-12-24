@@ -1,7 +1,18 @@
-.order {
-  border: 1px solid #e0e0e0;
+.orderClosed {
+  border: 1px solid #cbcbcb;
   padding: 1.4rem 1.8rem;
   border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.orderOpened {
+  border: 1px solid #656565;
+  padding: 1.4rem 1.8rem;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,12 +24,13 @@
 
 .orderItem {
   border: 1px solid red;
-  padding: 1rem 0rem;
+  padding: 0rem 0rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.order span {
+.orderOpened span,
+.orderClosed span {
   font-weight: 500;
 }
