@@ -4,6 +4,7 @@ import com.shoppingsystem.shopping_system.cart.model.CartItem;
 import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.category.service.CategoryService;
 import com.shoppingsystem.shopping_system.order.dto.OrderItemRequest;
+import com.shoppingsystem.shopping_system.order.dto.OrderItemResponse;
 import com.shoppingsystem.shopping_system.order.dto.OrderRequest;
 import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
 import com.shoppingsystem.shopping_system.order.model.Order;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -99,7 +101,7 @@ public class OrderController {
         orderService.save(existingOrder);
 
         // update product and removing cart item
-        List<OrderItem> orderItemList = orderService.findAllOrderItems(existingOrder.getOrderId());
+        List<OrderItem> orderItemList = orderService.findAllOrderItemsEntity(existingOrder.getOrderId());
         List<CartItem> cartItemList = cartItemService.findCartItemsByUser(existingOrder.getUser().getId());
             System.out.println(existingOrder.getUser().getId());
         for(CartItem cartItem : cartItemList) {
@@ -111,6 +113,22 @@ public class OrderController {
             productService.save(existingProduct);
 
         }
+
+    }
+
+    @GetMapping("/orders/user/{userId}")
+    public List<OrderResponse> getOrdersByUser(@PathVariable Long userId) {
+        List<Order> orderList = orderService.findAllOrdersByUser(userId);
+        List<OrderResponse>  orderResponseList = new LinkedList<>();
+        for(Order order : orderList) {
+            OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
+                    orderService.countItemsInOrder(order.getOrderId()),
+                    order.getTotalPrice());
+            List<OrderItemResponse> orderItemList = orderService.findAllOrderItems(orderResponse.getOrderId());
+            orderResponse.setOrderItems(orderItemList);
+            orderResponseList.add(orderResponse);
+        }
+        return orderResponseList;
 
     }
 }

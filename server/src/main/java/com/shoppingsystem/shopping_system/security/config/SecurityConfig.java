@@ -39,7 +39,8 @@ public class SecurityConfig {
                         "/api/cartItem",
                         "/api/products/categories/**",
                         "/api/order/**",
-                        "/api/order"
+                        "/api/order",
+                        "/api/orders/user/**"
                         ).permitAll()
                         .requestMatchers("/api/products", "/api/users/**", "/api/roles").hasRole("ADMIN")
                         .anyRequest().authenticated()
