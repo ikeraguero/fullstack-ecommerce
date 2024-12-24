@@ -6,13 +6,14 @@ import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../actions/AuthActions";
 import { useNavigate } from "react-router-dom";
 import ProfileInformation from "../../components/ProfileInformation/ProfileInformation";
+import OrderInformation from "../../components/OrderInformation/OrderInformation";
 
 function Profile() {
+
   const [active, setActive] = useState("profile");
   const { logout } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   function handleClick(e) {
     const option = e.target.closest(`.${styles.leftPanelOption}`);
@@ -24,6 +25,8 @@ function Profile() {
       setActive(spanContent);
     }
   }
+
+
 
   function handleLogout() {
     logout();
@@ -69,7 +72,10 @@ function Profile() {
         </div>
       </div>
       <div className={styles.rightContent}>
-        <ProfileInformation />
+        {active === "profile" && (
+          <ProfileInformation/>
+        )}
+        {active === "orders" && <OrderInformation />}
       </div>
     </div>
   );

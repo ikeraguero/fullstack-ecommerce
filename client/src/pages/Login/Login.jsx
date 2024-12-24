@@ -35,7 +35,9 @@ function Login({ refetchCart }) {
       const username = `${first_name} ${last_name}`;
 
       login(token);
-      dispatch(loginSuccess(username, role, token, id, email, last_name, first_name));
+      dispatch(
+        loginSuccess(username, role, token, id, email, first_name, last_name)
+      );
       navigate("/");
       refetchCart();
     } catch (err) {
