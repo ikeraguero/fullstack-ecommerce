@@ -8,17 +8,14 @@ function OrderInformation() {
   const { data: orders, isLoading } = useOrdersByUser(id);
 
   if (isLoading) return <div>Loading...</div>;
+  console.log(orders);
 
   return (
     <div>
       <h1>Orders</h1>
       <div className={styles.ordersContainer}>
         {orders?.map((order) => (
-          <Order
-            key={order.id}
-            orderItems={order.orderItems}
-            orderId={order.orderId}
-          />
+          <Order key={order.id} {...order} />
         ))}
       </div>
     </div>
