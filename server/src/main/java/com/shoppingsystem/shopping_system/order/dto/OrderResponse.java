@@ -1,11 +1,11 @@
 package com.shoppingsystem.shopping_system.order.dto;
 
-import com.shoppingsystem.shopping_system.order.model.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -17,10 +17,14 @@ public class OrderResponse {
     private Long items;
     private double totalPrice;
     private List<OrderItemResponse> orderItems;
+    private Date date;
+    private String status;
 
-    public OrderResponse(Long orderId, Long items, double totalPrice) {
+    public OrderResponse(Long orderId, Long items, double totalPrice, Date date, String status) {
         this.orderId = orderId;
         this.items = items;
         this.totalPrice = totalPrice;
+        this.date = date;
+        this.status = status;
     }
 }

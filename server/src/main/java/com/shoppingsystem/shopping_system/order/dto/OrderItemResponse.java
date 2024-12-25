@@ -16,5 +16,7 @@ public class OrderItemResponse {
     private String productName;
     private double totalPrice;
     private int quantity;
+    private byte[] imageData;
+    private String imageType;
 
 }

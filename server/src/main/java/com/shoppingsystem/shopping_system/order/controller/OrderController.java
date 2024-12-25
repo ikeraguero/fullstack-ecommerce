@@ -82,7 +82,8 @@ public class OrderController {
             orderItemService.save(orderItem1);
         }
 
-       OrderResponse orderResponse = new OrderResponse(order.getOrderId(), orderService.countItemsInOrder(order.getOrderId()), order.getTotalPrice());
+       OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
+               orderService.countItemsInOrder(order.getOrderId()), order.getTotalPrice(), order.getDate(), order.getStatus());
 
 
        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
@@ -123,7 +124,7 @@ public class OrderController {
         for(Order order : orderList) {
             OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
                     orderService.countItemsInOrder(order.getOrderId()),
-                    order.getTotalPrice());
+                    order.getTotalPrice(), order.getDate(), order.getStatus());
             List<OrderItemResponse> orderItemList = orderService.findAllOrderItems(orderResponse.getOrderId());
             orderResponse.setOrderItems(orderItemList);
             orderResponseList.add(orderResponse);

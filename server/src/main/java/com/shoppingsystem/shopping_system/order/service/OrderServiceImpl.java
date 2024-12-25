@@ -5,6 +5,8 @@ import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
 import com.shoppingsystem.shopping_system.order.model.OrderItem;
 import com.shoppingsystem.shopping_system.order.repository.OrderRepository;
 import com.shoppingsystem.shopping_system.order.model.Order;
+import com.shoppingsystem.shopping_system.product.model.ProductImage;
+import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     @Override
     public void save(Order order) {
@@ -34,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Couldn't find order"));
         OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
                 orderRepository.countItemsInOrder(order.getOrderId()),
-                order.getTotalPrice());
+                order.getTotalPrice(), order.getDate(), order.getStatus());
 
         List<OrderItemResponse> orderItemList = findAllOrderItems(orderResponse.getOrderId());
         orderResponse.setOrderItems(orderItemList);
@@ -50,8 +55,11 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItemList = orderRepository.findAllOrderItems(orderId);
         List<OrderItemResponse> orderItemResponseList = new LinkedList<>();
         for(OrderItem orderItem : orderItemList) {
+            ProductImage productImage = productImageRepository.findById(orderItem.getProduct().getId())
+                    .orElseThrow(() -> new RuntimeException("Image not found"));
             OrderItemResponse orderItemResponse = new OrderItemResponse(orderItem.getOrderItemId(),
-                    orderItem.getProduct().getName(), orderItem.getTotalPrice(), orderItem.getQuantity());
+                    orderItem.getProduct().getName(), orderItem.getTotalPrice(), orderItem.getQuantity(), productImage.getImageData(),
+                    productImage.getType());
             orderItemResponseList.add(orderItemResponse);
         }
         return orderItemResponseList;
