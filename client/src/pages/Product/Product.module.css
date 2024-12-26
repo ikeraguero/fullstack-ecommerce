@@ -1,10 +1,23 @@
 .mainContainer {
   margin: 5.4rem 0 5.4rem 0;
-  width: 80%;
+  max-width: 60%;
   display: flex;
+  align-self: center;
+  flex-direction: column;
   justify-self: center;
   justify-content: center;
   gap: 5.6rem;
+}
+
+.productTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 5.6rem;
+}
+
+.productBottom {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .productPhoto img {

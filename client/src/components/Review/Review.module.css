@@ -1,0 +1,36 @@
+.reviewContainer {
+  padding: 5.4rem 0 5.4rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 5.6rem;
+}
+
+.reviewLeftStats {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.reviewRight {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  margin-top: 2rem;
+}
+
+.reviewLeftStats span {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}

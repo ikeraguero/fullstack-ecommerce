@@ -9,6 +9,7 @@ import useCart from "../../api/cart.api";
 import styles from "./Product.module.css";
 import { MoonLoader } from "react-spinners";
 import SuccessAlert from "../../components/SuccessAlert/SuccessAlert";
+import Review from "../../components/Review/Review";
 
 function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
@@ -59,76 +60,85 @@ function Product({ cart, userId, refetch, openSuccess }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
+  console.log(product);
+
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.productPhoto}>
-        <img
-          src={`data:${product?.image_type};base64,${product?.image_data}`}
-          alt={product?.name}
-        />
-      </div>
-      <div className={styles.productDetails}>
-        <div className={styles.productDetailsTop}>
-          <h3 className={styles.productCategory}>{product.category}</h3>
-          <h1>{product?.name}</h1>
-          <span>Rating | In stock</span>
-          <h2>${product?.price}</h2>
-          <div className={styles.productDescription}>
-            {product.product_description}
-          </div>
+      <div className={styles.productTop}>
+        <div className={styles.productPhoto}>
+          <img
+            src={`data:${product?.image_type};base64,${product?.image_data}`}
+            alt={product?.name}
+          />
         </div>
-        <div className={styles.productQuantityAndWishlist}>
-          <div className={styles.productQuantity}>
-            <button
-              className={styles.productQuantityDecrease}
-              onClick={handleDecreaseQuantity}
-            >
-              -
-            </button>
-            <div className={styles.productQuantityDisplay}>
-              {quantity < 10 ? "0" + quantity : quantity}
+        <div className={styles.productDetails}>
+          <div className={styles.productDetailsTop}>
+            <h3 className={styles.productCategory}>{product.category}</h3>
+            <h1>{product?.name}</h1>
+            <span>Rating | In stock</span>
+            <h2>${product?.price}</h2>
+            <div className={styles.productDescription}>
+              {product.product_description}
             </div>
-            <button
-              className={styles.productQuantityIncrease}
-              onClick={handleIncreaseQuantity}
-            >
-              +
-            </button>
-            {/* <label htmlFor="quantity">Quantity:</label>
-          <select
-            name="quantity"
-            id=""
-            className={styles.select}
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-          >
-            {options.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select> */}
           </div>
-          <button className={styles.wishlistButton}>
-            <ion-icon name="heart-outline"></ion-icon>
-          </button>
-        </div>
-        <div className={styles.interactive}>
-          <div className={styles.interactiveQuantity}></div>
-          <div className={styles.interactiveButtons}>
-            {isLoggedIn ? (
+          <div className={styles.productQuantityAndWishlist}>
+            <div className={styles.productQuantity}>
               <button
-                className={styles.buttonAddToCart}
-                onClick={handleAddToCart}
+                className={styles.productQuantityDecrease}
+                onClick={handleDecreaseQuantity}
               >
-                Add to cart
+                -
               </button>
-            ) : (
-              <Link to={"/login"}>
-                <button className={styles.buttonAddToCart}>Add to cart</button>
-              </Link>
-            )}
-            <button className={styles.buttonBuy}>Buy Now</button>
+              <div className={styles.productQuantityDisplay}>
+                {quantity < 10 ? "0" + quantity : quantity}
+              </div>
+              <button
+                className={styles.productQuantityIncrease}
+                onClick={handleIncreaseQuantity}
+              >
+                +
+              </button>
+              {/* <label htmlFor="quantity">Quantity:</label>
+          <select
+          name="quantity"
+          id=""
+          className={styles.select}
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+          >
+          {options.map((option) => (
+            <option key={option}>{option}</option>
+          ))}
+        </select> */}
+            </div>
+            <button className={styles.wishlistButton}>
+              <ion-icon name="heart-outline"></ion-icon>
+            </button>
+          </div>
+          <div className={styles.interactive}>
+            <div className={styles.interactiveQuantity}></div>
+            <div className={styles.interactiveButtons}>
+              {isLoggedIn ? (
+                <button
+                  className={styles.buttonAddToCart}
+                  onClick={handleAddToCart}
+                >
+                  Add to cart
+                </button>
+              ) : (
+                <Link to={"/login"}>
+                  <button className={styles.buttonAddToCart}>
+                    Add to cart
+                  </button>
+                </Link>
+              )}
+              <button className={styles.buttonBuy}>Buy Now</button>
+            </div>
           </div>
         </div>
+      </div>
+      <div className={styles.productBottom}>
+        <Review productReviewList={product.productReviewList} />
       </div>
     </div>
   );
