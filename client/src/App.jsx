@@ -20,6 +20,7 @@ import { Spinner } from "@nextui-org/react";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "./pages/CheckoutShipping/CheckoutShipping";
 import Profile from "./pages/Profile/Profile";
+import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -33,12 +34,20 @@ function App() {
     refetch,
     isLoading,
   } = useCart(userId === undefined ? 0 : userId);
-  const [successOpen, setSuccessOpen] = useState(false);
+  const [isSuccessOpen, setSuccessOpen] = useState(false);
+  const [isErrorOpen, setErrorOpen] = useState(false);
 
   const openSuccess = () => {
     setSuccessOpen(true);
     setTimeout(() => {
       setSuccessOpen(false);
+    }, 4000);
+  };
+
+  const openError = () => {
+    setErrorOpen(true);
+    setTimeout(() => {
+      setErrorOpen(false);
     }, 4000);
   };
 
@@ -58,9 +67,14 @@ function App() {
     <ProductFormProvider>
       <BrowserRouter>
         <SuccessAlert
-          successOpen={successOpen}
+          successOpen={isSuccessOpen}
           setOpen={setSuccessOpen}
           message={"Product added to cart successfully"}
+        />
+        <ErrorAlert
+          isErrorOpen={isErrorOpen}
+          setOpen={setErrorOpen}
+          message={"Your cart is currently empty"}
         />
         <Nav
           categories={categories}
@@ -71,16 +85,7 @@ function App() {
         <Routes>
           <Route
             index
-            element={
-              <Home
-                userId={userId}
-                refetch={refetch}
-                cart={cart}
-                successOpen={successOpen}
-                openSuccess={openSuccess}
-                setSuccessOpen={setSuccessOpen}
-              />
-            }
+            element={<Home userId={userId} refetch={refetch} cart={cart} />}
           />
           <Route path="/*" element={<PageNotFound />} />
           <Route
@@ -90,6 +95,9 @@ function App() {
                 cartItems={cart.cartItems}
                 cartId={cart.id}
                 refetch={refetch}
+                errorOpen={isErrorOpen}
+                openError={openError}
+                setErrorOpen={setErrorOpen}
               />
             }
           />

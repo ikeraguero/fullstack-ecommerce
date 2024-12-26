@@ -14,15 +14,21 @@ function Review({ productReviewList }) {
       <div className={styles.reviewLeft}>
         <div className={styles.reviewLeftStats}>
           <h2>Customer ratings</h2>
-          <span>
-            <StarRating
-              size={25}
-              defaultRating={ratingAvg}
-              showRating={false}
-            />
-            <span>{ratingAvg} out of 5 </span>
-          </span>
-          <span>{ratingLength} reviews</span>
+          {!isNaN(ratingAvg) ? (
+            <>
+              <span>
+                <StarRating
+                  size={25}
+                  defaultRating={ratingAvg}
+                  showRating={false}
+                />
+                <span>{ratingAvg} out of 5 </span>
+              </span>
+              <span>{ratingLength} reviews</span>
+            </>
+          ) : (
+            <span>No reviews yet</span>
+          )}
         </div>
         <div>
           <h2>Review this product</h2>

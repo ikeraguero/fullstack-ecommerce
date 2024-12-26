@@ -8,8 +8,9 @@ import { useCreateOrder } from "../../api/order.api";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrder } from "../../actions/OrderActions";
+import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 
-function Cart({ cartId, cartItems, refetch }) {
+function Cart({ cartId, cartItems, refetch, openError }) {
   const id = useSelector((state) => state.auth.id);
   const itemsLength = cartItems?.length;
   const [totalPrice, setTotalPrice] = useState(
@@ -33,6 +34,11 @@ function Cart({ cartId, cartItems, refetch }) {
   );
 
   async function handleCreateOrder() {
+    if (itemsLength === 0) {
+      <ErrorAlert />;
+      openError();
+      return;
+    }
     const orderData = {
       userId: id,
       totalPrice,
