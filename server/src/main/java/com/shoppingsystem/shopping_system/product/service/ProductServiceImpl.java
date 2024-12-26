@@ -7,6 +7,8 @@ import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
+import com.shoppingsystem.shopping_system.product_review.dto.ProductReviewResponse;
+import com.shoppingsystem.shopping_system.product_review.service.ProductReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private ProductReviewService productReviewService;
 
     public ProductServiceImpl() {
     }
@@ -56,10 +61,11 @@ public class ProductServiceImpl implements ProductService{
 
         for(Product product : products) {
             ProductImage productImage = productImageRepository.findById(product.getImage_id()).get();
+            List<ProductReviewResponse> productReviewResponseList = productReviewService.findAllReviewsByProduct(product.getId());
             ProductResponse productResponse = new ProductResponse(
                     product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
                     product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
-                    productImage.getType(), productImage.getImageData(), productImage.getId()
+                    productImage.getType(), productImage.getImageData(), productImage.getId(), productReviewResponseList
             );
             productResponseList.add(productResponse);
         }
@@ -80,10 +86,11 @@ public class ProductServiceImpl implements ProductService{
 
         for(Product product : products) {
             ProductImage productImage = productImageRepository.findById(product.getImage_id()).get();
+            List<ProductReviewResponse> productReviewResponseList = productReviewService.findAllReviewsByProduct(product.getId());
             ProductResponse productResponse = new ProductResponse(
                     product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
                     product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
-                    productImage.getType(), productImage.getImageData(), productImage.getId()
+                    productImage.getType(), productImage.getImageData(), productImage.getId(), productReviewResponseList
             );
             productResponseList.add(productResponse);
         }
@@ -114,6 +121,8 @@ public class ProductServiceImpl implements ProductService{
         ProductImage productImage = productImageRepository.findById(product.getImage_id())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
+        List<ProductReviewResponse> productReviewResponseList = productReviewService.findAllReviewsByProduct(product.getId());
+
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
@@ -124,7 +133,8 @@ public class ProductServiceImpl implements ProductService{
                 product.getProduct_description(),
                 productImageRepository.findById(product.getImage_id()).get().getType(),
                 productImageRepository.findById(product.getImage_id()).get().getImageData(),
-                productImageRepository.findById(product.getImage_id()).get().getId()
+                productImageRepository.findById(product.getImage_id()).get().getId(),
+                productReviewResponseList
         );
     }
 }

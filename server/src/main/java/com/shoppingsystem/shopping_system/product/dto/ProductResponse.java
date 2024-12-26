@@ -1,8 +1,11 @@
 package com.shoppingsystem.shopping_system.product.dto;
 
+import com.shoppingsystem.shopping_system.product_review.dto.ProductReviewResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Getter
@@ -19,4 +22,5 @@ public class ProductResponse {
     private String image_type;
     private byte[] image_data;
     private Long image_id;
+    private List<ProductReviewResponse> productReviewList;
 }
