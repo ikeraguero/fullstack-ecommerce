@@ -31,6 +31,9 @@ function CategoryPage({ activeCategory }) {
   refetch();
   return (
     <div className={styles.mainContainer}>
+      <h1>
+        {`What's best on `} <span className={styles.activeCategory}>{activeCategory}</span>
+      </h1>
       <div className={styles.productGrid}>
         {categoryProducts.map((product) => (
           <ProductCard {...product} key={product.key} />

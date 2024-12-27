@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ImgZoom from "react-img-zoom";
 
 import { useProduct } from "../../api/products.api";
 import { useAddToCart } from "../../api/cart.api";
@@ -16,6 +17,7 @@ function Product({ cart, userId, refetch, openSuccess }) {
   const {
     data: product,
     error,
+    refetch: refetchProduct,
     isLoading,
   } = useProduct(id, userId ? userId : 0);
   const [quantity, setQuantity] = useState(1);
@@ -23,6 +25,14 @@ function Product({ cart, userId, refetch, openSuccess }) {
   let userCart = useCart(userId).data;
 
   const { mutate: addToCart } = useAddToCart();
+  console.log(id);
+
+  useEffect(
+    function () {
+      refetchProduct();
+    },
+    [id, refetchProduct]
+  );
 
   async function handleAddToCart() {
     const cartItem = {
@@ -70,9 +80,13 @@ function Product({ cart, userId, refetch, openSuccess }) {
     <div className={styles.mainContainer}>
       <div className={styles.productTop}>
         <div className={styles.productPhoto}>
-          <img
-            src={`data:${product?.image_type};base64,${product?.image_data}`}
-            alt={product?.name}
+          <ImgZoom
+            key={product?.id}
+            img={`data:${product?.image_type};base64,${product?.image_data}`}
+            className={styles.productPhotoZoom}
+            zoomScale={1.5}
+            width={500}
+            height={500}
           />
         </div>
         <div className={styles.productDetails}>

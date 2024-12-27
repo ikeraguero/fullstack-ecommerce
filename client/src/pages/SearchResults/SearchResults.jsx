@@ -7,11 +7,7 @@ function SearchResults({ searchProducts }) {
     <div>
       <div className={styles.mainContainer}>
         {resultsLength === 0 && <h1>No results found</h1>}
-        {resultsLength > 0 && (
-          <h1>
-            {resultsLength} {resultsLength === 1 ? "result" : "results"} found!
-          </h1>
-        )}
+        {resultsLength > 0 && <h1>Results found ({resultsLength})</h1>}
         <div className={styles.productGrid}>
           {searchProducts.map((product) => (
             <ProductCard key={product.id} {...product} />

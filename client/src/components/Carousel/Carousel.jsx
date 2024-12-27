@@ -30,7 +30,12 @@ function Carousel() {
         delay: AUTOPLAY_DELAY,
         disableOnInteraction: false,
       }}
-      style={{ width: "100%", height: "24.2rem", marginBottom: "2.6rem" }}
+      style={{
+        width: "100%",
+        height: "24.2rem",
+        marginBottom: "2.6rem",
+        zIndex: -1,
+      }}
     >
       <SwiperSlide slot="container-end">
         <img

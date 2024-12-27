@@ -148,3 +148,7 @@
   max-height: 200px;
   opacity: 1;
 }
+
+.none {
+  display: none;
+}

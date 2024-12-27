@@ -32,6 +32,14 @@ function Nav({
     setIsBottomOpen(!isBottomOpen);
   }
 
+  function handleSelectCategory(e, category) {
+    if (!isBottomOpen) {
+      e.preventDefault();
+      return;
+    }
+    setActiveCategory(category);
+  }
+
   if (!loadedCategories) {
     return <div>Loading...</div>;
   }
@@ -77,13 +85,17 @@ function Nav({
           </div>
         </div>
       </div>
-      <div className={`${styles.navBottom} ${isBottomOpen ? styles.open : ""}`}>
+      <div
+        className={`${styles.navBottom} ${
+          isBottomOpen ? styles.open : styles.none
+        }`}
+      >
         <div className={styles.navBottomLeft}>
           {loadedCategories.map((category) => (
             <Link
               to={`categories/${category.name}`}
               key={category.id}
-              onClick={() => setActiveCategory(category.name)}
+              onClick={(e) => handleSelectCategory(e, category.name)}
               className={
                 activeCategory === category.name
                   ? styles.activeCategoryItem

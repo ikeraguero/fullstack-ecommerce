@@ -17,6 +17,7 @@
   border-radius: 0.6rem;
   padding: 0rem 0rem 0rem 0.8rem;
   border: solid 1px #a2a2a2;
+  position: relative;
 }
 
 .searchBar ion-icon {
@@ -35,4 +36,16 @@
 
 .searchBar:focus {
   border: 1px solid #f42b56;
+}
+
+.results {
+  width: 100%;
+  position: absolute;
+  top: 2.2rem;
+  left: -0rem;
+  cursor: pointer;
+}
+
+.results SearchItem:hover {
+  background-color: #c5c5c5;
 }

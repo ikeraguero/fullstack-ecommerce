@@ -1,0 +1,22 @@
+.searchResult {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.searchResultImg {
+  display: flex;
+}
+
+.searchResultImg img {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.searchItemLink {
+  text-decoration: none;
+}

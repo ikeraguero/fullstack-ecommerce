@@ -1,5 +1,5 @@
 .mainContainer {
-  margin: 5.4rem 0 5.4rem 0;
+  margin: 2.4rem 0 5.4rem 0;
   max-width: 60%;
   display: flex;
   align-self: center;
@@ -20,11 +20,14 @@
   justify-content: flex-start;
 }
 
-.productPhoto img {
+.productPhoto {
   width: 36.2rem;
   height: 28.6rem;
-  border: 1px solid #2b2b2b;
+  z-index: -1;
   align-self: flex-start;
+}
+
+.productPhotoZoom {
 }
 
 .productDetails {
