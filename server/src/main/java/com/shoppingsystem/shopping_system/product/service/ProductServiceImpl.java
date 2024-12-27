@@ -2,6 +2,7 @@ package com.shoppingsystem.shopping_system.product.service;
 
 import com.shoppingsystem.shopping_system.category.model.Category;
 import com.shoppingsystem.shopping_system.category.repository.CategoryRepository;
+import com.shoppingsystem.shopping_system.order.service.OrderItemService;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
@@ -9,6 +10,7 @@ import com.shoppingsystem.shopping_system.product.repository.ProductImageReposit
 import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
 import com.shoppingsystem.shopping_system.product_review.dto.ProductReviewResponse;
 import com.shoppingsystem.shopping_system.product_review.service.ProductReviewService;
+import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,12 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductReviewService productReviewService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
+    @Autowired
+    private UserService userService;
+
     public ProductServiceImpl() {
     }
 
@@ -43,15 +51,18 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponse findById(Long id) {
-        Optional<Product> result = productRepository.findById(id);
+    public ProductResponse findById(Long productId, Long userId) {
+        Optional<Product> result = productRepository.findById(productId);
         Product theProduct = null;
+        boolean canUserReview = orderItemService.hasUserBoughtProduct(productId, userId);
         if(result.isPresent()) {
             theProduct = result.get();
         } else {
-            throw new RuntimeException("Did not find product with id - " + id);
+            throw new RuntimeException("Did not find product with productId - " + productId);
         }
-        return convertToDTO(theProduct);
+        ProductResponse productResponse = convertToDTO(theProduct);
+        productResponse.setCanUserReview(canUserReview);
+        return productResponse;
     }
 
     @Override
@@ -65,8 +76,7 @@ public class ProductServiceImpl implements ProductService{
             ProductResponse productResponse = new ProductResponse(
                     product.getId(), product.getName(), product.getPrice(), product.getStock_quantity(),
                     product.getCategory().getId(), product.getCategory().getName(), product.getProduct_description(),
-                    productImage.getType(), productImage.getImageData(), productImage.getId(), productReviewResponseList
-            );
+                    productImage.getType(), productImage.getImageData(), productImage.getId(), productReviewResponseList);
             productResponseList.add(productResponse);
         }
 

@@ -5,13 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.user.model.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "product_review", schema = "ecommerce_project")
 public class ProductReview {
     @Id
@@ -35,5 +41,14 @@ public class ProductReview {
     @Column(name = "review_comment")
     private String comment;
 
+    @Column(name = "review_date")
+    private Date date;
 
+    public ProductReview(Product product, User user, int rating, String comment, Date date) {
+        this.product = product;
+        this.user = user;
+        this.rating = rating;
+        this.comment = comment;
+        this.date = date;
+    }
 }

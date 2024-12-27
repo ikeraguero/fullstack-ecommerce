@@ -15,4 +15,9 @@ public class OrderItemServiceImpl implements OrderItemService{
     public void save(OrderItem orderItem) {
         orderItemRepository.save(orderItem);
     }
+
+    @Override
+    public boolean hasUserBoughtProduct(Long productId, Long userId) {
+        return orderItemRepository.hasUserBoughtProduct(productId, userId);
+    }
 }

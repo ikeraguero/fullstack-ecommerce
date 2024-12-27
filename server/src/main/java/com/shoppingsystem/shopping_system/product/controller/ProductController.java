@@ -43,11 +43,11 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    ProductResponse getProductById(@PathVariable Long productId) {
+    ProductResponse getProductById(@PathVariable Long productId, @RequestHeader("User-ID") Long userId) {
         if (productId == null) {
             throw new IllegalArgumentException("Product ID must not be null");
         }
-        return productService.findById(productId);
+        return productService.findById(productId, userId);
     }
 
     @GetMapping("/products/search")

@@ -11,7 +11,7 @@ public interface ProductService {
     @Query
 
     List<ProductResponse> findAll();
-    ProductResponse findById(Long id);
+    ProductResponse findById(Long productId, Long userId);
     List<ProductResponse> findProductsByCategory(String categoryName);
     Product save(Product product);
     List<ProductResponse>  searchProducts(String query);

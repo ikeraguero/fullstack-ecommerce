@@ -73,7 +73,7 @@ public class OrderController {
        orderService.save(order);
 
         for(OrderItemRequest orderItem : orderRequest.getCartItemsList()) {
-        ProductResponse productResponse = productService.findById(orderItem.getProductId());
+        ProductResponse productResponse = productService.findById(orderItem.getProductId(), user.getId());
             Product product = productService.findByIdEntity(productResponse.getId());
 
             OrderItem orderItem1 = new OrderItem(order, product, orderItem.getTotalPrice(), orderItem.getQuantity(),
