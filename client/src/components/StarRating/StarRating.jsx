@@ -24,7 +24,7 @@ const ratingStyle = {
 
 export default function StarRating({
   maxRating = 5,
-  color = "#fcc419",
+  color = "#f42b56",
   size = 42,
   className = "",
   messages = [],

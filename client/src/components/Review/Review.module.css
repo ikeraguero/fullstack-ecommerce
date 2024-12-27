@@ -2,7 +2,7 @@
   padding: 5.4rem 0 5.4rem 0;
   display: flex;
   justify-content: center;
-  gap: 5.6rem;
+  gap: 8.6rem;
 }
 
 .reviewLeftStats {
@@ -33,4 +33,39 @@
   display: flex;
   gap: 0.3rem;
   align-items: center;
+}
+
+.reviewLeftRating {
+  margin-top: 1.6rem;
+  width: 10.8rem;
+  padding: 0.4rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.reviewLeftComment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reviewLeftComment textarea {
+  border: 0.1rem solid #e6e6e6;
+  border-radius: 0.4rem;
+  height: 10rem;
+  padding: 0.2rem 0.4rem;
+  resize: none;
+}
+
+.sendButton {
+  background-color: #f42b56;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #faf6f6;
+  font-weight: 500;
+}
+
+.sendButton:hover {
+  background-color: #ff6c8c;
 }

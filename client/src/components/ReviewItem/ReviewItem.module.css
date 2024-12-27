@@ -1,6 +1,9 @@
 .reviewItem {
   display: flex;
+  width: 24.2rem;
+  padding: 0 0 2.4rem 0;
   flex-direction: column;
+  border-bottom: 0.1rem solid #e6e6e6;
 }
 
 .reviewProfile span img {
@@ -17,4 +20,15 @@
 
 .reviewComment {
   margin-top: 0.8rem;
+}
+
+.reviewUserAndDate {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reviewDate {
+  font-size: 0.8rem;
+  color: #535353;
 }

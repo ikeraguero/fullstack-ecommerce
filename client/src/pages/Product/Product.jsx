@@ -13,7 +13,11 @@ import Review from "../../components/Review/Review";
 
 function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
-  const { data: product, error, isLoading } = useProduct(id);
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useProduct(id, userId ? userId : 0);
   const [quantity, setQuantity] = useState(1);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   let userCart = useCart(userId).data;
@@ -138,7 +142,10 @@ function Product({ cart, userId, refetch, openSuccess }) {
         </div>
       </div>
       <div className={styles.productBottom}>
-        <Review productReviewList={product.productReviewList} />
+        <Review
+          productReviewList={product.productReviewList}
+          canUserReview={product.canUserReview}
+        />
       </div>
     </div>
   );

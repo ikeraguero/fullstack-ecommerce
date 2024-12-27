@@ -1,6 +1,6 @@
 import StarRating from "../StarRating/StarRating";
 import styles from "./ReviewItem.module.css";
-function ReviewItem({ rating, comment, userFullName }) {
+function ReviewItem({ rating, comment, userFullName, formattedDate }) {
   console.log(rating, comment, userFullName);
   return (
     <div className={styles.reviewItem}>
@@ -8,7 +8,11 @@ function ReviewItem({ rating, comment, userFullName }) {
         <span>
           <img src="../../../profile-img.jpg" alt="" />
         </span>
-        <span>{userFullName}</span>
+        <div className={styles.reviewUserAndDate}>
+          <span>{userFullName}</span>
+          <span> • </span>
+          <span className={styles.reviewDate}>{formattedDate}</span>
+        </div>
       </div>
       <div className={styles.reviewRating}>
         <StarRating size={25} defaultRating={rating} />

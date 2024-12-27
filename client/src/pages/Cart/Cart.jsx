@@ -68,7 +68,9 @@ function Cart({ cartId, cartItems, refetch, openError }) {
         <div className={styles.cartLeftSideList}>
           <div className={styles.cartLeftTitle}>
             <h1>Your Cart</h1>
-            <div className="cartItemTotal">{itemsLength} items</div>
+            <div className="cartItemTotal">
+              {itemsLength} {itemsLength === 1 ? "item" : "items"}
+            </div>
           </div>
           {cartItems?.length === 0 && "Cart is empty"}
           <ul className={styles.cartList}>

@@ -34,6 +34,15 @@
   justify-content: space-between;
 }
 
+.orderItem > :not(:last-child) {
+  border-bottom: 1px solid #cbcbcb;
+}
+
+.orderItem:last-child {
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
 .orderOpened span,
 .orderClosed span {
   font-weight: 500;

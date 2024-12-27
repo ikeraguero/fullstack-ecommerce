@@ -21,7 +21,6 @@ function OrderItem({
         </span>
         <span>${totalPrice}</span>
       </div>
-      <span></span>
     </>
   );
 }
