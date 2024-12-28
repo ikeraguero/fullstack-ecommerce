@@ -1,0 +1,50 @@
+.wishlistItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1.2rem;
+  border: 0.1rem solid #d9d9d9;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-decoration: none;
+  width: 100%;
+}
+
+.wishlistItemImg img {
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  border-top-left-radius: 0.4rem;
+  border-bottom-left-radius: 0.4rem;
+}
+
+.wishlistItemImgAndName {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.removeButton {
+  width: 2rem;
+  height: 2rem;
+  background-color: #f42b56;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeButton ion-icon {
+  color: #ffff;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.outerContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}

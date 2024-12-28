@@ -7,9 +7,9 @@ import { logoutSuccess } from "../../actions/AuthActions";
 import { useNavigate } from "react-router-dom";
 import ProfileInformation from "../../components/ProfileInformation/ProfileInformation";
 import OrderInformation from "../../components/OrderInformation/OrderInformation";
+import Wishlist from "../../components/Wishlist/Wishlist";
 
 function Profile() {
-
   const [active, setActive] = useState("profile");
   const { logout } = useAuth();
   const dispatch = useDispatch();
@@ -25,8 +25,6 @@ function Profile() {
       setActive(spanContent);
     }
   }
-
-
 
   function handleLogout() {
     logout();
@@ -61,6 +59,17 @@ function Profile() {
         </div>
         <div
           className={
+            active === "wishlist"
+              ? styles.leftPanelOptionActive
+              : styles.leftPanelOption
+          }
+          onClick={handleClick}
+        >
+          <ion-icon name="heart-outline"></ion-icon>
+          <span>Wishlist</span>
+        </div>
+        <div
+          className={
             active === "logout"
               ? styles.leftPanelOptionActive
               : styles.leftPanelOption
@@ -72,10 +81,9 @@ function Profile() {
         </div>
       </div>
       <div className={styles.rightContent}>
-        {active === "profile" && (
-          <ProfileInformation/>
-        )}
+        {active === "profile" && <ProfileInformation />}
         {active === "orders" && <OrderInformation />}
+        {active === "wishlist" && <Wishlist />}
       </div>
     </div>
   );

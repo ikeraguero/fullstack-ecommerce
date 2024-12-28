@@ -11,6 +11,7 @@ import styles from "./Product.module.css";
 import { MoonLoader } from "react-spinners";
 import SuccessAlert from "../../components/SuccessAlert/SuccessAlert";
 import Review from "../../components/Review/Review";
+import { useCreateWishlistItem } from "../../api/wishlist.api";
 
 function Product({ cart, userId, refetch, openSuccess }) {
   const { id } = useParams();
@@ -21,6 +22,7 @@ function Product({ cart, userId, refetch, openSuccess }) {
     isLoading,
   } = useProduct(id, userId ? userId : 0);
   const [quantity, setQuantity] = useState(1);
+  const { mutate: addToWishlist } = useCreateWishlistItem();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   let userCart = useCart(userId).data;
 
@@ -58,6 +60,14 @@ function Product({ cart, userId, refetch, openSuccess }) {
   function handleIncreaseQuantity() {
     if (quantity + 1 > product?.stock_quantity) return;
     setQuantity(quantity + 1);
+  }
+
+  function handleAddToWishList() {
+    const data = {
+      userId,
+      productId: product.id,
+    };
+    addToWishlist(data);
   }
 
   if (isLoading) {
@@ -129,7 +139,10 @@ function Product({ cart, userId, refetch, openSuccess }) {
           ))}
         </select> */}
             </div>
-            <button className={styles.wishlistButton}>
+            <button
+              className={styles.wishlistButton}
+              onClick={handleAddToWishList}
+            >
               <ion-icon name="heart-outline"></ion-icon>
             </button>
           </div>
