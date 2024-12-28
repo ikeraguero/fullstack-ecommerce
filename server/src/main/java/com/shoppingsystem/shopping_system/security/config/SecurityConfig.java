@@ -41,7 +41,9 @@ public class SecurityConfig {
                         "/api/order/**",
                         "/api/order",
                         "/api/orders/user/**",
-                        "/api/review"
+                        "/api/review",
+                        "/api/wishlist",
+                        "/api/wishlist/**"
                         ).permitAll()
                         .requestMatchers("/api/products", "/api/users/**", "/api/roles").hasRole("ADMIN")
                         .anyRequest().authenticated()
