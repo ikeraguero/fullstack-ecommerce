@@ -11,7 +11,6 @@ import com.shoppingsystem.shopping_system.order.model.Order;
 import com.shoppingsystem.shopping_system.order.model.OrderItem;
 import com.shoppingsystem.shopping_system.order.service.OrderItemService;
 import com.shoppingsystem.shopping_system.order.service.OrderService;
-import com.shoppingsystem.shopping_system.payment.service.PaymentService;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.service.ProductImageService;
@@ -43,8 +42,6 @@ public class OrderController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private PaymentService paymentService;
 
     @Autowired
     private OrderItemService orderItemService;
