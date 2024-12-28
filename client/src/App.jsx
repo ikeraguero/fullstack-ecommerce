@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { ProductFormProvider } from "./hooks/useProductsFormContext";
@@ -51,6 +51,9 @@ function App() {
     }, 4000);
   };
 
+  const location = useLocation();
+  const isAuthPage = ["/login", "/register"].includes(location.pathname);
+
   if (isLoading) {
     return (
       <div>
@@ -65,76 +68,73 @@ function App() {
 
   return (
     <ProductFormProvider>
-      <BrowserRouter>
-        <SuccessAlert
-          successOpen={isSuccessOpen}
-          setOpen={setSuccessOpen}
-          message={"Product added to cart successfully"}
-        />
-        <ErrorAlert
-          isErrorOpen={isErrorOpen}
-          setOpen={setErrorOpen}
-          message={"Your cart is currently empty"}
-        />
+      <SuccessAlert
+        successOpen={isSuccessOpen}
+        setOpen={setSuccessOpen}
+        message={"Product added to cart successfully"}
+      />
+      <ErrorAlert
+        isErrorOpen={isErrorOpen}
+        setOpen={setErrorOpen}
+        message={"Your cart is currently empty"}
+      />
+      {!isAuthPage && (
         <Nav
           categories={categories}
           setSearchProducts={setSearchProducts}
           setActiveCategory={setActiveCategory}
           activeCategory={activeCategory}
         />
-        <Routes>
-          <Route
-            index
-            element={<Home userId={userId} refetch={refetch} cart={cart} />}
-          />
-          <Route path="/*" element={<PageNotFound />} />
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                cartItems={cart.cartItems}
-                cartId={cart.id}
-                refetch={refetch}
-                errorOpen={isErrorOpen}
-                openError={openError}
-                setErrorOpen={setErrorOpen}
-              />
-            }
-          />
-          <Route
-            path="/products/:id"
-            element={
-              <Product
-                cartItems={cart.cartItems}
-                cartId={cart.id}
-                userId={userId}
-                refetch={refetch}
-                openSuccess={openSuccess}
-              />
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={<ManageProduct categories={categories} />}
-          />
-          <Route
-            path="/search"
-            element={<SearchResults searchProducts={searchProducts} />}
-          />
-          <Route path="profile" element={<Profile />} />
-          <Route
-            path="categories/:name"
-            element={<CategoryPage activeCategory={activeCategory} />}
-          />
-          <Route path="/login" element={<Login refetchCart={refetch} />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/payment/success/:id"
-            element={<PaymentSuccess />}
-          ></Route>
-          <Route path="/checkout/:id/" element={<CheckoutShipping />} />
-        </Routes>
-      </BrowserRouter>
+      )}
+      <Routes>
+        <Route
+          index
+          element={<Home userId={userId} refetch={refetch} cart={cart} />}
+        />
+        <Route path="/*" element={<PageNotFound />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cartItems={cart.cartItems}
+              cartId={cart.id}
+              refetch={refetch}
+              errorOpen={isErrorOpen}
+              openError={openError}
+              setErrorOpen={setErrorOpen}
+            />
+          }
+        />
+        <Route
+          path="/products/:id"
+          element={
+            <Product
+              cartItems={cart.cartItems}
+              cartId={cart.id}
+              userId={userId}
+              refetch={refetch}
+              openSuccess={openSuccess}
+            />
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={<ManageProduct categories={categories} />}
+        />
+        <Route
+          path="/search"
+          element={<SearchResults searchProducts={searchProducts} />}
+        />
+        <Route path="profile" element={<Profile />} />
+        <Route
+          path="categories/:name"
+          element={<CategoryPage activeCategory={activeCategory} />}
+        />
+        <Route path="/login" element={<Login refetchCart={refetch} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/payment/success/:id" element={<PaymentSuccess />}></Route>
+        <Route path="/checkout/:id/" element={<CheckoutShipping />} />
+      </Routes>
     </ProductFormProvider>
   );
 }

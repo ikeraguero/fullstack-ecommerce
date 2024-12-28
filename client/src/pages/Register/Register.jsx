@@ -53,9 +53,9 @@ function Register() {
           </div>
           <div className={styles.buttons}>
             <Link to={"/login"} className={styles.btnLink}>
-              <button className={styles.loginButton}>Login</button>
+              <button className={styles.loginButton}>Sign In</button>
             </Link>
-            <button className={styles.registerButton}>Register</button>
+            <button className={styles.registerButton}>Sign Up</button>
           </div>
         </div>
       </form>

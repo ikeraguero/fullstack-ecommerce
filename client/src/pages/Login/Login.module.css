@@ -25,13 +25,15 @@
   width: 20.4rem;
   height: 2.6rem;
   padding: 0.8rem;
+  border: 0.1rem solid #dedede;
+  background: none;
+  border-radius: 0.4rem;
 }
 
 .loginButton,
 .registerButton {
   padding: 0.4rem 2rem;
   font-weight: 600;
-  background-color: #f42b56;
   border: none;
   color: #ffffff;
   text-transform: uppercase;
@@ -39,9 +41,20 @@
   border-radius: 0.4rem;
 }
 
-.loginButton:hover,
+.loginButton {
+  background-color: #f42b56;
+}
+
+.registerButton {
+  background-color: #ff6486;
+}
+
+.loginButton:hover {
+  background-color: #fd4c72;
+}
+
 .registerButton:hover {
-  background-color: #fe3a65;
+  background-color: #ff7a97;
 }
 
 .buttons {

@@ -8,6 +8,7 @@ import store from "./store/store";
 import { AuthProvider } from "./context/AuthContext";
 import { UserFormProvider } from "./hooks/useUsersFormContext";
 import { CheckoutProvider } from "./context/CheckoutContext";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -17,9 +18,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <CheckoutProvider>
         <AuthProvider>
           <UserFormProvider>
-            <QueryClientProvider client={queryClient}>
-              <App />
-            </QueryClientProvider>
+            <BrowserRouter>
+              <QueryClientProvider client={queryClient}>
+                <App />
+              </QueryClientProvider>
+            </BrowserRouter>
           </UserFormProvider>
         </AuthProvider>
       </CheckoutProvider>

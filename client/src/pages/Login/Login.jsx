@@ -71,9 +71,9 @@ function Login({ refetchCart }) {
             />
           </div>
           <div className={styles.buttons}>
-            <button className={styles.loginButton}>Login</button>
+            <button className={styles.loginButton}>Sign In</button>
             <Link to={"/register"} className={styles.btnLink}>
-              <button className={styles.registerButton}>Register</button>
+              <button className={styles.registerButton}>Sign Up</button>
             </Link>
           </div>
         </div>
