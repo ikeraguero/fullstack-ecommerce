@@ -21,6 +21,7 @@ import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "./pages/CheckoutShipping/CheckoutShipping";
 import Profile from "./pages/Profile/Profile";
 import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
+import { useAlert } from "./context/AlertContext";
 
 function App() {
   const userId = useSelector((state) => state.auth.id);
@@ -35,19 +36,12 @@ function App() {
     isLoading,
   } = useCart(userId === undefined ? 0 : userId);
   const [isSuccessOpen, setSuccessOpen] = useState(false);
-  const [isErrorOpen, setErrorOpen] = useState(false);
+  const { isErrorOpen, setErrorOpen, openError, errorMessage } = useAlert();
 
   const openSuccess = () => {
     setSuccessOpen(true);
     setTimeout(() => {
       setSuccessOpen(false);
-    }, 4000);
-  };
-
-  const openError = () => {
-    setErrorOpen(true);
-    setTimeout(() => {
-      setErrorOpen(false);
     }, 4000);
   };
 
@@ -76,7 +70,7 @@ function App() {
       <ErrorAlert
         isErrorOpen={isErrorOpen}
         setOpen={setErrorOpen}
-        message={"Your cart is currently empty"}
+        message={errorMessage}
       />
       {!isAuthPage && (
         <Nav

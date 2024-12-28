@@ -53,6 +53,16 @@
   padding: 3.2rem 1.2rem;
 }
 
+.cartList {
+  max-height: 25rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.cartList::-webkit-scrollbar {
+  display: none;
+}
+
 .cartList:nth-of-type(1) {
   border-top: #64646447 1px solid;
 }
