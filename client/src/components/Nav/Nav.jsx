@@ -7,12 +7,7 @@ import SearchBar from "./SearchBar/SearchBar";
 
 import styles from "./Nav.module.css";
 
-function Nav({
-  categories,
-  setSearchProducts,
-  setActiveCategory,
-  activeCategory,
-}) {
+function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   console.log(activeCategory);
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -37,7 +32,7 @@ function Nav({
       e.preventDefault();
       return;
     }
-    setActiveCategory(category);
+    onCategoryChange(category);
   }
 
   if (!loadedCategories) {
@@ -53,13 +48,13 @@ function Nav({
           <Link
             to={"/"}
             className={styles.navLink}
-            onClick={() => setActiveCategory(null)}
+            onClick={() => onCategoryChange(null)}
           >
             E-commerce
           </Link>
         </div>
         <div className={styles.rightSide}>
-          <SearchBar setSearchProducts={setSearchProducts} />
+          <SearchBar setSearchProducts={onSearch} />
           <div className={styles.authAndCart}>
             <div className={styles.auth}>
               <ion-icon name="person-outline"></ion-icon>
