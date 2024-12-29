@@ -4,9 +4,13 @@ import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";
 
-function ProductForm({ formRef, handleImageChange, send }) {
+function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
   const { state, dispatch } = useProductFormContext();
   const { data: categories, error, isLoading } = useCategories();
+
+  function handleCloseForm() {
+    handleOpenForm({ type: isAddingProduct ? "toggleAdd" : "closeEdit" });
+  }
 
   if (isLoading) {
     return (
@@ -37,12 +41,7 @@ function ProductForm({ formRef, handleImageChange, send }) {
     <div>
       <span className={styles.formTop}>
         {!isEditingProduct ? "Add New Product" : `Edit ${editProduct?.name}`}
-        <ion-icon
-          name="close-outline"
-          onClick={() =>
-            dispatch({ type: isAddingProduct ? "toggleAdd" : "closeEdit" })
-          }
-        ></ion-icon>
+        <ion-icon name="close-outline" onClick={handleCloseForm}></ion-icon>
       </span>
       <form
         ref={formRef}

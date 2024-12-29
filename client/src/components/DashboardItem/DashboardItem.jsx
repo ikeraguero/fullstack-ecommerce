@@ -1,44 +1,64 @@
 import styles from "./DashboardItem.module.css";
 import ProductsList from "../../components/ProductsList/ProductsList";
+import ProductForm from "../../components/ProductForm/ProductForm";
 import UserList from "../../components/UserList/UserList";
+import UserForm from "../../components/UserForm/UserForm";
+import { useState } from "react";
+import { useUsersFormContext } from "../../hooks/useUsersFormContext";
+import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
-function DashboardItem({
-  title,
-  toggleAddForm,
-  isFormOpen,
-  Form,
-  formRef,
-  handleImageChange,
-  send,
-  list,
-  dispatch,
-  remove,
-}) {
+function DashboardItem({ title, data, onAdd, onEdit, onRemove, formRef }) {
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
+  const { dispatch: usersDispatch } = useUsersFormContext();
+  const { dispatch: productsDispatch } = useProductFormContext();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  function handleOpenForm(type, payload) {
+    setIsFormOpen(!isFormOpen);
+    if (title === "Products") {
+      productsDispatch({ type, payload });
+
+      return;
+    }
+    usersDispatch({ type, payload });
+  }
+
   return (
     <div className={styles.addProductContainer}>
       <h2>{titleCapitalized}</h2>
-      <span onClick={toggleAddForm} className={styles.openAddProductButton}>
+      <span
+        className={styles.openAddProductButton}
+        onClick={() => handleOpenForm("toggleAdd")}
+      >
         Add {titleCapitalized.slice(0, titleCapitalized.length - 1)} +
       </span>
       <div className={isFormOpen ? styles.form : styles.hide}>
-        <Form
-          formRef={formRef}
-          handleImageChange={handleImageChange}
-          send={send}
-        />
+        {title === "Products" && (
+          <ProductForm formRef={formRef} handleOpenForm={handleOpenForm} />
+        )}
+        {title === "Users" && (
+          <UserForm formRef={formRef} handleOpenForm={handleOpenForm} />
+        )}
       </div>
-      {list?.length === 0 && (
+      {data?.length === 0 && (
         <div className={styles.emptyMessage}>
           There are no products registered!
         </div>
       )}
-      {title === "products" && (
-        <ProductsList products={list} dispatch={dispatch} remove={remove} />
+      {title === "Products" && (
+        <ProductsList
+          products={data}
+          handleOpenForm={handleOpenForm}
+          onRemove={onRemove}
+        />
       )}
 
-      {title === "users" && (
-        <UserList users={list} dispatch={dispatch} remove={remove} />
+      {title === "Users" && (
+        <UserList
+          users={data}
+          handleOpenForm={handleOpenForm}
+          onRemove={onRemove}
+        />
       )}
     </div>
   );

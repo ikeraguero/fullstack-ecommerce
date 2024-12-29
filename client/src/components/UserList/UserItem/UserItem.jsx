@@ -1,8 +1,8 @@
 import styles from "./UserItem.module.css";
 
-function UserItem({ user, removeUser, usersDispatch }) {
+function UserItem({ user, handleOpenForm, onRemove }) {
   function handleEdit() {
-    usersDispatch({ type: "openEdit", payload: user });
+    handleOpenForm("openEdit", user);
   }
 
   return (
@@ -16,7 +16,7 @@ function UserItem({ user, removeUser, usersDispatch }) {
       <div className={styles.productItemButtons}>
         <button
           className={styles.removeButton}
-          onClick={() => removeUser(user.id)}
+          onClick={() => onRemove(user.id)}
         >
           <ion-icon name="trash-outline"></ion-icon>
         </button>

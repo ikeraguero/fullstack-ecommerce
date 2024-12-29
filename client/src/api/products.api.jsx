@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../config/config";
+import { useProductFormContext } from "../hooks/useProductsFormContext";
+import { useState } from "react";
 
 const createAxiosInstance = () => {
   const instance = axios.create({
@@ -88,6 +90,38 @@ async function fetchProductByCategory(categoryName) {
     throw new Error("Problem fetching the data");
   }
   return res.data;
+}
+
+async function removeProduct(productId) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.delete(`/products/${productId}`);
+  if (res.status !== 200) {
+    throw new Error("Problem fetching the data");
+  }
+  return res.data;
+}
+
+export function useRemoveProduct() {
+  const { state: productsState, dispatch: productsDispatch } =
+    useProductFormContext();
+  const { products } = productsState;
+  const [productIdRemove, setProductIdRemove] = useState();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productId) => {
+      setProductIdRemove(productId);
+      removeProduct(productId);
+    },
+    onSuccess: () => {
+      console.log("oi");
+      queryClient.invalidateQueries(["products"]);
+      productsDispatch({
+        type: "loadProducts",
+        payload: products.filter((product) => product.id !== productIdRemove),
+      });
+    },
+  });
 }
 
 export default function useProducts() {

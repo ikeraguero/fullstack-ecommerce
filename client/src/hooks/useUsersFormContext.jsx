@@ -21,6 +21,7 @@ function formReducer(state, action) {
     case "toggleAdd":
       return { ...state, isAddingUser: !state.isAddingUser };
     case "openEdit":
+      console.log(action.payload);
       return {
         ...state,
         isEditingUser: true,

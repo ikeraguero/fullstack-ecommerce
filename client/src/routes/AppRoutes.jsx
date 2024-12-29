@@ -1,3 +1,5 @@
+import { Route, Routes } from "react-router-dom";
+
 import Home from "../pages/Home/Home";
 import Product from "../pages/Product/Product";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
@@ -10,7 +12,6 @@ import Register from "../pages/Register/Register";
 import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "../pages/CheckoutShipping/CheckoutShipping";
 import Profile from "../pages/Profile/Profile";
-import { Route, Routes } from "react-router-dom";
 
 export const AppRoutes = ({
   userId,

@@ -1,0 +1,86 @@
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  font-size: 1rem;
+}
+
+.productDetailsTop {
+  border-bottom: 0.1rem solid #d4d4d4;
+}
+
+.productCategory {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #5d5d5d;
+}
+
+.productDescription {
+  width: 14.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1.2rem;
+}
+
+.wishlistButton {
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d4d4d4;
+  background: none;
+  cursor: pointer;
+}
+
+.wishlistButton:hover {
+  background-color: #f42b56;
+}
+
+.wishlistButton:hover ion-icon {
+  color: #ffff;
+  stroke: #ffff;
+}
+
+.wishlistButton ion-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.buttonBuy,
+.buttonAddToCart {
+  width: 100%;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.4rem 3.6rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.buttonBuy {
+  background-color: #f42b56;
+}
+
+.buttonBuy:hover {
+  background-color: #ff5f82;
+}
+
+.buttonAddToCart {
+  background-color: #f36584;
+}
+
+.buttonAddToCart:hover {
+  background-color: #f0829a;
+}
+
+.interactive,
+.interactiveButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.productQuantityAndWishlist {
+  display: flex;
+  justify-content: space-between;
+}

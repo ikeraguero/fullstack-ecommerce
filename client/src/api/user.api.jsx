@@ -1,5 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useUsersFormContext } from "../hooks/useUsersFormContext";
+import { useState } from "react";
 
 function createAxiosInstance() {
   const instance = axios.create({
@@ -21,6 +23,15 @@ async function createUser(data) {
   return res;
 }
 
+async function updateUser(data) {
+  const axiosInstance = createAxiosInstance();
+  const res = await axiosInstance.put("http://localhost:8080/api/user/", data);
+  if (res !== 200) {
+    return new Error("Problem creating user");
+  }
+  return res;
+}
+
 async function getUsers() {
   const axiosInstance = createAxiosInstance();
   const res = await axiosInstance.get("http://localhost:8080/api/users");
@@ -36,8 +47,21 @@ async function deleteUser(userId) {
 }
 
 export function useDeleteUsers() {
+  const [userIdRemove, setUserIdRemove] = useState();
+  const { state: users, dispatch: usersDispatch } = useUsersFormContext();
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (userId) => deleteUser(userId),
+    mutationFn: (userId) => {
+      setUserIdRemove(userId);
+      deleteUser(userId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["users"]);
+      usersDispatch({
+        type: "loadUsers",
+        payload: users.filter((user) => user.id !== userIdRemove),
+      });
+    },
   });
 }
 
@@ -48,11 +72,18 @@ export function useUsers() {
   });
 }
 
-export function useUpdateUser(data) {}
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => updateUser(data),
+    onSuccess: () => queryClient.invalidateQueries(["users"]),
+  });
+}
 
 export function useCreateUser() {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => createUser,
-    onSuccess: () => console.log("Succes"),
+    mutationFn: (data) => createUser(data),
+    onSuccess: () => queryClient.invalidateQueries(["users"]),
   });
 }

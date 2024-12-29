@@ -1,15 +1,15 @@
 import ProductItem from "./ProductItem/ProductItem";
 
-function ProductsList({ products, dispatch, remove }) {
-
+function ProductsList({ products, handleOpenForm, onRemove }) {
+  console.log(products);
   return (
     <ul>
       {products?.map((product) => (
         <ProductItem
-          dispatch={dispatch}
           product={product}
-          removeProduct={remove}
           key={product.id}
+          handleOpenForm={handleOpenForm}
+          onRemove={onRemove}
         />
       ))}
     </ul>

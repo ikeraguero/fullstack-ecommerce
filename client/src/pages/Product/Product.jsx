@@ -1,19 +1,20 @@
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ImgZoom from "react-img-zoom";
+import { MoonLoader } from "react-spinners";
 
 import { useProduct } from "../../api/products.api";
 import { useAddToCart } from "../../api/cart.api";
 import useCart from "../../api/cart.api";
-
-import styles from "./Product.module.css";
-import { MoonLoader } from "react-spinners";
-import SuccessAlert from "../../components/SuccessAlert/SuccessAlert";
-import Review from "../../components/Review/Review";
 import { useCreateWishlistItem } from "../../api/wishlist.api";
 
-function Product({ cart, userId, refetch, openSuccess }) {
+import Review from "../../components/Review/Review";
+
+import styles from "./Product.module.css";
+import ProductDetails from "../../components/ProductDetails/ProductDetails";
+
+function Product({ userId, refetch, openSuccess }) {
   const { id } = useParams();
   const {
     data: product,
@@ -27,11 +28,12 @@ function Product({ cart, userId, refetch, openSuccess }) {
   let userCart = useCart(userId).data;
 
   const { mutate: addToCart } = useAddToCart();
-  console.log(id);
 
   useEffect(
     function () {
-      refetchProduct();
+      if (id) {
+        refetchProduct();
+      }
     },
     [id, refetchProduct]
   );
@@ -46,20 +48,28 @@ function Product({ cart, userId, refetch, openSuccess }) {
       image_data: product.image_data,
       image_type: product.image_type,
     };
-    addToCart(cartItem);
-    refetch();
-    <SuccessAlert />;
-    openSuccess();
+
+    addToCart(cartItem, {
+      onSuccess: () => {
+        refetch();
+        openSuccess();
+      },
+      onError: (error) => {
+        console.error("Failed to add to cart:", error);
+      },
+    });
   }
 
   function handleDecreaseQuantity() {
-    if (quantity - 1 <= 0) return;
-    setQuantity(quantity - 1);
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   }
 
   function handleIncreaseQuantity() {
-    if (quantity + 1 > product?.stock_quantity) return;
-    setQuantity(quantity + 1);
+    if (quantity < product?.stock_quantity) {
+      setQuantity(quantity + 1);
+    }
   }
 
   function handleAddToWishList() {
@@ -84,7 +94,8 @@ function Product({ cart, userId, refetch, openSuccess }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  console.log(product);
+  const { name, image_data, image_type, productReviewList, canUserReview } =
+    product;
 
   return (
     <div className={styles.mainContainer}>
@@ -92,86 +103,28 @@ function Product({ cart, userId, refetch, openSuccess }) {
         <div className={styles.productPhoto}>
           <ImgZoom
             key={product?.id}
-            img={`data:${product?.image_type};base64,${product?.image_data}`}
+            img={`data:${image_type};base64,${image_data}`}
             className={styles.productPhotoZoom}
             zoomScale={1.5}
+            alt={name}
             width={500}
             height={500}
           />
         </div>
-        <div className={styles.productDetails}>
-          <div className={styles.productDetailsTop}>
-            <h3 className={styles.productCategory}>{product.category}</h3>
-            <h1>{product?.name}</h1>
-            <span>Rating | In stock</span>
-            <h2>${product?.price}</h2>
-            <div className={styles.productDescription}>
-              {product.product_description}
-            </div>
-          </div>
-          <div className={styles.productQuantityAndWishlist}>
-            <div className={styles.productQuantity}>
-              <button
-                className={styles.productQuantityDecrease}
-                onClick={handleDecreaseQuantity}
-              >
-                -
-              </button>
-              <div className={styles.productQuantityDisplay}>
-                {quantity < 10 ? "0" + quantity : quantity}
-              </div>
-              <button
-                className={styles.productQuantityIncrease}
-                onClick={handleIncreaseQuantity}
-              >
-                +
-              </button>
-              {/* <label htmlFor="quantity">Quantity:</label>
-          <select
-          name="quantity"
-          id=""
-          className={styles.select}
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          >
-          {options.map((option) => (
-            <option key={option}>{option}</option>
-          ))}
-        </select> */}
-            </div>
-            <button
-              className={styles.wishlistButton}
-              onClick={handleAddToWishList}
-            >
-              <ion-icon name="heart-outline"></ion-icon>
-            </button>
-          </div>
-          <div className={styles.interactive}>
-            <div className={styles.interactiveQuantity}></div>
-            <div className={styles.interactiveButtons}>
-              {isLoggedIn ? (
-                <button
-                  className={styles.buttonAddToCart}
-                  onClick={handleAddToCart}
-                >
-                  Add to cart
-                </button>
-              ) : (
-                <Link to={"/login"}>
-                  <button className={styles.buttonAddToCart}>
-                    Add to cart
-                  </button>
-                </Link>
-              )}
-              <button className={styles.buttonBuy}>Buy Now</button>
-            </div>
-          </div>
-        </div>
+        <ProductDetails
+          onAddTocart={handleAddToCart}
+          onIncreaseQuantity={handleIncreaseQuantity}
+          onDecreaseQuantity={handleDecreaseQuantity}
+          onAddToWishlist={handleAddToWishList}
+          isLoggedIn={isLoggedIn}
+          quantity={quantity}
+          {...product}
+        />
       </div>
       <div className={styles.productBottom}>
         <Review
-          productReviewList={product.productReviewList}
-          canUserReview={product.canUserReview}
+          productReviewList={productReviewList}
+          canUserReview={canUserReview}
         />
       </div>
     </div>

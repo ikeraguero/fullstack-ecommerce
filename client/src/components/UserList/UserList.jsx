@@ -1,14 +1,15 @@
 import UserItem from "./UserItem/UserItem";
 
-function UserList({ users, remove, dispatch }) {
+function UserList({ users, handleOpenForm, onRemove }) {
+  console.log(users);
   return (
     <ul>
       {users?.map((user) => (
         <UserItem
           user={user}
           key={user.id}
-          removeUser={remove}
-          usersDispatch={dispatch}
+          handleOpenForm={handleOpenForm}
+          onRemove={onRemove}
         />
       ))}
     </ul>

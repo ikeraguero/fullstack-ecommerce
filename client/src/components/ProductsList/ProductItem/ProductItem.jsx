@@ -1,12 +1,8 @@
 import styles from "./ProductItem.module.css";
 
-function ProductItem({ dispatch, product, removeProduct }) {
-  function handleDelete(productId) {
-    removeProduct(productId);
-  }
-
+function ProductItem({ product, handleOpenForm, onRemove }) {
   function handleEdit() {
-    dispatch({ type: "openEdit", payload: product });
+    handleOpenForm("openEdit", product);
   }
 
   return (
@@ -20,11 +16,11 @@ function ProductItem({ dispatch, product, removeProduct }) {
       <div className={styles.productItemButtons}>
         <button
           className={styles.removeButton}
-          onClick={() => handleDelete(product.id)}
+          onClick={() => onRemove(product.id)}
         >
           <ion-icon name="trash-outline"></ion-icon>
         </button>
-        <button className={styles.editButton} onClick={() => handleEdit()}>
+        <button className={styles.editButton} onClick={handleEdit}>
           <ion-icon name="pencil-outline"></ion-icon>
         </button>
       </div>

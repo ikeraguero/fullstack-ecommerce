@@ -4,9 +4,13 @@ import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 import styles from "./UserForm.module.css";
 import { useRoles } from "../../api/roles.api";
 
-function UserForm({ formRef, handleImageChange, send }) {
+function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
   const { state, dispatch } = useUsersFormContext();
   const { data: roles, error, isLoading } = useRoles();
+
+  function handleCloseForm() {
+    handleOpenForm({ type: isAddingUser ? "toggleAdd" : "closeEdit" });
+  }
 
   if (isLoading) {
     return (
@@ -19,7 +23,7 @@ function UserForm({ formRef, handleImageChange, send }) {
   }
 
   if (error) {
-    return <div>Error loading products: {error.message}</div>;
+    return <div>Error loading users: {error.message}</div>;
   }
 
   const {
@@ -37,12 +41,7 @@ function UserForm({ formRef, handleImageChange, send }) {
     <div>
       <span className={styles.formTop}>
         {!isEditingUser ? "Add New User" : `Edit ${editUser?.email}`}
-        <ion-icon
-          name="close-outline"
-          onClick={() =>
-            dispatch({ type: isAddingUser ? "toggleAdd" : "closeEdit" })
-          }
-        ></ion-icon>
+        <ion-icon name="close-outline" onClick={handleCloseForm}></ion-icon>
       </span>
       <form
         ref={formRef}
