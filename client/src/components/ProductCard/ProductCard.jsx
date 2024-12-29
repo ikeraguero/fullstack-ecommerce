@@ -1,16 +1,10 @@
 import styles from "./ProductCard.module.css";
 
 function ProductCard({
-  id,
   name,
   price,
-  category_name,
   image_data,
   image_type,
-  userId,
-  refetch,
-  cart,
-  openSuccess,
 }) {
   return (
     <div className={styles.productCard}>

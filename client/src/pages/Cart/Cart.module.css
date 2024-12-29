@@ -11,8 +11,7 @@
   box-shadow: 0.1rem 0.1rem 0.8rem #888888;
 }
 
-.cartLeftTitle,
-.cartSummaryTotal {
+.cartLeftTitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,29 +76,6 @@
 
 .cartBackArrow Link {
   text-decoration: none;
-}
-
-.cartRightSummary h2 {
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.cartRightSummary {
-  display: flex;
-  flex-direction: column;
-  gap: 2.8rem;
-  font-weight: bold;
-  padding: 2rem 0 0 0;
-  border-top: #64646447 1px solid;
-  border-bottom: #64646447 1px solid;
-}
-
-.cartSummaryItem {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .cartSummaryItemShipping select,

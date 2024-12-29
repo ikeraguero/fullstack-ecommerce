@@ -1,0 +1,37 @@
+.bestDeals {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  margin-bottom: 14.6rem;
+}
+
+.bestDeals h2 {
+  color: #4b4b4b;
+}
+
+.bestDealsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bestDealCategory,
+.bestDealsViewAll ion-icon {
+  color: #f42b56;
+}
+
+.bestDealsViewAll {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.productGrid {
+  display: grid;
+  gap: 1.8rem;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.productLink {
+  text-decoration: none;
+}

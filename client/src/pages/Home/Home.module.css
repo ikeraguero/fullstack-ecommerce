@@ -28,35 +28,15 @@
   z-index: 9999;
 }
 
-.bestDeals {
-  display: flex;
-  flex-direction: column;
-  gap: 1.8rem;
-  margin-bottom: 14.6rem;
-}
 
-.bestDeals h2 {
-  color: #4b4b4b;
-}
 
-.bestDealCategory,
-.topCategoriesTitle,
-.bestDealsViewAll ion-icon {
-  color: #f42b56;
-}
 
-.bestDealsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
+
+
+
 
 .productLink {
   text-decoration: none;
 }
 
-.bestDealsViewAll {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}

@@ -1,19 +1,17 @@
 import { useLocation } from "react-router-dom";
-
-import { ProductFormProvider } from "./hooks/useProductsFormContext";
-import Nav from "./components/Nav/Nav";
-import useCategories from "./api/categories.api";
-
-import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
-import React, { useCallback, useState } from "react";
 import { Spinner } from "@nextui-org/react";
+import React, { useCallback, useState } from "react";
 
 import ErrorAlert from "./components/ErrorAlert/ErrorAlert";
-import { useAlert } from "./context/AlertContext";
-import { AppRoutes } from "./routes/routes";
+import Nav from "./components/Nav/Nav";
+import SuccessAlert from "./components/SuccessAlert/SuccessAlert";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoudary";
+import { ProductFormProvider } from "./hooks/useProductsFormContext";
 import useUserId from "./hooks/useUserId";
 import useCartData from "./hooks/useCartData";
+import useCategories from "./api/categories.api";
+import { useAlert } from "./context/AlertContext";
+import { AppRoutes } from "./routes/AppRoutes";
 
 const MemoizedNav = React.memo(Nav);
 
