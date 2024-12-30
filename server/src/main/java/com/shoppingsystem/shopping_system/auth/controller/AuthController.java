@@ -4,12 +4,14 @@ import com.shoppingsystem.shopping_system.auth.dto.JwtResponse;
 import com.shoppingsystem.shopping_system.auth.dto.LoginRequest;
 import com.shoppingsystem.shopping_system.auth.dto.LoginResponse;
 import com.shoppingsystem.shopping_system.auth.dto.RegisterRequest;
+import com.shoppingsystem.shopping_system.role.service.RoleService;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import com.shoppingsystem.shopping_system.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +42,9 @@ public class AuthController {
         this.userService = userService;
     }
 
+    @Autowired
+    private RoleService roleService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String email = loginRequest.getEmail();
@@ -48,7 +53,7 @@ public class AuthController {
 
         List<String> roles = new LinkedList<>();
 
-        roles.add(user.getRole());
+        roles.add(user.getRole().getName());
         System.out.println(roles);
         if (userService.loginUser(password, email)) {
             String token = jwtUtil.generateToken(email, roles);
@@ -63,7 +68,7 @@ public class AuthController {
             response.addCookie(cookie);
 
             return ResponseEntity.ok(new LoginResponse(user.getId(), token, user.getFirstName(), user.getLastName(),
-                    user.getEmail(), user.getRole()));
+                    user.getEmail(), user.getRole().getName()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
@@ -76,15 +81,15 @@ public class AuthController {
         }
         System.out.println(registerRequest.getEmail());
         System.out.println(registerRequest.getPassword());
-        System.out.println(registerRequest.getLast_name());
+        System.out.println(registerRequest.getLastName());
 
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
-        newUser.setFirstName(registerRequest.getFirst_name());
-        newUser.setLastName(registerRequest.getLast_name());
+        newUser.setFirstName(registerRequest.getFirstName());
+        newUser.setLastName(registerRequest.getLastName());
 
-        newUser.setRole("USER");
+        newUser.setRole(roleService.findById(registerRequest.getRoleId()));
         newUser.setActive(true);
         newUser.setCreatedAt(new Date());
         newUser.setUpdatedAt(new Date());

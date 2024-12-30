@@ -18,4 +18,14 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
+
+    @Override
+    public String findRoleNameById(int roleId) {
+        return roleRepository.findRoleNameById(roleId);
+    }
+
+    @Override
+    public Role findById(int roleId) {
+        return roleRepository.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
+    }
 }

@@ -1,5 +1,7 @@
 package com.shoppingsystem.shopping_system.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shoppingsystem.shopping_system.role.model.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +31,10 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "role")
-    private String role;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Role role;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -41,11 +45,4 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-        this.updatedAt = this.createdAt;
-        this.isActive = true;
-        this.role = "USER";
-    }
 }

@@ -13,14 +13,13 @@ public class PaymentController {
 
     @PostMapping("/process")
     public PaymentResponse processPayment(@RequestBody PaymentRequest paymentRequest) {
-        // Validate incoming request
         if (paymentRequest.getEmail() == null || paymentRequest.getCardNumber() == null ||
                 paymentRequest.getExpiration() == null || paymentRequest.getCvc() == null ||
                 paymentRequest.getCardholderName() == null) {
             return new PaymentResponse("Payment failed: Missing required fields", false);
         }
 
-        // Simulate the payment logic (50% chance of success)
+
         boolean paymentSuccess = Math.random() > 0.5;
 
         if (paymentSuccess) {

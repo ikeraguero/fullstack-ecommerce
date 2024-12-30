@@ -1,11 +1,16 @@
 package com.shoppingsystem.shopping_system.user.controller;
 
+import com.shoppingsystem.shopping_system.role.service.RoleService;
+import com.shoppingsystem.shopping_system.user.dto.UserRequest;
+import com.shoppingsystem.shopping_system.user.dto.UserResponse;
 import com.shoppingsystem.shopping_system.user.model.User;
-import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -13,10 +18,20 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
+    public UserController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @GetMapping("/users")
-    List<User> getUsers() {
+    List<UserResponse> getUsers() {
         return userService.findAll();
     }
 
@@ -25,15 +40,18 @@ public class UserController {
         userService.delete(userId);
     }
 
-    //TODO
-//    @PatchMapping("/users/:userId")
-//    User updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-//
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        //TODO
-//
-//        userRepository.save(user);
-//    }
+
+    @PutMapping("/users")
+    void updateUser(@RequestBody UserRequest userRequest) {
+        User existingUser = userService.findById(userRequest.getUserId());
+        existingUser.setEmail(userRequest.getEmail());
+        existingUser.setRole(roleService.findById(userRequest.getRoleId()));
+        existingUser.setFirstName(userRequest.getFirstName());
+        existingUser.setLastName(userRequest.getLastName());
+        existingUser.setUpdatedAt(Date.from(Instant.now()));
+        userService.updatePassword(userRequest.getUserId(), userRequest.getPassword());
+
+        userService.save(existingUser);
+    }
 
 }
