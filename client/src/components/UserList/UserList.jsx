@@ -1,15 +1,19 @@
-import UserItem from "./UserItem/UserItem";
+import Item from "../Item/Item";
 import styles from "./UserList.module.css";
 
-function UserList({ users, handleOpenForm, onRemove }) {
+function UserList({ items, handleOpenForm, onRemove }) {
+  if (!items?.length) {
+    return <div>No products available</div>;
+  }
   return (
     <ul className={styles.usersList}>
-      {users?.map((user) => (
-        <UserItem
-          user={user}
+      {items?.map((user) => (
+        <Item
+          item={user}
           key={user.id}
           handleOpenForm={handleOpenForm}
           onRemove={onRemove}
+          itemType="user"
         />
       ))}
     </ul>

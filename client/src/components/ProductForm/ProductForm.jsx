@@ -20,7 +20,6 @@ function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
 
   function handleSendData(e) {
     const formData = new FormData(e.target);
-
     if (isEditingProduct) {
       onEdit(formData);
       return;
@@ -61,7 +60,6 @@ function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  console.log(state);
   return (
     <div>
       <span className={styles.formTop}>

@@ -7,6 +7,16 @@ import UserForm from "../../components/UserForm/UserForm";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
+const formComponents = {
+  Products: ProductForm,
+  Users: UserForm,
+};
+
+const listComponents = {
+  Products: ProductsList,
+  Users: UserList,
+};
+
 function DashboardItem({
   title,
   data,
@@ -29,6 +39,9 @@ function DashboardItem({
     usersDispatch({ type, payload });
   }
 
+  const FormComponent = formComponents[title];
+  const ListComponent = listComponents[title];
+
   return (
     <div className={styles.addProductContainer}>
       <h2>{titleCapitalized}</h2>
@@ -39,16 +52,8 @@ function DashboardItem({
         Add {titleCapitalized.slice(0, titleCapitalized.length - 1)} +
       </span>
       <div className={isFormOpen ? styles.form : styles.hide}>
-        {title === "Products" && (
-          <ProductForm
-            formRef={formRef}
-            handleOpenForm={handleOpenForm}
-            onAdd={onAdd}
-            onEdit={onEdit}
-          />
-        )}
-        {title === "Users" && (
-          <UserForm
+        {FormComponent && (
+          <FormComponent
             formRef={formRef}
             handleOpenForm={handleOpenForm}
             onAdd={onAdd}
@@ -61,17 +66,9 @@ function DashboardItem({
           There are no products registered!
         </div>
       )}
-      {title === "Products" && (
-        <ProductsList
-          products={data}
-          handleOpenForm={handleOpenForm}
-          onRemove={onRemove}
-        />
-      )}
-
-      {title === "Users" && (
-        <UserList
-          users={data}
+      {ListComponent && (
+        <ListComponent
+          items={data}
           handleOpenForm={handleOpenForm}
           onRemove={onRemove}
         />

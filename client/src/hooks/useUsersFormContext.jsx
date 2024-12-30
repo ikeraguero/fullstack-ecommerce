@@ -15,14 +15,12 @@ const initialState = {
 };
 
 function formReducer(state, action) {
-  console.log(action.type);
   switch (action.type) {
     case "loadUsers":
       return { ...state, users: action.payload };
     case "toggleAdd":
       return { ...state, isAddingUser: !state.isAddingUser };
     case "openEdit":
-      console.log(action.payload);
       return {
         ...state,
         isEditingUser: true,
@@ -57,7 +55,17 @@ function formReducer(state, action) {
     case "changePassword":
       return { ...state, userPassword: action.payload };
     case "reset":
-      return initialState;
+      return {
+        users: [],
+        image: {},
+        editUser: null,
+        userFirstName: null,
+        userLastName: null,
+        userEmail: null,
+        userRole: null,
+        userStatus: null,
+        userPassword: null,
+      };
     default:
       return new Error("Unknown option");
   }

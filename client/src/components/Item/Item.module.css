@@ -1,4 +1,4 @@
-.productLine {
+.itemLine {
   border-bottom: 0.1rem solid #b9b9b9;
   padding: 1.2rem 1.2rem;
   text-transform: uppercase;
@@ -6,13 +6,13 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
-.productLine div {
+.itemLine div {
   justify-self: center;
 }
 
-.productName,
-.productPrice,
-.productPrice {
+.itemName,
+.itemPrice,
+.itemPrice {
   width: 5.6rem;
   white-space: nowrap;
   overflow: hidden;
@@ -21,15 +21,15 @@
   display: block;
 }
 
-.productName,
-.productPrice,
-.productStockQuantity,
-.productCategory {
+.itemName,
+.itemPrice,
+.itemStockQuantity,
+.itemCategory {
   display: flex;
   align-items: center;
 }
 
-.productItemButtons {
+.itemButtons {
   display: flex;
   gap: 1.2rem;
 }

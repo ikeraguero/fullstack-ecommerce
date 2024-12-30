@@ -14,9 +14,7 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       onEdit(formData);
       return;
     }
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+
     onAdd(formData);
   }
 
@@ -57,8 +55,6 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     userRole,
     userEmail,
   } = state;
-
-  console.log(isEditingUser, userPassword);
 
   return (
     <div>

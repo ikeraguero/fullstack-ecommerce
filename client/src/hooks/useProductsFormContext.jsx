@@ -14,6 +14,7 @@ const initialState = {
 };
 
 function formReducer(state, action) {
+  console.log(action.type);
   switch (action.type) {
     case "loadProducts":
       return { ...state, products: action.payload };
@@ -58,8 +59,6 @@ function formReducer(state, action) {
       return {
         ...state,
         image: {},
-        isAddingProduct: false,
-        isEditingProduct: false,
         editProduct: null,
         productName: null,
         productPrice: null,

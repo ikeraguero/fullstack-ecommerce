@@ -13,9 +13,6 @@ function useDashboardItem(initialData, actions) {
 
   const handleAdd = useCallback(
     (formData) => {
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
       create(formData);
     },
     [create]
