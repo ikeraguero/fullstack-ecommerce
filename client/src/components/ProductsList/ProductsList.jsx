@@ -1,9 +1,9 @@
 import ProductItem from "./ProductItem/ProductItem";
+import styles from "./ProductsList.module.css";
 
 function ProductsList({ products, handleOpenForm, onRemove }) {
-  console.log(products);
   return (
-    <ul>
+    <ul className={styles.productsList}>
       {products?.map((product) => (
         <ProductItem
           product={product}

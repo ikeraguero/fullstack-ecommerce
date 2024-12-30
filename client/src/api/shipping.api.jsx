@@ -18,7 +18,7 @@ async function calculateShipping(data) {
       "Content-Type": "application/json",
     },
   });
-  console.log(res.data);
+
   return res.data;
 }
 

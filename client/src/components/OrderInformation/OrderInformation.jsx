@@ -8,7 +8,6 @@ function OrderInformation() {
   const { data: orders, isLoading } = useOrdersByUser(id);
 
   if (isLoading) return <div>Loading...</div>;
-  console.log(orders);
 
   return (
     <div>

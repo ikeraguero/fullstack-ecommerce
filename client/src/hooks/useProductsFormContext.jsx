@@ -44,15 +44,29 @@ function formReducer(state, action) {
         productDescription: null,
       };
     case "changeName":
+      console.log(action.payload);
       return { ...state, productName: action.payload };
     case "changePrice":
       return { ...state, productPrice: action.payload };
     case "changeCategory":
-      return { ...state, productCategory: action.payload };
+      return { ...state, productCategory: Number(action.payload) };
     case "changeQuantity":
       return { ...state, productQuantity: action.payload };
     case "changeDescription":
       return { ...state, productDescription: action.payload };
+    case "reset":
+      return {
+        ...state,
+        image: {},
+        isAddingProduct: false,
+        isEditingProduct: false,
+        editProduct: null,
+        productName: null,
+        productPrice: null,
+        productCategory: null,
+        productQuantity: null,
+        productDescription: null,
+      };
     default:
       return new Error("Unknown option");
   }

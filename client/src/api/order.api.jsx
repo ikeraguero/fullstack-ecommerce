@@ -48,7 +48,6 @@ async function fetchOrder(orderId) {
 
 async function payOrder(orderData, orderId, paymentData) {
   const axiosInstance = createAxiosInstance();
-  console.log(paymentData);
 
   const resPayment = await axiosInstance.post(
     `http://localhost:8080/payment/process`,

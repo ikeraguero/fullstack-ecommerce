@@ -13,7 +13,7 @@ function createAxiosInstance() {
 
 async function createReview(data) {
   const axiosInstance = createAxiosInstance();
-  console.log(data);
+
   const res = axiosInstance.post("/review", data);
   if (res.status !== 201) {
     throw new Error("Problem fetching the data");

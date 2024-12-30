@@ -1,7 +1,7 @@
 import StarRating from "../StarRating/StarRating";
 import styles from "./ReviewItem.module.css";
 function ReviewItem({ rating, comment, userFullName, formattedDate }) {
-  console.log(rating, comment, userFullName);
+
   return (
     <div className={styles.reviewItem}>
       <div className={styles.reviewProfile}>

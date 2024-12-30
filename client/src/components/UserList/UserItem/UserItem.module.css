@@ -1,5 +1,5 @@
 .productLine {
-  border-top: 1px solid #cfcfcf;
+  border-bottom: 0.1rem solid #b9b9b9;
   padding: 1.2rem 1.2rem;
   text-transform: uppercase;
   display: grid;

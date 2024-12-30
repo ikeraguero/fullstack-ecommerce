@@ -4,7 +4,7 @@ import Home from "../pages/Home/Home";
 import Product from "../pages/Product/Product";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import SearchResults from "../pages/SearchResults/SearchResults";
-import ManageProduct from "../pages/ManageProduct/ManageProduct";
+
 import CategoryPage from "../pages/CategoryPage/CategoryPage";
 import Cart from "../pages/Cart/Cart";
 import Login from "../pages/Login/Login";
@@ -12,6 +12,7 @@ import Register from "../pages/Register/Register";
 import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "../pages/CheckoutShipping/CheckoutShipping";
 import Profile from "../pages/Profile/Profile";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 export const AppRoutes = ({
   userId,
@@ -48,7 +49,7 @@ export const AppRoutes = ({
       />
       <Route
         path="/dashboard"
-        element={<ManageProduct categories={categories} />}
+        element={<Dashboard categories={categories} />}
       />
       <Route
         path="/search"

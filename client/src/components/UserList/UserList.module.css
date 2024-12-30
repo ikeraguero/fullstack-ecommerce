@@ -7,3 +7,8 @@
 .listHeader span {
   justify-self: center;
 }
+
+.usersList {
+  border: 0.1rem solid #b9b9b9;
+  border-radius: 0.4rem;
+}

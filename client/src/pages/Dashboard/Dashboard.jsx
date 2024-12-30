@@ -10,7 +10,7 @@ import useProducts, {
 import Main from "../../components/Main/Main";
 
 import DashboardItem from "../../components/DashboardItem/DashboardItem";
-import styles from "./ManageProduct.module.css";
+import styles from "./Dashboard.module.css";
 import {
   useCreateUser,
   useDeleteUsers,
@@ -47,10 +47,10 @@ function ManageProduct() {
   const { mutate: updateUser } = useUpdateUser();
   const { mutate: deleteUser } = useDeleteUsers();
 
-  const { image, isAddingProduct, isEditingProduct, productDescription } =
+  const { image, isAddingProduct, isEditingProduct, editProduct } =
     productsState;
 
-  const { isAddingUser, isEditingUser } = usersState;
+  const { isAddingUser, isEditingUser, editUser } = usersState;
   const formRef = useRef();
 
   const isProductFormOpen = isAddingProduct || isEditingProduct;
@@ -72,6 +72,7 @@ function ManageProduct() {
 
   const productDashboard = useDashboardItem(initialProducts, productActions);
   const userDashboard = useDashboardItem(initialUsers, userActions);
+  console.log(initialUsers);
 
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
@@ -85,16 +86,17 @@ function ManageProduct() {
     }
   }, [initialUsers, usersDispatch]);
 
-  const handleFormSubmit = (type, formData, { image, description }) => {
+  const handleFormSubmitProduct = (type, formData, { image }) => {
     const productData = {
       name: formData.get("productName"),
       price: parseFloat(formData.get("productPrice")),
       stock_quantity: Number(formData.get("productStockQuantity")),
       category_id: Number(formData.get("productCategory")),
-      product_description: description,
+      product_description: formData.get("productDescription"),
     };
 
-    if (type === "put") productData.id = formData.get("productId");
+    if (type === "put") productData.id = editProduct.id;
+    console.log(productData);
 
     const sendData = new FormData();
     sendData.append("image", image);
@@ -102,10 +104,41 @@ function ManageProduct() {
       "product",
       new Blob([JSON.stringify(productData)], { type: "application/json" })
     );
+    for (let [key, value] of sendData.entries()) {
+      console.log(key, value);
+    }
 
-    if (type === "post") productActions.create(sendData);
-    if (type === "put") productActions.update(sendData);
+    if (type === "post") {
+      productActions.create(sendData);
+      productsDispatch({ type: "toggleAdd" });
+    }
+    if (type === "put") {
+      productActions.update(sendData);
+      productsDispatch({ type: "closeEdit" });
+    }
   };
+
+  function handleFormSubmitUser(type, formData) {
+    const userData = {
+      email: formData.get("userEmail"),
+      password: formData.get("userPassword"),
+      firstName: formData.get("userFirstName"),
+      lastName: formData.get("userLastName"),
+      roleId: Number(formData.get("userRole")),
+    };
+
+    if (type === "put") userData.userId = editUser.id;
+
+    if (type === "post") {
+      userActions.create(userData);
+      usersDispatch({ type: "toggleAdd" });
+    }
+    if (type === "put") {
+      console.log(userData);
+      userActions.update(userData);
+      usersDispatch({ type: "closeEdit" });
+    }
+  }
 
   if (productsLoading || usersLoading) return <MoonLoader />;
   if (productError || userError) return <div>Error loading data</div>;
@@ -121,21 +154,22 @@ function ManageProduct() {
           title="Products"
           data={productDashboard.data}
           onAdd={(formData) =>
-            handleFormSubmit("post", formData, { image, productDescription })
+            handleFormSubmitProduct("post", formData, { image })
           }
           onEdit={(formData) =>
-            handleFormSubmit("put", formData, { image, productDescription })
+            handleFormSubmitProduct("put", formData, { image })
           }
           onRemove={productDashboard.handleRemove}
+          isFormOpen={isProductFormOpen}
           formRef={formRef}
         />
 
         <DashboardItem
           title="Users"
           data={userDashboard.data}
-          onAdd={userDashboard.handleAdd}
-          onEdit={userDashboard.handleEdit}
-          onRemove={userDashboard.handleRemove}
+          onAdd={(formData) => handleFormSubmitUser("post", formData)}
+          onEdit={(formData) => handleFormSubmitUser("put", formData)}
+          isFormOpen={isUsersFormOpen}
           formRef={formRef}
         />
 

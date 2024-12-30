@@ -4,12 +4,47 @@ import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";
 
-function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
+function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const { state, dispatch } = useProductFormContext();
   const { data: categories, error, isLoading } = useCategories();
+  const {
+    isAddingProduct,
+    isEditingProduct,
+    editProduct,
+    productName,
+    productCategory,
+    productDescription,
+    productPrice,
+    productQuantity,
+  } = state;
+
+  function handleSendData(e) {
+    const formData = new FormData(e.target);
+
+    if (isEditingProduct) {
+      onEdit(formData);
+      return;
+    }
+    onAdd(formData);
+    handleClearForm();
+  }
 
   function handleCloseForm() {
     handleOpenForm({ type: isAddingProduct ? "toggleAdd" : "closeEdit" });
+    handleClearForm();
+  }
+
+  function handleClearForm() {
+    dispatch({ type: "reset" });
+
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  }
+
+  async function handleImageChange(e) {
+    const file = e.target.files[0];
+    dispatch({ type: "setImage", payload: file });
   }
 
   if (isLoading) {
@@ -26,17 +61,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  const {
-    isAddingProduct,
-    isEditingProduct,
-    editProduct,
-    productName,
-    productCategory,
-    productDescription,
-    productPrice,
-    productQuantity,
-  } = state;
-
+  console.log(state);
   return (
     <div>
       <span className={styles.formTop}>
@@ -48,12 +73,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
         className={styles.formBody}
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.target);
-          if (isEditingProduct) {
-            send("put", formData);
-            return;
-          }
-          send("post", formData);
+          handleSendData(e);
         }}
       >
         <div className={styles.formItem}>
@@ -64,7 +84,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
             }
             name="productName"
             className={styles.addFormInput}
-            value={isEditingProduct ? productName : null}
+            value={isEditingProduct || productName ? productName : ""}
           />
         </div>
         <div className={styles.formItem}>
@@ -75,7 +95,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
             }
             name="productPrice"
             className={styles.addFormInput}
-            value={isEditingProduct ? productPrice : null}
+            value={isEditingProduct || productPrice ? productPrice : ""}
           />
         </div>
         <div className={styles.formItem}>
@@ -88,7 +108,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
               })
             }
             name="productStockQuantity"
-            value={isEditingProduct ? productQuantity : null}
+            value={isEditingProduct || productQuantity ? productQuantity : ""}
             className={styles.addFormInput}
           />
         </div>
@@ -103,7 +123,7 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
             }
             name="productCategory"
             id="productCategory"
-            value={isEditingProduct ? productCategory : null}
+            value={isEditingProduct || productCategory ? productCategory : ""}
             className={styles.addFormSelect}
           >
             {categories?.map((category) => (
@@ -117,7 +137,9 @@ function ProductForm({ formRef, handleImageChange, send, handleOpenForm }) {
           <label htmlFor="productDescription">Description</label>
           <input
             name="productDescription"
-            value={isEditingProduct ? productDescription : null}
+            value={
+              isEditingProduct || productDescription ? productDescription : ""
+            }
             onChange={(e) =>
               dispatch({
                 type: "changeDescription",

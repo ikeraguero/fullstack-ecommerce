@@ -91,8 +91,7 @@ function CheckoutShipping({ cart, refetch }) {
       totalPrice,
     };
 
-    console.log("Pay data:", payData);
-    console.log(payData, order?.orderId, paymentRequest);
+
     payOrder({ orderData: payData, orderId: order?.orderId, paymentRequest });
   }
 

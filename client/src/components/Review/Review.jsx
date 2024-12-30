@@ -14,7 +14,7 @@ function Review({ productReviewList, canUserReview }) {
   const ratingAvg = ratingSum / ratingLength;
   const { mutate: createReview } = useCreateReview();
 
-  console.log(productReviewList);
+
 
   function handleSetRating(rating) {
     setRating(rating);

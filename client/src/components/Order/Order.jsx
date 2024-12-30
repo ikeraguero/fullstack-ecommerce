@@ -9,7 +9,7 @@ function Order({ orderItems, orderId, date, items, totalPrice, status }) {
     setIsOpen(!isOpen);
   }
 
-  console.log(orderId);
+
 
   return (
     <div>

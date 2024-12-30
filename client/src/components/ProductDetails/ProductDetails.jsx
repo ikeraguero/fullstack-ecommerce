@@ -13,7 +13,7 @@ function ProductDetails({
   onDecreaseQuantity,
   onAddToWishlist,
 }) {
-  console.log(quantity);
+
   return (
     <div className={styles.productDetails}>
       <div className={styles.productDetailsTop}>

@@ -5,13 +5,13 @@ function UserItem({ user, handleOpenForm, onRemove }) {
     handleOpenForm("openEdit", user);
   }
 
+  const { userEmail, userStatus, userRoleName } = user;
+
   return (
     <li className={styles.productLine}>
-      <div className={styles.productName}>{user.email}</div>
-      <div className={styles.productPrice}>{user.role}</div>
-      <div className={styles.productCategory}>
-        {user.active ? "active" : "inactive"}
-      </div>
+      <div className={styles.productName}>{userEmail}</div>
+      <div className={styles.productCategory}>{userStatus}</div>
+      <div className={styles.productPrice}>{userRoleName}</div>
       <div className={styles.productStockQuantity}>PASSWORD</div>
       <div className={styles.productItemButtons}>
         <button

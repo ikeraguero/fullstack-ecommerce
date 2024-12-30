@@ -4,12 +4,33 @@ import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 import styles from "./UserForm.module.css";
 import { useRoles } from "../../api/roles.api";
 
-function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
+function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const { state, dispatch } = useUsersFormContext();
   const { data: roles, error, isLoading } = useRoles();
 
+  function handleSendData(e) {
+    const formData = new FormData(e.target);
+    if (isEditingUser) {
+      onEdit(formData);
+      return;
+    }
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    onAdd(formData);
+  }
+
   function handleCloseForm() {
     handleOpenForm({ type: isAddingUser ? "toggleAdd" : "closeEdit" });
+    handleClearForm();
+  }
+
+  function handleClearForm() {
+    dispatch({ type: "reset" });
+
+    if (formRef.current) {
+      formRef.current.reset();
+    }
   }
 
   if (isLoading) {
@@ -30,12 +51,14 @@ function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
     isAddingUser,
     isEditingUser,
     editUser,
-    productName,
-    productCategory,
-    productDescription,
-    productPrice,
-    productQuantity,
+    userFirstName,
+    userLastName,
+    userPassword,
+    userRole,
+    userEmail,
   } = state;
+
+  console.log(isEditingUser, userPassword);
 
   return (
     <div>
@@ -47,12 +70,7 @@ function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
         ref={formRef}
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.target);
-          if (isEditingUser) {
-            send("put", formData);
-            return;
-          }
-          send("post", formData);
+          handleSendData(e);
         }}
       >
         <div className={styles.formBody}>
@@ -60,35 +78,36 @@ function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
             <label htmlFor="userFirstName">First Name</label>
             <input
               onChange={(e) =>
-                dispatch({ type: "changeName", payload: e.target.value })
+                dispatch({ type: "changeFirstName", payload: e.target.value })
               }
               name="userFirstName"
               className={styles.addFormInput}
-              value={isEditingUser ? productName : null}
+              value={isEditingUser || userFirstName ? userFirstName : ""}
             />
           </div>
           <div className={styles.formItem}>
             <label htmlFor="userLastName">Last Name</label>
             <input
               onChange={(e) =>
-                dispatch({ type: "changePrice", payload: e.target.value })
+                dispatch({ type: "changeLastName", payload: e.target.value })
               }
               name="userLastName"
               className={styles.addFormInput}
-              value={isEditingUser ? productPrice : null}
+              value={isEditingUser || userLastName ? userLastName : ""}
             />
           </div>
           <div className={styles.formItem}>
             <label htmlFor="userPassword">Password</label>
             <input
+              type="password"
               onChange={(e) =>
                 dispatch({
-                  type: "changeQuantity",
+                  type: "changePassword",
                   payload: e.target.value,
                 })
               }
               name="userPassword"
-              value={isEditingUser ? productQuantity : null}
+              value={isEditingUser || userPassword ? userPassword : ""}
               className={styles.addFormInput}
             />
           </div>
@@ -97,13 +116,13 @@ function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
             <select
               onChange={(e) =>
                 dispatch({
-                  type: "changeCategory",
+                  type: "changeRole",
                   payload: e.target.value,
                 })
               }
               name="userRole"
               id="userRole"
-              value={isEditingUser ? productCategory : null}
+              value={isEditingUser || userRole ? userRole : ""}
               className={styles.addFormSelect}
             >
               {roles?.map((role) => (
@@ -118,10 +137,10 @@ function UserForm({ formRef, handleImageChange, send, handleOpenForm }) {
             <input
               name="userEmail"
               type="email"
-              value={isEditingUser ? productDescription : null}
+              value={isEditingUser || userEmail ? userEmail : ""}
               onChange={(e) =>
                 dispatch({
-                  type: "changeDescription",
+                  type: "changeEmail",
                   payload: e.target.value,
                 })
               }

@@ -15,6 +15,7 @@ const initialState = {
 };
 
 function formReducer(state, action) {
+  console.log(action.type);
   switch (action.type) {
     case "loadUsers":
       return { ...state, users: action.payload };
@@ -26,12 +27,12 @@ function formReducer(state, action) {
         ...state,
         isEditingUser: true,
         editUser: action.payload,
-        userFirstName: action.payload.first_name,
-        userLastName: action.payload.last_name,
-        userEmail: action.payload.email,
-        userRole: action.payload.role,
-        userStatus: action.payload.status,
-        userPassword: action.payload.hash_password,
+        userFirstName: action.payload.userFirstName,
+        userLastName: action.payload.userLastName,
+        userEmail: action.payload.userEmail,
+        userRole: action.payload.userRoleId,
+        userStatus: action.payload.userStatus,
+        userPassword: "",
       };
     case "closeEdit":
       return {
@@ -45,16 +46,18 @@ function formReducer(state, action) {
         userStatus: null,
         userPassword: null,
       };
-    case "changeName":
-      return { ...state, productName: action.payload };
-    case "changePrice":
-      return { ...state, productPrice: action.payload };
-    case "changeCategory":
-      return { ...state, productCategory: action.payload };
-    case "changeQuantity":
-      return { ...state, productQuantity: action.payload };
-    case "changeDescription":
-      return { ...state, productDescription: action.payload };
+    case "changeFirstName":
+      return { ...state, userFirstName: action.payload };
+    case "changeLastName":
+      return { ...state, userLastName: action.payload };
+    case "changeEmail":
+      return { ...state, userEmail: action.payload };
+    case "changeRole":
+      return { ...state, userRole: action.payload };
+    case "changePassword":
+      return { ...state, userPassword: action.payload };
+    case "reset":
+      return initialState;
     default:
       return new Error("Unknown option");
   }

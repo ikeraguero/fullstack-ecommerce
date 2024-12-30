@@ -25,7 +25,7 @@ async function createUser(data) {
 
 async function updateUser(data) {
   const axiosInstance = createAxiosInstance();
-  const res = await axiosInstance.put("http://localhost:8080/api/user/", data);
+  const res = await axiosInstance.put("http://localhost:8080/api/users", data);
   if (res !== 200) {
     return new Error("Problem creating user");
   }

@@ -1,9 +1,9 @@
 import UserItem from "./UserItem/UserItem";
+import styles from "./UserList.module.css";
 
 function UserList({ users, handleOpenForm, onRemove }) {
-  console.log(users);
   return (
-    <ul>
+    <ul className={styles.usersList}>
       {users?.map((user) => (
         <UserItem
           user={user}

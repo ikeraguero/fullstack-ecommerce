@@ -13,7 +13,7 @@ function createAxiosInstance() {
 
 async function createWishlistItem(data) {
   const axiosInstance = createAxiosInstance();
-  console.log(data);
+
   const res = await axiosInstance.post("/wishlist", data);
   if (res !== 201) {
     throw new Error("Problem");

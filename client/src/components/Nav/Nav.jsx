@@ -8,7 +8,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import styles from "./Nav.module.css";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
-  console.log(activeCategory);
+
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const username = useSelector((state) => state.auth.username);

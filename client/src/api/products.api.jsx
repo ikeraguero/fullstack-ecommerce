@@ -114,7 +114,7 @@ export function useRemoveProduct() {
       removeProduct(productId);
     },
     onSuccess: () => {
-      console.log("oi");
+
       queryClient.invalidateQueries(["products"]);
       productsDispatch({
         type: "loadProducts",

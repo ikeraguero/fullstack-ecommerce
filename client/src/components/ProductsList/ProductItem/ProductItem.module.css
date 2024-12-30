@@ -1,6 +1,6 @@
 .productLine {
-  border-top: 1px solid #cfcfcf;
   padding: 1.2rem 1.2rem;
+  border-bottom: 0.1rem solid #b9b9b9;
   text-transform: uppercase;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

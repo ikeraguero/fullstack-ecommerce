@@ -3,18 +3,24 @@ import ProductsList from "../../components/ProductsList/ProductsList";
 import ProductForm from "../../components/ProductForm/ProductForm";
 import UserList from "../../components/UserList/UserList";
 import UserForm from "../../components/UserForm/UserForm";
-import { useState } from "react";
+
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
-function DashboardItem({ title, data, onAdd, onEdit, onRemove, formRef }) {
+function DashboardItem({
+  title,
+  data,
+  onAdd,
+  onEdit,
+  onRemove,
+  formRef,
+  isFormOpen,
+}) {
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
   const { dispatch: usersDispatch } = useUsersFormContext();
   const { dispatch: productsDispatch } = useProductFormContext();
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   function handleOpenForm(type, payload) {
-    setIsFormOpen(!isFormOpen);
     if (title === "Products") {
       productsDispatch({ type, payload });
 
@@ -34,10 +40,20 @@ function DashboardItem({ title, data, onAdd, onEdit, onRemove, formRef }) {
       </span>
       <div className={isFormOpen ? styles.form : styles.hide}>
         {title === "Products" && (
-          <ProductForm formRef={formRef} handleOpenForm={handleOpenForm} />
+          <ProductForm
+            formRef={formRef}
+            handleOpenForm={handleOpenForm}
+            onAdd={onAdd}
+            onEdit={onEdit}
+          />
         )}
         {title === "Users" && (
-          <UserForm formRef={formRef} handleOpenForm={handleOpenForm} />
+          <UserForm
+            formRef={formRef}
+            handleOpenForm={handleOpenForm}
+            onAdd={onAdd}
+            onEdit={onEdit}
+          />
         )}
       </div>
       {data?.length === 0 && (
