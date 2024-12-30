@@ -28,11 +28,19 @@ function CategoryPage({ activeCategory }) {
     );
   }
 
-  refetch();
+  if (categoryProducts.length === 0) {
+    return (
+      <div className={styles.mainContainer}>
+        <h1>No products available in this category.</h1>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.mainContainer}>
       <h1>
-        {`What's best on `} <span className={styles.activeCategory}>{activeCategory}</span>
+        {`What's best on `}{" "}
+        <span className={styles.activeCategory}>{activeCategory}</span>
       </h1>
       <div className={styles.productGrid}>
         {categoryProducts.map((product) => (

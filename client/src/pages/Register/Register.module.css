@@ -47,7 +47,7 @@
 }
 
 .registerButton {
-  background-color: #ff6486;
+  background-color: #f42b56;
 }
 
 .loginButton:hover {
@@ -86,4 +86,9 @@
 
 .btnLink button {
   width: 100%;
+}
+
+.linkContainer {
+  display: flex;
+  gap: 0.4rem;
 }

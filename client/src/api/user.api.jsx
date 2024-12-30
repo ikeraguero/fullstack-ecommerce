@@ -11,17 +11,7 @@ function createAxiosInstance() {
   return instance;
 }
 
-async function createUser(data) {
-  const axiosInstance = createAxiosInstance();
-  const res = await axiosInstance.post(
-    "http://localhost:8080/auth/register",
-    data
-  );
-  if (res !== 200) {
-    return new Error("Problem creating user");
-  }
-  return res;
-}
+
 
 async function updateUser(data) {
   const axiosInstance = createAxiosInstance();
@@ -80,10 +70,4 @@ export function useUpdateUser() {
   });
 }
 
-export function useCreateUser() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data) => createUser(data),
-    onSuccess: () => queryClient.invalidateQueries(["users"]),
-  });
-}
+

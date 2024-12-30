@@ -1,9 +1,10 @@
 import { useUsersFormContext } from "./useUsersFormContext";
-import { useCreateUser, useDeleteUsers, useUpdateUser } from "../api/user.api";
+import { useDeleteUsers, useUpdateUser } from "../api/user.api";
+import { useRegisterUser } from "../api/auth.api";
 
 export function useUserActions(editUser, refetch) {
   const { dispatch } = useUsersFormContext();
-  const { mutate: createUser } = useCreateUser();
+  const { mutate: registerUser } = useRegisterUser();
   const { mutate: updateUser } = useUpdateUser();
   const { mutate: deleteUser } = useDeleteUsers();
 
@@ -18,7 +19,7 @@ export function useUserActions(editUser, refetch) {
 
   const create = (formData) => {
     const userData = formatUserData(formData);
-    createUser(userData, {
+    registerUser(userData, {
       onSuccess: () => {
         dispatch({ type: "toggleAdd" });
         refetch();

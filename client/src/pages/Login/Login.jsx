@@ -1,19 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import { useAuth } from "../../context/AuthContext";
-import { loginSuccess } from "../../actions/AuthActions";
 
 import styles from "./Login.module.css";
+import { useLoginUser } from "../../api/auth.api";
 
 function Login({ refetchCart }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { mutateAsync: loginUser } = useLoginUser();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -22,26 +18,17 @@ function Login({ refetchCart }) {
       password: password,
     };
 
+    setIsLoading(true);
+    setError(null);
+
     try {
-      const res = await axios.post(
-        "http://localhost:8080/auth/login",
-        loginData,
-        {
-          withCredentials: true,
-        }
-      );
-
-      const { token, first_name, last_name, email, role, id } = res.data;
-      const username = `${first_name} ${last_name}`;
-
-      login(token);
-      dispatch(
-        loginSuccess(username, role, token, id, email, first_name, last_name)
-      );
-      navigate("/");
+      await loginUser(loginData);
       refetchCart();
     } catch (err) {
-      console.log(err);
+      setError("Invalid credentials or server error. Please try again.");
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -56,6 +43,7 @@ function Login({ refetchCart }) {
               type="email"
               name="email"
               value={email}
+              required
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -71,10 +59,19 @@ function Login({ refetchCart }) {
             />
           </div>
           <div className={styles.buttons}>
-            <button className={styles.loginButton}>Sign In</button>
-            <Link to={"/register"} className={styles.btnLink}>
-              <button className={styles.registerButton}>Sign Up</button>
-            </Link>
+            <button
+              className={styles.loginButton}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing In..." : "Sign In"}
+            </button>
+            <div className={styles.linkContainer}>
+              <span>{"Don't have an account?"}</span>
+              <Link to={"/register"} className={styles.btnLink}>
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </form>
