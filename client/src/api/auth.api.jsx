@@ -16,7 +16,6 @@ function createAxiosInstance() {
 
 async function loginUser(data) {
   const axiosInstance = createAxiosInstance();
-  console.log(data);
   const res = await axiosInstance.post("/login", data);
   if (res.status !== 200) {
     return new Error("Problem logging user");
@@ -26,7 +25,7 @@ async function loginUser(data) {
 
 async function registerUser(data) {
   const axiosInstance = createAxiosInstance();
-  console.log(data);
+
   const res = await axiosInstance.post("/register", data);
 
   return res.data;

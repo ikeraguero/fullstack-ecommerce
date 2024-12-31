@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useCheckout from "../hooks/useCheckout";
 
 const createAxiosInstance = () => {
   const instance = axios.create({
@@ -61,14 +62,10 @@ async function payOrder(orderData, orderId, paymentData) {
 
   const { success } = resPayment.data;
   if (success) {
+    console.log(orderData);
     const res = await axiosInstance.put(
-      `http://localhost:8080/order/${orderId}`,
-      orderData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      `http://localhost:8080/api/order/${orderId}`,
+      orderData
     );
     return res.data;
   }
@@ -76,21 +73,24 @@ async function payOrder(orderData, orderId, paymentData) {
 }
 
 export function usePayOrder() {
+  const { resetCheckout } = useCheckout();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ orderData, orderId, paymentRequest }) => {
-      payOrder(orderData, orderId, paymentRequest);
+      return payOrder(orderData, orderId, paymentRequest);
     },
     onSuccess: (data, variables) => {
       setTimeout(() => {
         queryClient.invalidateQueries(["cart"]);
         navigate(`/payment/success/${variables.orderId}`);
+        resetCheckout();
       }, 3000);
     },
     onError: (data, variables) => {
       setTimeout(() => {
         navigate(`/payment/error/${variables.orderId}`);
+        resetCheckout();
       }, 3000);
     },
   });
@@ -111,7 +111,9 @@ export function useOrder(orderId) {
 }
 
 export function useCreateOrder() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (orderData) => createOrder(orderData),
+    onSuccess: async () => queryClient.invalidateQueries(["cart"]),
   });
 }

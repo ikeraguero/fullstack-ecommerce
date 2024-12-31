@@ -5,8 +5,6 @@ function Item({ item, handleOpenForm, onRemove, itemType }) {
     handleOpenForm("openEdit", item);
   };
 
-  console.log(item);
-
   return (
     <li className={styles.itemLine}>
       <div className={styles.itemName}>

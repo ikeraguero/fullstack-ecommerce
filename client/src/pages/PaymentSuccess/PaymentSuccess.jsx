@@ -4,7 +4,7 @@ import styles from "./PaymentSuccess.module.css";
 
 function PaymentSuccess() {
   return (
-    <div className={styles.mainContainer}>
+    <section className={styles.mainContainer}>
       <div className={styles.successCard}>
         <div className={styles.successCardTop}>
           <ion-icon name="checkmark-circle-outline"></ion-icon>
@@ -21,7 +21,7 @@ function PaymentSuccess() {
           </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

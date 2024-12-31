@@ -7,7 +7,6 @@ function OrderItem({
   imageData,
   imageType,
 }) {
-
   return (
     <>
       <div className={styles.order}>

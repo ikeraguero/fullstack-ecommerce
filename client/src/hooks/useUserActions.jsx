@@ -29,7 +29,7 @@ export function useUserActions(editUser, refetch) {
 
   const update = (formData) => {
     const userData = formatUserData(formData, editUser);
-    console.log(editUser);
+
     updateUser(userData, {
       onSuccess: () => {
         dispatch({ type: "closeEdit" });

@@ -11,7 +11,7 @@ function OrderInformation() {
 
   return (
     <div>
-      <h1>Orders</h1>
+      <h1>Your Orders</h1>
       <div className={styles.ordersContainer}>
         {orders?.map((order) => (
           <Order key={order.id} {...order} />

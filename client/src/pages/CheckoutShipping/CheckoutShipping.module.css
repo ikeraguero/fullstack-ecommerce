@@ -29,14 +29,7 @@
   background-color: none;
 }
 
-.cartRightSide {
-  background-color: #aeaeae47;
-  border-top-right-radius: 0.8rem;
-  border-bottom-right-radius: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+
 
 .cartLeftSide,
 .cartRightSide {
@@ -70,28 +63,7 @@
   text-decoration: none;
 }
 
-.cartRightSummary h2 {
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
 
-.cartRightSummary {
-  display: flex;
-  flex-direction: column;
-
-  font-weight: bold;
-  padding: 2rem 0 0 0;
-  border-top: #64646447 1px solid;
-  border-bottom: #64646447 1px solid;
-}
-
-.cartSummaryItem {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
 .cartSummaryItemShipping select,
 .cartSummaryItemDiscount input {
@@ -109,27 +81,10 @@
   margin-bottom: 2.6rem;
 }
 
-.cartSummaryTotal {
-  padding: 2.8rem 0 0 0;
-}
 
-.checkoutButton {
-  margin-top: 1.2rem;
-  padding: 1rem 0rem;
-  width: 100%;
-  cursor: pointer;
-  font-weight: bold;
-  color: #ffffff;
-  letter-spacing: 0.1rem;
-  font-size: 1.2rem;
-  border: none;
-  background-color: #f42b56;
-  border-radius: 0.4rem;
-}
 
-.cartSummaryItem {
-  margin-bottom: 1.6rem;
-}
+
+
 
 .checkoutButton:hover {
   background-color: #fe3a65;
@@ -158,48 +113,7 @@
   gap: 1.8rem;
 }
 
-.calculateShippingButton {
-  margin-top: 1.2rem;
-  padding: 0.8rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  color: #ffffff;
-  font-size: 1rem;
-  border: none;
-  background-color: #f42b56;
-  border-radius: 0.4rem;
-}
 
-.formItemBottom {
-  display: flex;
-}
-
-.formItemBottom input {
-  width: 50%;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top: none;
-}
-
-.cardDate {
-  border-bottom-right-radius: 0 !important;
-  border-right: none;
-}
-
-.cardCvc {
-  border-bottom-left-radius: 0 !important;
-}
-
-.cardInformation {
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-}
-
-.paymentMethod {
-  display: flex;
-  gap: 0.2rem;
-  align-items: center;
-}
 
 .calculateShippingAndBackButton {
   display: flex;

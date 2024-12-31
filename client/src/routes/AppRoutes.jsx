@@ -13,6 +13,7 @@ import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
 import CheckoutShipping from "../pages/CheckoutShipping/CheckoutShipping";
 import Profile from "../pages/Profile/Profile";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import PaymentError from "../pages/PaymentError/PaymentError";
 
 export const AppRoutes = ({
   userId,
@@ -63,6 +64,7 @@ export const AppRoutes = ({
       <Route path="/login" element={<Login refetchCart={refetch} />} />
       <Route path="/register" element={<Register />} />
       <Route path="/payment/success/:id" element={<PaymentSuccess />} />
+      <Route path="/payment/error/:id" element={<PaymentError />} />
       <Route path="/checkout/:id/" element={<CheckoutShipping />} />
     </Routes>
   );

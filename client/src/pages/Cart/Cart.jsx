@@ -49,7 +49,7 @@ function Cart({ openError }) {
       date: new Date().toISOString(),
       status: "pending",
       discount: 0,
-      shippingAddress: "Rua",
+      shippingAddress: "",
       cartItemsList: cartItems.map((item) => ({
         productId: item.product_id,
         quantity: item.quantity,

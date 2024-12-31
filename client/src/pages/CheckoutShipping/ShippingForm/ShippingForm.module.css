@@ -1,0 +1,63 @@
+.cartLeftTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.cartLeftTitle h1,
+.cartRightTitle h1 {
+  padding: 0.6rem 0rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.shippingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.formItem input,
+.formItem select {
+  padding: 0.6rem 1.2rem;
+  border: 0.1px solid #d1d1d1;
+  border-radius: 0.4rem;
+}
+
+.formItem select {
+  cursor: pointer;
+}
+
+.calculateShippingAndBackButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calculateShippingButton {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 1rem;
+  border: none;
+  background-color: #f42b56;
+  border-radius: 0.4rem;
+}
+
+.inputError {
+  border: 0.1rem solid #cd022e !important;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: #cd022e;
+}

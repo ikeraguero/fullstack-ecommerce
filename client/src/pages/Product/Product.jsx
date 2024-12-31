@@ -52,7 +52,7 @@ function Product({ userId, refetch, openSuccess }) {
     addToCart(cartItem, {
       onSuccess: () => {
         refetch();
-        openSuccess();
+        // openSuccess();
       },
       onError: (error) => {
         console.error("Failed to add to cart:", error);
@@ -112,7 +112,7 @@ function Product({ userId, refetch, openSuccess }) {
           />
         </div>
         <ProductDetails
-          onAddTocart={handleAddToCart}
+          onAddToCart={handleAddToCart}
           onIncreaseQuantity={handleIncreaseQuantity}
           onDecreaseQuantity={handleDecreaseQuantity}
           onAddToWishlist={handleAddToWishList}

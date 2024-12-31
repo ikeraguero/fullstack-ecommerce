@@ -1,6 +1,7 @@
 import { useState } from "react";
 import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
+import { Link } from "react-router-dom";
 
 function Order({ orderItems, orderId, date, items, totalPrice, status }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,8 +9,6 @@ function Order({ orderItems, orderId, date, items, totalPrice, status }) {
   function handleOpenOrder() {
     setIsOpen(!isOpen);
   }
-
-
 
   return (
     <div>
@@ -24,13 +23,13 @@ function Order({ orderItems, orderId, date, items, totalPrice, status }) {
             {items < 9 ? `0${items}` : items} {items > 1 ? "items" : "item"}
           </span>
           <span>${totalPrice}</span>
-          <span
-            className={
-              status === "paid" ? styles.statusPaid : styles.statusPending
-            }
-          >
-            {status}
-          </span>
+
+          {status === "paid" && <span className={styles.statusPaid}>Paid</span>}
+          {status === "pending" && (
+            <Link to={`/checkout/${orderId}`} className={styles.statusPending}>
+              Checkout
+            </Link>
+          )}
         </div>
         <span className={styles.orderIcon}>
           {isOpen && <ion-icon name="chevron-up-outline"></ion-icon>}
@@ -41,7 +40,7 @@ function Order({ orderItems, orderId, date, items, totalPrice, status }) {
         <div className={styles.orderItem}>
           {orderItems?.map((item) => (
             <OrderItem
-              key={item.id}
+              key={item}
               productName={item.productName}
               quantity={item.quantity}
               totalPrice={item.totalPrice}
