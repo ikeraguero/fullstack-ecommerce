@@ -11,8 +11,6 @@ function createAxiosInstance() {
   return instance;
 }
 
-
-
 async function updateUser(data) {
   const axiosInstance = createAxiosInstance();
   const res = await axiosInstance.put("http://localhost:8080/api/users", data);
@@ -37,6 +35,7 @@ async function deleteUser(userId) {
 }
 
 export function useDeleteUsers() {
+  const { refetch } = useUsers();
   const [userIdRemove, setUserIdRemove] = useState();
   const { state: users, dispatch: usersDispatch } = useUsersFormContext();
   const queryClient = useQueryClient();
@@ -47,6 +46,7 @@ export function useDeleteUsers() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["users"]);
+      refetch();
       usersDispatch({
         type: "loadUsers",
         payload: users.filter((user) => user.id !== userIdRemove),
@@ -69,5 +69,3 @@ export function useUpdateUser() {
     onSuccess: () => queryClient.invalidateQueries(["users"]),
   });
 }
-
-

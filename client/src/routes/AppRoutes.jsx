@@ -10,7 +10,7 @@ import Cart from "../pages/Cart/Cart";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
-import CheckoutShipping from "../pages/CheckoutShipping/CheckoutShipping";
+import Checkout from "../pages/Checkout/Checkout";
 import Profile from "../pages/Profile/Profile";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import PaymentError from "../pages/PaymentError/PaymentError";
@@ -65,7 +65,7 @@ export const AppRoutes = ({
       <Route path="/register" element={<Register />} />
       <Route path="/payment/success/:id" element={<PaymentSuccess />} />
       <Route path="/payment/error/:id" element={<PaymentError />} />
-      <Route path="/checkout/:id/" element={<CheckoutShipping />} />
+      <Route path="/checkout/:id/" element={<Checkout />} />
     </Routes>
   );
 };

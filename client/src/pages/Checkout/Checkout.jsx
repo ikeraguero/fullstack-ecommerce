@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./CheckoutShipping.module.css";
+import styles from "./Checkout.module.css";
 import { useEffect, useState } from "react";
 import { useOrder, usePayOrder } from "../../api/order.api";
 import { useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import useShippingForm from "../../hooks/useShippingForm";
 import usePaymentForm from "../../hooks/usePaymentForm";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import useCheckout from "../../hooks/useCheckout";
-// import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 
 function CheckoutShipping() {
   const params = useParams();
@@ -55,7 +54,7 @@ function CheckoutShipping() {
     calculateShippingPrice,
   } = useCheckout(shippingValues);
 
-  useEffect(() => {
+  const updateLocalStorage = () => {
     const storedShippingPrice = localStorage.getItem("shippingPrice");
     const storedTotalPrice = localStorage.getItem("totalPrice");
     const storedOrderId = localStorage.getItem("orderId");
@@ -70,6 +69,10 @@ function CheckoutShipping() {
       return;
     }
     updateShippingPrice(0);
+  };
+
+  useEffect(() => {
+    updateLocalStorage();
   }, []);
 
   useEffect(
@@ -85,7 +88,7 @@ function CheckoutShipping() {
     [order, shippingPrice]
   );
 
-  if (!updateOrder) return "AAAAAAAAAAAAAAAAAAAAAAA";
+  if (!updateOrder) return <div>Loading...</div>;
 
   function onPaymentSubmit() {
     const paymentRequest = createPaymentRequest();
@@ -120,7 +123,6 @@ function CheckoutShipping() {
       cvc: cardCvc,
       cardholderName,
     };
-    console.log(paymentRequest);
 
     return paymentRequest;
   }
