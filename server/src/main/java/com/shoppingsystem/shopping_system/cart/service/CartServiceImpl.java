@@ -49,7 +49,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse findByUserId(Long id) {
         Cart cart = cartRepository.findByUserId(id).orElseGet(() -> createNewCart(id));
-
         List<CartItemResponse> cartItemResponseList = getCartItemsForCart(cart);
 
         return new CartResponse(cart.getId(), cartItemResponseList);

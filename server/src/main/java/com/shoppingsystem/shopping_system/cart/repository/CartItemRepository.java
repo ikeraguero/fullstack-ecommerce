@@ -18,7 +18,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     List<CartItem> findCartItemsByUser(@Param("userId") Long userId);
 
     @Query("SELECT ci FROM CartItem ci JOIN ci.cart c WHERE c.id = :cartId")
-    List<CartItem> findByCartId(@Param("userId") Long cartId);
+    List<CartItem> findByCartId(@Param("cartId") Long cartId);
 
     @Modifying
     @Query("DELETE FROM CartItem ci WHERE ci.cart.user.id = :userId")

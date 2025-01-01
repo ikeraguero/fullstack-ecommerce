@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.cart.service;
 
+import com.shoppingsystem.shopping_system.cart.dto.CartItemRequest;
 import com.shoppingsystem.shopping_system.cart.dto.CartItemResponse;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
 
@@ -16,4 +17,6 @@ public interface CartItemService {
     void deleteCartItemsByUserId(Long userId);
     List<CartItem> findByCartId(Long cartId);
     List<CartItem> findAll();
+    CartItemResponse addCartItem(CartItemRequest cartItemRequest);
+    CartItemResponse updateCartItem(CartItemRequest cartItemRequest);
 }
