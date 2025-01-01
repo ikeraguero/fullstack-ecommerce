@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginResponse {
+public class RegisterResponse {
     private Long id;
     private String token;
     private String firstName;
@@ -13,4 +13,3 @@ public class LoginResponse {
     private String email;
     private String role;
 }
-

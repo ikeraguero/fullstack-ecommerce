@@ -9,8 +9,8 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-public class CartDTO {
+public class CartResponse {
 
     private Long id;
-    private List<CartItemDTO> cartItems;
+    private List<CartItemResponse> cartItems;
 }

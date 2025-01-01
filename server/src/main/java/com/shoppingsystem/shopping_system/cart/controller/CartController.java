@@ -1,11 +1,12 @@
 package com.shoppingsystem.shopping_system.cart.controller;
 
-import com.shoppingsystem.shopping_system.cart.dto.CartDTO;
+import com.shoppingsystem.shopping_system.cart.dto.CartResponse;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.service.CartService;
-import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
@@ -19,24 +20,38 @@ public class CartController {
     private UserService userService;
 
     @GetMapping("/cart/{userId}")
-    public CartDTO getCart(@PathVariable Long userId) {
-        CartDTO cartDTO = cartService.findByUserId(userId);;
-        if(cartDTO == null) {
-            User user = userService.findById(userId);
-            Cart cart = new Cart("active", user);
-            cartService.save(cart);
+    public ResponseEntity<?> getCart(@PathVariable Long userId) {
+        CartResponse cartResponse = cartService.findByUserId(userId);
+
+        if(cartResponse==null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart not found for user");
         }
 
-        return cartService.findByUserId(userId);
+    return ResponseEntity.ok(cartResponse);
     }
 
     @GetMapping("/cart/{userId}/{productId}")
-    public Boolean isProductInUserCart(@PathVariable Long userId, @PathVariable Long productId) {
-        return cartService.isProductInUserCart(userId, productId);
+    public ResponseEntity<?> isProductInUserCart(@PathVariable Long userId, @PathVariable Long productId) {
+        try {
+            Boolean isProductInUserCart = cartService.isProductInUserCart(userId, productId);
+            return ResponseEntity.ok(isProductInUserCart);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
+
     }
 
     @PostMapping("/cart")
-    public Cart addCart(Cart cart) {
-        return cartService.save(cart);
+    public ResponseEntity<?> addCart(@RequestBody Cart cart) {
+        try {
+            Cart savedCart = cartService.save(cart);
+            return ResponseEntity.status(201).body(savedCart);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 }

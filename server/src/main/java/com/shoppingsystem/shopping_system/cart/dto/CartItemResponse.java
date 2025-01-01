@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CartItemDTO {
+public class CartItemResponse {
     private Long id;
     private Long cart_id;
     private Long product_id;

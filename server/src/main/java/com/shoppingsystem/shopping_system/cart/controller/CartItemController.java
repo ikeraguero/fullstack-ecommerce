@@ -1,6 +1,6 @@
 package com.shoppingsystem.shopping_system.cart.controller;
 
-import com.shoppingsystem.shopping_system.cart.dto.CartItemDTO;
+import com.shoppingsystem.shopping_system.cart.dto.CartItemResponse;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
 import com.shoppingsystem.shopping_system.cart.service.CartItemService;
@@ -24,12 +24,12 @@ public class CartItemController {
     private ProductService productService;
 
     @GetMapping("cartItem/{cartItemId}")
-    CartItemDTO getCartItem(@PathVariable Long cartItemId) {
+    CartItemResponse getCartItem(@PathVariable Long cartItemId) {
         return cartItemService.findById(cartItemId);
     }
 
     @PostMapping("cartItem")
-    CartItem addCartItem(@RequestBody CartItemDTO cartItemDTO) {
+    CartItem addCartItem(@RequestBody CartItemResponse cartItemDTO) {
         if(cartService.isProductInUserCart((cartService.findById(cartItemDTO.getCart_id())).getUser().getId(),
                 cartItemDTO.getProduct_id())) {
 
@@ -55,7 +55,7 @@ public class CartItemController {
     }
 
     @PutMapping("/cartItem")
-    void updateCartItem(@RequestBody CartItemDTO cartItemDTO) {
+    void updateCartItem(@RequestBody CartItemResponse cartItemDTO) {
             CartItem cartItem = cartItemService.findCartItemByCartAndProduct(cartItemDTO.getCart_id(),
                     cartItemDTO.getProduct_id());
 

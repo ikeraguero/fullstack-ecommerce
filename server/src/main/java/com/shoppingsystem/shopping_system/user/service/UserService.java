@@ -12,4 +12,8 @@ public interface UserService {
     List<UserResponse> findAll();
     void delete(Long userId);
     void updatePassword(Long userId, String newPassword);
+
+    User findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

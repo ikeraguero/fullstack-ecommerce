@@ -1,17 +1,16 @@
 package com.shoppingsystem.shopping_system.cart.service;
 
-import com.shoppingsystem.shopping_system.cart.dto.CartDTO;
-import com.shoppingsystem.shopping_system.cart.dto.CartItemDTO;
+import com.shoppingsystem.shopping_system.cart.dto.CartItemResponse;
+import com.shoppingsystem.shopping_system.cart.dto.CartResponse;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
-import com.shoppingsystem.shopping_system.cart.repository.CartItemRepository;
 import com.shoppingsystem.shopping_system.cart.repository.CartRepository;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
-import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
-import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
+import com.shoppingsystem.shopping_system.product.service.ProductImageService;
+import com.shoppingsystem.shopping_system.product.service.ProductService;
 import com.shoppingsystem.shopping_system.user.model.User;
-import com.shoppingsystem.shopping_system.user.repository.UserRepository;
+import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,65 +25,65 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private CartItemRepository cartItemRepository;
+    private CartItemService cartItemService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Autowired
-    private ProductImageRepository productImageRepository;
+    private ProductImageService productImageService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
 
     @Override
     public Boolean isProductInUserCart(Long userId, Long productId) {
+        if(userId == null || productId == null) {
+            throw new IllegalArgumentException("User ID and Product ID must not be null");
+        }
+
         return cartRepository.isProductInUserCart(userId, productId);
     }
 
     @Override
-    public CartDTO findByUserId(Long id) {
-        Cart cart = cartRepository.findByUserId(id);
+    public CartResponse findByUserId(Long id) {
+        Cart cart = cartRepository.findByUserId(id).orElseGet(() -> createNewCart(id));
 
-        // if no cart is found, create a new one for the user
-        if(cart == null) {
-            User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-            cart = new Cart(null, "active",
-                    user);
-            cartRepository.save(cart);
+        List<CartItemResponse> cartItemResponseList = getCartItemsForCart(cart);
+
+        return new CartResponse(cart.getId(), cartItemResponseList);
+    }
+
+    private Cart createNewCart(Long userId) {
+        User user = userService.findById(userId);
+        Cart cart = new Cart("active", user);
+        return cartRepository.save(cart);
+    }
+
+    private List<CartItemResponse> getCartItemsForCart(Cart cart) {
+        List<CartItem> cartItems = cartItemService.findByCartId(cart.getId());
+        List<CartItemResponse> cartItemResponseList = new LinkedList<>();
+
+        for(CartItem cartItem : cartItems) {
+            Product product = productService.findByIdEntity(cartItem.getProduct().getId());
+
+            ProductImage productImage = productImageService.findByIdEntity(product.getImage_id());
+
+            CartItemResponse cartItemResponse = new CartItemResponse(
+                    cartItem.getCartItemId(),
+                    cart.getId(),
+                    product.getId(),
+                    product.getName(),
+                    product.getCategory().getName(),
+                    cartItem.getQuantity(),
+                    cartItem.getPrice(),
+                    productImage.getImageData(),
+                    productImage.getType());
+
+            cartItemResponseList.add(cartItemResponse);
         }
-
-        List<CartItemDTO> cartItemDTOList = new LinkedList<>();
-
-        for(CartItem cartItem : cartItemRepository.findAll()) {
-            if(cartItem.getCart().getUser().getId().equals(id)) {
-                Product product = productRepository.findById(cartItem.getProduct().getId())
-                        .orElseThrow(() -> new RuntimeException("Product not found"));
-
-                ProductImage productImage = productImageRepository.findById(product.getImage_id()).
-                        orElseThrow(()-> new RuntimeException("Image not found"));
-
-                CartItemDTO newCartItemDTO = new CartItemDTO(
-                        cartItem.getCartItemId(),
-                        cart.getId(),
-                        product.getId(),
-                        product.getName(),
-                        product.getCategory().getName(),
-                        cartItem.getQuantity(),
-                        cartItem.getPrice(),
-                        productImage.getImageData(),
-                        productImage.getType());
-
-                cartItemDTOList.add(newCartItemDTO);
-            }
-
-        }
-        return new CartDTO(
-                cart.getId(),
-                cartItemDTOList
-            );
-
+        return cartItemResponseList;
     }
 
     @Override
@@ -101,6 +100,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart save(Cart cart) {
+        if(cart == null || cart.getUser() == null) {
+            throw new IllegalArgumentException("Cart or associated user must not be null");
+        }
         return cartRepository.save(cart);
     }
 }

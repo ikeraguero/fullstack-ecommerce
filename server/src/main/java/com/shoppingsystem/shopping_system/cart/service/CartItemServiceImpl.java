@@ -1,14 +1,15 @@
 package com.shoppingsystem.shopping_system.cart.service;
 
-import com.shoppingsystem.shopping_system.cart.dto.CartItemDTO;
+import com.shoppingsystem.shopping_system.cart.dto.CartItemResponse;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
-import com.shoppingsystem.shopping_system.product.model.Product;
-import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.cart.repository.CartItemRepository;
 import com.shoppingsystem.shopping_system.cart.repository.CartRepository;
+import com.shoppingsystem.shopping_system.product.model.Product;
+import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class CartItemServiceImpl implements CartItemService {
     private CartRepository cartRepository;
 
     @Override
-    public CartItemDTO findById(Long id) {
+    public CartItemResponse findById(Long id) {
         Optional<CartItem> result = cartItemRepository.findById(id);
         CartItem theCartItem = null;
         if(result.isPresent()) {
@@ -47,7 +48,7 @@ public class CartItemServiceImpl implements CartItemService {
         return cartItemRepository.save(cartItem);
     }
 
-    public CartItemDTO convertToDTO(CartItem cartItem) {
+    public CartItemResponse convertToDTO(CartItem cartItem) {
 
         Cart cart = cartRepository.findById(cartItem.getCart().getId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
@@ -58,7 +59,7 @@ public class CartItemServiceImpl implements CartItemService {
         ProductImage productImage = productImageRepository.findById(product.getImage_id()).
                 orElseThrow(()-> new RuntimeException("Image not found"));
 
-        return new CartItemDTO(
+        return new CartItemResponse(
                 cartItem.getCartItemId(),
                 cart.getId(),
                 product.getId(),
@@ -86,6 +87,22 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public List<CartItem> findCartItemsByUser(Long userId) {
         return cartItemRepository.findCartItemsByUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCartItemsByUserId(Long userId) {
+        cartItemRepository.deleteCartItemsByUserId(userId);
+    }
+
+    @Override
+    public List<CartItem> findByCartId(Long cartId) {
+        return cartItemRepository.findByCartId(cartId);
+    }
+
+    @Override
+    public List<CartItem> findAll() {
+        return cartItemRepository.findAll();
     }
 
 

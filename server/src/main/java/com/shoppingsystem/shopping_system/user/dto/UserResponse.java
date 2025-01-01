@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserResponse {
-    private Long userId;
+    private Long id;
     private String userEmail;
     private String userStatus;
     private String userFirstName;

@@ -1,8 +1,6 @@
 package com.shoppingsystem.shopping_system.product.service;
 
-import com.shoppingsystem.shopping_system.cart.model.CartItem;
 import com.shoppingsystem.shopping_system.product.dto.ProductImageDTO;
-import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import lombok.AllArgsConstructor;
@@ -22,11 +20,12 @@ public class ProductImageServiceImpl implements ProductImageService {
     private ProductImageRepository productImageRepository;
 
 
-
     @Override
     public List<ProductImage> findAll() {
         return this.productImageRepository.findAll();
     }
+
+
 
     @Override
     public ProductImageDTO findById(Long id) {
@@ -38,6 +37,11 @@ public class ProductImageServiceImpl implements ProductImageService {
             throw new RuntimeException("Did not find product with id - " + id);
         }
         return convertToDTO(theProductImage);
+    }
+
+    @Override
+    public ProductImage findByIdEntity(Long id) {
+        return productImageRepository.findById(id).orElseThrow(() -> new RuntimeException("Did not find product image"));
     }
 
     @Override

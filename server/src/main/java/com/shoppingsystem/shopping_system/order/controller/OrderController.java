@@ -78,7 +78,7 @@ public class OrderController {
 
             orderItemService.save(orderItem1);
         }
-
+        cartItemService.deleteCartItemsByUserId(user.getId());
        OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
                orderService.countItemsInOrder(order.getOrderId()), order.getTotalPrice(), order.getDate(), order.getStatus());
 
