@@ -43,6 +43,8 @@ function Cart({ openError }) {
   );
 
   function generateData() {
+    refetch();
+    console.log(cartItems);
     return {
       userId,
       totalPrice,
@@ -66,6 +68,7 @@ function Cart({ openError }) {
     }
     try {
       const orderData = generateData();
+      console.log(orderData);
       const { orderId } = await createOrder(orderData);
       setItemsQuantity(itemsLength);
       setItemsPrice(totalPrice);

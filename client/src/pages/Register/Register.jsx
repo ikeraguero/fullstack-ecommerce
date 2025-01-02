@@ -87,11 +87,13 @@ function Register() {
             />
           </div>
           <div className={styles.buttons}>
-            <button className={styles.registerButton}>Sign Up</button>
+            <button className={styles.registerButton}>
+              {isLoading ? "Creating your account" : "Sign Up"}
+            </button>
             <div className={styles.linkContainer}>
               <span>Already have an account?</span>
               <Link to={"/login"} className={styles.btnLink}>
-                {isLoading ? "Creating your account" : "Sign In"}
+                Sign In
               </Link>
             </div>
           </div>

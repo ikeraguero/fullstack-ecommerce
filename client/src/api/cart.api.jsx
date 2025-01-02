@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../config/config";
+import { useSelector } from "react-redux";
 
 const createAxiosInstance = () => {
   const instance = axios.create({
@@ -86,10 +87,15 @@ export function useAddToCart() {
 }
 
 export function useUpdateCartItem() {
+  const userId = useSelector((state) => state.auth.id);
+  const { refetch } = useCart(userId);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateCartItem(data),
-    onSuccess: () => queryClient.invalidateQueries(["cart"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cart"]);
+      refetch();
+    },
   });
 }
 

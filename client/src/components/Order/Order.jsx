@@ -3,8 +3,12 @@ import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
 import { Link } from "react-router-dom";
 
-function Order({ orderItems, orderId, date, items, totalPrice, status }) {
+function Order({ orderItems, orderId, date, totalPrice, status }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const items = orderItems
+    .map((orderItem) => orderItem.quantity)
+    .reduce((acc, cur) => acc + cur, 0);
 
   function handleOpenOrder() {
     setIsOpen(!isOpen);

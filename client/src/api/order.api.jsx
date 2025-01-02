@@ -16,6 +16,7 @@ async function fetchOrdersByUser(userId) {
   const res = await axiosInstance.get(
     `http://localhost:8080/api/orders/user/${userId}`
   );
+  console.log(res.data)
   if (res.status !== 200) {
     return new Error("Problem fetching the data");
   }
