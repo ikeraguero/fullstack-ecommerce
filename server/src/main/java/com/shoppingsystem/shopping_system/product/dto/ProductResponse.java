@@ -2,14 +2,12 @@ package com.shoppingsystem.shopping_system.product.dto;
 
 import com.shoppingsystem.shopping_system.product_review.dto.ProductReviewResponse;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class ProductResponse {
     private Long id;

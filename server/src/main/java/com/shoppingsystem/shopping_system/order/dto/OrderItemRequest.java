@@ -1,27 +1,12 @@
 package com.shoppingsystem.shopping_system.order.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 public class OrderItemRequest {
     private Long productId;
     private int quantity;
     private double totalPrice;
-
-    public OrderItemRequest(Long productId, int quantity, double totalPrice) {
-        this.productId = productId;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItemRequest{" +
-                "productId=" + productId +
-                ", quantity=" + quantity +
-                ", totalPrice=" + totalPrice +
-                '}';
-    }
 }

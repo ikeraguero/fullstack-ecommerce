@@ -3,13 +3,11 @@ package com.shoppingsystem.shopping_system.product.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.shoppingsystem.shopping_system.config.MultipartFileDeserializer;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class ProductRequest {
     private Long id;
