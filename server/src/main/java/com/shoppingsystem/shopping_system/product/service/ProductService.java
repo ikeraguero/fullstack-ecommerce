@@ -14,7 +14,10 @@ public interface ProductService {
     ProductResponse findById(Long productId, Long userId);
     List<ProductResponse> findProductsByCategory(String categoryName);
     Product save(Product product);
+    void saveAll(List<Product> productList);
     List<ProductResponse>  searchProducts(String query);
     void deleteById(Long id);
     Product findByIdEntity(Long id);
+
+    List<Product> findByIds(List<Long> productsIds);
 }

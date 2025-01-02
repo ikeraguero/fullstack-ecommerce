@@ -1,6 +1,7 @@
 package com.shoppingsystem.shopping_system.product.service;
 
 import com.shoppingsystem.shopping_system.product.dto.ProductImageDTO;
+import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,11 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     public void deleteById(Long id) {
         productImageRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProductImage> findByIds(List<Long> ids) {
+        return productImageRepository.findByIds(ids);
     }
 
     @Override

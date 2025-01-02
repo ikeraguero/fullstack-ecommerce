@@ -15,5 +15,6 @@ public interface ProductImageService {
     ProductImage findByIdEntity(Long id);
     ProductImage save(ProductImage product);
     void deleteById(Long id);
+    List<ProductImage> findByIds(List<Long> ids);
     ProductImage uploadImage(MultipartFile file) throws IOException;
 }

@@ -63,7 +63,7 @@ public class ProductController {
 
     @PostMapping("/products")
     Product addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException {
-        Category category = categoryService.findById(productDTO.getCategory_id());
+        Category category = categoryService.findByIdEntity(productDTO.getCategory_id());
 
         ProductImage productImage = new ProductImage(
                 image.getOriginalFilename(), image.getContentType(),
@@ -103,7 +103,7 @@ public class ProductController {
         Product existingProduct = productService.findByIdEntity(productDTO.getId());
 
         // Fetch the category
-        Category category = categoryService.findById(productDTO.getCategory_id());
+        Category category = categoryService.findByIdEntity(productDTO.getCategory_id());
 
 
         // Update the product fields

@@ -3,6 +3,7 @@ package com.shoppingsystem.shopping_system.user.service;
 import com.shoppingsystem.shopping_system.role.model.Role;
 import com.shoppingsystem.shopping_system.role.service.RoleService;
 import com.shoppingsystem.shopping_system.user.dto.UserResponse;
+import com.shoppingsystem.shopping_system.user.exception.UserNotFoundException;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @Override

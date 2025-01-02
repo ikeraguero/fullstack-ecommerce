@@ -90,6 +90,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public void saveAll(List<Product> productList) {
+        productRepository.saveAll(productList);
+    }
+
+    @Override
     public List<ProductResponse> searchProducts(String query) {
         List<Product> products = productRepository.searchProducts(query);
         List<ProductResponse> productResponseList = new LinkedList<>();
@@ -116,6 +121,11 @@ public class ProductServiceImpl implements ProductService{
 
     public Product findByIdEntity(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    @Override
+    public List<Product> findByIds(List<Long> productsIds) {
+        return productRepository.findByIds(productsIds);
     }
 
 
