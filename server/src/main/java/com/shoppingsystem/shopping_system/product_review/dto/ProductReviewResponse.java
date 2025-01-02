@@ -13,12 +13,14 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @ToString
 public class ProductReviewResponse {
+    private Long productId;
     private int rating;
     private String comment;
     private String userFullName;
     private String formattedDate;
 
-    public ProductReviewResponse(int rating, String comment, String firstName, String lastName, LocalDateTime date) {
+    public ProductReviewResponse(Long productId, int rating, String comment, String firstName, String lastName, LocalDateTime date) {
+        this.productId = productId;
         this.rating = rating;
         this.comment = comment;
         this.userFullName = firstName + " " + lastName;

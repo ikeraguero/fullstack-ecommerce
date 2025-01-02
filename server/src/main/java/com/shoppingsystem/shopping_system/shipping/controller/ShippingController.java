@@ -1,5 +1,8 @@
 package com.shoppingsystem.shopping_system.shipping.controller;
 
+import com.shoppingsystem.shopping_system.shipping.service.ShippingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +14,18 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ShippingController {
 
+    @Autowired
+    private ShippingService shippingService;
+
     @PostMapping("/calculate-shipping")
-    public Map<String, Object> calculateShipping(@RequestBody Map<String, String> request) {
-        String postalCode = request.get("postalCode");
-
-        if (postalCode == null || postalCode.isEmpty()) {
-            throw new IllegalArgumentException("Postal code is required");
+    public ResponseEntity<?> calculateShipping(@RequestBody Map<String, String> request) {
+        try {
+            Map<String, Object> shipping = shippingService.calculateShipping(request);
+            return ResponseEntity.ok(shipping);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e ) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
-
-        int shippingPrice = postalCode.startsWith("1") ? 10 : 15;
-
-        return Map.of("shippingPrice", shippingPrice);
     }
 }

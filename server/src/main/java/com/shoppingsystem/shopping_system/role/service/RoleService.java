@@ -8,4 +8,5 @@ public interface RoleService {
     List<Role> findAll();
     String findRoleNameById(int roleId);
     Role findById(int roleId);
+    List<Role> findRolesByUserIds(List<Long> userIds);
 }

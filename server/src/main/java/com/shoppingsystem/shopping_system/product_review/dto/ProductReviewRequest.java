@@ -1,12 +1,10 @@
 package com.shoppingsystem.shopping_system.product_review.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 public class ProductReviewRequest {
     private Long productId;
     private Long userId;

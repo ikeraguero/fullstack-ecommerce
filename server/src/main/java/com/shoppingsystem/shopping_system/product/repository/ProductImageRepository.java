@@ -13,4 +13,5 @@ import java.util.List;
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
     @Query("SELECT pi FROM ProductImage pi WHERE pi.id IN :ids")
     List<ProductImage> findByIds(@Param("ids") List<Long> ids);
+
 }

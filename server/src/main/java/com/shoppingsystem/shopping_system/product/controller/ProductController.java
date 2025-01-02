@@ -1,20 +1,22 @@
 package com.shoppingsystem.shopping_system.product.controller;
 
-import com.shoppingsystem.shopping_system.category.model.Category;
+import com.shoppingsystem.shopping_system.category.exceptions.CategoryNotFoundException;
 import com.shoppingsystem.shopping_system.category.service.CategoryService;
-import com.shoppingsystem.shopping_system.product.dto.ProductDTO;
+import com.shoppingsystem.shopping_system.product.dto.ProductRequest;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
+import com.shoppingsystem.shopping_system.product.exception.NoProductsFoundException;
 import com.shoppingsystem.shopping_system.product.model.Product;
-import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.service.ProductImageService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api")
 @RestController
@@ -38,88 +40,89 @@ public class ProductController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/products")
-    List<ProductResponse> getProducts() {
-        return productService.findAll();
+    public ResponseEntity<?> getProducts() {
+        try {
+            List<ProductResponse> productResponseList = productService.findAll();
+            return ResponseEntity.ok(productResponseList);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
+
     }
 
     @GetMapping("/products/{productId}")
-    ProductResponse getProductById(@PathVariable Long productId, @RequestHeader("User-ID") Long userId) {
-        if (productId == null) {
-            throw new IllegalArgumentException("Product ID must not be null");
+    public ResponseEntity<?> getProductById(@PathVariable Long productId, @RequestHeader("User-ID") Long userId) {
+        try {
+            ProductResponse productResponse = productService.findById(productId, userId);
+            return ResponseEntity.ok(productResponse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
-        return productService.findById(productId, userId);
     }
 
     @GetMapping("/products/search")
-    public List<ProductResponse> searchProducts(@RequestParam String query) {
-        return productService.searchProducts(query);
+    public ResponseEntity<?> searchProducts(@RequestParam String query) {
+        try {
+            List<ProductResponse> productResponseList = productService.searchProducts(query);
+            return ResponseEntity.ok(productResponseList);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     @GetMapping("/products/categories/{categoryName}")
-    public List<ProductResponse> searchProductsByCategory(@PathVariable String categoryName) {
-        return productService.findProductsByCategory(categoryName);
+    public ResponseEntity<?> searchProductsByCategory(@PathVariable String categoryName) {
+        try {
+            List<ProductResponse> productResponseList = productService.findProductsByCategory(categoryName);
+            return ResponseEntity.ok(productResponseList);
+        } catch (NoProductsFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }  catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
 
     @PostMapping("/products")
-    Product addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException {
-        Category category = categoryService.findByIdEntity(productDTO.getCategory_id());
-
-        ProductImage productImage = new ProductImage(
-                image.getOriginalFilename(), image.getContentType(),
-                image.getSize(), image.getBytes()
-        );
-
-        productImageService.save(productImage);
-
-        System.out.println(category.getName());
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setImage_id(productImage.getId());
-        product.setPrice(productDTO.getPrice());
-        product.setStock_quantity(productDTO.getStock_quantity());
-        product.setProduct_description(productDTO.getProduct_description());
-        product.setCategory(category);
-
-        // save the product
-        return productService.save(product);
+    public ResponseEntity<?> addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product")ProductRequest productRequest) throws IOException {
+        try {
+            Product savedProduct = productService.addProduct(image, productRequest);
+            return ResponseEntity.ok(savedProduct);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to process image"));
+        } catch (CategoryNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
 
     @PutMapping("/products")
-    Product updateProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductDTO productDTO) throws IOException{
-
-        if (productDTO.getId() == null) {
-            throw new IllegalArgumentException("Product ID must not be null");
+    public ResponseEntity<?> updateProduct(@RequestParam("image") MultipartFile image, @RequestPart("product") ProductRequest productRequest) throws IOException{
+        try {
+            productService.updateProduct(image, productRequest);
+            return ResponseEntity.ok("Product updated successfully");
+        } catch (CategoryNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
 
-        ProductImage productImage = new ProductImage(
-                image.getOriginalFilename(), image.getContentType(),
-                image.getSize(), image.getBytes()
-        );
-
-        productImageService.save(productImage);
-
-        Product existingProduct = productService.findByIdEntity(productDTO.getId());
-
-        // Fetch the category
-        Category category = categoryService.findByIdEntity(productDTO.getCategory_id());
-
-
-        // Update the product fields
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setPrice(productDTO.getPrice());
-        existingProduct.setStock_quantity(productDTO.getStock_quantity());
-        existingProduct.setProduct_description(productDTO.getProduct_description());
-        existingProduct.setCategory(category);
-        existingProduct.setImage_id(productImage.getId());
-
-        return productService.save(existingProduct); // Save the updated produ
     }
 
     @DeleteMapping("/products/{productId}")
-    void deleteProduct(@PathVariable Long productId) {
-        productService.deleteById(productId);
+    public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
+        try {
+            productService.deleteById(productId);
+            return ResponseEntity.ok("Product successfully deleted");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

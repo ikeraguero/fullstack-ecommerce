@@ -2,6 +2,7 @@ package com.shoppingsystem.shopping_system.wishlist.controller;
 
 import com.shoppingsystem.shopping_system.wishlist.dto.WishlistItemRequest;
 import com.shoppingsystem.shopping_system.wishlist.dto.WishlistItemResponse;
+import com.shoppingsystem.shopping_system.wishlist.exception.WishlistNotFound;
 import com.shoppingsystem.shopping_system.wishlist.service.WishlistItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +14,45 @@ import java.util.List;
 @RequestMapping("/api/wishlist")
 public class WishlistItemController {
 
-    private final WishlistItemService service;
+    private final WishlistItemService wishlistItemService;
 
     public WishlistItemController(WishlistItemService service) {
-        this.service = service;
+        this.wishlistItemService = service;
     }
 
     @PostMapping
-    public ResponseEntity<WishlistItemResponse> addWishlistItem(@RequestBody WishlistItemRequest request) {
-        WishlistItemResponse response = service.addWishlistItem(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<?> addWishlistItem(@RequestBody WishlistItemRequest request) {
+        try {
+            WishlistItemResponse response = wishlistItemService.addWishlistItem(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e ) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<WishlistItemResponse>> getWishlistItems(@PathVariable Long userId) {
-        List<WishlistItemResponse> items = service.getWishlistItemsByUserId(userId);
-        System.out.println(items);
-        return ResponseEntity.ok(items);
+    public ResponseEntity<?> getWishlistItems(@PathVariable Long userId) {
+        try {
+            List<WishlistItemResponse> items = wishlistItemService.getWishlistItemsByUserId(userId);
+            return ResponseEntity.ok(items);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (WishlistNotFound e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e ) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeWishlistItem(@PathVariable Long id) {
-        service.removeWishlistItem(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> removeWishlistItem(@PathVariable Long id) {
+        try {
+            wishlistItemService.removeWishlistItem(id);
+            return ResponseEntity.ok("Wishlist Item successfully removed");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
     }
 }
