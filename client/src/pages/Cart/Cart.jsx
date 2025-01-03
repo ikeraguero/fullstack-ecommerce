@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +12,7 @@ import { useCartContext } from "../../context/CartContext";
 import { setOrder } from "../../actions/OrderActions";
 
 function Cart({ openError }) {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const { cartId, cartItems, refetch } = useCartContext();
   const userId = useSelector((state) => state.auth.id);
 
@@ -37,9 +38,12 @@ function Cart({ openError }) {
         setShippingPrice(0);
         setTotalPrice(0);
       }
-      setTotalPrice(totalPrice + shippingPrice);
+      setTotalPrice(
+        cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0) +
+          shippingPrice
+      );
     },
-    [cartItems, shippingPrice, itemsLength, totalPrice]
+    [itemsLength, cartItems, shippingPrice]
   );
 
   function generateData() {
@@ -84,7 +88,7 @@ function Cart({ openError }) {
     navigate("/");
   }
 
-  return (
+  return isLoggedIn ? (
     <div className={styles.cartMainContainer}>
       <div className={styles.cartLeftSide}>
         <div className={styles.cartLeftSideList}>
@@ -128,6 +132,8 @@ function Cart({ openError }) {
         />
       </form>
     </div>
+  ) : (
+    <Navigate to={"/login"} />
   );
 }
 

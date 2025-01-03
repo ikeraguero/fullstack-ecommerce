@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ImgZoom from "react-img-zoom";
 import { MoonLoader } from "react-spinners";
@@ -13,8 +13,9 @@ import Review from "../../components/Review/Review";
 
 import styles from "./Product.module.css";
 import ProductDetails from "../../components/ProductDetails/ProductDetails";
+import { useSuccess } from "../../context/SuccessContext";
 
-function Product({ userId, refetch, openSuccess }) {
+function Product({ userId, refetch }) {
   const { id } = useParams();
   const {
     data: product,
@@ -25,9 +26,12 @@ function Product({ userId, refetch, openSuccess }) {
   const [quantity, setQuantity] = useState(1);
   const { mutate: addToWishlist } = useCreateWishlistItem();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { displaySuccess } = useSuccess();
   let userCart = useCart(userId).data;
-
   const { mutate: addToCart } = useAddToCart();
+  const navigate = useNavigate();
+
+  console.log(product);
 
   useEffect(
     function () {
@@ -52,7 +56,7 @@ function Product({ userId, refetch, openSuccess }) {
     addToCart(cartItem, {
       onSuccess: () => {
         refetch();
-        // openSuccess();
+        displaySuccess("Product added to cart");
       },
       onError: (error) => {
         console.error("Failed to add to cart:", error);
@@ -78,6 +82,12 @@ function Product({ userId, refetch, openSuccess }) {
       productId: product.id,
     };
     addToWishlist(data);
+    displaySuccess("Product added to wishlist");
+  }
+
+  function handleBuyNow() {
+    handleAddToCart();
+    navigate("/cart");
   }
 
   if (isLoading) {
@@ -116,6 +126,7 @@ function Product({ userId, refetch, openSuccess }) {
           onIncreaseQuantity={handleIncreaseQuantity}
           onDecreaseQuantity={handleDecreaseQuantity}
           onAddToWishlist={handleAddToWishList}
+          onBuyNow={handleBuyNow}
           isLoggedIn={isLoggedIn}
           quantity={quantity}
           {...product}
@@ -123,8 +134,10 @@ function Product({ userId, refetch, openSuccess }) {
       </div>
       <div className={styles.productBottom}>
         <Review
+          {...product}
           productReviewList={productReviewList}
           canUserReview={canUserReview}
+          userId={userId}
         />
       </div>
     </div>

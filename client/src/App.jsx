@@ -11,6 +11,7 @@ import useUserId from "./hooks/useUserId";
 import useCartData from "./hooks/useCartData";
 import useCategories from "./api/categories.api";
 import { useAlert } from "./context/AlertContext";
+import { useSuccess } from "./context/SuccessContext";
 import { AppRoutes } from "./routes/AppRoutes";
 
 const MemoizedNav = React.memo(Nav);
@@ -23,8 +24,8 @@ function App() {
   const { data: categories } = useCategories();
 
   const { cart, error, refetch, isLoading } = useCartData(userId ?? null);
-  const [isSuccessOpen, setSuccessOpen] = useState(false);
   const { isErrorOpen, setErrorOpen, errorMessage } = useAlert();
+  const { isSuccessOpen, setSuccessOpen, successMessage } = useSuccess();
 
   const handleSearch = useCallback(
     (products) => setSearchProducts(products),
@@ -55,7 +56,7 @@ function App() {
       <SuccessAlert
         successOpen={isSuccessOpen}
         setOpen={setSuccessOpen}
-        message={"Product added to cart successfully"}
+        message={successMessage}
         aria-live="assertive"
       />
       <ErrorAlert

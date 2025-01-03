@@ -7,19 +7,19 @@ import styles from "./Dashboard.module.css";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 import ProductDashboard from "../../components/ProductDashboard/ProductDashboard";
 import UserDashboard from "../../components/UserDashboard/UserDashboard";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-function ManageProduct() {
+function ManageProduct({ requiredRole }) {
   const { state: usersState } = useUsersFormContext();
-
   const { state: productsState } = useProductFormContext();
-
   const { isAddingUser, isEditingUser } = usersState;
   const { isAddingProduct, isEditingProduct } = productsState;
-
   const isUsersFormOpen = isEditingUser || isAddingUser;
   const isProductFormOpen = isAddingProduct || isEditingProduct;
-
-  return (
+  const role = useSelector((state) => state.auth.role);
+  const isAuthorized = role === requiredRole 
+  return isAuthorized ? (
     <>
       <Main>
         {(isProductFormOpen || isUsersFormOpen) && (
@@ -29,6 +29,8 @@ function ManageProduct() {
         <UserDashboard />
       </Main>
     </>
+  ) : (
+    <Navigate to={"/unauthorized"} replace />
   );
 }
 

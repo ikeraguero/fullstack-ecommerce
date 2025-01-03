@@ -1,41 +1,40 @@
-import { createContext, useState, useContext, useEffect } from "react";
-import Cookies from "js-cookie";
+import { createContext, useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../actions/AuthActions";
+import { useAuthStatus, useLogoutUser } from "../api/auth.api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(Cookies.get("authToken"));
-
-  const login = (token) => {
-    Cookies.set("authToken", token, {
-      expires: 1,
-      secure: true,
-      sameSite: "Strict",
-      path: "/",
-    });
-    setAuthToken(token);
-  };
-
-  const logout = () => {
-    Cookies.remove("authToken");
-    localStorage.clear();
-    setAuthToken(null);
-  };
+  const dispatch = useDispatch();
+  const { data: userData, isLoading, error } = useAuthStatus(); 
+  const { mutate: logout } = useLogoutUser();
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      Cookies.remove("authToken");
-    };
+    if (userData) {
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+      const { firstName, lastName, role, id, email } = userData;
+      const username = `${firstName} ${lastName}`;
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  });
+      dispatch(
+        loginSuccess(username, role, id, email, firstName, lastName)
+      );
+    }
+  }, [userData, dispatch]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        userData, 
+        isLoading, 
+        error,
+        logout: handleLogout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

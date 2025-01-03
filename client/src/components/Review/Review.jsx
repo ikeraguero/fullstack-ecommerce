@@ -3,8 +3,9 @@ import ReviewItem from "../ReviewItem/ReviewItem";
 import StarRating from "../StarRating/StarRating";
 import styles from "./Review.module.css";
 import { useCreateReview } from "../../api/reviews.api";
+import { useSuccess } from "../../context/SuccessContext";
 
-function Review({ productReviewList, canUserReview }) {
+function Review({ productReviewList, canUserReview, userId, id }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState();
   const ratingSum = productReviewList
@@ -13,8 +14,7 @@ function Review({ productReviewList, canUserReview }) {
   const ratingLength = productReviewList.length;
   const ratingAvg = ratingSum / ratingLength;
   const { mutate: createReview } = useCreateReview();
-
-
+  const { displaySuccess } = useSuccess();
 
   function handleSetRating(rating) {
     setRating(rating);
@@ -22,13 +22,14 @@ function Review({ productReviewList, canUserReview }) {
 
   function handleCreateReview() {
     const reviewObject = {
-      productId: 4,
-      userId: 1,
-      rating: 5,
-      comment: "Great product! Highly recommend.",
+      productId: id,
+      userId,
+      rating,
+      comment,
       date: new Date().toISOString(),
     };
     createReview(reviewObject);
+    displaySuccess("Review posted");
   }
 
   return (

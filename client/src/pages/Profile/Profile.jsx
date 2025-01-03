@@ -2,14 +2,15 @@
 import { useState } from "react";
 import styles from "./Profile.module.css";
 import { useAuth } from "../../context/AuthContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess } from "../../actions/AuthActions";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ProfileInformation from "../../components/ProfileInformation/ProfileInformation";
 import OrderInformation from "../../components/OrderInformation/OrderInformation";
 import Wishlist from "../../components/Wishlist/Wishlist";
 
 function Profile() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [active, setActive] = useState("profile");
   const { logout } = useAuth();
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function Profile() {
     navigate("/");
   }
 
-  return (
+  return isLoggedIn ? (
     <div className={styles.mainContainer}>
       <div className={styles.leftPanel}>
         <div
@@ -86,6 +87,8 @@ function Profile() {
         {active === "wishlist" && <Wishlist />}
       </div>
     </div>
+  ) : (
+    <Navigate to={"/login"} />
   );
 }
 

@@ -14,6 +14,7 @@ import Checkout from "../pages/Checkout/Checkout";
 import Profile from "../pages/Profile/Profile";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import PaymentError from "../pages/PaymentError/PaymentError";
+import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
 export const AppRoutes = ({
   userId,
@@ -50,7 +51,7 @@ export const AppRoutes = ({
       />
       <Route
         path="/dashboard"
-        element={<Dashboard categories={categories} />}
+        element={<Dashboard categories={categories} requiredRole="ADMIN" />}
       />
       <Route
         path="/search"
@@ -66,6 +67,7 @@ export const AppRoutes = ({
       <Route path="/payment/success/:id" element={<PaymentSuccess />} />
       <Route path="/payment/error/:id" element={<PaymentError />} />
       <Route path="/checkout/:id/" element={<Checkout />} />
+      <Route path="/unauthorized" element={<Unauthorized />}></Route>
     </Routes>
   );
 };

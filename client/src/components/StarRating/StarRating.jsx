@@ -53,8 +53,10 @@ export default function StarRating({
             <Star
               key={index}
               onClick={editRating && handleClick}
-              onHoverIn={editRating && (() => setTempRating(index + 1))}
-              onHoverOut={editRating && (() => setTempRating(0))}
+              onHoverIn={
+                editRating ? () => setTempRating(index + 1) : undefined
+              }
+              onHoverOut={editRating ? () => setTempRating(0) : undefined}
               rating={index + 1}
               full={tempRating ? tempRating >= index + 1 : rating >= index + 1}
               color={color}

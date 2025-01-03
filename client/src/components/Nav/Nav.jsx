@@ -8,7 +8,6 @@ import SearchBar from "./SearchBar/SearchBar";
 import styles from "./Nav.module.css";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
-
   const [loadedCategories, setLoadedCategories] = useState(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const username = useSelector((state) => state.auth.username);
@@ -16,6 +15,8 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const role = useSelector((state) => state.auth.role);
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
+
+  console.log(useSelector((state) => state.auth));
 
   useEffect(() => {
     if (categories && categories.length > 0) {
@@ -64,7 +65,9 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
                   className={styles.loginLink}
                 >
                   {isLoggedIn ? `Hello, ` : "Sign In/Sign Up"}
-                  {isLoggedIn && <strong>{formattedUser.split(" ")[0]}</strong>}
+                  {isLoggedIn && (
+                    <strong>{formattedUser?.split(" ")[0]}</strong>
+                  )}
                 </Link>
               </span>
             </div>

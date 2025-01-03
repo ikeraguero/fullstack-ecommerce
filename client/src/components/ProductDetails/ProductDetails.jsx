@@ -1,18 +1,28 @@
 import { Link } from "react-router-dom";
 import styles from "./ProductDetails.module.css";
 import QuantityControl from "../../components/QuantityControl/QuantityControl";
+import { useDeleteWishlistItem } from "../../api/wishlist.api";
 function ProductDetails({
   name,
   price,
   category,
   product_description,
   quantity,
+  id,
   onAddToCart,
   isLoggedIn,
   onIncreaseQuantity,
   onDecreaseQuantity,
+  onBuyNow,
   onAddToWishlist,
+  inUserWishlist,
 }) {
+  const { mutate: removeWishlistItem } = useDeleteWishlistItem();
+  function handleRemoveWishlistItem() {
+    removeWishlistItem(id);
+  }
+
+  console.log(inUserWishlist);
 
   return (
     <div className={styles.productDetails}>
@@ -29,8 +39,15 @@ function ProductDetails({
           onIncrease={onIncreaseQuantity}
           onDecrease={onDecreaseQuantity}
         />
-        <button className={styles.wishlistButton} onClick={onAddToWishlist}>
-          <ion-icon name="heart-outline"></ion-icon>
+        <button
+          className={styles.wishlistButton}
+          onClick={inUserWishlist ? handleRemoveWishlistItem : onAddToWishlist}
+        >
+          {inUserWishlist ? (
+            <ion-icon name="trash-outline"></ion-icon>
+          ) : (
+            <ion-icon name="heart-outline"></ion-icon>
+          )}
         </button>
       </div>
       <div className={styles.interactive}>
@@ -46,7 +63,9 @@ function ProductDetails({
             </Link>
           )}
           {isLoggedIn ? (
-            <button className={styles.buttonBuy}>Buy Now</button>
+            <button className={styles.buttonBuy} onClick={onBuyNow}>
+              Buy Now
+            </button>
           ) : (
             <Link to="/login">
               <button className={styles.buttonBuy}>Buy Now</button>
