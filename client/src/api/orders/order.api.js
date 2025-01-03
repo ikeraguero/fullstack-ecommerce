@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import useCheckout from "../../hooks/useCheckout";
+import useCheckout from "../../hooks/cart/useCheckout";
 import { apiClient, apiClientPayment } from "../apiClient";
 import { useSelector } from "react-redux";
 import useApiMutation from "../useApiMutation";

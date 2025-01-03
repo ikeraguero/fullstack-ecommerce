@@ -1,20 +1,20 @@
 import { Route, Routes } from "react-router-dom";
 
-import Home from "../pages/Home/Home";
-import Product from "../pages/Product/Product";
-import PageNotFound from "../pages/PageNotFound/PageNotFound";
-import SearchResults from "../pages/SearchResults/SearchResults";
+import Home from "../pages/home/Home";
+import Product from "../features/products/pages/Product";
+import PageNotFound from "../pages/pagenotfound/PageNotFound";
+import SearchResults from "../pages/searchresults/SearchResults";
 
-import CategoryPage from "../pages/CategoryPage/CategoryPage";
-import Cart from "../pages/Cart/Cart";
-import Login from "../pages/Login/Login";
-import Register from "../pages/Register/Register";
-import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
-import Checkout from "../pages/Checkout/Checkout";
-import Profile from "../pages/Profile/Profile";
-import Dashboard from "../pages/Dashboard/Dashboard";
-import PaymentError from "../pages/PaymentError/PaymentError";
-import Unauthorized from "../pages/Unauthorized/Unauthorized";
+import CategoryPage from "../pages/categorypage/CategoryPage";
+import Cart from "../features/cart/pages/Cart";
+import Login from "../pages/login/Login";
+import Register from "../pages/register/Register";
+import PaymentSuccess from "../pages/paymentsuccess/PaymentSuccess";
+import Checkout from "../pages/checkout/Checkout";
+import Profile from "../features/users/pages/Profile";
+import Dashboard from "../features/dashboard/pages/Dashboard";
+import PaymentError from "../pages/paymenterror/PaymentError";
+import Unauthorized from "../pages/unauthorized/Unauthorized";
 
 export const AppRoutes = ({
   userId,

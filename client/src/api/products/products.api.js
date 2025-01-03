@@ -1,7 +1,7 @@
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import { useQuery } from "@tanstack/react-query";
-import { useProductFormContext } from "../../hooks/useProductsFormContext";
+import { useProductFormContext } from "../../hooks/products/useProductsFormContext";
 
 async function updateProduct(data) {
   try {

@@ -1,14 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../reducers/authReducer";
-import orderReducer from "../reducers/orderReducer";
-import checkoutReducer from "../reducers/checkoutReducer";
+import rootReducer from "../reducers";
 
 const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    order: orderReducer,
-    checkout: checkoutReducer,
-  },
+  reducer: rootReducer,
 });
 
 export default store;
