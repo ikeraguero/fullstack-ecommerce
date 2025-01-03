@@ -1,6 +1,6 @@
 import { useUsersFormContext } from "./useUsersFormContext";
-import { useDeleteUsers, useUpdateUser } from "../api/user.api";
-import { useRegisterUser } from "../api/auth.api";
+import { useDeleteUsers, useUpdateUser } from "../api/users/user.api";
+import { useRegisterUser } from "../api/auth/auth.api";
 
 export function useUserActions(editUser, refetch) {
   const { dispatch } = useUsersFormContext();

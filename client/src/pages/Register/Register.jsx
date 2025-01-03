@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Register.module.css";
-import { useRegisterUser } from "../../api/auth.api";
+import { useRegisterUser } from "../../api/auth/auth.api";
 import { useState } from "react";
 
 function Register() {

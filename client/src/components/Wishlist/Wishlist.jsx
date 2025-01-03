@@ -1,11 +1,9 @@
-import { useSelector } from "react-redux";
-import { useWishlist } from "../../api/wishlist.api";
+import { useWishlist } from "../../api/users/wishlist.api";
 import styles from "./Wishlist.module.css";
 import WishlistItem from "../WishlistItem/WishlistItem";
 
 function Wishlist() {
-  const userId = useSelector((state) => state.auth.id);
-  const { data: wishlist, isLoading } = useWishlist(userId);
+  const { data: wishlist, isLoading } = useWishlist();
 
   if (isLoading) return <div>Loading..</div>;
   return (

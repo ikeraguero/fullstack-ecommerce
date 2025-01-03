@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import DashboardItem from "../DashboardItem/DashboardItem";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
-import { useUsers } from "../../api/user.api";
+import { useUsers } from "../../api/users/user.api";
 import { MoonLoader } from "react-spinners";
 import useDashboardItem from "../../hooks/useDashboardItem";
 import { useUserActions } from "../../hooks/useUserActions";

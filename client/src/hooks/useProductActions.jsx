@@ -2,7 +2,7 @@ import {
   useCreateProduct,
   useRemoveProduct,
   useUpdateProduct,
-} from "../api/products.api";
+} from "../api/products/products.api";
 import { useProductFormContext } from "./useProductsFormContext";
 
 export function useProductActions(editProduct, refetch) {

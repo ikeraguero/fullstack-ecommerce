@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import styles from "./Login.module.css";
-import { useLoginUser } from "../../api/auth.api";
+import { useLoginUser } from "../../api/auth/auth.api";
 
 function Login({ refetchCart }) {
   const [email, setEmail] = useState("");

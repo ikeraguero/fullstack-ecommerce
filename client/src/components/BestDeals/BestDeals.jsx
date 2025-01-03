@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./BestDeals.module.css";
 import ProductCard from "../ProductCard/ProductCard";
 import { MoonLoader } from "react-spinners";
-import useProducts from "../../api/products.api";
+import { useProducts } from "../../api/products/products.api";
 
 function BestDeals() {
   const { data: products, error, isLoading } = useProducts();

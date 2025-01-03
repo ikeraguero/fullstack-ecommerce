@@ -1,5 +1,5 @@
 import { MoonLoader } from "react-spinners";
-import useProducts from "../../api/products.api";
+import { useProducts } from "../../api/products/products.api";
 import useDashboardItem from "../../hooks/useDashboardItem";
 import { useProductFormContext } from "../../hooks/useProductsFormContext";
 import DashboardItem from "../DashboardItem/DashboardItem";

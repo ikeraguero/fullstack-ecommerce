@@ -2,7 +2,7 @@ import { MoonLoader } from "react-spinners";
 import { useUsersFormContext } from "../../hooks/useUsersFormContext";
 
 import styles from "./UserForm.module.css";
-import { useRoles } from "../../api/roles.api";
+import { useRoles } from "../../api/users/roles.api";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const { state, dispatch } = useUsersFormContext();

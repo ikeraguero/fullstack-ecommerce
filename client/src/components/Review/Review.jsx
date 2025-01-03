@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import StarRating from "../StarRating/StarRating";
 import styles from "./Review.module.css";
-import { useCreateReview } from "../../api/reviews.api";
+import { useCreateReview } from "../../api/products/reviews.api";
 import { useSuccess } from "../../context/SuccessContext";
 
 function Review({ productReviewList, canUserReview, userId, id }) {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./WishlistItem.module.css";
-import { useDeleteWishlistItem } from "../../api/wishlist.api";
+import { useDeleteWishlistItem } from "../../api/users/wishlist.api";
 
 function WishlistItem({
   id,

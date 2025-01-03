@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./SearchBar.module.css";
-import { useSearch } from "../../../api/search.api";
+import { useSearch } from "../../../api/search/search.api";
 import { useNavigate } from "react-router-dom";
 import SearchItem from "../../SearchItem/SearchItem";
 

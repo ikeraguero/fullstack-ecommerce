@@ -1,4 +1,4 @@
-import { useProductsByCategory } from "../../api/products.api";
+import { useProductsByCategory } from "../../api/products/products.api";
 import { MoonLoader } from "react-spinners";
 import styles from "./CategoryPage.module.css";
 import ProductCard from "../../components/ProductCard/ProductCard";

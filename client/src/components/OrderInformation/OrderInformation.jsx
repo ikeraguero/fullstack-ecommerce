@@ -1,11 +1,9 @@
-import { useSelector } from "react-redux";
-import { useOrdersByUser } from "../../api/order.api";
+import { useOrdersByUser } from "../../api/orders/order.api";
 import Order from "../Order/Order";
 import styles from "./OrderInformation.module.css";
 
 function OrderInformation() {
-  const id = useSelector((state) => state.auth.id);
-  const { data: orders, isLoading } = useOrdersByUser(id);
+  const { data: orders, isLoading } = useOrdersByUser();
 
   if (isLoading) return <div>Loading...</div>;
 

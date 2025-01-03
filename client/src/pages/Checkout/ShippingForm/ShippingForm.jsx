@@ -1,4 +1,4 @@
-import { useCountries } from "../../../api/countries.api";
+import { useCountries } from "../../../api/countries/countries.api";
 import styles from "./ShippingForm.module.css";
 
 function ShippingForm({

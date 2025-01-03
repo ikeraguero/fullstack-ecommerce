@@ -1,5 +1,5 @@
 import { MoonLoader } from "react-spinners";
-import useCategories from "../../api/categories.api";
+import useCategories from "../../api/categories/categories.api";
 import { useProductFormContext } from "../../hooks/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";

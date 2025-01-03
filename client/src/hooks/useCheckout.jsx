@@ -5,7 +5,7 @@ import {
   setLoading,
   setShippingPrice,
 } from "../actions/CheckoutActions";
-import { useCalculateShipping } from "../api/shipping.api";
+import { useCalculateShipping } from "../api/orders/shipping.api";
 
 function useCheckout(shippingValues) {
   const dispatch = useDispatch();

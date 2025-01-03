@@ -9,7 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary/ErrorBoudary";
 import { ProductFormProvider } from "./hooks/useProductsFormContext";
 import useUserId from "./hooks/useUserId";
 import useCartData from "./hooks/useCartData";
-import useCategories from "./api/categories.api";
+import useCategories from "./api/categories/categories.api";
 import { useAlert } from "./context/AlertContext";
 import { useSuccess } from "./context/SuccessContext";
 import { AppRoutes } from "./routes/AppRoutes";

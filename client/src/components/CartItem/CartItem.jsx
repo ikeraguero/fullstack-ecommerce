@@ -1,5 +1,5 @@
 import styles from "./CartItem.module.css";
-import { useDeleteCartItem, useUpdateCartItem } from "../../api/cart.api";
+import { useDeleteCartItem, useUpdateCartItem } from "../../api/cart/cart.api";
 import { useState } from "react";
 
 function CartItem({
@@ -16,7 +16,6 @@ function CartItem({
   cartItems,
   setTotalPrice,
   totalPrice,
-  
 }) {
   const { mutate: deleteItem } = useDeleteCartItem();
   const { mutate: updateItem } = useUpdateCartItem();

@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "./ProductDetails.module.css";
 import QuantityControl from "../../components/QuantityControl/QuantityControl";
-import { useDeleteWishlistItem } from "../../api/wishlist.api";
 function ProductDetails({
   name,
   price,
   category,
   product_description,
   quantity,
-  id,
+  onRemoveFromWishlist,
   onAddToCart,
   isLoggedIn,
   onIncreaseQuantity,
@@ -17,13 +16,6 @@ function ProductDetails({
   onAddToWishlist,
   inUserWishlist,
 }) {
-  const { mutate: removeWishlistItem } = useDeleteWishlistItem();
-  function handleRemoveWishlistItem() {
-    removeWishlistItem(id);
-  }
-
-  console.log(inUserWishlist);
-
   return (
     <div className={styles.productDetails}>
       <div className={styles.productDetailsTop}>
@@ -41,7 +33,7 @@ function ProductDetails({
         />
         <button
           className={styles.wishlistButton}
-          onClick={inUserWishlist ? handleRemoveWishlistItem : onAddToWishlist}
+          onClick={inUserWishlist ? onRemoveFromWishlist : onAddToWishlist}
         >
           {inUserWishlist ? (
             <ion-icon name="trash-outline"></ion-icon>

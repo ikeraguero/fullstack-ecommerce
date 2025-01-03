@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/CartItem/CartItem";
 import CartSummary from "../../components/CartSummary/CartSummary";
 import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
-import { useCreateOrder } from "../../api/order.api";
+import { useCreateOrder } from "../../api/orders/order.api";
 import styles from "./Cart.module.css";
 import { useCheckout } from "../../context/CheckoutContext";
 import { useCartContext } from "../../context/CartContext";
@@ -72,7 +72,6 @@ function Cart({ openError }) {
     }
     try {
       const orderData = generateData();
-      console.log(orderData);
       const { orderId } = await createOrder(orderData);
       setItemsQuantity(itemsLength);
       setItemsPrice(totalPrice);

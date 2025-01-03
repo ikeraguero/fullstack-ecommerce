@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Checkout.module.css";
 import { useEffect, useState } from "react";
-import { useOrder, usePayOrder } from "../../api/order.api";
+import { useOrder, usePayOrder } from "../../api/orders/order.api";
 import { useSelector } from "react-redux";
 
 import ShippingForm from "./ShippingForm/ShippingForm";

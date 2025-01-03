@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import ImgZoom from "react-img-zoom";
 import { MoonLoader } from "react-spinners";
 
-import { useProduct } from "../../api/products.api";
-import { useAddToCart } from "../../api/cart.api";
-import useCart from "../../api/cart.api";
-import { useCreateWishlistItem } from "../../api/wishlist.api";
+import { useProduct } from "../../api/products/products.api";
+import { useAddToCart } from "../../api/cart/cart.api";
+import { useCart } from "../../api/cart/cart.api";
+import {
+  useCreateWishlistItem,
+  useDeleteWishlistItem,
+} from "../../api/users/wishlist.api";
 
 import Review from "../../components/Review/Review";
 
@@ -24,14 +27,13 @@ function Product({ userId, refetch }) {
     isLoading,
   } = useProduct(id, userId ? userId : 0);
   const [quantity, setQuantity] = useState(1);
+  const { mutate: removeWishlistItem } = useDeleteWishlistItem();
   const { mutate: addToWishlist } = useCreateWishlistItem();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const { displaySuccess } = useSuccess();
   let userCart = useCart(userId).data;
   const { mutate: addToCart } = useAddToCart();
   const navigate = useNavigate();
-
-  console.log(product);
 
   useEffect(
     function () {
@@ -85,6 +87,11 @@ function Product({ userId, refetch }) {
     displaySuccess("Product added to wishlist");
   }
 
+  function handleRemoveFromWishlist() {
+    removeWishlistItem(wishlistItemId);
+    displaySuccess("Product removed from wishlist");
+  }
+
   function handleBuyNow() {
     handleAddToCart();
     navigate("/cart");
@@ -104,8 +111,14 @@ function Product({ userId, refetch }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  const { name, image_data, image_type, productReviewList, canUserReview } =
-    product;
+  const {
+    name,
+    image_data,
+    image_type,
+    productReviewList,
+    canUserReview,
+    wishlistItemId,
+  } = product;
 
   return (
     <div className={styles.mainContainer}>
@@ -126,6 +139,7 @@ function Product({ userId, refetch }) {
           onIncreaseQuantity={handleIncreaseQuantity}
           onDecreaseQuantity={handleDecreaseQuantity}
           onAddToWishlist={handleAddToWishList}
+          onRemoveFromWishlist={handleRemoveFromWishlist}
           onBuyNow={handleBuyNow}
           isLoggedIn={isLoggedIn}
           quantity={quantity}

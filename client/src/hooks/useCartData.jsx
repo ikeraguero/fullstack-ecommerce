@@ -1,4 +1,4 @@
-import useCart from "../api/cart.api";
+import { useCart } from "../api/cart/cart.api";
 
 function useCartData(userId) {
   const { data: cart, error, refetch, isLoading } = useCart(userId);
