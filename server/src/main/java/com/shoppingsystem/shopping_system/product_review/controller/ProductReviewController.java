@@ -27,7 +27,6 @@ public class ProductReviewController {
     @PostMapping("/review")
     public ResponseEntity<?> saveReview(@RequestBody ProductReviewRequest productReviewRequest) {
         try {
-            System.out.println(productReviewRequest);
             productReviewService.saveReview(productReviewRequest);
             return ResponseEntity.ok("Review created successfully");
         } catch (IllegalArgumentException e) {

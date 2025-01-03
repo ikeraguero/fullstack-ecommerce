@@ -3,13 +3,11 @@ package com.shoppingsystem.shopping_system.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.role.model.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "user", schema = "ecommerce_project")
 public class User {

@@ -96,7 +96,6 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public List<CartItem> findByCartId(Long cartId) {
-        System.out.println(cartId);
         return cartItemRepository.findByCartId(cartId);
     }
 

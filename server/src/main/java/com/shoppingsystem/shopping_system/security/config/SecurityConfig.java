@@ -46,12 +46,13 @@ public class SecurityConfig {
                         "/api/calculate-shipping",
                         "/api/wishlist/**",
                         "/payment/process",
-                        "/api/users"
+                        "/api/users",
+                        "/auth/status"
                         ).permitAll()
                         .requestMatchers("/api/products", "/api/users/**", "/api/roles").hasRole("ADMIN")
                         .anyRequest().authenticated()
-        ).addFilterBefore(new com.shoppingsystem.shopping_system.security.JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        System.out.println(jwtUtil);
+        ).addFilterBefore(new com.shoppingsystem.shopping_system.security.JwtAuthenticationFilter(jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

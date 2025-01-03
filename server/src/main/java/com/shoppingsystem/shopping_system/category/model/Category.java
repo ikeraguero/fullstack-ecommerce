@@ -1,14 +1,14 @@
 package com.shoppingsystem.shopping_system.category.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name="category", schema = "ecommerce_project")
 public class Category {
@@ -22,5 +22,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
     private List<Product> products;
 }

@@ -173,7 +173,6 @@ public class OrderServiceImpl implements OrderService {
 
     private void removeCartItem(Order existingOrder) {
         List<CartItem> cartItemList = cartItemService.findCartItemsByUser(existingOrder.getUser().getId());
-        System.out.println(existingOrder.getUser().getId());
         for(CartItem cartItem : cartItemList) {
             cartItemService.delete(cartItem.getCartItemId());
         }

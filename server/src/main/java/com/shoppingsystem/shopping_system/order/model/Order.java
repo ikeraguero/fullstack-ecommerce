@@ -8,10 +8,9 @@ import lombok.*;
 import java.util.Date;
 
 @Data
-@Getter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "order", schema = "ecommerce_project")
 public class Order {
 

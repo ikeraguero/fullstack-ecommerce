@@ -1,7 +1,6 @@
 package com.shoppingsystem.shopping_system.security;
 
 import com.shoppingsystem.shopping_system.util.JwtUtil;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -14,13 +13,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 //configure spring boot to intercept requests and check for jwt
@@ -59,11 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
                             email, null, new ArrayList<>(authorities));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    if (authentication != null) {
-                        System.out.println("Authenticated user: " + authentication.getName());
-                        System.out.println("User roles: " + authentication.getAuthorities());
-                    }
-                    System.out.println(authentication);
                 }
             }
         }

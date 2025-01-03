@@ -6,7 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
@@ -19,8 +18,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = (String) authentication.getCredentials();
         String email = jwtUtil.extractEmail(token);
-
-        System.out.println(token);
 
         if(jwtUtil.validateToken(token, email)) {
 

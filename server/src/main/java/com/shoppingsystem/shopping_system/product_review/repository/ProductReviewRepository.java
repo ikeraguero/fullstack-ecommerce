@@ -12,5 +12,5 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, Lo
     List<ProductReview> findAllReviewsByProduct(Long productId);
 
     @Query("SELECT pr FROM ProductReview pr JOIN pr.product p WHERE p.id IN :productIds")
-    List<ProductReview> findReviewByProductsId(@Param("productsId") List<Long> productsId);
+    List<ProductReview> findReviewByProductsId(@Param("productIds") List<Long> productIds);
 }

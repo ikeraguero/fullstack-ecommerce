@@ -15,6 +15,7 @@ import com.shoppingsystem.shopping_system.product_review.dto.ProductReviewRespon
 import com.shoppingsystem.shopping_system.product_review.model.ProductReview;
 import com.shoppingsystem.shopping_system.product_review.service.ProductReviewService;
 import com.shoppingsystem.shopping_system.user.service.UserService;
+import com.shoppingsystem.shopping_system.wishlist.service.WishlistItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,6 +48,9 @@ public class ProductServiceImpl implements ProductService{
     private OrderItemService orderItemService;
 
     @Autowired
+    private WishlistItemService wishlistItemService;
+
+    @Autowired
     private UserService userService;
 
     public ProductServiceImpl() {
@@ -67,18 +72,19 @@ public class ProductServiceImpl implements ProductService{
         Product theProduct = result.orElseThrow(() ->
                 new ProductNotFoundException("Did not find product with productId - " + productId));
         boolean canUserReview = orderItemService.hasUserBoughtProduct(productId, userId);
+        boolean isInUsersWishlist = wishlistItemService.isProductInWishlist(userId, productId);
         ProductResponse productResponse = convertToDTO(theProduct);
         productResponse.setCanUserReview(canUserReview);
+        productResponse.setInUserWishlist(isInUsersWishlist);
         return productResponse;
     }
 
     @Override
     public List<ProductResponse> findProductsByCategory(String categoryName) {
         List<Product> products =  productRepository.findProductsByCategory(categoryName);
-        if(products == null) {
-            throw new NoProductsFoundException("No products where found for category " + categoryName);
-        }
-
+        if(products.isEmpty()) {
+            return new LinkedList<>();
+         }
         Map<Long, ProductImage> productImageMap = generateProductImageMap(products);
         Map<Long, List<ProductReviewResponse>> reviewMap = generateProductReviewsMap(products);
 
@@ -253,7 +259,6 @@ public class ProductServiceImpl implements ProductService{
 
 
     public ProductResponse convertToDTO(Product product) {
-        System.out.println(product);
         Category category = categoryService.findByIdEntity(product.getCategory().getId());
 
         if (product.getImage_id() == null) {

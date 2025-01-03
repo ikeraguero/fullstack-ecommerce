@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "order_item", schema = "ecommerce_project")
 public class OrderItem {
 

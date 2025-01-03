@@ -8,16 +8,20 @@ import com.shoppingsystem.shopping_system.auth.exceptions.EmailAlreadyExistsExce
 import com.shoppingsystem.shopping_system.auth.exceptions.InvalidCredentialsException;
 import com.shoppingsystem.shopping_system.role.model.Role;
 import com.shoppingsystem.shopping_system.role.service.RoleService;
+import com.shoppingsystem.shopping_system.security.exception.InvalidTokenException;
+import com.shoppingsystem.shopping_system.security.exception.NoTokenFoundException;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import com.shoppingsystem.shopping_system.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         Cookie cookie = createAuthCookie(token, 3600);
         response.addCookie(cookie);
 
-        return new LoginResponse(user.getId(), token, user.getFirstName(), user.getLastName(),
+        return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
                     user.getEmail(), user.getRole().getName());
     }
 
@@ -111,5 +115,26 @@ public class AuthServiceImpl implements AuthService {
 
         response.addCookie(cookie);
         return ResponseEntity.ok().body("Logged out successfully");
+    }
+
+    @Override
+    public LoginResponse getAuthStatus(HttpServletRequest request) {
+        Cookie authTokenCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("authToken"))
+                .findFirst()
+                .orElse(null);
+
+        if (authTokenCookie == null) {
+            throw new NoTokenFoundException("No token was found");
+        }
+
+        String token = authTokenCookie.getValue();
+        String email = jwtUtil.extractEmail(token);
+        if (jwtUtil.validateToken(token, email)) {
+            User user = userService.findByEmail(email);
+            return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
+                    user.getEmail(), user.getRole().getName());
+        }
+        throw new InvalidTokenException("Invalid token");
     }
 }

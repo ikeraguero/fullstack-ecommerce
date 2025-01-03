@@ -1,10 +1,11 @@
 package com.shoppingsystem.shopping_system.wishlist.service;
 
 import com.shoppingsystem.shopping_system.product.dto.ProductImageDTO;
+import com.shoppingsystem.shopping_system.product.exception.ProductNotFoundException;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
+import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
 import com.shoppingsystem.shopping_system.product.service.ProductImageService;
-import com.shoppingsystem.shopping_system.product.service.ProductService;
 import com.shoppingsystem.shopping_system.wishlist.dto.WishlistItemRequest;
 import com.shoppingsystem.shopping_system.wishlist.dto.WishlistItemResponse;
 import com.shoppingsystem.shopping_system.wishlist.exception.WishlistNotFound;
@@ -24,7 +25,7 @@ public class WishlistItemServiceImpl implements WishlistItemService{
     private final WishlistItemRepository wishlistItemRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     @Autowired
     private ProductImageService productImageService;
@@ -39,7 +40,9 @@ public class WishlistItemServiceImpl implements WishlistItemService{
         wishlistItem.setUserId(request.getUserId());
         wishlistItem.setProductId(request.getProductId());
         WishlistItem savedItem = wishlistItemRepository.save(wishlistItem);
-        Product product = productService.findByIdEntity(savedItem.getProductId());
+        Product product = productRepository.findById(savedItem.getProductId()).orElseThrow(
+                () -> new ProductNotFoundException("Product not found with ID - " + savedItem.getProductId())
+        );
         ProductImageDTO productImage= productImageService.findById(product.getImage_id());
         return new WishlistItemResponse(
                 wishlistItem.getId(),
@@ -85,7 +88,7 @@ public class WishlistItemServiceImpl implements WishlistItemService{
 
     private Map<Long, Product> generateProductMap(List<WishlistItem> wishlistItemList) {
         List<Long> productIds = wishlistItemList.stream().map(WishlistItem::getProductId).toList();
-        List<Product> productList = productService.findByIds(productIds);
+        List<Product> productList = productRepository.findByIds(productIds);
         return productList.stream().collect(Collectors.toMap(Product::getId, product -> product));
     }
 
@@ -106,5 +109,9 @@ public class WishlistItemServiceImpl implements WishlistItemService{
             throw new IllegalArgumentException("Wishlist ID must not be null");
         }
         wishlistItemRepository.deleteById(id);
+    }
+
+    public boolean isProductInWishlist(Long userId, Long productId) {
+        return wishlistItemRepository.isProductInWishlist(userId, productId);
     }
 }

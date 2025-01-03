@@ -9,4 +9,6 @@ public interface WishlistItemService {
     WishlistItemResponse addWishlistItem(WishlistItemRequest request);
     List<WishlistItemResponse> getWishlistItemsByUserId(Long userId);
     void removeWishlistItem(Long id);
+//    boolean isProductInWishlist(Long userId, Long productId);
+    boolean isProductInWishlist(Long userId, Long productId);
 }

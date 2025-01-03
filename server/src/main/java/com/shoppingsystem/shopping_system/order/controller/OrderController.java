@@ -83,7 +83,6 @@ public class OrderController {
     @GetMapping("/orders/user/{userId}")
     public ResponseEntity<?> getOrdersByUser(@PathVariable Long userId) {
         try {
-            System.out.println("oi");
             List<OrderResponse> orderResponseList = orderService.findAllOrdersByUser(userId);
             return ResponseEntity.ok().body(orderResponseList);
         } catch (UserNotFoundException e) {
