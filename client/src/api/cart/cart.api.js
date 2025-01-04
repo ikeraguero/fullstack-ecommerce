@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { useCartContext } from "../../context/CartContext";
 
-async function fetchCart(userId) {
+async function fetchCart(userId, dispatch) {
   if (userId == null) {
     return { items: [] };
   }
@@ -13,6 +12,7 @@ async function fetchCart(userId) {
   if (res.status !== 200) {
     throw new Error("Problem fetching the cart data");
   }
+
   return res.data;
 }
 
@@ -84,8 +84,7 @@ export function useUpdateCartItem() {
   );
 }
 
-export function useDeleteCartItem() {
-  const { refetch } = useCartContext();
+export function useDeleteCartItem(refetch) {
   return useApiMutation(
     (cartItemId) => {
       deleteCartItem(cartItemId);
@@ -99,9 +98,10 @@ export function useDeleteCartItem() {
 }
 
 export function useCart(userId) {
+  const dispatch = useDispatch();
   return useQuery({
     queryKey: ["cart", userId],
-    queryFn: () => fetchCart(userId),
+    queryFn: () => fetchCart(userId, dispatch),
     onError: (error) => {
       console.error("Error fetching cart:", error.message);
     },

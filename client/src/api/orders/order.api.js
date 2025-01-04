@@ -73,8 +73,8 @@ export function usePayOrder() {
     "cart",
     (variables) => {
       setTimeout(() => {
-        queryClient.invalidateQueries(["cart"]);
         navigate(`/payment/success/${variables.orderId}`);
+        queryClient.invalidateQueries(["cart"]);
         resetCheckout();
       }, 3000);
     },
@@ -111,12 +111,14 @@ export function useOrder(orderId) {
 }
 
 export function useCreateOrder() {
+  const { setItemsTotalPrice } = useCheckout();
   const queryClient = useQueryClient();
 
   return useApiMutation(
     (orderData) => createOrder(orderData),
     null,
-    async () => {
+    async (order) => {
+      setItemsTotalPrice(order.totalPrice);
       queryClient.invalidateQueries(["cart"]);
     },
     (error) => {

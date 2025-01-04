@@ -7,23 +7,24 @@ import CartSummary from "@features/cart/components/CartSummary/CartSummary";
 import ErrorAlert from "@features/shared/components/ErrorAlert/ErrorAlert";
 import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
-import { useCheckout } from "@context/CheckoutContext";
-import { useCartContext } from "@context/CartContext";
-import { setOrder } from "../../../actions/OrderActions";
+import { setOrder } from "../../../actions/checkoutActions";
+import useCartData from "@hooks/cart/useCartData";
 
 function Cart({ openError }) {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const { cartId, cartItems, refetch } = useCartContext();
   const userId = useSelector((state) => state.auth.id);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { cart, refetch } = useCartData(userId ?? null);
 
-  const itemsLength = cartItems?.length;
+  const { cartId, cartItems } = cart;
+
   const [totalPrice, setTotalPrice] = useState(
     cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
   );
+
+  const itemsLength = cartItems?.length;
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
-  const { setItemsQuantity, setItemsPrice } = useCheckout();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -73,8 +74,6 @@ function Cart({ openError }) {
     try {
       const orderData = generateData();
       const { orderId } = await createOrder(orderData);
-      setItemsQuantity(itemsLength);
-      setItemsPrice(totalPrice);
       dispatch(setOrder(orderData));
       navigate(`/checkout/${orderId}`, { replace: true });
     } catch (error) {

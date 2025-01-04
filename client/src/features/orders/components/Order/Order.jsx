@@ -1,9 +1,12 @@
 import { useState } from "react";
 import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useCheckout from "@hooks/cart/useCheckout";
 
 function Order({ orderItems, orderId, date, totalPrice, status }) {
+  const { setItemsTotalPrice } = useCheckout();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const items = orderItems
@@ -12,6 +15,11 @@ function Order({ orderItems, orderId, date, totalPrice, status }) {
 
   function handleOpenOrder() {
     setIsOpen(!isOpen);
+  }
+
+  function handleCheckout() {
+    setItemsTotalPrice(totalPrice);
+    navigate(`/checkout/${orderId}`);
   }
 
   return (
@@ -30,9 +38,9 @@ function Order({ orderItems, orderId, date, totalPrice, status }) {
 
           {status === "paid" && <span className={styles.statusPaid}>Paid</span>}
           {status === "pending" && (
-            <Link to={`/checkout/${orderId}`} className={styles.statusPending}>
+            <span className={styles.statusPending} onClick={handleCheckout}>
               Checkout
-            </Link>
+            </span>
           )}
         </div>
         <span className={styles.orderIcon}>

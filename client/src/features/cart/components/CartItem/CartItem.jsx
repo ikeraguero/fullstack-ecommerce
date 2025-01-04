@@ -17,7 +17,7 @@ function CartItem({
   setTotalPrice,
   totalPrice,
 }) {
-  const { mutate: deleteItem } = useDeleteCartItem();
+  const { mutate: deleteItem } = useDeleteCartItem(refetch);
   const { mutate: updateItem } = useUpdateCartItem();
   const [localQuantity, setLocalQuantity] = useState(quantity);
   const productPrice = price;

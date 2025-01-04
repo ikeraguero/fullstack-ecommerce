@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginSuccess, logoutSuccess } from "../../actions/AuthActions";
+import { loginSuccess, logoutSuccess } from "../../actions/authActions";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 

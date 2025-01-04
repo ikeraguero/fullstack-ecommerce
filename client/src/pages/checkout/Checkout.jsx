@@ -17,7 +17,8 @@ function CheckoutShipping() {
   const { mutate: payOrder } = usePayOrder();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  const updateOrder = useSelector((state) => state.order.order);
+  const updateOrder = useSelector((state) => state.checkout.order);
+  const [isPriceLocked, setIsPriceLocked] = useState(false);
 
   const STEPS = {
     SHIPPING: "shipping",
@@ -77,7 +78,7 @@ function CheckoutShipping() {
 
   useEffect(
     function () {
-      if (order) {
+      if (order && !isPriceLocked) {
         const updatedTotalPrice = order.totalPrice + shippingPrice;
         setTotalPrice(updatedTotalPrice);
         localStorage.setItem("orderId", order?.orderId);
@@ -99,6 +100,7 @@ function CheckoutShipping() {
     if (shippingPrice === 0) {
       await calculateShippingPrice();
     }
+    setIsPriceLocked(true);
     updateCheckoutStep(STEPS.PAYMENT);
     setLoadingState(false);
   }

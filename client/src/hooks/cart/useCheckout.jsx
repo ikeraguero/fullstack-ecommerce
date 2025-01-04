@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setCheckoutStep,
   setIsProcessingPayment,
+  setItemsPrice,
   setLoading,
   setShippingPrice,
-} from "../../actions/CheckoutActions";
+} from "../../actions/checkoutActions";
 import { useCalculateShipping } from "../../api/orders/shipping.api";
 
 function useCheckout(shippingValues) {
@@ -20,6 +21,7 @@ function useCheckout(shippingValues) {
   const setProcessingPayment = (isProcessing) =>
     dispatch(setIsProcessingPayment(isProcessing));
   const setLoadingState = (isLoading) => dispatch(setLoading(isLoading));
+  const setItemsTotalPrice = (price) => dispatch(setItemsPrice(price));
   const resetCheckout = () => dispatch({ type: "RESET" });
 
   const { mutateAsync: calculateShipping } = useCalculateShipping();
@@ -47,6 +49,7 @@ function useCheckout(shippingValues) {
     setLoadingState,
     calculateShippingPrice,
     resetCheckout,
+    setItemsTotalPrice,
   };
 }
 

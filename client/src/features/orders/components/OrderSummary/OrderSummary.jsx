@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import styles from "./OrderSummary.module.css";
 
 function OrderSummary({
@@ -10,6 +11,9 @@ function OrderSummary({
   handlePaymentSubmit,
   handleShippingSubmit,
 }) {
+  const totalItemsPrice = useSelector(
+    (state) => state.checkout.totalItemsPrice
+  );
   return (
     <form className={styles.cartRightSide} onSubmit={(e) => e.preventDefault()}>
       <div className={styles.cartSummaryTop}>
@@ -21,7 +25,7 @@ function OrderSummary({
             <div className="cartItemName">
               <h2>Items {order?.items}</h2>
             </div>
-            <div className="cartItemPrice">${order?.totalPrice}</div>
+            <div className="cartItemPrice">${totalItemsPrice}</div>
           </div>
           <div className={styles.cartSummaryItem}>
             <div className="cartItemName">
