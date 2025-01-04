@@ -1,35 +1,71 @@
 import { MoonLoader } from "react-spinners";
-import { useUsersFormContext } from "@hooks/user/useUsersFormContext";
-
-import styles from "./UserForm.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import { useRoles } from "@api/users/roles.api";
+// import { useUpdateUser } from "@api/users/user.api";
+// import { useRegisterUser } from "@api/auth/auth.api";
+import { resetUserForm } from "../../../../actions/userFormActions";
+import useUserAddForm from "@hooks/user/useUserAddForm";
+import useUserEditForm from "@hooks/user/useUserEditForm";
+import styles from "./UserForm.module.css";
+import { useEffect } from "react";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
-  const { state, dispatch } = useUsersFormContext();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.userForm);
+  const { isEditingUser, editUser, isAddingUser } = state;
+
+  const userAddForm = useUserAddForm((e) => handleSendData(e));
+  const userEditForm = useUserEditForm((e) => handleSendData(e));
+
+  console.log(isAddingUser);
+  const { values, handleChange, resetForm } = isEditingUser
+    ? userEditForm
+    : userAddForm;
+
+  console.log(userEditForm);
+
   const { data: roles, error, isLoading } = useRoles();
+  // const { mutate: registerUser } = useRegisterUser();
+  // const { mutate: updateUser } = useUpdateUser();
+
+  console.log(editUser);
+
+  useEffect(() => {
+    if (isAddingUser) {
+      resetForm();
+    }
+  }, [isAddingUser]);
 
   function handleSendData(e) {
-    const formData = new FormData(e.target);
-    if (isEditingUser) {
-      onEdit(formData);
-      return;
+    e.preventDefault();
+
+    const userRequest = {
+      userId: editUser?.id || null,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      roleId: Number(values.roleId),
+    };
+
+    if (state.isEditingUser) {
+      onEdit(userRequest);
+    } else {
+      onAdd(userRequest);
     }
 
-    onAdd(formData);
+    resetForm();
   }
 
   function handleCloseForm() {
-    handleOpenForm({ type: isAddingUser ? "toggleAdd" : "closeEdit" });
-    handleClearForm();
+    dispatch(resetUserForm());
   }
 
-  function handleClearForm() {
-    dispatch({ type: "reset" });
-
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-  }
+  // // function handleClearForm() {
+  // //   if (formRef.current) {
+  // //     formRef.current.reset();
+  // //   }
+  // // }
 
   if (isLoading) {
     return (
@@ -45,21 +81,10 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     return <div>Error loading users: {error.message}</div>;
   }
 
-  const {
-    isAddingUser,
-    isEditingUser,
-    editUser,
-    userFirstName,
-    userLastName,
-    userPassword,
-    userRole,
-    userEmail,
-  } = state;
-
   return (
     <div>
       <span className={styles.formTop}>
-        {!isEditingUser ? "Add New User" : `Edit ${editUser?.email}`}
+        {!isEditingUser ? "Add New User" : `Edit ${editUser?.userEmail}`}
         <ion-icon name="close-outline" onClick={handleCloseForm}></ion-icon>
       </span>
       <form
@@ -71,54 +96,39 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       >
         <div className={styles.formBody}>
           <div className={styles.formItem}>
-            <label htmlFor="userFirstName">First Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input
-              onChange={(e) =>
-                dispatch({ type: "changeFirstName", payload: e.target.value })
-              }
-              name="userFirstName"
+              onChange={handleChange}
+              name="firstName"
               className={styles.addFormInput}
-              value={isEditingUser || userFirstName ? userFirstName : ""}
+              value={values.firstName}
             />
           </div>
           <div className={styles.formItem}>
-            <label htmlFor="userLastName">Last Name</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
-              onChange={(e) =>
-                dispatch({ type: "changeLastName", payload: e.target.value })
-              }
-              name="userLastName"
+              onChange={handleChange}
+              name="lastName"
               className={styles.addFormInput}
-              value={isEditingUser || userLastName ? userLastName : ""}
+              value={values.lastName}
             />
           </div>
           <div className={styles.formItem}>
-            <label htmlFor="userPassword">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
-              onChange={(e) =>
-                dispatch({
-                  type: "changePassword",
-                  payload: e.target.value,
-                })
-              }
-              name="userPassword"
-              value={isEditingUser || userPassword ? userPassword : ""}
+              onChange={handleChange}
+              name="password"
+              value={values.password}
               className={styles.addFormInput}
             />
           </div>
           <div className={styles.formItem}>
-            <label htmlFor="userRole">Role</label>
+            <label htmlFor="roleId">Role</label>
             <select
-              onChange={(e) =>
-                dispatch({
-                  type: "changeRole",
-                  payload: e.target.value,
-                })
-              }
-              name="userRole"
-              id="userRole"
-              value={isEditingUser || userRole ? userRole : ""}
+              onChange={handleChange}
+              name="roleId"
+              value={values.roleId}
               className={styles.addFormSelect}
             >
               {roles?.map((role) => (
@@ -129,17 +139,12 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
             </select>
           </div>
           <div className={styles.formItem}>
-            <label htmlFor="userEmail">Email</label>
+            <label htmlFor="email">Email</label>
             <input
-              name="userEmail"
+              name="email"
               type="email"
-              value={isEditingUser || userEmail ? userEmail : ""}
-              onChange={(e) =>
-                dispatch({
-                  type: "changeEmail",
-                  payload: e.target.value,
-                })
-              }
+              value={values.email}
+              onChange={handleChange}
               className={styles.addFormInput}
             />
           </div>

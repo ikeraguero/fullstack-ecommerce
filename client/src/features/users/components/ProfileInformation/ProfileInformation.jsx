@@ -1,16 +1,31 @@
 import { useSelector } from "react-redux";
 import styles from "./ProfileInformation.module.css";
 import { useState } from "react";
+import useUserEditForm from "@hooks/cart/useUserEditForm";
+import { useUpdateUser } from "@api/users/user.api";
 
 function ProfileInformation() {
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
   const username = useSelector((state) => state.auth.username);
+  const userId = useSelector((state) => state.auth.id);
   const email = useSelector((state) => state.auth.email);
-  const firstName = useSelector((state) => state.auth.firstName);
-  const lastName = useSelector((state) => state.auth.lastName);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const userEditForm = useUserEditForm(handleSubmitForm);
+  const { values, handleChange } = userEditForm;
+  const { mutate: updateUser } = useUpdateUser();
 
   function handleEditButtonClick() {
     setIsEditingProfile(!isEditingProfile);
+  }
+
+  function handleSubmitForm() {
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("firstName", values.firstName);
+    formData.append("lastName", values.lastName);
+    formData.append("email", values.email);
+    formData.append("password", "123");
+    formData.append("roleId", 0);
+    updateUser(formData);
   }
   return (
     <div>
@@ -30,7 +45,9 @@ function ProfileInformation() {
         <div className={styles.profileTopRight}>
           <button
             className={styles.profileTopRightButton}
-            onClick={handleEditButtonClick}
+            onClick={
+              isEditingProfile ? handleSubmitForm : handleEditButtonClick
+            }
           >
             {isEditingProfile ? "Save" : "Edit"}
           </button>
@@ -40,15 +57,33 @@ function ProfileInformation() {
         <form action="submit" className={styles.profileBodyForm}>
           <div className={styles.profileFormItem}>
             <label htmlFor="firstName">First Name</label>
-            <input type="text" value={firstName} disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="firstName"
+              value={values.firstName}
+              onChange={handleChange}
+              disabled={!isEditingProfile}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="lastName">Last Name</label>
-            <input type="text" value={lastName} disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="lastName"
+              value={values.lastName}
+              disabled={!isEditingProfile}
+              onChange={handleChange}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="email">Email</label>
-            <input type="email" disabled={!isEditingProfile} />
+            <input
+              type="email"
+              name="email"
+              value={values.email}
+              disabled={!isEditingProfile}
+              onChange={handleChange}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="password">Password</label>

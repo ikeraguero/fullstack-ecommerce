@@ -1,8 +1,17 @@
+import { useDispatch } from "react-redux";
 import styles from "./Item.module.css";
+import { openEditProduct } from "../../../../actions/productFormActions";
+import { openEditUser } from "../../../../actions/userFormActions";
 
 function Item({ item, handleOpenForm, onRemove, itemType }) {
+  const dispatch = useDispatch();
   const handleEdit = () => {
+    
     handleOpenForm("openEdit", item);
+
+    dispatch(
+      itemType === "product" ? openEditProduct(item) : openEditUser(item)
+    );
   };
 
   return (
@@ -13,9 +22,9 @@ function Item({ item, handleOpenForm, onRemove, itemType }) {
       {itemType === "product" ? (
         <>
           <div className={styles.itemPrice}>R${item.price}</div>
-          <div className={styles.itemCategory}>{item.category_name}</div>
+          <div className={styles.itemCategory}>{item.categoryName}</div>
           <div className={styles.itemStockQuantity}>
-            {item.stock_quantity} units
+            {item.stockQuantity} units
           </div>
         </>
       ) : (

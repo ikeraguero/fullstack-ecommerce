@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
-import { useUsersFormContext } from "@hooks/user/useUsersFormContext";
 import { useUsers } from "@api/users/user.api";
 import { MoonLoader } from "react-spinners";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUsers } from "../../../../actions/userFormActions";
 
 function UserDashboard() {
-  const { state: usersState, dispatch } = useUsersFormContext();
+  const usersState = useSelector((state) => state.userForm);
+  const dispatch = useDispatch();
   const { isAddingUser, isEditingUser, editUser } = usersState;
 
   const formRef = useRef();
@@ -24,7 +26,7 @@ function UserDashboard() {
 
   useEffect(() => {
     if (users && users.length > 0) {
-      dispatch({ type: "loadUsers", payload: users });
+      dispatch(loadUsers(users));
     }
   }, [users, dispatch]);
 

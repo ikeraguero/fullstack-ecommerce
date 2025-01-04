@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logoutSuccess } from "../../actions/authActions";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
@@ -59,12 +59,15 @@ async function logoutUser() {
 export function useRegisterUser() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userRole = useSelector((state) => state.auth.role);
 
   function handleSuccess(data) {
-    const { firstName, lastName, email, role, id } = data;
-    const username = `${firstName} ${lastName}`;
-    dispatch(loginSuccess(username, role, id, email, firstName, lastName));
-    navigate("/");
+    if (userRole !== "ADMIN") {
+      const { firstName, lastName, email, role, id } = data;
+      const username = `${firstName} ${lastName}`;
+      dispatch(loginSuccess(username, role, id, email, firstName, lastName));
+      navigate("/");
+    }
   }
 
   function handleError(error) {

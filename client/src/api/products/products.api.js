@@ -1,7 +1,8 @@
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import { useQuery } from "@tanstack/react-query";
-import { useProductFormContext } from "../../hooks/products/useProductsFormContext";
+import { useDispatch, useSelector } from "react-redux";
+import { loadProducts } from "../../actions/productFormActions";
 
 async function updateProduct(data) {
   try {
@@ -18,6 +19,7 @@ async function updateProduct(data) {
 
 async function createProduct(data) {
   try {
+    console.log(data);
     const res = await apiClient.post(`/products`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -97,17 +99,16 @@ export function useCreateProduct() {
 }
 
 export function useRemoveProduct() {
-  const { state: productsState, dispatch: productsDispatch } =
-    useProductFormContext();
+  const productsState = useSelector((state) => state.productForm);
+  const dispatch = useDispatch();
   const { products } = productsState;
   return useApiMutation(
     (productId) => removeProduct(productId),
     "products",
     (productId) => {
-      productsDispatch({
-        type: "loadProducts",
-        payload: products.filter((product) => product.id !== productId),
-      });
+      dispatch(
+        loadProducts(products.filter((product) => product.id !== productId))
+      );
     },
     (error) => console.error("Error removing product:", error.message)
   );

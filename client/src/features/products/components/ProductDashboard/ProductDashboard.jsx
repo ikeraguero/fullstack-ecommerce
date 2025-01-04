@@ -1,14 +1,15 @@
 import { MoonLoader } from "react-spinners";
 import { useProducts } from "@api/products/products.api";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
-import { useProductFormContext } from "@hooks/products/useProductsFormContext";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useEffect, useRef } from "react";
 import useProductActions from "@hooks/products/useProductActions";
+import { useDispatch, useSelector } from "react-redux";
+import { loadProducts } from "../../../../actions/productFormActions";
 
 function ProductDashboard() {
-  const { state: productsState, dispatch: productsDispatch } =
-    useProductFormContext();
+  const dispatch = useDispatch();
+  const productsState = useSelector((state) => state.productForm);
   const { isAddingProduct, isEditingProduct, editProduct } = productsState;
 
   const formRef = useRef();
@@ -34,9 +35,9 @@ function ProductDashboard() {
 
   useEffect(() => {
     if (initialProducts && initialProducts.length > 0) {
-      productsDispatch({ type: "loadProducts", payload: initialProducts });
+      dispatch(loadProducts(initialProducts));
     }
-  }, [initialProducts, productsDispatch]);
+  }, [initialProducts, dispatch]);
 
   const productDashboard = useDashboardItem(
     initialProducts,

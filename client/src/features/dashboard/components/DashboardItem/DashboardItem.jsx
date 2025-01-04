@@ -4,8 +4,9 @@ import ProductForm from "@features/products/components/ProductForm/ProductForm";
 import UserList from "@features/users/components/UserList/UserList";
 import UserForm from "@features/users/components/UserForm/UserForm";
 
-import { useUsersFormContext } from "@hooks/user/useUsersFormContext";
-import { useProductFormContext } from "@hooks/products/useProductsFormContext";
+import { useDispatch } from "react-redux";
+import { toggleAddProduct } from "../../../../actions/productFormActions";
+import { toggleAddUser } from "../../../../actions/userFormActions";
 
 const formComponents = {
   Products: ProductForm,
@@ -27,16 +28,14 @@ function DashboardItem({
   isFormOpen,
 }) {
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
-  const { dispatch: usersDispatch } = useUsersFormContext();
-  const { dispatch: productsDispatch } = useProductFormContext();
+  const dispatch = useDispatch();
 
-  function handleOpenForm(type, payload) {
+  function handleOpenForm(payload) {
     if (title === "Products") {
-      productsDispatch({ type, payload });
-
+      dispatch(toggleAddProduct(payload));
       return;
     }
-    usersDispatch({ type, payload });
+    dispatch(toggleAddUser(payload));
   }
 
   const FormComponent = formComponents[title];
@@ -47,7 +46,7 @@ function DashboardItem({
       <h2>{titleCapitalized}</h2>
       <span
         className={styles.openAddProductButton}
-        onClick={() => handleOpenForm("toggleAdd")}
+        onClick={() => handleOpenForm()}
       >
         Add {titleCapitalized.slice(0, titleCapitalized.length - 1)} +
       </span>

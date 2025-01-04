@@ -1,44 +1,47 @@
-import { useUsersFormContext } from "./useUsersFormContext";
 import { useDeleteUsers, useUpdateUser } from "../../api/users/user.api";
 import { useRegisterUser } from "../../api/auth/auth.api";
+import { useDispatch, useSelector } from "react-redux";
+import { resetUserForm, toggleAddUser } from "../../actions/userFormActions";
 
 export function useUserActions(editUser, refetch) {
-  const { dispatch } = useUsersFormContext();
+  const loggedUserId = useSelector((state) => state.auth.id);
+  const dispatch = useDispatch();
   const { mutate: registerUser } = useRegisterUser();
   const { mutate: updateUser } = useUpdateUser();
   const { mutate: deleteUser } = useDeleteUsers();
 
-  const formatUserData = (formData, editUser) => ({
-    email: formData.get("userEmail"),
-    password: formData.get("userPassword"),
-    firstName: formData.get("userFirstName"),
-    lastName: formData.get("userLastName"),
-    roleId: Number(formData.get("userRole")),
-    ...(editUser && { userId: editUser.userId }),
-  });
+  // const formatUserData = (formData, editUser) => ({
+  //   email: formData.get("userEmail"),
+  //   password: formData.get("userPassword"),
+  //   firstName: formData.get("userFirstName"),
+  //   lastName: formData.get("userLastName"),
+  //   roleId: Number(formData.get("userRole")),
+  //   ...(editUser && { userId: editUser.userId }),
+  // });
 
-  const create = (formData) => {
-    const userData = formatUserData(formData);
+  const create = (userData) => {
+    // const userData = formatUserData(formData);
     registerUser(userData, {
       onSuccess: () => {
-        dispatch({ type: "toggleAdd" });
+        dispatch(toggleAddUser());
         refetch();
       },
     });
   };
 
-  const update = (formData) => {
-    const userData = formatUserData(formData, editUser);
-
+  const update = (userData) => {
+    // const userData = formatUserData(formData, editUser);
+    console.log(userData);
     updateUser(userData, {
       onSuccess: () => {
-        dispatch({ type: "closeEdit" });
+        dispatch(resetUserForm());
         refetch();
       },
     });
   };
 
   const remove = (userId) => {
+    if (userId === loggedUserId) return alert("Can't remove logged user");
     deleteUser(userId, {
       onSuccess: refetch,
     });

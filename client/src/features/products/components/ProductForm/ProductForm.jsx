@@ -1,40 +1,79 @@
 import { MoonLoader } from "react-spinners";
 import useCategories from "@api/categories/categories.api";
-import { useProductFormContext } from "@hooks/products/useProductsFormContext";
 
 import styles from "./ProductForm.module.css";
+import { useDispatch, useSelector } from "react-redux";
 
-function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
-  const { state, dispatch } = useProductFormContext();
+import { resetProductForm } from "../../../../actions/productFormActions";
+import { useState, useEffect } from "react";
+import useProductAddForm from "@hooks/products/useProductAddForm";
+import useProductEditForm from "@hooks/products/useProductEditForm";
+
+function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.productForm);
+  const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
-  const {
-    isAddingProduct,
-    isEditingProduct,
-    editProduct,
-    productName,
-    productCategory,
-    productDescription,
-    productPrice,
-    productQuantity,
-  } = state;
+  const { isEditingProduct, editProduct, isAddingProduct } = state;
+
+  const productAddForm = useProductAddForm(
+    (e) => handleSendData(e),
+    isAddingProduct
+  );
+  const productEditForm = useProductEditForm((e) => handleSendData(e));
+
+  const { values, handleChange, resetForm } = isEditingProduct
+    ? productEditForm
+    : productAddForm;
+
+  useEffect(() => {
+    if (isAddingProduct) {
+      resetForm();
+    }
+  }, [isAddingProduct]);
 
   function handleSendData(e) {
-    const formData = new FormData(e.target);
-    if (isEditingProduct) {
-      onEdit(formData);
-      return;
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    const productRequest = {
+      id: editProduct?.id || null,
+      name: values.productName,
+      price: Number(values.productPrice),
+      stockQuantity: Number(values.productStockQuantity),
+      categoryId: Number(values.productCategory),
+      categoryName: "",
+      productDescription: values.productDescription,
+    };
+
+    console.log(productRequest);
+    formData.append(
+      "product",
+      new Blob([JSON.stringify(productRequest)], { type: "application/json" })
+    );
+
+    if (image) {
+      formData.append("image", image);
     }
-    onAdd(formData);
+
+    if (state.isEditingProduct) {
+      onEdit(formData);
+    } else {
+      formData.forEach((key, value) => console.log(value, key));
+      onAdd(formData);
+    }
+
     handleClearForm();
   }
 
   function handleCloseForm() {
-    handleOpenForm({ type: isAddingProduct ? "toggleAdd" : "closeEdit" });
-    handleClearForm();
+    dispatch(resetProductForm());
   }
 
   function handleClearForm() {
-    dispatch({ type: "reset" });
+    dispatch(resetProductForm);
+    resetForm();
 
     if (formRef.current) {
       formRef.current.reset();
@@ -43,7 +82,7 @@ function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
 
   async function handleImageChange(e) {
     const file = e.target.files[0];
-    dispatch({ type: "setImage", payload: file });
+    setImage(file);
   }
 
   if (isLoading) {
@@ -77,51 +116,37 @@ function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
         <div className={styles.formItem}>
           <label htmlFor="productName">Name</label>
           <input
-            onChange={(e) =>
-              dispatch({ type: "changeName", payload: e.target.value })
-            }
+            onChange={handleChange}
             name="productName"
             className={styles.addFormInput}
-            value={isEditingProduct || productName ? productName : ""}
+            value={values.productName}
           />
         </div>
         <div className={styles.formItem}>
           <label htmlFor="productPrice">Price</label>
           <input
-            onChange={(e) =>
-              dispatch({ type: "changePrice", payload: e.target.value })
-            }
+            onChange={handleChange}
             name="productPrice"
             className={styles.addFormInput}
-            value={isEditingProduct || productPrice ? productPrice : ""}
+            value={values.productPrice}
           />
         </div>
         <div className={styles.formItem}>
           <label htmlFor="productStockQuantity">Stock Quantity</label>
           <input
-            onChange={(e) =>
-              dispatch({
-                type: "changeQuantity",
-                payload: e.target.value,
-              })
-            }
+            onChange={handleChange}
             name="productStockQuantity"
-            value={isEditingProduct || productQuantity ? productQuantity : ""}
+            value={values.productStockQuantity}
             className={styles.addFormInput}
           />
         </div>
         <div className={styles.formItem}>
           <label htmlFor="productCategory">Category</label>
           <select
-            onChange={(e) =>
-              dispatch({
-                type: "changeCategory",
-                payload: e.target.value,
-              })
-            }
+            onChange={handleChange}
             name="productCategory"
             id="productCategory"
-            value={isEditingProduct || productCategory ? productCategory : ""}
+            value={values.productCategory}
             className={styles.addFormSelect}
           >
             {categories?.map((category) => (
@@ -135,15 +160,8 @@ function ProductForm({ formRef, onAdd, onEdit, handleOpenForm }) {
           <label htmlFor="productDescription">Description</label>
           <input
             name="productDescription"
-            value={
-              isEditingProduct || productDescription ? productDescription : ""
-            }
-            onChange={(e) =>
-              dispatch({
-                type: "changeDescription",
-                payload: e.target.value,
-              })
-            }
+            value={values.productDescription}
+            onChange={handleChange}
             className={styles.addFormInput}
           />
         </div>

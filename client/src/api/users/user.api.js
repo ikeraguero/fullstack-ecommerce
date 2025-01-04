@@ -1,12 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { useUsersFormContext } from "../../hooks/user/useUsersFormContext";
 import { useState } from "react";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUsers } from "../../actions/userFormActions";
 
 async function updateUser(data) {
   try {
-    const res = await apiClient.put("/users", data);
+    const res = await apiClient.put("/users", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error updating user");
@@ -36,7 +41,8 @@ async function deleteUser(userId) {
 export function useDeleteUsers() {
   const { refetch } = useUsers();
   const [userIdRemove, setUserIdRemove] = useState();
-  const { state: users, dispatch: usersDispatch } = useUsersFormContext();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.userForm.users);
   return useApiMutation(
     (userId) => {
       setUserIdRemove(userId);
@@ -45,10 +51,7 @@ export function useDeleteUsers() {
     "users",
     () => {
       refetch();
-      usersDispatch({
-        type: "loadUsers",
-        payload: users.filter((user) => user.id !== userIdRemove),
-      });
+      dispatch(loadUsers(users.filter((user) => user.id !== userIdRemove)));
     },
     (error) => {
       console.error("Error deleting user:", error.message);
@@ -68,7 +71,10 @@ export function useUsers() {
 
 export function useUpdateUser() {
   return useApiMutation(
-    (data) => updateUser(data),
+    (data) => {
+      updateUser(data);
+      console.log(data);
+    },
     "users",
     null,
     (error) => {
