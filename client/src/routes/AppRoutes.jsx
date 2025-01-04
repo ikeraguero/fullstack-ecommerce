@@ -23,10 +23,11 @@ export const AppRoutes = ({
   categories,
   searchProducts,
   activeCategory,
+  onCategoryChange,
 }) => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home onCategoryChange={onCategoryChange} />} />
       <Route path="/*" element={<PageNotFound />} />
       <Route
         path="/cart"

@@ -3,6 +3,7 @@ import { MoonLoader } from "react-spinners";
 import styles from "./CategoryPage.module.css";
 import ProductCard from "@features/products/components/ProductCard/ProductCard";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function CategoryPage({ activeCategory }) {
   const {
@@ -43,8 +44,14 @@ function CategoryPage({ activeCategory }) {
         <span className={styles.activeCategory}>{activeCategory}</span>
       </h1>
       <div className={styles.productGrid}>
-        {categoryProducts.map((product) => (
-          <ProductCard {...product} key={product.key} />
+        {categoryProducts?.map((product) => (
+          <Link
+            to={`/products/${product.id}`}
+            key={product.id}
+            className={styles.categoryProductsLink}
+          >
+            <ProductCard key={product} {...product} />
+          </Link>
         ))}
       </div>
     </div>

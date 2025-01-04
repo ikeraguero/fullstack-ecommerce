@@ -31,6 +31,16 @@ async function createProduct(data) {
   }
 }
 
+async function fetchHomeProducts() {
+  try {
+    const res = await apiClient.get(`/products/featured`);
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error fetching products");
+  }
+}
+
 async function fetchProducts() {
   try {
     const res = await apiClient.get(`/products`);
@@ -115,10 +125,20 @@ export function useRemoveProduct() {
   );
 }
 
+export function useHomeProducts() {
+  return useQuery({
+    queryKey: ["homeProducts"],
+    queryFn: () => fetchHomeProducts(),
+    onError: (error) => {
+      console.error("Error fetching products:", error.message);
+    },
+  });
+}
+
 export function useProducts() {
   return useQuery({
     queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryFn: () => fetchProducts(),
     onError: (error) => {
       console.error("Error fetching products:", error.message);
     },

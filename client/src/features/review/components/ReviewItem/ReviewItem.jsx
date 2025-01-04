@@ -1,7 +1,6 @@
 import StarRating from "@features/shared/components/StarRating/StarRating";
 import styles from "./ReviewItem.module.css";
 function ReviewItem({ rating, comment, userFullName, formattedDate }) {
-
   return (
     <div className={styles.reviewItem}>
       <div className={styles.reviewProfile}>

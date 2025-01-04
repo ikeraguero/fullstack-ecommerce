@@ -1,6 +1,6 @@
 .reviewItem {
   display: flex;
-  width: 24.2rem;
+  width: 40rem;
   padding: 0 0 2.4rem 0;
   flex-direction: column;
   border-bottom: 0.1rem solid #e6e6e6;
@@ -20,6 +20,15 @@
 
 .reviewComment {
   margin-top: 0.8rem;
+  max-width: 100%;
+}
+
+.reviewComment span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reviewUserAndDate {

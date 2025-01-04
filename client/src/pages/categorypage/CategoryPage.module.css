@@ -24,9 +24,13 @@
 .productGrid {
   display: grid;
   gap: 1.8rem;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .activeCategory {
   color: #f42b56;
+}
+
+.categoryProductsLink {
+  text-decoration: none;
 }

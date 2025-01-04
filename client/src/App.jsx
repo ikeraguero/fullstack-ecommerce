@@ -51,6 +51,8 @@ function App() {
     []
   );
 
+  console.log(activeCategory);
+
   const location = useLocation();
   const isAuthPage = ["/login", "/register"].includes(location.pathname);
 
@@ -91,6 +93,7 @@ function App() {
       <AppRoutes
         userId={userId}
         cart={cart}
+        onCategoryChange={setActiveCategory}
         refetch={refetch}
         categories={categories}
         searchProducts={searchProducts}

@@ -1,0 +1,16 @@
+.relatedProductsList {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+  gap: 1.8rem;
+}
+
+.relatedProductsLink {
+  text-decoration: none;
+}
+
+.title {
+  color: #4b4b4b;
+  font-size: 1.6rem;
+}

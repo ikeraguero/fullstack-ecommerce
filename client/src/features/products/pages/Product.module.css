@@ -1,6 +1,6 @@
 .mainContainer {
   margin: 2.4rem 0 5.4rem 0;
-  max-width: 60%;
+  max-width: 800%;
   display: flex;
   align-self: center;
   flex-direction: column;
@@ -11,13 +11,17 @@
 
 .productTop {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 5.6rem;
 }
 
 .productBottom {
+  margin-top: 4.2rem;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
+  overflow-wrap: normal;
 }
 
 .productPhoto {
@@ -29,10 +33,6 @@
 
 .productPhotoZoom {
 }
-
-
-
-
 
 .option {
   border: none;
@@ -46,8 +46,6 @@
   padding: 1.2rem 0.8rem;
 }
 
-
-
 .spinnerContainer {
   display: flex;
   justify-content: center;
@@ -60,9 +58,3 @@
   background-color: rgba(255, 255, 255, 0.7);
   z-index: 9999;
 }
-
-
-
-
-
-

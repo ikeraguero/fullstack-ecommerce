@@ -17,6 +17,7 @@ import Review from "@features/review/components/Review/Review";
 import styles from "./Product.module.css";
 import ProductDetails from "@features/products/components/ProductDetails/ProductDetails";
 import { useSuccess } from "@context/SuccessContext";
+import RelatedProducts from "../components/RelatedProducts/RelatedProducts";
 
 function Product({ userId, refetch }) {
   const { id } = useParams();
@@ -142,7 +143,14 @@ function Product({ userId, refetch }) {
 
   console.log(product);
 
-  const { name, imageData, imageType, canUserReview, wishlistItemId } = product;
+  const {
+    name,
+    imageData,
+    imageType,
+    canUserReview,
+    wishlistItemId,
+    relatedProducts,
+  } = product;
 
   return (
     <div className={styles.mainContainer}>
@@ -171,6 +179,7 @@ function Product({ userId, refetch }) {
         />
       </div>
       <div className={styles.productBottom}>
+        <RelatedProducts products={relatedProducts} />
         <Review
           {...product}
           productReviewList={productReviewList}

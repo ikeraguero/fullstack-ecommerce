@@ -16,8 +16,6 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
-  console.log(useSelector((state) => state.auth));
-
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
@@ -46,11 +44,7 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
       <div className={styles.navTop}>
         <div className={styles.leftSide}>
           <ion-icon name="menu-outline" onClick={handleOpenBottom}></ion-icon>
-          <Link
-            to={"/"}
-            className={styles.navLink}
-            onClick={() => onCategoryChange(null)}
-          >
+          <Link to={"/"} className={styles.navLink}>
             E-commerce
           </Link>
         </div>

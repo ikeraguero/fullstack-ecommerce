@@ -1,39 +1,36 @@
 import { Link } from "react-router-dom";
 import styles from "./BestDeals.module.css";
 import ProductCard from "@features/products/components/ProductCard/ProductCard";
-import { MoonLoader } from "react-spinners";
-import { useProducts } from "@api/products/products.api";
 
-function BestDeals() {
-  const { data: products, error, isLoading } = useProducts();
+function BestDeals({ products, message, onCategoryChange }) {
+  const words = message.split(" ");
+  const category = words[words.length - 1];
+  const formattedMessage = words.slice(0, -1).join(" ");
 
-  if (isLoading) {
-    return (
-      <>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </>
-    );
-  }
-
-  if (error) {
-    return <div>Error loading products: {error.message}</div>;
-  }
   return (
     <section className={styles.bestDeals}>
       <div className={styles.bestDealsHeader}>
         <h2>
-          Grab the best deals on{" "}
-          <span className={styles.bestDealCategory}>Smartphones</span>
+          {formattedMessage}
+          <span className={styles.bestDealCategory}>
+            {" "}
+            {category.toUpperCase().slice(0, 1) +
+              words[words.length - 1].slice(1)}
+          </span>
         </h2>
         <div className={styles.bestDealsViewAll}>
-          <span>View All</span>
+          <Link
+            className={styles.bestDealsViewAllLink}
+            to={`categories/${category}`}
+            onClick={() => onCategoryChange(category)}
+          >
+            <span>View All</span>
+          </Link>
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </div>
       </div>
       <div className={styles.productGrid}>
-        {products.map((product) => (
+        {products?.map((product) => (
           <Link
             to={`products/${product.id}`}
             key={product.id}
