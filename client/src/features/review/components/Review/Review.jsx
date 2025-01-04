@@ -1,20 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import StarRating from "@features/shared/components/StarRating/StarRating";
 import styles from "./Review.module.css";
 import { useCreateReview } from "@api/products/reviews.api";
 import { useSuccess } from "@context/SuccessContext";
 
-function Review({ productReviewList, canUserReview, userId, id }) {
+function Review({
+  productReviewList: initialProductReviewList,
+  canUserReview,
+  userId,
+  id,
+  ratingAvg,
+  onNewReview,
+}) {
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState();
-  const ratingSum = productReviewList
-    .map((productReview) => productReview.rating)
-    .reduce((cur, acc) => cur + acc, 0);
-  const ratingLength = productReviewList.length;
-  const ratingAvg = ratingSum / ratingLength;
-  const { mutate: createReview } = useCreateReview();
+  const [comment, setComment] = useState("");
+  const [hasUserReviewed, setHasUserReviewed] = useState(!canUserReview);
+  const [productReviewList, setProductReviewList] = useState(
+    initialProductReviewList || []
+  );
+  const { mutate: createReview } = useCreateReview(id);
   const { displaySuccess } = useSuccess();
+
+  useEffect(() => {
+    if (initialProductReviewList && initialProductReviewList.length > 0) {
+      setProductReviewList(initialProductReviewList);
+    }
+  }, [initialProductReviewList]);
+
+  useEffect(() => {
+    if (initialProductReviewList?.some((review) => review.userId === userId)) {
+      setHasUserReviewed(true);
+    }
+  }, [initialProductReviewList, userId]);
 
   function handleSetRating(rating) {
     setRating(rating);
@@ -28,8 +46,15 @@ function Review({ productReviewList, canUserReview, userId, id }) {
       comment,
       date: new Date().toISOString(),
     };
+
     createReview(reviewObject);
     displaySuccess("Review posted");
+
+    setRating(0);
+    setComment("");
+    setHasUserReviewed(true);
+    setProductReviewList((prevReviews) => [...prevReviews, reviewObject]);
+    onNewReview(reviewObject);
   }
 
   return (
@@ -40,16 +65,26 @@ function Review({ productReviewList, canUserReview, userId, id }) {
           {!isNaN(ratingAvg) ? (
             <>
               <span>
-                <StarRating
-                  size={25}
-                  maxRating={1}
-                  defaultRating={1}
-                  showRating={false}
-                />
-                <span>{ratingAvg} out of 5.0 </span>
-                <span>•</span>
+                {productReviewList.length > 0 && (
+                  <>
+                    <StarRating
+                      size={25}
+                      maxRating={1}
+                      defaultRating={1}
+                      showRating={false}
+                    />
+                    <span>{ratingAvg.toFixed(1)} out of 5.0 </span>
+                    <span>•</span>
+                  </>
+                )}
+
                 <span>
-                  {ratingLength} {ratingLength === 1 ? "review" : "reviews"}{" "}
+                  {productReviewList.length > 0 && productReviewList.length}
+                  {productReviewList.length === 0
+                    ? "No reviews yet"
+                    : productReviewList.length === 1
+                    ? " review"
+                    : " reviews"}
                 </span>
               </span>
             </>
@@ -57,14 +92,14 @@ function Review({ productReviewList, canUserReview, userId, id }) {
             <span>No reviews yet</span>
           )}
         </div>
-        {canUserReview && (
+        {!hasUserReviewed && canUserReview ? (
           <div className={styles.reviewLeftRatingAndComment}>
             <h2>Review this product</h2>
             <span>Share your thoughts with other customers</span>
             <div className={styles.reviewLeftRating}>
               <StarRating
                 size={25}
-                defaultRating={rating}
+                value={rating}
                 onSetRating={handleSetRating}
                 editRating={true}
               />
@@ -89,14 +124,24 @@ function Review({ productReviewList, canUserReview, userId, id }) {
               </button>
             </form>
           </div>
+        ) : (
+          <div>
+            {hasUserReviewed
+              ? "You have already rated this product"
+              : "You cannot review this product"}
+          </div>
         )}
       </div>
       <div className={styles.reviewRight}>
         <h2>Reviews</h2>
         <div className={styles.reviewsList}>
-          {productReviewList.map((review) => (
-            <ReviewItem key={review.id} {...review} />
-          ))}
+          {productReviewList.length > 0 ? (
+            productReviewList.map((review) => (
+              <ReviewItem key={review.id} {...review} />
+            ))
+          ) : (
+            <span>No reviews yet</span>
+          )}
         </div>
       </div>
     </div>

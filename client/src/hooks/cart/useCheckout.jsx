@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  resetCheckoutData,
   setCheckoutStep,
   setIsProcessingPayment,
   setItemsPrice,
@@ -22,7 +23,7 @@ function useCheckout(shippingValues) {
     dispatch(setIsProcessingPayment(isProcessing));
   const setLoadingState = (isLoading) => dispatch(setLoading(isLoading));
   const setItemsTotalPrice = (price) => dispatch(setItemsPrice(price));
-  const resetCheckout = () => dispatch({ type: "RESET" });
+  const resetCheckout = () => dispatch(resetCheckoutData());
 
   const { mutateAsync: calculateShipping } = useCalculateShipping();
 

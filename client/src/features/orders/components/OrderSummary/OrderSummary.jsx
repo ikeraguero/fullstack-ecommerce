@@ -11,6 +11,7 @@ function OrderSummary({
   handlePaymentSubmit,
   handleShippingSubmit,
 }) {
+  console.log(checkoutStep);
   const totalItemsPrice = useSelector(
     (state) => state.checkout.totalItemsPrice
   );

@@ -25,14 +25,18 @@ function Product({ userId, refetch }) {
     error,
     refetch: refetchProduct,
     isLoading,
-  } = useProduct(id, userId ? userId : 0);
+  } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
   const { mutate: removeWishlistItem } = useDeleteWishlistItem();
   const { mutate: addToWishlist } = useCreateWishlistItem();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const { displaySuccess } = useSuccess();
   let userCart = useCart(userId).data;
+  const [productReviewList, setProductReviewList] = useState(
+    product?.productReviewList || []
+  );
   const { mutate: addToCart } = useAddToCart();
+  const [ratingAvg, setRatingAvg] = useState(0);
   const navigate = useNavigate();
 
   useEffect(
@@ -44,6 +48,31 @@ function Product({ userId, refetch }) {
     [id, refetchProduct]
   );
 
+  useEffect(() => {
+    if (productReviewList?.length > 0) {
+      const ratingSum = productReviewList
+        .map((review) => review.rating)
+        .reduce((cur, acc) => cur + acc, 0);
+      const avg = ratingSum / productReviewList?.length;
+      setRatingAvg(avg);
+    }
+  }, [productReviewList]);
+
+  useEffect(() => {
+    setProductReviewList(product?.productReviewList);
+  }, [product]);
+
+  const handleNewReview = (newReview) => {
+    const updatedReviewList = [...productReviewList, newReview];
+    setProductReviewList(updatedReviewList);
+
+    const updatedRatingSum = updatedReviewList
+      .map((review) => review.rating)
+      .reduce((cur, acc) => cur + acc, 0);
+    const updatedRatingAvg = updatedRatingSum / updatedReviewList.length;
+    setRatingAvg(updatedRatingAvg);
+  };
+
   async function handleAddToCart() {
     const cartItem = {
       cart_id: userCart.id,
@@ -51,8 +80,8 @@ function Product({ userId, refetch }) {
       product_name: product.name,
       quantity: Number(quantity),
       price: product.price,
-      image_data: product.image_data,
-      image_type: product.image_type,
+      image_data: product.imageData,
+      image_type: product.imageType,
     };
 
     addToCart(cartItem, {
@@ -73,7 +102,7 @@ function Product({ userId, refetch }) {
   }
 
   function handleIncreaseQuantity() {
-    if (quantity < product?.stock_quantity) {
+    if (quantity < product?.stockQuantity) {
       setQuantity(quantity + 1);
     }
   }
@@ -111,14 +140,9 @@ function Product({ userId, refetch }) {
     return <div>Error loading products: {error.message}</div>;
   }
 
-  const {
-    name,
-    image_data,
-    image_type,
-    productReviewList,
-    canUserReview,
-    wishlistItemId,
-  } = product;
+  console.log(product);
+
+  const { name, imageData, imageType, canUserReview, wishlistItemId } = product;
 
   return (
     <div className={styles.mainContainer}>
@@ -126,7 +150,7 @@ function Product({ userId, refetch }) {
         <div className={styles.productPhoto}>
           <ImgZoom
             key={product?.id}
-            img={`data:${image_type};base64,${image_data}`}
+            img={`data:${imageType};base64,${imageData}`}
             className={styles.productPhotoZoom}
             zoomScale={1.5}
             alt={name}
@@ -151,6 +175,8 @@ function Product({ userId, refetch }) {
           {...product}
           productReviewList={productReviewList}
           canUserReview={canUserReview}
+          ratingAvg={ratingAvg}
+          onNewReview={handleNewReview}
           userId={userId}
         />
       </div>

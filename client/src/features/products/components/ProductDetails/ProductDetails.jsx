@@ -5,7 +5,7 @@ function ProductDetails({
   name,
   price,
   category,
-  product_description,
+  productDescription,
   quantity,
   onRemoveFromWishlist,
   onAddToCart,
@@ -23,7 +23,7 @@ function ProductDetails({
         <h1>{name}</h1>
         <span>Rating | In stock</span>
         <h2>${price}</h2>
-        <div className={styles.productDescription}>{product_description}</div>
+        <div className={styles.productDescription}>{productDescription}</div>
       </div>
       <div className={styles.productQuantityAndWishlist}>
         <QuantityControl

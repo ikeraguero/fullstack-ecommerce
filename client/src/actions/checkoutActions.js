@@ -31,4 +31,4 @@ export const setIsProcessingPayment = (status) => ({
   type: SET_IS_PROCESSING_PAYMENT,
   payload: status,
 });
-export const resetCheckout = () => ({ type: RESET_CHECKOUT });
+export const resetCheckoutData = () => ({ type: RESET_CHECKOUT });

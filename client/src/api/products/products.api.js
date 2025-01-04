@@ -42,6 +42,7 @@ async function fetchProducts() {
 
 async function fetchProductById(productId, userId) {
   try {
+    console.log(userId);
     const res = await apiClient.get(`/products/${productId}`, {
       headers: {
         "User-ID": userId,
@@ -134,10 +135,11 @@ export function useProductsByCategory(categoryName) {
   });
 }
 
-export function useProduct(productId, userId) {
+export function useProduct(productId) {
+  const userId = useSelector((state) => state.auth.id);
   return useQuery({
     queryKey: ["product", productId, userId],
-    queryFn: () => fetchProductById(productId, userId),
+    queryFn: () => fetchProductById(productId, userId ? userId : 0),
     onError: (error) => {
       console.error("Error fetching product:", error.message);
     },

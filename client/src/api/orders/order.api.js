@@ -71,8 +71,9 @@ export function usePayOrder() {
     ({ orderData, orderId, paymentRequest }) =>
       payOrder(orderData, orderId, paymentRequest),
     "cart",
-    (variables) => {
+    (variables, data) => {
       setTimeout(() => {
+        console.log(variables, data);
         navigate(`/payment/success/${variables.orderId}`);
         queryClient.invalidateQueries(["cart"]);
         resetCheckout();
