@@ -13,13 +13,14 @@ import useCategories from "./api/categories/categories.api";
 import { useAlert } from "./context/AlertContext";
 import { useSuccess } from "./context/SuccessContext";
 import { AppRoutes } from "./routes/AppRoutes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuthStatus } from "@api/auth/auth.api";
 import { loginSuccess } from "./actions/authActions";
 
 const MemoizedNav = React.memo(Nav);
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const { data: userData, isLoadingUser, errorUser } = useAuthStatus();
   const userId = useUserId();
@@ -33,12 +34,13 @@ function App() {
   const { isSuccessOpen, setSuccessOpen, successMessage } = useSuccess();
 
   useEffect(() => {
-    if (userData && !isLoadingUser && !errorUser) {
+    if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
+      console.log("oi");
       const { firstName, lastName, role, id, email } = userData;
       const username = `${firstName} ${lastName}`;
       dispatch(loginSuccess(username, role, id, email, firstName, lastName));
     }
-  }, [userData, dispatch, isLoadingUser, errorUser]);
+  }, [userData, dispatch, isLoadingUser, errorUser, isLoggedIn]);
 
   const handleSearch = useCallback(
     (products) => setSearchProducts(products),

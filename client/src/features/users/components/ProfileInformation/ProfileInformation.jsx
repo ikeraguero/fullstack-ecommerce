@@ -1,31 +1,39 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./ProfileInformation.module.css";
 import { useState } from "react";
 import useUserEditForm from "@hooks/cart/useUserEditForm";
 import { useUpdateUser } from "@api/users/user.api";
+import { updateUserData } from "../../../../actions/authActions";
 
 function ProfileInformation() {
   const username = useSelector((state) => state.auth.username);
   const userId = useSelector((state) => state.auth.id);
   const email = useSelector((state) => state.auth.email);
+  const dispatch = useDispatch();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const userEditForm = useUserEditForm(handleSubmitForm);
   const { values, handleChange } = userEditForm;
-  const { mutate: updateUser } = useUpdateUser();
+  const { mutateAsync: updateUser } = useUpdateUser();
 
   function handleEditButtonClick() {
     setIsEditingProfile(!isEditingProfile);
   }
 
-  function handleSubmitForm() {
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("firstName", values.firstName);
-    formData.append("lastName", values.lastName);
-    formData.append("email", values.email);
-    formData.append("password", "123");
-    formData.append("roleId", 0);
-    updateUser(formData);
+  async function handleSubmitForm() {
+    const { firstName, lastName, email } = values;
+    const userRequest = {
+      userId,
+      firstName,
+      lastName,
+      email,
+      password: 123,
+      roleId: Number(values.roleId),
+    };
+    await updateUser(userRequest);
+    dispatch(
+      updateUserData(`${firstName} ${lastName}`, firstName, lastName, email)
+    );
+    setIsEditingProfile(false);
   }
   return (
     <div>
