@@ -145,6 +145,7 @@ public class OrderServiceImpl implements OrderService {
         Order existingOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Couldn't find order with ID - " + orderId));
 
+        System.out.println(orderRequest);
         existingOrder.setStatus(orderRequest.getStatus());
         existingOrder.setTotalPrice(orderRequest.getTotalPrice());
         existingOrder.setShippingAddress(orderRequest.getShippingAddress());
