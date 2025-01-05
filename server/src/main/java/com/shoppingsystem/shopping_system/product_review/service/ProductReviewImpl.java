@@ -85,6 +85,11 @@ public class ProductReviewImpl implements ProductReviewService{
         }
     }
 
+    @Override
+    public boolean existsByProductIdAndUserId(Long productId, Long userId) {
+        return productReviewRepository.existsByProductIdAndUserId(productId, userId);
+    }
+
     private void validateReviewRequest(ProductReviewRequest productReviewRequest) {
         if (productReviewRequest.getRating() < 1 || productReviewRequest.getRating() > 5) {
             throw new IllegalArgumentException("Rating must be between 1 and 5");

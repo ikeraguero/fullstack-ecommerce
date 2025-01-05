@@ -28,7 +28,7 @@ public class ProductReviewController {
     public ResponseEntity<?> saveReview(@RequestBody ProductReviewRequest productReviewRequest) {
         try {
             productReviewService.saveReview(productReviewRequest);
-            return ResponseEntity.ok("Review created successfully");
+            return ResponseEntity.status(201).body("Review created successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {

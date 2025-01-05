@@ -9,6 +9,6 @@ import java.util.List;
 public interface ProductReviewService {
     List<ProductReviewResponse> findAllReviewsByProduct(Long productId);
     void saveReview(ProductReviewRequest productReviewRequest);
-
+    boolean existsByProductIdAndUserId(Long productId, Long userId);
     List<ProductReview> findReviewByProductsId(List<Long> productsId);
 }

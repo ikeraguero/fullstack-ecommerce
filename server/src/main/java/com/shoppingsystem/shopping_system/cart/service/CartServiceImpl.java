@@ -67,7 +67,7 @@ public class CartServiceImpl implements CartService {
         for(CartItem cartItem : cartItems) {
             Product product = productService.findByIdEntity(cartItem.getProduct().getId());
 
-            ProductImage productImage = productImageService.findByIdEntity(product.getImage_id());
+            ProductImage productImage = productImageService.findByIdEntity(product.getImageId());
 
             CartItemResponse cartItemResponse = new CartItemResponse(
                     cartItem.getCartItemId(),

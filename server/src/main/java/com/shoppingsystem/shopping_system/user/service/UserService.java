@@ -1,5 +1,6 @@
 package com.shoppingsystem.shopping_system.user.service;
 
+import com.shoppingsystem.shopping_system.pagination.dto.PaginationUserResponse;
 import com.shoppingsystem.shopping_system.user.dto.UserRequest;
 import com.shoppingsystem.shopping_system.user.dto.UserResponse;
 import com.shoppingsystem.shopping_system.user.model.User;
@@ -15,6 +16,7 @@ public interface UserService {
     void updatePassword(Long userId, String newPassword);
     void updateUser(UserRequest userRequest);
     User findByEmail(String email);
+    PaginationUserResponse getPaginatedUsers(int page, int size);
 
     boolean existsByEmail(String email);
 }

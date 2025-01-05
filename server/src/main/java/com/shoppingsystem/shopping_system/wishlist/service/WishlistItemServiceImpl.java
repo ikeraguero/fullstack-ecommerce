@@ -43,7 +43,7 @@ public class WishlistItemServiceImpl implements WishlistItemService{
         Product product = productRepository.findById(savedItem.getProductId()).orElseThrow(
                 () -> new ProductNotFoundException("Product not found with ID - " + savedItem.getProductId())
         );
-        ProductImageDTO productImage= productImageService.findById(product.getImage_id());
+        ProductImageDTO productImage= productImageService.findById(product.getImageId());
         return new WishlistItemResponse(
                 wishlistItem.getId(),
                 product.getId(),
@@ -71,7 +71,7 @@ public class WishlistItemServiceImpl implements WishlistItemService{
 
         return wishlistItemList.stream().map(wishlistItem -> {
             Product product = productMap.get(wishlistItem.getProductId());
-            ProductImage productImage = productImageMap.get(product.getImage_id());
+            ProductImage productImage = productImageMap.get(product.getImageId());
             return new WishlistItemResponse(
                     wishlistItem.getId(),
                     product.getId(),
@@ -94,7 +94,7 @@ public class WishlistItemServiceImpl implements WishlistItemService{
 
     private Map<Long, ProductImage> generateProductImage(Map<Long, Product> productMap) {
         List<Long> imageIds = productMap.values().stream()
-                .map(Product::getImage_id)
+                .map(Product::getImageId)
                 .distinct()
                 .toList();
 

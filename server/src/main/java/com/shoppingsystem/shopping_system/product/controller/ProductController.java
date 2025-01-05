@@ -2,6 +2,7 @@ package com.shoppingsystem.shopping_system.product.controller;
 
 import com.shoppingsystem.shopping_system.category.exceptions.CategoryNotFoundException;
 import com.shoppingsystem.shopping_system.category.service.CategoryService;
+import com.shoppingsystem.shopping_system.pagination.dto.PaginationResponse;
 import com.shoppingsystem.shopping_system.product.dto.ProductRequest;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.exception.NoProductsFoundException;
@@ -10,7 +11,6 @@ import com.shoppingsystem.shopping_system.product.service.ProductImageService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,16 +38,16 @@ public class ProductController {
     public ProductController() {
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/products")
-    public ResponseEntity<?> getProducts() {
+    public ResponseEntity<?> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
-            List<ProductResponse> productResponseList = productService.findAll();
-            return ResponseEntity.ok(productResponseList);
+            PaginationResponse paginationResponse = productService.getPaginatedProducts(page, size);
+            return ResponseEntity.ok(paginationResponse);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
-
     }
 
     @GetMapping("/products/{productId}")
@@ -122,6 +122,16 @@ public class ProductController {
             return ResponseEntity.ok("Product successfully deleted");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/products/featured")
+    public ResponseEntity<?> getFeaturedProducts() {
+        try {
+            Map<String, List<ProductResponse>> featuredProducts = productService.getRandomCategoryProducts();
+            return ResponseEntity.ok(featuredProducts);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
     }
 

@@ -159,13 +159,13 @@ public class OrderServiceImpl implements OrderService {
         for(OrderItem orderItem : orderItemList) {
             Product product = productMap.get(orderItem.getProduct().getId());
 
-            if (product.getStock_quantity() < orderItem.getQuantity()) {
+            if (product.getStockQuantity() < orderItem.getQuantity()) {
                 throw new IllegalStateException(
                         "Insufficient stock for product ID - " + product.getId()
                 );
             }
 
-            product.setStock_quantity(product.getStock_quantity() - orderItem.getQuantity());
+            product.setStockQuantity(product.getStockQuantity() - orderItem.getQuantity());
         }
         // save all products in batch
         productService.saveAll(products);
@@ -208,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<Long> imageIds = orderItems.stream()
                 .filter(orderItem -> orderItem.getProduct() != null)
-                .map(orderItem -> orderItem.getProduct().getImage_id())
+                .map(orderItem -> orderItem.getProduct().getImageId())
                 .toList();
 
         Map<Long, ProductImage> imageMap = productImageService.findByIds(imageIds).stream()
@@ -217,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
         return orderItems.stream()
                 .filter(orderItem -> orderItem.getProduct() != null)
                 .map(orderItem -> {
-                    ProductImage image = imageMap.get(orderItem.getProduct().getImage_id());
+                    ProductImage image = imageMap.get(orderItem.getProduct().getImageId());
                     return new OrderItemResponse(orderItem.getOrderItemId(),
                             orderItem.getProduct().getName(),
                             orderItem.getTotalPrice(),

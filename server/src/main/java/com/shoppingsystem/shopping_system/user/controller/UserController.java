@@ -1,18 +1,15 @@
 package com.shoppingsystem.shopping_system.user.controller;
 
 import com.shoppingsystem.shopping_system.auth.exceptions.InvalidCredentialsException;
+import com.shoppingsystem.shopping_system.pagination.dto.PaginationUserResponse;
 import com.shoppingsystem.shopping_system.role.service.RoleService;
 import com.shoppingsystem.shopping_system.user.dto.UserRequest;
-import com.shoppingsystem.shopping_system.user.dto.UserResponse;
-import com.shoppingsystem.shopping_system.user.exception.NoUserFoundException;
 import com.shoppingsystem.shopping_system.user.exception.UserNotFoundException;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -32,13 +29,16 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getUsers() {
+    public ResponseEntity<?> getUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        if (page < 0) {
+            return ResponseEntity.badRequest().body("Page index must not be less than 0");
+        }
         try {
-            List<UserResponse> userResponseList = userService.findAll();
-            return ResponseEntity.ok(userResponseList);
-        } catch (NoUserFoundException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        } catch (Exception e ) {
+            PaginationUserResponse paginationResponse = userService.getPaginatedUsers(page, size);
+            return ResponseEntity.ok(paginationResponse);
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }
     }

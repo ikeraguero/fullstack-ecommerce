@@ -1,6 +1,7 @@
 package com.shoppingsystem.shopping_system.user.service;
 
 import com.shoppingsystem.shopping_system.auth.exceptions.InvalidCredentialsException;
+import com.shoppingsystem.shopping_system.pagination.dto.PaginationUserResponse;
 import com.shoppingsystem.shopping_system.role.model.Role;
 import com.shoppingsystem.shopping_system.role.service.RoleService;
 import com.shoppingsystem.shopping_system.user.dto.UserRequest;
@@ -10,10 +11,13 @@ import com.shoppingsystem.shopping_system.user.exception.UserNotFoundException;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -102,14 +106,16 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserRequest userRequest) {
         User existingUser = userRepository.findById(userRequest.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("Couldn't find user with ID - " + userRequest.getUserId()));
+        if(userRequest.getRoleId() != 0) {
+            existingUser.setRole(roleService.findById(userRequest.getRoleId()));
+        }
         existingUser.setEmail(userRequest.getEmail());
-        existingUser.setRole(roleService.findById(userRequest.getRoleId()));
         existingUser.setFirstName(userRequest.getFirstName());
         existingUser.setLastName(userRequest.getLastName());
         existingUser.setUpdatedAt(Date.from(Instant.now()));
+        if(userRequest.getPassword()!=null) {
         updatePassword(userRequest.getUserId(), userRequest.getPassword());
-
-        userRepository.save(existingUser);
+        }
     }
 
     public void updatePassword(Long userId, String newPassword) {
@@ -119,6 +125,63 @@ public class UserServiceImpl implements UserService {
         user.setPasswordHash(hashedPassword);
 
         userRepository.save(user);
+    }
+
+    public PaginationUserResponse getPaginatedUsers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<User> userPage = userRepository.findAll(pageRequest);
+
+        List<UserResponse> userResponses = userPage.getContent().stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getEmail(),
+                        "active",
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getPasswordHash(),
+                        user.getRole().getId(),
+                        user.getRole().getName()
+                ))
+                .collect(Collectors.toList());
+
+        List<UserResponse> contentNext = userPage.hasNext() ? userRepository.findAll(PageRequest.of(page + 1, size)).getContent().stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getEmail(),
+                        "active",
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getPasswordHash(),
+                        user.getRole().getId(),
+                        user.getRole().getName()
+                ))
+                .collect(Collectors.toList()) : new ArrayList<>();
+
+        List<UserResponse> contentPrevious = page > 0 ? userRepository.findAll(PageRequest.of(page - 1, size)).getContent().stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getEmail(),
+                        "active",
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getPasswordHash(),
+                        user.getRole().getId(),
+                        user.getRole().getName()
+                ))
+                .collect(Collectors.toList()) : new ArrayList<>();
+
+        PaginationUserResponse paginationResponse = new PaginationUserResponse(
+                userResponses,
+                contentNext,
+                contentPrevious,
+                page,
+                userPage.getTotalPages(),
+                userPage.hasNext(),
+                userPage.hasPrevious()
+        );
+
+        return paginationResponse;
     }
 
     @Override

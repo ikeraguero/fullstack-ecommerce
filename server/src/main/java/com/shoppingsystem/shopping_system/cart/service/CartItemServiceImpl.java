@@ -53,7 +53,7 @@ public class CartItemServiceImpl implements CartItemService {
         Product product = productRepository.findById(cartItem.getProduct().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID - " + cartItem.getProduct().getId()));
 
-        ProductImage productImage = productImageService.findByIdEntity(product.getImage_id());
+        ProductImage productImage = productImageService.findByIdEntity(product.getImageId());
 
         return new CartItemResponse(
                 cartItem.getCartItemId(),
@@ -106,15 +106,15 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItemResponse addCartItem(CartItemRequest cartItemRequest) {
-        Cart cart = cartRepository.findById(cartItemRequest.getCart_id())
+        Cart cart = cartRepository.findById(cartItemRequest.getCartId())
                 .orElseThrow(() -> new EntityNotFoundException("Cart not found with ID - "
-                        + cartItemRequest.getCart_id()));
+                        + cartItemRequest.getCartId()));
         if(cart == null) {
-            throw new EntityNotFoundException("Cart not found with ID - " + cartItemRequest.getCart_id());
+            throw new EntityNotFoundException("Cart not found with ID - " + cartItemRequest.getCartId());
         }
 
-        Product product = productRepository.findById(cartItemRequest.getProduct_id())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID - " + cartItemRequest.getProduct_id()));
+        Product product = productRepository.findById(cartItemRequest.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID - " + cartItemRequest.getProductId()));
 
 
         //check if product is already in users cart
@@ -137,16 +137,16 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public CartItemResponse updateCartItem(CartItemRequest cartItemRequest) {
 
-        if(cartItemRequest.getCart_id() == null || cartItemRequest.getProduct_id() == null) {
+        if(cartItemRequest.getCartId() == null || cartItemRequest.getProductId() == null) {
             throw new IllegalArgumentException("Cart ID and Product ID must not be null");
         }
 
-        CartItem cartItem = cartItemRepository.findCartItemByCartAndProduct(cartItemRequest.getCart_id(),
-                cartItemRequest.getProduct_id());
+        CartItem cartItem = cartItemRepository.findCartItemByCartAndProduct(cartItemRequest.getCartId(),
+                cartItemRequest.getProductId());
 
         if(cartItem==null) {
-            throw new EntityNotFoundException("CartItem not found for Cart ID: " + cartItemRequest.getCart_id() +
-                    " and Product ID: " + cartItemRequest.getProduct_id());
+            throw new EntityNotFoundException("CartItem not found for Cart ID: " + cartItemRequest.getCartId() +
+                    " and Product ID: " + cartItemRequest.getProductId());
         }
 
         cartItem.setQuantity(cartItemRequest.getQuantity());

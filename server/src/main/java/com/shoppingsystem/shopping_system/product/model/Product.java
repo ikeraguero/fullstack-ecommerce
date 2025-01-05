@@ -25,10 +25,10 @@ public class Product {
     private Double price;
 
     @Column(name="product_stock_quantity")
-    private int stock_quantity;
+    private int stockQuantity;
 
     @Column(name="image_id")
-    private Long image_id;
+    private Long imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id", referencedColumnName = "category_id")
@@ -37,16 +37,16 @@ public class Product {
     private Category category;
 
     @Column(name="product_description")
-    private String product_description;
+    private String productDescription;
 
-    public Product(Long id, String name, Double price, int stock_quantity, Long image_id, Category category, String product_description) {
+    public Product(Long id, String name, Double price, int stockQuantity, Long imageId, Category category, String productDescription) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.stock_quantity = stock_quantity;
-        this.image_id = image_id;
+        this.stockQuantity = stockQuantity;
+        this.imageId = imageId;
         this.category = category;
-        this.product_description = product_description;
+        this.productDescription = productDescription;
     }
 }
 

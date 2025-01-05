@@ -47,7 +47,8 @@ public class SecurityConfig {
                         "/api/wishlist/**",
                         "/payment/process",
                         "/api/users",
-                        "/auth/status"
+                        "/auth/status",
+                        "/products/featured"
                         ).permitAll()
                         .requestMatchers("/api/products", "/api/users/**", "/api/roles").hasRole("ADMIN")
                         .anyRequest().authenticated()

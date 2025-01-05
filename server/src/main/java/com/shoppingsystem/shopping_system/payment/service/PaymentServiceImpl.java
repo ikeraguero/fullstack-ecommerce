@@ -14,7 +14,7 @@ public class PaymentServiceImpl implements PaymentService{
             throw new IllegalArgumentException("Payment failed: Missing required fields");
         }
 
-        boolean paymentSuccess = Math.random() > 0.5;
+        boolean paymentSuccess = true;
         if (paymentSuccess) {
             return new PaymentResponse("Payment successful", true);
         }
