@@ -42,23 +42,22 @@ async function createOrder(data) {
   }
 }
 
-async function payOrder(orderData, orderId, paymentData) {
+async function payOrder(paymentData) {
   try {
     console.log(paymentData);
-    const resPayment = await apiClientPayment.post(`/process`, paymentData, {
+    const res = await apiClientPayment.post(`/process`, paymentData, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const { success } = resPayment.data;
+    const { success, message } = res.data;
     if (!success) throw new Error("Payment rejected");
 
-    await apiClient.put(`/order/${orderId}`, orderData);
-    return orderId;
+    return message;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Error processing payment"
+      error.response?.data || "Error processing payment and updating order"
     );
   }
 }
@@ -69,8 +68,8 @@ export function usePayOrder() {
   const navigate = useNavigate();
 
   return useApiMutation(
-    ({ orderData, orderId, paymentRequest }) =>
-      payOrder(orderData, orderId, paymentRequest),
+    (paymentRequest ) =>
+      payOrder(paymentRequest),
     "cart",
     (variables) => {
       setTimeout(() => {

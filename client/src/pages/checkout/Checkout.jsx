@@ -118,6 +118,7 @@ function CheckoutShipping() {
     setProcessingPayment(true);
 
     const paymentRequest = {
+      orderId: order?.orderId,
       email,
       paymentMethod,
       cardNumber: cardNumber.replace(/\s/g, ""),
@@ -138,8 +139,9 @@ function CheckoutShipping() {
       totalPrice,
     };
 
-    console.log(order?.orderId, paymentRequest);
-    payOrder({ orderData: payData, orderId: order?.orderId, paymentRequest });
+    paymentRequest.orderRequest = payData;
+
+    payOrder(paymentRequest);
   }
 
   function handleBack() {
