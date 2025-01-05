@@ -12,6 +12,7 @@ import com.shoppingsystem.shopping_system.order.repository.OrderRepository;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
+import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import com.shoppingsystem.shopping_system.product.service.ProductImageService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import com.shoppingsystem.shopping_system.user.model.User;
@@ -19,10 +20,7 @@ import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductImageRepository productImageRepository;
+
     @Override
     public void save(Order order) {
         orderRepository.save(order);
@@ -56,6 +57,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.countItemsInOrder(orderId);
     }
 
+
+
     @Override
     public OrderResponse findById(Long orderId) {
         Order order = orderRepository.findById(orderId)
@@ -65,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
                 orderRepository.countItemsInOrder(order.getOrderId()),
                 order.getTotalPrice(), order.getDate(), order.getStatus());
 
-        List<OrderItemResponse> orderItemList = findAllOrderItems(orderResponse.getOrderId());
+        List<OrderItemResponse> orderItemList = findAllOrderItemsWithProductImages(orderResponse.getOrderId());
         orderResponse.setOrderItems(orderItemList);
         return orderResponse;
     }
@@ -74,19 +77,32 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(orderId).orElseThrow(()->new RuntimeException("Couldn't find order"));
     }
 
-    @Override
-    public List<OrderItemResponse> findAllOrderItems(Long orderId) {
-        List<OrderItem> orderItemList = orderRepository.findAllOrderItems(orderId);
-        List<OrderItemResponse> orderItemResponseList = new LinkedList<>();
-        for(OrderItem orderItem : orderItemList) {
-            ProductImage productImage = productImageService.findByIdEntity(orderItem.getProduct().getId());
+    public List<OrderItemResponse> findAllOrderItemsWithProductImages(Long orderId) {
+        List<OrderItem> orderItems = orderRepository.findOrderItemsWithProductImages(orderId);
 
-            OrderItemResponse orderItemResponse = new OrderItemResponse(orderItem.getOrderItemId(),
-                    orderItem.getProduct().getName(), orderItem.getTotalPrice(), orderItem.getQuantity(), productImage.getImageData(),
-                    productImage.getType());
-            orderItemResponseList.add(orderItemResponse);
+        Set<Long> productImageIds = new HashSet<>();
+        for (OrderItem orderItem : orderItems) {
+            productImageIds.add(orderItem.getProduct().getImageId());
         }
-        return orderItemResponseList;
+
+        Map<Long, ProductImage> productImageMap = productImageService.findProductImagesByIds(productImageIds);
+
+        List<OrderItemResponse> orderItemResponses = new ArrayList<>();
+        for (OrderItem orderItem : orderItems) {
+            ProductImage productImage = productImageMap.get(orderItem.getProduct().getImageId());
+
+            OrderItemResponse orderItemResponse = new OrderItemResponse(
+                    orderItem.getOrderItemId(),
+                    orderItem.getProduct().getName(),
+                    orderItem.getTotalPrice(),
+                    orderItem.getQuantity(),
+                    productImage != null ? productImage.getImageData() : null,
+                    productImage != null ? productImage.getType() : null
+            );
+            orderItemResponses.add(orderItemResponse);
+        }
+
+        return orderItemResponses;
     }
 
     @Override

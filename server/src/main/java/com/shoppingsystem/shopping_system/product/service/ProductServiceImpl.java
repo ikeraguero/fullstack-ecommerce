@@ -8,7 +8,6 @@ import com.shoppingsystem.shopping_system.order.service.OrderItemService;
 import com.shoppingsystem.shopping_system.pagination.dto.PaginationResponse;
 import com.shoppingsystem.shopping_system.product.dto.ProductRequest;
 import com.shoppingsystem.shopping_system.product.dto.ProductResponse;
-import com.shoppingsystem.shopping_system.product.exception.NoProductsFoundException;
 import com.shoppingsystem.shopping_system.product.exception.ProductNotFoundException;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
@@ -23,6 +22,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -105,8 +105,11 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> result = productRepository.findById(productId);
         Product theProduct = result.orElseThrow(() ->
                 new ProductNotFoundException("Did not find product with productId - " + productId));
-        boolean canUserReview = !productReviewService.existsByProductIdAndUserId(productId, userId);
+
+        boolean canUserReview = canReview(productId, userId);
+
         boolean isInUsersWishlist = wishlistItemService.isProductInWishlist(userId, productId);
+
         WishlistItemResponse wishlistItem = wishlistItemService.getWishlistItemsByUserId(userId).stream()
                 .filter(wishlistItemResponse -> Objects.equals(wishlistItemResponse.getProductId(), productId))
                 .findFirst()
@@ -120,6 +123,11 @@ public class ProductServiceImpl implements ProductService {
             productResponse.setWishlistItemId(wishlistItem.getId());
         }
         return productResponse;
+    }
+
+    private boolean canReview(Long productId, Long userId) {
+        return !productReviewService.existsByProductIdAndUserId(productId, userId)
+                && orderItemService.hasUserBoughtProduct(productId, userId);
     }
 
     @Override
@@ -144,6 +152,7 @@ public class ProductServiceImpl implements ProductService {
     public void saveAll(List<Product> productList) {
         productRepository.saveAll(productList);
     }
+
 
     @Override
     public Map<String, List<ProductResponse>> getRandomCategoryProducts() {
@@ -222,18 +231,19 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<ProductResponse> searchProducts(String query) {
-        List<Product> products = productRepository.searchProducts(query);
-        if (products.isEmpty()) {
-            throw new NoProductsFoundException("No products were found for query - " + query);
-        }
+    public List<ProductResponse> searchProducts(String query, int page, int size) {
 
-        //batch
-        Map<Long, ProductImage> productImageMap = generateProductImageMap(products);
-        Map<Long, List<ProductReviewResponse>> reviewMap = generateProductReviewsMap(products);
+        Pageable pageable = PageRequest.of(page, size);
 
-        return generateProductResponseList(productImageMap, reviewMap, products);
+        Page<Product> productPage = productRepository.searchProducts(query, pageable);
+
+        Map<Long, ProductImage> productImageMap = generateProductImageMap(productPage.getContent());
+        Map<Long, List<ProductReviewResponse>> reviewMap = generateProductReviewsMap(productPage.getContent());
+
+        // Generate the response list
+        return generateProductResponseList(productImageMap, reviewMap, productPage.getContent());
     }
+
 
     private Map<Long, List<ProductReviewResponse>> generateProductReviewsMap(List<Product> products) {
         List<Long> productIds = products.stream()
@@ -326,7 +336,7 @@ public class ProductServiceImpl implements ProductService {
         productImageService.save(productImage);
 
         Product existingProduct = findByIdEntity(productRequest.getId());
-        
+
         existingProduct.setName(productRequest.getName());
         existingProduct.setPrice(productRequest.getPrice());
         existingProduct.setStockQuantity(productRequest.getStockQuantity());

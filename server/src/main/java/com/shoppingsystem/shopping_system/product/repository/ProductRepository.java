@@ -1,6 +1,8 @@
 package com.shoppingsystem.shopping_system.product.repository;
 
 import com.shoppingsystem.shopping_system.product.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,6 +29,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.category.id = :categoryId")
     long countByCategoryId(@Param("categoryId") int categoryId);
+
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %:query% OR p.productDescription LIKE %:query%")
+    Page<Product> searchProducts(@Param("query") String query, Pageable pageable);
 
     List<Product> findByCategoryId(int categoryId);
 }

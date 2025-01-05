@@ -18,7 +18,6 @@ public interface ProductService {
     List<ProductResponse> findProductsByCategory(String categoryName);
     Product save(Product product);
     void saveAll(List<Product> productList);
-    List<ProductResponse>  searchProducts(String query);
     void deleteById(Long id);
     Product findByIdEntity(Long id);
     void updateProduct(MultipartFile image, ProductRequest productRequest) throws IOException;
@@ -27,4 +26,5 @@ public interface ProductService {
     public Map<String, List<ProductResponse>> getRandomCategoryProducts();
     List<ProductResponse> getRandomProductsByCategory(int categoryId);
     PaginationResponse getPaginatedProducts(int page, int size);
+    List<ProductResponse> searchProducts(String query, int page, int size);
 }

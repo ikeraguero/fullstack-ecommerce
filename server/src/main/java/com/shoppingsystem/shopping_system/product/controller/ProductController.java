@@ -63,9 +63,12 @@ public class ProductController {
     }
 
     @GetMapping("/products/search")
-    public ResponseEntity<?> searchProducts(@RequestParam String query) {
+    public ResponseEntity<?> searchProducts(
+            @RequestParam("q") String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
-            List<ProductResponse> productResponseList = productService.searchProducts(query);
+            List<ProductResponse> productResponseList = productService.searchProducts(query, page, size);
             return ResponseEntity.ok(productResponseList);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());

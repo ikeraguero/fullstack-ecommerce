@@ -1,6 +1,5 @@
 package com.shoppingsystem.shopping_system.order.service;
 
-import com.shoppingsystem.shopping_system.order.dto.OrderItemResponse;
 import com.shoppingsystem.shopping_system.order.dto.OrderRequest;
 import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
 import com.shoppingsystem.shopping_system.order.model.Order;
@@ -13,7 +12,6 @@ public interface OrderService {
     Long countItemsInOrder(Long orderId);
     OrderResponse findById(Long orderId);
     Order findByIdEntity(Long orderId);
-    List<OrderItemResponse> findAllOrderItems(Long orderId);
     List<OrderItem> findAllOrderItemsEntity(Long orderId);
     List<OrderResponse> findAllOrdersByUser(Long userId);
     OrderResponse addOrder(OrderRequest orderRequest);

@@ -1,7 +1,6 @@
 package com.shoppingsystem.shopping_system.product.service;
 
 import com.shoppingsystem.shopping_system.product.dto.ProductImageDTO;
-import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
 import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
 import lombok.AllArgsConstructor;
@@ -10,8 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -48,6 +46,16 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     public ProductImage save(ProductImage productImage) {
         return (ProductImage) productImageRepository.save(productImage);
+    }
+
+    public Map<Long, ProductImage> findProductImagesByIds(Set<Long> imageIds) {
+        List<ProductImage> productImages = productImageRepository.findByIdsSet(imageIds);
+
+        Map<Long, ProductImage> productImageMap = new HashMap<>();
+        for (ProductImage productImage : productImages) {
+            productImageMap.put(productImage.getId(), productImage);
+        }
+        return productImageMap;
     }
 
     @Override
