@@ -1,5 +1,6 @@
 import ProductCard from "@features/products/components/ProductCard/ProductCard";
 import styles from "./SearchResults.module.css";
+import { Link } from "react-router-dom";
 
 function SearchResults({ searchProducts }) {
   const resultsLength = searchProducts.length;
@@ -21,8 +22,14 @@ function SearchResults({ searchProducts }) {
       <div className={styles.mainContainer}>
         <h1>{resultsMessage}</h1>
         <div className={styles.productGrid}>
-          {searchProducts.map((product) => (
-            <ProductCard key={product.id} {...product} />
+          {searchProducts?.map((product) => (
+            <Link
+              to={`products/${product.id}`}
+              key={product.id}
+              className={styles.productLink}
+            >
+              <ProductCard {...product} />
+            </Link>
           ))}
         </div>
       </div>

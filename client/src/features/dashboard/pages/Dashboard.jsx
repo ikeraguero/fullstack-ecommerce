@@ -21,6 +21,7 @@ function ManageProduct({ requiredRole }) {
         {(isProductFormOpen || isUsersFormOpen) && (
           <div className={styles.overlay} />
         )}
+        <h1>Dashboard</h1>
         <ProductDashboard />
         <UserDashboard />
       </Main>

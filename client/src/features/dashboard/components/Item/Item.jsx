@@ -6,13 +6,13 @@ import { openEditUser } from "../../../../actions/userFormActions";
 function Item({ item, handleOpenForm, onRemove, itemType }) {
   const dispatch = useDispatch();
   const handleEdit = () => {
-    
     handleOpenForm("openEdit", item);
 
     dispatch(
       itemType === "product" ? openEditProduct(item) : openEditUser(item)
     );
   };
+
 
   return (
     <li className={styles.itemLine}>
@@ -31,7 +31,7 @@ function Item({ item, handleOpenForm, onRemove, itemType }) {
         <>
           <div className={styles.itemStatus}>{item?.userStatus}</div>
           <div className={styles.itemRole}>{item?.userRoleName}</div>
-          <div className={styles.itemPassword}>PASSWORD</div>
+          <div className={styles.itemPassword}>#{item?.id}</div>
         </>
       )}
       <div className={styles.itemButtons}>

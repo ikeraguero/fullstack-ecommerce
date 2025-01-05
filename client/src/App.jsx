@@ -35,7 +35,6 @@ function App() {
 
   useEffect(() => {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
-      console.log("oi");
       const { firstName, lastName, role, id, email } = userData;
       const username = `${firstName} ${lastName}`;
       dispatch(loginSuccess(username, role, id, email, firstName, lastName));
@@ -51,7 +50,6 @@ function App() {
     []
   );
 
-  console.log(activeCategory);
 
   const location = useLocation();
   const isAuthPage = ["/login", "/register"].includes(location.pathname);

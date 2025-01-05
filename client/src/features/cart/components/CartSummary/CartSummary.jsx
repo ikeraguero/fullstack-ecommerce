@@ -1,6 +1,6 @@
 import styles from "./CartSummary.module.css";
 function CartSummary({ itemsLength, totalPrice, handleCreateOrder }) {
-  console.log(itemsLength, totalPrice);
+
   return (
     <>
       <div className={styles.cartSummaryTop}>

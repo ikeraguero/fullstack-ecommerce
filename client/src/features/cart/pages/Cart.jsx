@@ -49,7 +49,6 @@ function Cart({ openError }) {
 
   function generateData() {
     refetch();
-    console.log(cartItems);
     return {
       userId,
       totalPrice,

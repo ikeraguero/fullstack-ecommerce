@@ -23,6 +23,7 @@ function ProductDashboard() {
     data: initialProducts,
     error: productError,
     refetch: refetchProducts,
+    isLoading, // Capture the loading state
   } = useProducts(currentPage, pageSize);
 
   const { create, update, remove } = useProductActions(
@@ -79,16 +80,20 @@ function ProductDashboard() {
       <div className={styles.paginationButtons}>
         <button
           onClick={handlePrevious}
-          className={hasPrevious ? styles.paginationButton : styles.hidden}
+          className={
+            !isLoading && !hasPrevious ? styles.hidden : styles.paginationButton
+          }
         >
           <ion-icon name="chevron-back-outline"></ion-icon>
-          Page {currentPage + 1 - 1}
+          Page {currentPage}
         </button>
         <button
           onClick={handleNext}
-          className={hasNext ? styles.paginationButton : styles.hidden}
+          className={
+            !isLoading && !hasNext ? styles.hidden : styles.paginationButton
+          }
         >
-          Page {currentPage + 1 + 1}
+          Page {currentPage + 2}
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </button>
       </div>

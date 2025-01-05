@@ -13,3 +13,7 @@
   gap: 1.8rem;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.productLink {
+  text-decoration: none;
+}

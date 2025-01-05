@@ -17,18 +17,16 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
 
-  console.log(isAddingUser);
   const { values, handleChange, resetForm } = isEditingUser
     ? userEditForm
     : userAddForm;
 
-  console.log(userEditForm);
 
   const { data: roles, error, isLoading } = useRoles();
   // const { mutate: registerUser } = useRegisterUser();
   // const { mutate: updateUser } = useUpdateUser();
 
-  console.log(editUser);
+
 
   useEffect(() => {
     if (isAddingUser) {

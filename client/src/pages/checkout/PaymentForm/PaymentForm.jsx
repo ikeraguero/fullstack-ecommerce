@@ -52,7 +52,6 @@ function PaymentForm({
       }
       e.target.value = formattedValue;
     }
-    console.log(e.target.value);
     handleChange(e);
   };
   return (

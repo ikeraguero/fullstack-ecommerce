@@ -21,7 +21,6 @@ async function updateUser(data) {
 async function fetchUsers(page, size) {
   try {
     const res = await apiClient.get(`/users?page=${page}&size=${size}`);
-    console.log(res);
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching users");
@@ -72,10 +71,7 @@ export function useUsers(page, size) {
 
 export function useUpdateUser() {
   return useApiMutation(
-    (data) => {
-      updateUser(data);
-      console.log(data);
-    },
+    (data) => updateUser(data),
     "users",
     null,
     (error) => {

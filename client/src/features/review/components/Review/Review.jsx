@@ -81,7 +81,7 @@ function Review({
                 <span>
                   {productReviewList.length > 0 && productReviewList.length}
                   {productReviewList.length === 0
-                    ? "No reviews yet"
+                    ? "No reviews yet."
                     : productReviewList.length === 1
                     ? " review"
                     : " reviews"}
@@ -89,7 +89,7 @@ function Review({
               </span>
             </>
           ) : (
-            <span>No reviews yet</span>
+            <span>No reviews yet.</span>
           )}
         </div>
         {!hasUserReviewed && canUserReview ? (
@@ -125,10 +125,8 @@ function Review({
             </form>
           </div>
         ) : (
-          <div>
-            {hasUserReviewed
-              ? "You have already rated this product"
-              : "You cannot review this product"}
+          <div className={styles.reviewMessages}>
+            {!canUserReview && "You cannot review this product."}
           </div>
         )}
       </div>
@@ -140,7 +138,9 @@ function Review({
               <ReviewItem key={review.id} {...review} />
             ))
           ) : (
-            <span>No reviews yet</span>
+            <span className={styles.reviewComments}>
+              Review comments will be shown here.
+            </span>
           )}
         </div>
       </div>

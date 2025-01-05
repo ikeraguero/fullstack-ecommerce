@@ -37,7 +37,6 @@ async function deleteWishlistItem(id) {
     if (res.status !== 200) {
       throw new Error("Error deleting wishlist item");
     }
-    console.log(id);
     return res.data;
   } catch (error) {
     throw new Error(

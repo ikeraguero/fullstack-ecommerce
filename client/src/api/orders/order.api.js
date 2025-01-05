@@ -44,6 +44,7 @@ async function createOrder(data) {
 
 async function payOrder(orderData, orderId, paymentData) {
   try {
+    console.log(paymentData);
     const resPayment = await apiClientPayment.post(`/process`, paymentData, {
       headers: {
         "Content-Type": "application/json",
@@ -53,8 +54,8 @@ async function payOrder(orderData, orderId, paymentData) {
     const { success } = resPayment.data;
     if (!success) throw new Error("Payment rejected");
 
-    const res = await apiClient.put(`/order/${orderId}`, orderData);
-    return res.data;
+    await apiClient.put(`/order/${orderId}`, orderData);
+    return orderId;
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Error processing payment"
@@ -71,17 +72,17 @@ export function usePayOrder() {
     ({ orderData, orderId, paymentRequest }) =>
       payOrder(orderData, orderId, paymentRequest),
     "cart",
-    (variables, data) => {
+    (variables) => {
       setTimeout(() => {
-        console.log(variables, data);
-        navigate(`/payment/success/${variables.orderId}`);
+        console.log(variables);
+        navigate(`/payment/success/${variables}`);
         queryClient.invalidateQueries(["cart"]);
         resetCheckout();
       }, 3000);
     },
     (error, variables) => {
       setTimeout(() => {
-        navigate(`/payment/error/${variables.orderId}`);
+        navigate(`/payment/error/${variables}`);
         resetCheckout();
       }, 3000);
       console.error("Error processing payment:", error.message);

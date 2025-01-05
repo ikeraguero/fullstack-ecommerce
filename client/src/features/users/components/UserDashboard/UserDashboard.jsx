@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
-import { MoonLoader } from "react-spinners";
 import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
@@ -22,7 +21,7 @@ function UserDashboard() {
   const {
     data: usersResponse,
     error: userError,
-    isLoading: usersLoading,
+    isLoading,
     refetch: refetchUsers,
   } = useUsers(currentPage, pageSize);
 
@@ -62,7 +61,6 @@ function UserDashboard() {
 
   const userDashboard = useDashboardItem(content, userDashboardActions);
 
-  if (usersLoading) return <MoonLoader aria-label="Loading users..." />;
   if (userError) return <div>Error loading users: {userError.message}</div>;
 
   return (
@@ -80,16 +78,20 @@ function UserDashboard() {
       <div className={styles.paginationButtons}>
         <button
           onClick={handlePrevious}
-          className={hasPrevious ? styles.paginationButton : styles.hidden}
+          className={
+            !isLoading && !hasPrevious ? styles.hidden : styles.paginationButton
+          }
         >
           <ion-icon name="chevron-back-outline"></ion-icon>
-          Page {currentPage + 1 - 1}
+          Page {currentPage}
         </button>
         <button
           onClick={handleNext}
-          className={hasNext ? styles.paginationButton : styles.hidden}
+          className={
+            !isLoading && !hasNext ? styles.hidden : styles.paginationButton
+          }
         >
-          Page {currentPage + 1 + 1}
+          Page {currentPage + 2}
           <ion-icon name="chevron-forward-outline"></ion-icon>
         </button>
       </div>

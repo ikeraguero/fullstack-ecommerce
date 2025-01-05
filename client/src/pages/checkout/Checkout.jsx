@@ -138,6 +138,7 @@ function CheckoutShipping() {
       totalPrice,
     };
 
+    console.log(order?.orderId, paymentRequest);
     payOrder({ orderData: payData, orderId: order?.orderId, paymentRequest });
   }
 

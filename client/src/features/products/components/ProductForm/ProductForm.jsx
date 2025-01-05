@@ -47,7 +47,6 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       productDescription: values.productDescription,
     };
 
-    console.log(productRequest);
     formData.append(
       "product",
       new Blob([JSON.stringify(productRequest)], { type: "application/json" })

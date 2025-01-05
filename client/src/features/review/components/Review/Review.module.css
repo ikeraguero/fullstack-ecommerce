@@ -71,3 +71,9 @@
 .sendButton:hover {
   background-color: #ff6c8c;
 }
+
+.reviewComments,
+.reviewMessages {
+  font-size: 1.2rem;
+  color: #555555;
+}

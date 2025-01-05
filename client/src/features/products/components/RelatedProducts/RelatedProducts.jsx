@@ -3,10 +3,9 @@ import ProductCard from "../ProductCard/ProductCard";
 import styles from "./RelatedProducts.module.css";
 
 function RelatedProducts({ products }) {
-  console.log(products);
   return (
     <>
-      <h2 className={styles.title}>Related items you may like: </h2>
+      <h2 className={styles.title}>Related items you may like </h2>
       <ul className={styles.relatedProductsList}>
         {products?.map((product) => (
           <li key={product.id}>

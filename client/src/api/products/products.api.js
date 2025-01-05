@@ -19,7 +19,6 @@ async function updateProduct(data) {
 
 async function createProduct(data) {
   try {
-    console.log(data);
     const res = await apiClient.post(`/products`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -34,7 +33,6 @@ async function createProduct(data) {
 async function fetchHomeProducts() {
   try {
     const res = await apiClient.get(`/products/featured`);
-    console.log(res);
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching products");
@@ -44,7 +42,6 @@ async function fetchHomeProducts() {
 async function fetchProducts(page, size) {
   try {
     const res = await apiClient.get(`/products?page=${page}&size=${size}`);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching products");
@@ -53,7 +50,6 @@ async function fetchProducts(page, size) {
 
 async function fetchProductById(productId, userId) {
   try {
-    console.log(userId);
     const res = await apiClient.get(`/products/${productId}`, {
       headers: {
         "User-ID": userId,
