@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
 import { MoonLoader } from "react-spinners";
+import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +16,8 @@ function UserDashboard() {
   const formRef = useRef();
   const isUsersFormOpen = isAddingUser || isEditingUser;
 
-
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
-
 
   const {
     data: usersResponse,
@@ -35,21 +34,19 @@ function UserDashboard() {
     remove,
   };
 
-
   function handleNext() {
     if (usersResponse && usersResponse.hasNext) {
       setCurrentPage((prevPage) =>
         Math.min(prevPage + 1, usersResponse.totalPages - 1)
-      ); 
+      );
     }
   }
 
   function handlePrevious() {
     if (usersResponse && usersResponse.hasPrevious) {
-      setCurrentPage((prevPage) => Math.max(prevPage - 1, 0)); 
+      setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
     }
   }
-
 
   useEffect(() => {
     if (
@@ -61,8 +58,7 @@ function UserDashboard() {
     }
   }, [usersResponse, dispatch]);
 
-  const { content, hasPrevious, hasNext, totalPages } = usersResponse || {};
-
+  const { content, hasPrevious, hasNext } = usersResponse || {};
 
   const userDashboard = useDashboardItem(content, userDashboardActions);
 
@@ -81,18 +77,22 @@ function UserDashboard() {
         formRef={formRef}
       />
 
-      <div>
-        <button onClick={handlePrevious} disabled={!hasPrevious}>
-          Previous
+      <div className={styles.paginationButtons}>
+        <button
+          onClick={handlePrevious}
+          className={hasPrevious ? styles.paginationButton : styles.hidden}
+        >
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          Page {currentPage + 1 - 1}
         </button>
-        <button onClick={handleNext} disabled={!hasNext}>
-          Next
+        <button
+          onClick={handleNext}
+          className={hasNext ? styles.paginationButton : styles.hidden}
+        >
+          Page {currentPage + 1 + 1}
+          <ion-icon name="chevron-forward-outline"></ion-icon>
         </button>
       </div>
-
-      <p>
-        Page {currentPage + 1} of {totalPages}
-      </p>
     </>
   );
 }

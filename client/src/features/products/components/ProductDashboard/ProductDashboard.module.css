@@ -1,0 +1,37 @@
+.paginationButtons {
+  display: flex;
+  justify-content: center;
+
+  gap: 1.2rem;
+}
+
+.paginationButtons ion-icon {
+  width: 1.2rem;
+  color: #f42b56;
+}
+
+.paginationButton {
+  padding: 0.4rem 1.2rem;
+  border: 0.1rem solid #f42b56;
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  background-color: #ffff;
+  color: #f42b56;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.paginationButton:hover {
+  background-color: #f42b56;
+  font-weight: 500;
+  color: #fff;
+}
+
+.paginationButton:hover ion-icon {
+  color: #fff;
+}
+
+.hidden {
+  visibility: hidden;
+}

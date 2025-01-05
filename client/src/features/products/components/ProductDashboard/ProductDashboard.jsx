@@ -1,4 +1,5 @@
-import { MoonLoader } from "react-spinners";
+import styles from "./ProductDashboard.module.css";
+// import { MoonLoader } from "react-spinners";
 import { useProducts } from "@api/products/products.api";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
@@ -15,15 +16,12 @@ function ProductDashboard() {
   const formRef = useRef();
   const isProductFormOpen = isAddingProduct || isEditingProduct;
 
-  // Add pagination state
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(10); // Default page size
+  const [pageSize] = useState(10);
 
-  // Fetch products with pagination
   const {
     data: initialProducts,
     error: productError,
-    isLoading: productsLoading,
     refetch: refetchProducts,
   } = useProducts(currentPage, pageSize);
 
@@ -38,21 +36,18 @@ function ProductDashboard() {
     remove,
   };
 
-  // Handle Next Page click
   function handleNext() {
     if (initialProducts && initialProducts.hasNext) {
-      setCurrentPage(currentPage + 1); // Change current page for next
+      setCurrentPage(currentPage + 1);
     }
   }
 
-  // Handle Previous Page click
   function handlePrevious() {
     if (initialProducts && initialProducts.hasPrevious) {
-      setCurrentPage(currentPage - 1); // Change current page for previous
+      setCurrentPage(currentPage - 1);
     }
   }
 
-  // Dispatch initial products
   useEffect(() => {
     if (
       initialProducts &&
@@ -63,13 +58,10 @@ function ProductDashboard() {
     }
   }, [initialProducts, dispatch]);
 
-  // Destructure pagination response
-  const { content, hasPrevious, hasNext, totalPages } = initialProducts || {};
+  const { content, hasPrevious, hasNext } = initialProducts || {};
 
-  // Generate dashboard items
   const productDashboard = useDashboardItem(content, productDashboardActions);
 
-  if (productsLoading) return <MoonLoader />;
   if (productError) return <div>Error loading data</div>;
 
   return (
@@ -84,14 +76,22 @@ function ProductDashboard() {
         formRef={formRef}
       />
 
-      <div>
-        {hasPrevious && <button onClick={handlePrevious}>Previous</button>}
-        {hasNext && <button onClick={handleNext}>Next</button>}
+      <div className={styles.paginationButtons}>
+        <button
+          onClick={handlePrevious}
+          className={hasPrevious ? styles.paginationButton : styles.hidden}
+        >
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          Page {currentPage + 1 - 1}
+        </button>
+        <button
+          onClick={handleNext}
+          className={hasNext ? styles.paginationButton : styles.hidden}
+        >
+          Page {currentPage + 1 + 1}
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
       </div>
-
-      <p>
-        Page {currentPage + 1} of {totalPages}
-      </p>
     </>
   );
 }

@@ -3,7 +3,7 @@ import Carousel from "@features/carousel/components/Carousel/Carousel";
 import styles from "./Home.module.css";
 import { MoonLoader } from "react-spinners";
 import { useHomeProducts } from "@api/products/products.api";
-import BestDeals from "@features/products/components/BestDeals/BestDeals";
+import HomeProducts from "@features/products/components/HomeProducts/HomeProducts";
 import { useState, useEffect } from "react";
 
 function Home({ onCategoryChange }) {
@@ -83,7 +83,7 @@ function Home({ onCategoryChange }) {
     <Main className={styles.container}>
       <Carousel className={styles.carousel} />
       {categoriesArray.map((category) => (
-        <BestDeals
+        <HomeProducts
           key={category.message}
           {...category}
           onCategoryChange={onCategoryChange}

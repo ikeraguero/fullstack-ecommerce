@@ -13,6 +13,7 @@ function SearchBar({ setSearchProducts }) {
   const { mutateAsync: search } = useSearch();
   const navigate = useNavigate();
   const debounceTimeout = 500;
+  const searchSize = 6;
 
   useEffect(
     function () {
@@ -31,7 +32,10 @@ function SearchBar({ setSearchProducts }) {
     if (debouncedQuery) {
       const fetchData = async () => {
         try {
-          const res = await search(debouncedQuery);
+          const res = await search({
+            query: debouncedQuery,
+            size: searchSize,
+          });
           setResults(res);
         } catch (err) {
           console.log("Search error: ", err);
@@ -65,7 +69,10 @@ function SearchBar({ setSearchProducts }) {
   }
 
   async function handleSearch() {
-    const res = await search(query);
+    const res = await search({
+      query: debouncedQuery,
+      size: 20,
+    });
     setSearchProducts(res);
     navigate("/search");
     setQuery("");

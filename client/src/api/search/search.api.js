@@ -1,10 +1,10 @@
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 
-async function search(query) {
+async function search(query, size) {
   try {
     const res = await apiClient.get("/products/search", {
-      params: { query: query },
+      params: { q: query, size: size },
     });
     return res.data;
   } catch (error) {
@@ -16,7 +16,7 @@ async function search(query) {
 
 export function useSearch() {
   return useApiMutation(
-    (query) => search(query),
+    ({ query, size }) => search(query, size),
     null,
     (data) => {
       console.log("Search success:", data);
