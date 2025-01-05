@@ -4,14 +4,14 @@ import { useState } from "react";
 
 function CartItem({
   refetch,
-  product_id,
+  productId,
   id,
-  product_name,
-  category_name,
+  productName,
+  categoryName,
   price,
   quantity,
-  image_data,
-  image_type,
+  imageData,
+  imageType,
   cartId,
   cartItems,
   setTotalPrice,
@@ -37,13 +37,13 @@ function CartItem({
       return;
     }
     const putData = {
-      cart_id: cartId,
-      product_id: product_id,
-      product_name,
+      cartId: cartId,
+      productId: productId,
+      productName,
       price,
       quantity: newQuantity,
-      image_data,
-      image_type,
+      imageData,
+      imageType,
     };
     setLocalQuantity(newQuantity);
     updateItem(putData);
@@ -56,11 +56,11 @@ function CartItem({
     <div className={styles.cartItem}>
       <div className={styles.cartItemImgAndName}>
         <div className={styles.cartItemImg}>
-          <img src={`data:${image_type};base64,${image_data}`} alt="" />
+          <img src={`data:${imageType};base64,${imageData}`} alt="" />
         </div>
         <div className={styles.cartItemNameAndCategory}>
-          <div className={styles.cartCategoryName}>{category_name}</div>
-          <div className={styles.cartItemName}>{product_name}</div>
+          <div className={styles.cartCategoryName}>{categoryName}</div>
+          <div className={styles.cartItemName}>{productName}</div>
         </div>
       </div>
       <div className={styles.quantity}>

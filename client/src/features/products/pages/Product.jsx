@@ -76,13 +76,13 @@ function Product({ userId, refetch }) {
 
   async function handleAddToCart() {
     const cartItem = {
-      cart_id: userCart.id,
-      product_id: product.id,
-      product_name: product.name,
+      cartId: userCart.id,
+      productId: product.id,
+      productName: product.name,
       quantity: Number(quantity),
       price: product.price,
-      image_data: product.imageData,
-      image_type: product.imageType,
+      imageData: product.imageData,
+      imageType: product.imageType,
     };
 
     addToCart(cartItem, {

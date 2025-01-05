@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import styles from "./SearchItem.module.css";
-function SearchItem({ name, image_type, image_data, id }) {
+function SearchItem({ name, imageType, imageData, id, handleItemClick }) {
   return (
-    <Link to={`/products/${id}`} className={styles.searchItemLink}>
+    <Link
+      to={`/products/${id}`}
+      className={styles.searchItemLink}
+      onClick={handleItemClick}
+    >
       <div className={styles.searchResult}>
         <div className={styles.searchResultImg}>
-          <img src={`data:${image_type};base64,${image_data}`} alt={name} />
+          <img src={`data:${imageType};base64,${imageData}`} alt={name} />
         </div>
         <span>{name.toUpperCase()}</span>
       </div>

@@ -18,9 +18,10 @@ async function updateUser(data) {
   }
 }
 
-async function getUsers() {
+async function fetchUsers(page, size) {
   try {
-    const res = await apiClient.get("/users");
+    const res = await apiClient.get(`/users?page=${page}&size=${size}`);
+    console.log(res);
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching users");
@@ -59,10 +60,10 @@ export function useDeleteUsers() {
   );
 }
 
-export function useUsers() {
+export function useUsers(page, size) {
   return useQuery({
-    queryFn: getUsers,
-    queryKey: ["users"],
+    queryKey: ["users", page, size],
+    queryFn: () => fetchUsers(page, size),
     onError: (error) => {
       console.error("Error deleting user:", error.message);
     },

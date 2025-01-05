@@ -72,6 +72,11 @@ function SearchBar({ setSearchProducts }) {
     setDebouncedQuery("");
   }
 
+  function handleItemClick() {
+    setResults([]);
+    setQuery("");
+  }
+
   return (
     <div>
       <div
@@ -92,7 +97,11 @@ function SearchBar({ setSearchProducts }) {
         <ion-icon name="search-outline" onClick={handleSearch}></ion-icon>
         <div className={styles.results}>
           {results?.map((result) => (
-            <SearchItem key={result.id} {...result} />
+            <SearchItem
+              key={result.id}
+              {...result}
+              handleItemClick={handleItemClick}
+            />
           ))}
         </div>
       </div>

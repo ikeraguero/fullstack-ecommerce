@@ -58,7 +58,7 @@ function Cart({ openError }) {
       discount: 0,
       shippingAddress: "",
       cartItemsList: cartItems.map((item) => ({
-        productId: item.product_id,
+        productId: item.productId,
         quantity: item.quantity,
         totalPrice: item.price * item.quantity,
       })),

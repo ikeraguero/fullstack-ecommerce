@@ -40,8 +40,8 @@ function productFormReducer(state = initialState, action) {
         productName: action.payload.name,
         productPrice: action.payload.price,
         productCategory: action.payload.category,
-        productQuantity: action.payload.stock_quantity,
-        productDescription: action.payload.product_description,
+        productQuantity: action.payload.stockQuantity,
+        productDescription: action.payload.productDescription,
       };
     case CLOSE_EDIT_PRODUCT:
       return {
