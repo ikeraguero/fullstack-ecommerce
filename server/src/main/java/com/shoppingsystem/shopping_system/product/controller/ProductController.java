@@ -89,7 +89,8 @@ public class ProductController {
 
 
     @PostMapping("/products")
-    public ResponseEntity<?> addProduct(@RequestParam("image") MultipartFile image, @RequestPart("product")ProductRequest productRequest) throws IOException {
+    public ResponseEntity<?> addProduct(@RequestParam("image") MultipartFile image,
+                                        @RequestPart("product")ProductRequest productRequest) throws IOException {
         try {
             Product savedProduct = productService.addProduct(image, productRequest);
             return ResponseEntity.ok(savedProduct);

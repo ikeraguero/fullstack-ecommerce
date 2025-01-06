@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "order_item", schema = "ecommerce_project")
+@Table(name = "order_item", schema = "ecommerce_db")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id")
+    @Column(name = "id")
     private Long orderItemId;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -25,7 +25,7 @@ public class OrderItem {
     private Order order;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="product_id", referencedColumnName = "product_id")
+    @JoinColumn(name="product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;
 

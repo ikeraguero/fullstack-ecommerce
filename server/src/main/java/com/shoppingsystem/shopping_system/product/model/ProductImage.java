@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="product_image", schema = "ecommerce_project")
+@Table(name="product_image", schema = "ecommerce_db")
 public class ProductImage {
 
     @Id

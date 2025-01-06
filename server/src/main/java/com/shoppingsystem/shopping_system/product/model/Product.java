@@ -10,11 +10,11 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="product", schema = "ecommerce_project")
+@Table(name="product", schema = "ecommerce_db")
 public class Product {
 
     @Id
-    @Column(name="product_id")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,7 +31,7 @@ public class Product {
     private Long imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="category_id", referencedColumnName = "category_id")
+    @JoinColumn(name="category_id", referencedColumnName = "id")
     @JsonIgnore
     @ToString.Exclude
     private Category category;

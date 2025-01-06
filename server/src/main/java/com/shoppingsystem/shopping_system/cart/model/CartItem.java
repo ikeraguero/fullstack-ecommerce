@@ -8,21 +8,21 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="cart_item", schema = "ecommerce_project")
+@Table(name="cart_item", schema = "ecommerce_db")
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="cart_item_id")
+    @Column(name="id")
     private Long cartItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cart_id", referencedColumnName = "cart_id")
+    @JoinColumn(name="cart_id", referencedColumnName = "id")
     @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="product_id", referencedColumnName = "product_id")
+    @JoinColumn(name="product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;
 

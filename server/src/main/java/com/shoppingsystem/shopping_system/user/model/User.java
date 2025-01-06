@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "user", schema = "ecommerce_project")
+@Table(name = "user", schema = "ecommerce_db")
 public class User {
 
     @Id

@@ -246,10 +246,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> searchProducts(String query, int page, int size) {
+        if (query == null || query.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        System.out.println(query);
         Pageable pageable = PageRequest.of(page, size);
-
         Page<Product> productPage = productRepository.searchProducts(query, pageable);
-
+        if (productPage.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<Long, ProductImage> productImageMap = generateProductImageMap(productPage.getContent());
         Map<Long, List<ProductReviewResponse>> reviewMap = generateProductReviewsMap(productPage.getContent());
 

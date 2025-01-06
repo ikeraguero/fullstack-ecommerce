@@ -10,12 +10,12 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="category", schema = "ecommerce_project")
+@Table(name="category", schema = "ecommerce_db")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "id")
     private int id;
 
     @Column(name= "category_name")

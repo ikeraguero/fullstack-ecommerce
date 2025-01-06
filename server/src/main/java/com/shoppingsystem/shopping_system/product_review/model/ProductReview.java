@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_review", schema = "ecommerce_project")
+@Table(name = "product_review", schema = "ecommerce_db")
 public class ProductReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class ProductReview {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     private Product product;
 
@@ -33,7 +33,7 @@ public class ProductReview {
     @JsonIgnore
     private User user;
 
-    @Column(name = "review_rating")
+    @Column(name = "rating")
     private int rating;
 
     @Column(name = "review_comment")
