@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
+
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { useDispatch, useSelector } from "react-redux";
 import { loadUsers } from "../../actions/userFormActions";
+import useUserState from "@hooks/user/useUserState";
 
 async function updateUser(data) {
   try {
@@ -42,7 +44,7 @@ export function useDeleteUsers() {
   const { refetch } = useUsers();
   const [userIdRemove, setUserIdRemove] = useState();
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.userForm.users);
+  const users = useUserState();
   return useApiMutation(
     (userId) => {
       setUserIdRemove(userId);

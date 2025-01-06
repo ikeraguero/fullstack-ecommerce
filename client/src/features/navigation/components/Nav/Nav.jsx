@@ -1,18 +1,15 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import TopNav from "../TopNav/TopNav";
 import SearchBar from "../../../search/components/SearchBar/SearchBar";
-
 import styles from "./Nav.module.css";
+import useUserState from "@hooks/user/useUserState";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const username = useSelector((state) => state.auth.username);
+  const { isLoggedIn, username, role } = useUserState();
   const [isBottomOpen, setIsBottomOpen] = useState(false);
-  const role = useSelector((state) => state.auth.role);
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
@@ -31,6 +28,7 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
       e.preventDefault();
       return;
     }
+    console.log(category);
     onCategoryChange(category);
   }
 

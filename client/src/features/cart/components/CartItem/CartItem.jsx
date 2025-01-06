@@ -1,6 +1,8 @@
+import { useState } from "react";
+
 import styles from "./CartItem.module.css";
 import { useDeleteCartItem, useUpdateCartItem } from "@api/cart/cart.api";
-import { useState } from "react";
+import { useDebounce } from "@hooks/debounce/useDebounce";
 
 function CartItem({
   refetch,
@@ -22,6 +24,11 @@ function CartItem({
   const [localQuantity, setLocalQuantity] = useState(quantity);
   const productPrice = price;
 
+  const debouncedUpdate = useDebounce((putData) => {
+    updateItem(putData);
+    refetch();
+  }, 1000);
+
   function handleDelete() {
     deleteItem(id);
     setTotalPrice((price) => price - productPrice * localQuantity);
@@ -36,6 +43,7 @@ function CartItem({
       setTotalPrice(0);
       return;
     }
+
     const putData = {
       cartId: cartId,
       productId: productId,
@@ -46,10 +54,11 @@ function CartItem({
       imageType,
     };
     setLocalQuantity(newQuantity);
-    updateItem(putData);
     setTotalPrice((price) =>
       type === "increase" ? price + productPrice : price - productPrice
     );
+
+    debouncedUpdate(putData);
   }
 
   return (

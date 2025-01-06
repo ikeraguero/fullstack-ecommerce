@@ -1,10 +1,10 @@
+import { useDispatch } from "react-redux";
+
 import styles from "./DashboardItem.module.css";
-import ProductsList from "@features/products/components/ProductsList/ProductsList";
+import ProductsList from "@features/products/components/ProductForm/ProductsList/ProductsList";
 import ProductForm from "@features/products/components/ProductForm/ProductForm";
 import UserList from "@features/users/components/UserList/UserList";
 import UserForm from "@features/users/components/UserForm/UserForm";
-
-import { useDispatch } from "react-redux";
 import { toggleAddProduct } from "../../../../actions/productFormActions";
 import { toggleAddUser } from "../../../../actions/userFormActions";
 
@@ -32,7 +32,8 @@ function DashboardItem({
 
   function handleOpenForm(payload) {
     if (title === "Products") {
-      dispatch(toggleAddProduct(payload));
+      console.log("a");
+      dispatch(toggleAddProduct());
       return;
     }
     dispatch(toggleAddUser(payload));

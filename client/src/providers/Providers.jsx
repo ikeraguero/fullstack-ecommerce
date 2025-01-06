@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { UserFormProvider } from "../hooks/user/useUsersFormContext";
 import { AlertProvider } from "../context/AlertContext";
 import store from "../store/store";
 import QueryDevtools from "../features/shared/components/QueryDevtools/QueryDevtools";
@@ -16,12 +15,10 @@ const AppProviders = ({ children }) => (
     <QueryClientProvider client={queryClient}>
       <SuccessProvider>
         <AlertProvider>
-          <UserFormProvider>
             <BrowserRouter>
               {children}
               <QueryDevtools />
             </BrowserRouter>
-          </UserFormProvider>
         </AlertProvider>
       </SuccessProvider>
     </QueryClientProvider>

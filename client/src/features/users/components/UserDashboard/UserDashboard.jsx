@@ -4,13 +4,14 @@ import { useUsers } from "@api/users/user.api";
 import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loadUsers } from "../../../../actions/userFormActions";
+import useUserState from "@hooks/user/useUserState";
 
 function UserDashboard() {
   const dispatch = useDispatch();
-  const usersState = useSelector((state) => state.userForm);
-  const { isAddingUser, isEditingUser, editUser } = usersState;
+  const userFormState = useUserState();
+  const { isAddingUser, isEditingUser, editUser } = userFormState;
 
   const formRef = useRef();
   const isUsersFormOpen = isAddingUser || isEditingUser;

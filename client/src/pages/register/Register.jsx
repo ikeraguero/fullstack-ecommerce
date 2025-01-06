@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
 import styles from "./Register.module.css";
 import { useRegisterUser } from "../../api/auth/auth.api";
-import { useState } from "react";
 
 function Register() {
   const { mutateAsync: registerUser } = useRegisterUser();

@@ -1,8 +1,11 @@
+import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { useQuery } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
 import { loadProducts } from "../../actions/productFormActions";
+import useProductState from "@hooks/products/useProductState";
+import useUserState from "@hooks/user/useUserState";
 
 async function updateProduct(data) {
   try {
@@ -107,9 +110,9 @@ export function useCreateProduct() {
 }
 
 export function useRemoveProduct() {
-  const productsState = useSelector((state) => state.productForm);
+  const { productFormState } = useProductState();
   const dispatch = useDispatch();
-  const { products } = productsState;
+  const { products } = productFormState;
   return useApiMutation(
     (productId) => removeProduct(productId),
     "products",
@@ -153,7 +156,7 @@ export function useProductsByCategory(categoryName) {
 }
 
 export function useProduct(productId) {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId } = useUserState();
   return useQuery({
     queryKey: ["product", productId, userId],
     queryFn: () => fetchProductById(productId, userId ? userId : 0),

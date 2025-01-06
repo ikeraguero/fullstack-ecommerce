@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
+import useUserState from "@hooks/user/useUserState";
 
-async function fetchCart(userId, dispatch) {
+async function fetchCart(userId) {
   if (userId == null) {
     return { items: [] };
   }
@@ -50,7 +52,7 @@ async function deleteCartItem(cartItemId) {
 }
 
 export function useIsProductInUserCart(productId) {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId } = useUserState();
 
   return useQuery({
     queryKey: ["isProductInUserCart", productId, userId],
@@ -69,7 +71,7 @@ export function useAddToCart() {
 }
 
 export function useUpdateCartItem() {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId } = useUserState();
   const { refetch } = useCart(userId);
 
   return useApiMutation(
@@ -97,11 +99,12 @@ export function useDeleteCartItem(refetch) {
   );
 }
 
-export function useCart(userId) {
+export function useCart() {
   const dispatch = useDispatch();
+  const { userId } = useUserState();
   return useQuery({
     queryKey: ["cart", userId],
-    queryFn: () => fetchCart(userId, dispatch),
+    queryFn: () => fetchCart(userId ?? null, dispatch),
     onError: (error) => {
       console.error("Error fetching cart:", error.message);
     },

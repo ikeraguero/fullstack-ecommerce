@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import styles from './Unauthorized.module.css'
 import { Button } from '@mui/material'
+
+import styles from './Unauthorized.module.css'
 
 function Unauthorized() {
     return (

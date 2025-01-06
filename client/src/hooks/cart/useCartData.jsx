@@ -1,7 +1,7 @@
 import { useCart } from "../../api/cart/cart.api";
 
-function useCartData(userId) {
-  const { data: cart, error, refetch, isLoading } = useCart(userId);
+function useCartData() {
+  const { data: cart, error, refetch, isLoading } = useCart();
   return { cart, error, refetch, isLoading };
 }
 

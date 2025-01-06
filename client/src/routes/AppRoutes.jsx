@@ -17,7 +17,6 @@ import PaymentError from "../pages/paymenterror/PaymentError";
 import Unauthorized from "../pages/unauthorized/Unauthorized";
 
 export const AppRoutes = ({
-  userId,
   cart,
   refetch,
   categories,
@@ -45,7 +44,6 @@ export const AppRoutes = ({
           <Product
             cartItems={cart?.cartItems}
             cartId={cart?.id}
-            userId={userId}
             refetch={refetch}
           />
         }

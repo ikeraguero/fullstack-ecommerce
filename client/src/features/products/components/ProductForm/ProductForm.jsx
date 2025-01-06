@@ -1,25 +1,23 @@
-import { MoonLoader } from "react-spinners";
-import useCategories from "@api/categories/categories.api";
+import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 
 import styles from "./ProductForm.module.css";
-import { useDispatch, useSelector } from "react-redux";
-
+import useCategories from "@api/categories/categories.api";
 import { resetProductForm } from "../../../../actions/productFormActions";
-import { useState, useEffect } from "react";
 import useProductAddForm from "@hooks/products/useProductAddForm";
 import useProductEditForm from "@hooks/products/useProductEditForm";
+import useProductState from "@hooks/products/useProductState";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.productForm);
+  const { productFormState } = useProductState();
   const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
-  const { isEditingProduct, editProduct, isAddingProduct } = state;
+  const { isEditingProduct, editProduct, isAddingProduct } = productFormState;
 
-  const productAddForm = useProductAddForm(
-    (e) => handleSendData(e),
-    isAddingProduct
-  );
+  const productAddForm = useProductAddForm((e) => handleSendData(e));
   const productEditForm = useProductEditForm((e) => handleSendData(e));
 
   const { values, handleChange, resetForm } = isEditingProduct
@@ -36,7 +34,6 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
     e.preventDefault();
 
     const formData = new FormData();
-
     const productRequest = {
       id: editProduct?.id || null,
       name: values.productName,
@@ -56,12 +53,8 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       formData.append("image", image);
     }
 
-    if (state.isEditingProduct) {
-      onEdit(formData);
-    } else {
-      formData.forEach((key, value) => console.log(value, key));
-      onAdd(formData);
-    }
+    const submitFunction = productFormState.isEditingProduct ? onEdit : onAdd;
+    submitFunction(formData);
 
     handleClearForm();
   }
@@ -85,17 +78,11 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
   }
 
   if (isLoading) {
-    return (
-      <div>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div>Error loading products: {error.message}</div>;
+    return <ErrorState error={error} />;
   }
 
   return (

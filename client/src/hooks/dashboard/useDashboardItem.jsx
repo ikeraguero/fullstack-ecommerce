@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 
 function useDashboardItem(initialData, actions) {
   const { create, update, remove, refetch } = actions;
-
   const [data, setData] = useState([]);
 
   useEffect(function () {
@@ -28,7 +27,6 @@ function useDashboardItem(initialData, actions) {
   const handleRemove = useCallback(
     (id) => {
       remove(id);
-      refetch();
     },
     [remove, refetch]
   );

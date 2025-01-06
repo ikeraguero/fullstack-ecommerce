@@ -1,9 +1,10 @@
-import { useProductsByCategory } from "@api/products/products.api";
 import { MoonLoader } from "react-spinners";
-import styles from "./CategoryPage.module.css";
-import ProductCard from "@features/products/components/ProductCard/ProductCard";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import { useProductsByCategory } from "@api/products/products.api";
+import styles from "./CategoryPage.module.css";
+import ProductCard from "@features/products/components/ProductCard/ProductCard";
 
 function CategoryPage({ activeCategory }) {
   const {

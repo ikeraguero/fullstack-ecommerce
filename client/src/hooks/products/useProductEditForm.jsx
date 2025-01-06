@@ -1,11 +1,11 @@
 import { useFormik } from "formik";
-import { validationSchemaPayment } from "../../schemas/validationSchema";
-import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import useProductState from "./useProductState";
+import { validationSchemaProduct } from "../../schemas/validationSchema";
 
 function useProductEditForm(onSubmitCallback) {
-  const state = useSelector((state) => state.productForm);
-  const { isEditingProduct, editProduct } = state;
+  const { productFormState } = useProductState();
+  const { isEditingProduct, editProduct } = productFormState;
 
   const [initialValues, setInitialValues] = useState({
     productName: "",
@@ -29,12 +29,12 @@ function useProductEditForm(onSubmitCallback) {
         : "",
       productImage: "",
     });
-  }, [isEditingProduct, editProduct]); 
+  }, [isEditingProduct, editProduct]);
 
   const formik = useFormik({
     initialValues,
-    enableReinitialize: true,  
-    validationSchema: validationSchemaPayment,
+    enableReinitialize: true,
+    validationSchema: validationSchemaProduct,
     onSubmit: onSubmitCallback,
   });
 

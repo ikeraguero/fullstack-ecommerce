@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
-import { useNavigate } from "react-router-dom";
 import useCheckout from "@hooks/cart/useCheckout";
 
 function Order({ orderItems, orderId, date, totalPrice, status }) {

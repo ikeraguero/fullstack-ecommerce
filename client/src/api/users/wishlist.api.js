@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { apiClient } from "../apiClient";
-import { useSelector } from "react-redux";
 import useApiMutation from "../useApiMutation";
+import useUserState from "@hooks/user/useUserState";
 
 async function createWishlistItem(data) {
   try {
@@ -57,7 +58,7 @@ export function useDeleteWishlistItem() {
 }
 
 export function useWishlist() {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId } = useUserState();
   return useQuery({
     queryFn: () => fetchWishlist(userId),
     queryKey: ["wishlist"],

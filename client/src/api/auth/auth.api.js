@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
 import { loginSuccess, logoutSuccess } from "../../actions/authActions";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
+import useUserState from "@hooks/user/useUserState";
 
 async function loginUser(data) {
   try {
@@ -59,7 +61,7 @@ async function logoutUser() {
 export function useRegisterUser() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userRole = useSelector((state) => state.auth.role);
+  const { role: userRole } = useUserState();
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN") {

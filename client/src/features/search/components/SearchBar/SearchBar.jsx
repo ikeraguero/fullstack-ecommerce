@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styles from "./SearchBar.module.css";
 import { useSearch } from "@api/search/search.api";
-import { useNavigate } from "react-router-dom";
 import SearchItem from "../SearchItem/SearchItem";
+import { useDebounce } from "@hooks/debounce/useDebounce";
 
 function SearchBar({ setSearchProducts }) {
   const [query, setQuery] = useState("");
@@ -15,47 +17,45 @@ function SearchBar({ setSearchProducts }) {
   const debounceTimeout = 500;
   const searchSize = 6;
 
-  useEffect(
-    function () {
-      const handler = setTimeout(() => {
-        setDebouncedQuery(query);
-      }, debounceTimeout);
-
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    [query]
-  );
-
-  useEffect(() => {
-    if (debouncedQuery) {
-      const fetchData = async () => {
-        try {
-          const res = await search({
-            query: debouncedQuery,
-            size: searchSize,
-          });
-          setResults(res);
-        } catch (err) {
-          console.log("Search error: ", err);
-        }
-      };
-      fetchData();
+  const debouncedSearch = useDebounce((query) => {
+    if (query) {
+      search({ query, size: searchSize }).then((res) => {
+        setResults(res);
+      });
     } else {
       setResults([]);
     }
+  }, debounceTimeout);
+
+  const getSearchResults = (query, size) => {
+    if (query) {
+      search({ query, size }).then((res) => {
+        setResults(res);
+      });
+    } else {
+      setResults([]);
+    }
+  };
+
+  function handleInputChange(e) {
+    const value = e.target.value;
+    setQuery(value);
+    debouncedSearch(value);
+  }
+
+  useEffect(() => {
+    getSearchResults(debouncedQuery, searchSize);
   }, [debouncedQuery, search]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    function handleClickOutside(event) {
       if (
         searchBarRef.current &&
         !searchBarRef.current.contains(event.target)
       ) {
         setResults([]);
       }
-    };
+    }
 
     document.addEventListener("click", handleClickOutside);
 
@@ -96,7 +96,7 @@ function SearchBar({ setSearchProducts }) {
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
           className={styles.input}
           placeholder="Search for essentials, groceries, and more..."
           id="input"

@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import CartItem from "@features/cart/components/CartItem/CartItem";
 import CartSummary from "@features/cart/components/CartSummary/CartSummary";
@@ -9,17 +9,16 @@ import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
 import { setOrder } from "../../../actions/checkoutActions";
 import useCartData from "@hooks/cart/useCartData";
+import useUserState from "@hooks/user/useUserState";
 
 function Cart({ openError }) {
-  const userId = useSelector((state) => state.auth.id);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const { cart, refetch } = useCartData(userId ?? null);
+  const { userId } = useUserState();
+  const { isLoggedIn } = useUserState();
+  const { cart, refetch } = useCartData();
 
   const { cartId, cartItems } = cart;
 
-  const [totalPrice, setTotalPrice] = useState(
-    cartItems?.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-  );
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const itemsLength = cartItems?.length;
   const [shippingPrice, setShippingPrice] = useState(0);
@@ -48,7 +47,6 @@ function Cart({ openError }) {
   );
 
   function generateData() {
-    refetch();
     return {
       userId,
       totalPrice,
@@ -71,6 +69,7 @@ function Cart({ openError }) {
       return;
     }
     try {
+      refetch();
       const orderData = generateData();
       const { orderId } = await createOrder(orderData);
       dispatch(setOrder(orderData));

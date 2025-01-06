@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+
 import styles from "./ProductDetails.module.css";
 import QuantityControl from "@features/products/components/QuantityControl/QuantityControl";
 function ProductDetails({
   name,
   price,
+  id,
   category,
   productDescription,
   quantity,
@@ -12,9 +14,11 @@ function ProductDetails({
   isLoggedIn,
   onIncreaseQuantity,
   onDecreaseQuantity,
+  wishlistItemId,
   onBuyNow,
   onAddToWishlist,
   inUserWishlist,
+  product,
 }) {
   return (
     <div className={styles.productDetails}>
@@ -33,7 +37,11 @@ function ProductDetails({
         />
         <button
           className={styles.wishlistButton}
-          onClick={inUserWishlist ? onRemoveFromWishlist : onAddToWishlist}
+          onClick={
+            inUserWishlist
+              ? () => onRemoveFromWishlist(wishlistItemId)
+              : () => onAddToWishlist(id)
+          }
         >
           {inUserWishlist ? (
             <ion-icon name="trash-outline"></ion-icon>
@@ -46,7 +54,10 @@ function ProductDetails({
         <div className={styles.interactiveQuantity}></div>
         <div className={styles.interactiveButtons}>
           {isLoggedIn ? (
-            <button className={styles.buttonAddToCart} onClick={onAddToCart}>
+            <button
+              className={styles.buttonAddToCart}
+              onClick={() => onAddToCart(product, quantity)}
+            >
               Add to cart
             </button>
           ) : (

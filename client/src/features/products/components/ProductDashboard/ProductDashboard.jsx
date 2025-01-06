@@ -1,17 +1,19 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import styles from "./ProductDashboard.module.css";
-// import { MoonLoader } from "react-spinners";
 import { useProducts } from "@api/products/products.api";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
-import { useEffect, useRef, useState } from "react";
 import useProductActions from "@hooks/products/useProductActions";
-import { useDispatch, useSelector } from "react-redux";
 import { loadProducts } from "../../../../actions/productFormActions";
+import useProductState from "@hooks/products/useProductState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function ProductDashboard() {
   const dispatch = useDispatch();
-  const productsState = useSelector((state) => state.productForm);
-  const { isAddingProduct, isEditingProduct, editProduct } = productsState;
+  const { productFormState } = useProductState();
+  const { isAddingProduct, isEditingProduct, editProduct } = productFormState;
 
   const formRef = useRef();
   const isProductFormOpen = isAddingProduct || isEditingProduct;
@@ -23,7 +25,7 @@ function ProductDashboard() {
     data: initialProducts,
     error: productError,
     refetch: refetchProducts,
-    isLoading, // Capture the loading state
+    isLoading,
   } = useProducts(currentPage, pageSize);
 
   const { create, update, remove } = useProductActions(
@@ -31,11 +33,14 @@ function ProductDashboard() {
     refetchProducts
   );
 
-  const productDashboardActions = {
-    create,
-    edit: update,
-    remove,
-  };
+  const productDashboardActions = useMemo(
+    () => ({
+      create,
+      edit: update,
+      remove,
+    }),
+    [create, update, remove]
+  );
 
   function handleNext() {
     if (initialProducts && initialProducts.hasNext) {
@@ -50,29 +55,26 @@ function ProductDashboard() {
   }
 
   useEffect(() => {
-    if (
-      initialProducts &&
-      initialProducts.content &&
-      initialProducts.content.length > 0
-    ) {
+    if (initialProducts?.content?.length) {
       dispatch(loadProducts(initialProducts.content));
     }
   }, [initialProducts, dispatch]);
 
   const { content, hasPrevious, hasNext } = initialProducts || {};
-
   const productDashboard = useDashboardItem(content, productDashboardActions);
 
-  if (productError) return <div>Error loading data</div>;
+  if (productError) {
+    return <ErrorState error={productError} />;
+  }
 
   return (
     <>
       <DashboardItem
         title="Products"
         data={productDashboard.data}
-        onAdd={productDashboardActions.create}
-        onEdit={productDashboardActions.edit}
-        onRemove={productDashboardActions.remove}
+        onAdd={productDashboard.handleAdd}
+        onEdit={productDashboard.handleEdit}
+        onRemove={productDashboard.handleRemove}
         isFormOpen={isProductFormOpen}
         formRef={formRef}
       />

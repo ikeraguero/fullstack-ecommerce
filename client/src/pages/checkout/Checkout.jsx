@@ -1,9 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./Checkout.module.css";
 import { useEffect, useState } from "react";
-import { useOrder, usePayOrder } from "@api/orders/order.api";
-import { useSelector } from "react-redux";
 
+import styles from "./Checkout.module.css";
+import { useOrder, usePayOrder } from "@api/orders/order.api";
 import ShippingForm from "./ShippingForm/ShippingForm";
 import PaymentForm from "./PaymentForm/PaymentForm";
 import useShippingForm from "@hooks/cart/useShippingForm";
@@ -17,7 +16,7 @@ function CheckoutShipping() {
   const { mutate: payOrder } = usePayOrder();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  const updateOrder = useSelector((state) => state.checkout.order);
+  const { updateOrder } = useCheckout();
   const [isPriceLocked, setIsPriceLocked] = useState(false);
 
   const STEPS = {

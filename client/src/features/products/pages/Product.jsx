@@ -1,26 +1,21 @@
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ImgZoom from "react-img-zoom";
-import { MoonLoader } from "react-spinners";
 
 import { useProduct } from "@api/products/products.api";
-import { useAddToCart } from "@api/cart/cart.api";
-import { useCart } from "@api/cart/cart.api";
-import {
-  useCreateWishlistItem,
-  useDeleteWishlistItem,
-} from "@api/users/wishlist.api";
-
 import Review from "@features/review/components/Review/Review";
-
 import styles from "./Product.module.css";
 import ProductDetails from "@features/products/components/ProductDetails/ProductDetails";
-import { useSuccess } from "@context/SuccessContext";
 import RelatedProducts from "../components/RelatedProducts/RelatedProducts";
+import useWishlistActions from "@hooks/wishlist/useWishlistActions";
+import useProductActions from "@hooks/products/useProductActions";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
+import useUserState from "@hooks/user/useUserState";
 
-function Product({ userId, refetch }) {
+function Product({ refetch }) {
   const { id } = useParams();
+  const { userId } = useUserState();
   const {
     data: product,
     error,
@@ -28,72 +23,37 @@ function Product({ userId, refetch }) {
     isLoading,
   } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
-  const { mutate: removeWishlistItem } = useDeleteWishlistItem();
-  const { mutate: addToWishlist } = useCreateWishlistItem();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const { displaySuccess } = useSuccess();
-  let userCart = useCart(userId).data;
-  const [productReviewList, setProductReviewList] = useState(
-    product?.productReviewList || []
-  );
-  const { mutate: addToCart } = useAddToCart();
-  const [ratingAvg, setRatingAvg] = useState(0);
+  const { isLoggedIn } = useUserState();
+  const { handleAddToCart } = useProductActions();
+  const { handleAddToWishList, handleRemoveFromWishlist } =
+    useWishlistActions();
+  const [productReviewList, setProductReviewList] = useState([]);
   const navigate = useNavigate();
+  const { name, imageData, imageType, canUserReview, relatedProducts } =
+    product || {};
 
-  useEffect(
-    function () {
-      if (id) {
-        refetchProduct();
-      }
-    },
-    [id, refetchProduct]
-  );
-
-  useEffect(() => {
-    if (productReviewList?.length > 0) {
-      const ratingSum = productReviewList
-        .map((review) => review.rating)
-        .reduce((cur, acc) => cur + acc, 0);
-      const avg = ratingSum / productReviewList?.length;
-      setRatingAvg(avg);
-    }
+  const ratingAvg = useMemo(() => {
+    if (productReviewList?.length === 0) return 0;
+    const totalRating = productReviewList?.reduce(
+      (sum, review) => sum + review.rating,
+      0
+    );
+    return totalRating / productReviewList?.length;
   }, [productReviewList]);
 
   useEffect(() => {
-    setProductReviewList(product?.productReviewList);
+    if (id) {
+      refetchProduct();
+    }
+  }, [id, refetchProduct]);
+
+  useEffect(() => {
+    setProductReviewList(product?.productReviewList || []);
   }, [product]);
 
-  const handleNewReview = (newReview) => {
-    const updatedReviewList = [...productReviewList, newReview];
-    setProductReviewList(updatedReviewList);
-
-    const updatedRatingSum = updatedReviewList
-      .map((review) => review.rating)
-      .reduce((cur, acc) => cur + acc, 0);
-    const updatedRatingAvg = updatedRatingSum / updatedReviewList.length;
-    setRatingAvg(updatedRatingAvg);
-  };
-
-  async function handleAddToCart() {
-    const cartItem = {
-      cartId: userCart.id,
-      productId: product.id,
-      productName: product.name,
-      quantity: Number(quantity),
-      price: product.price,
-      imageData: product.imageData,
-      imageType: product.imageType,
-    };
-
-    addToCart(cartItem, {
-      onSuccess: () => {
-        refetch();
-        displaySuccess("Product added to cart");
-      },
-      onError: (error) => {
-        console.error("Failed to add to cart:", error);
-      },
-    });
+  async function handleBuyNow() {
+    await handleAddToCart(product, quantity);
+    navigate("/cart");
   }
 
   function handleDecreaseQuantity() {
@@ -108,49 +68,13 @@ function Product({ userId, refetch }) {
     }
   }
 
-  function handleAddToWishList() {
-    const data = {
-      userId,
-      productId: product.id,
-    };
-    addToWishlist(data);
-    displaySuccess("Product added to wishlist");
-  }
-
-  function handleRemoveFromWishlist() {
-    removeWishlistItem(wishlistItemId);
-    displaySuccess("Product removed from wishlist");
-  }
-
-  function handleBuyNow() {
-    handleAddToCart();
-    navigate("/cart");
-  }
-
   if (isLoading) {
-    return (
-      <div>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div>Error loading products: {error.message}</div>;
+    return <ErrorState error={error} retry={refetch} />;
   }
-
-  console.log(product);
-
-  const {
-    name,
-    imageData,
-    imageType,
-    canUserReview,
-    wishlistItemId,
-    relatedProducts,
-  } = product;
 
   return (
     <div className={styles.mainContainer}>
@@ -175,6 +99,7 @@ function Product({ userId, refetch }) {
           onBuyNow={handleBuyNow}
           isLoggedIn={isLoggedIn}
           quantity={quantity}
+          product={product}
           {...product}
         />
       </div>
@@ -185,11 +110,11 @@ function Product({ userId, refetch }) {
           productReviewList={productReviewList}
           canUserReview={canUserReview}
           ratingAvg={ratingAvg}
-          onNewReview={handleNewReview}
           userId={userId}
         />
       </div>
     </div>
   );
 }
+
 export default Product;

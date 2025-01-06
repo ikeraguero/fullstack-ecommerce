@@ -1,10 +1,11 @@
+import { useState, useEffect } from "react";
+
 import Main from "@features/shared/components/Main/Main";
 import Carousel from "@features/carousel/components/Carousel/Carousel";
 import styles from "./Home.module.css";
 import { MoonLoader } from "react-spinners";
 import { useHomeProducts } from "@api/products/products.api";
 import HomeProducts from "@features/products/components/HomeProducts/HomeProducts";
-import { useState, useEffect } from "react";
 
 function Home({ onCategoryChange }) {
   const { data: products, error, isLoading } = useHomeProducts();

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import styles from "./WishlistItem.module.css";
 import { useDeleteWishlistItem } from "@api/users/wishlist.api";
 
@@ -27,7 +28,6 @@ function WishlistItem({
             />
           </div>
           <div className={styles.wishlistItemNameAndCategory}>
-            {/* <div className={styles.wishlistItemCategoryName}>{category_name}</div> */}
             <div className={styles.wishlistItemName}>{productName}</div>
           </div>
         </div>

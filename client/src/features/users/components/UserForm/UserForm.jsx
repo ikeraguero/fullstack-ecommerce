@@ -1,18 +1,17 @@
 import { MoonLoader } from "react-spinners";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRoles } from "@api/users/roles.api";
-// import { useUpdateUser } from "@api/users/user.api";
-// import { useRegisterUser } from "@api/auth/auth.api";
 import { resetUserForm } from "../../../../actions/userFormActions";
 import useUserAddForm from "@hooks/user/useUserAddForm";
 import useUserEditForm from "@hooks/user/useUserEditForm";
 import styles from "./UserForm.module.css";
 import { useEffect } from "react";
+import useUserState from "@hooks/user/useUserState";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.userForm);
-  const { isEditingUser, editUser, isAddingUser } = state;
+  const userStateForm = useUserState();
+  const { isEditingUser, editUser, isAddingUser } = userStateForm;
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
@@ -21,11 +20,7 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     ? userEditForm
     : userAddForm;
 
-
   const { data: roles, error, isLoading } = useRoles();
-  // const { mutate: registerUser } = useRegisterUser();
-  // const { mutate: updateUser } = useUpdateUser();
-
 
 
   useEffect(() => {
@@ -46,7 +41,7 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       roleId: Number(values.roleId),
     };
 
-    if (state.isEditingUser) {
+    if (userStateForm.isEditingUser) {
       onEdit(userRequest);
     } else {
       onAdd(userRequest);

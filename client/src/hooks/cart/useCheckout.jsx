@@ -17,6 +17,11 @@ function useCheckout(shippingValues) {
     (state) => state.checkout.isProcessingPayment
   );
   const loading = useSelector((state) => state.checkout.loading);
+  const updateOrder = useSelector((state) => state.checkout.order);
+  const totalItemsPrice = useSelector(
+    (state) => state.checkout.totalItemsPrice
+  );
+
   const updateShippingPrice = (price) => dispatch(setShippingPrice(price));
   const updateCheckoutStep = (step) => dispatch(setCheckoutStep(step));
   const setProcessingPayment = (isProcessing) =>
@@ -51,6 +56,8 @@ function useCheckout(shippingValues) {
     calculateShippingPrice,
     resetCheckout,
     setItemsTotalPrice,
+    updateOrder,
+    totalItemsPrice,
   };
 }
 

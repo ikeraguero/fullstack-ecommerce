@@ -1,14 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "./ProfileInformation.module.css";
 import { useState } from "react";
 import useUserEditForm from "@hooks/cart/useUserEditForm";
 import { useUpdateUser } from "@api/users/user.api";
 import { updateUserData } from "../../../../actions/authActions";
+import useUserState from "@hooks/user/useUserState";
 
 function ProfileInformation() {
-  const username = useSelector((state) => state.auth.username);
-  const userId = useSelector((state) => state.auth.id);
-  const email = useSelector((state) => state.auth.email);
+  const { userId, email, username } = useUserState();
   const dispatch = useDispatch();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const userEditForm = useUserEditForm(handleSubmitForm);
@@ -26,7 +25,7 @@ function ProfileInformation() {
       firstName,
       lastName,
       email,
-      password: 123,
+      password: "",
       roleId: Number(values.roleId),
     };
     await updateUser(userRequest);

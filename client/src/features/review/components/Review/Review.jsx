@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import ReviewItem from "../ReviewItem/ReviewItem";
 import StarRating from "@features/shared/components/StarRating/StarRating";
 import styles from "./Review.module.css";
@@ -15,24 +16,19 @@ function Review({
 }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [hasUserReviewed, setHasUserReviewed] = useState(!canUserReview);
   const [productReviewList, setProductReviewList] = useState(
     initialProductReviewList || []
   );
   const { mutate: createReview } = useCreateReview(id);
   const { displaySuccess } = useSuccess();
+  const isFormValid = rating > 0 && comment.trim().length > 0;
+  const reviewCount = productReviewList.length;
 
   useEffect(() => {
     if (initialProductReviewList && initialProductReviewList.length > 0) {
       setProductReviewList(initialProductReviewList);
     }
   }, [initialProductReviewList]);
-
-  useEffect(() => {
-    if (initialProductReviewList?.some((review) => review.userId === userId)) {
-      setHasUserReviewed(true);
-    }
-  }, [initialProductReviewList, userId]);
 
   function handleSetRating(rating) {
     setRating(rating);
@@ -47,14 +43,18 @@ function Review({
       date: new Date().toISOString(),
     };
 
-    createReview(reviewObject);
-    displaySuccess("Review posted");
-
-    setRating(0);
-    setComment("");
-    setHasUserReviewed(true);
-    setProductReviewList((prevReviews) => [...prevReviews, reviewObject]);
-    onNewReview(reviewObject);
+    createReview(reviewObject, {
+      onSuccess: () => {
+        displaySuccess("Review posted");
+        setProductReviewList((prevReviews) => [...prevReviews, reviewObject]);
+        setRating(0);
+        setComment("");
+        onNewReview(reviewObject);
+      },
+      onError: (error) => {
+        console.error("Failed to post review:", error);
+      },
+    });
   }
 
   return (
@@ -79,10 +79,10 @@ function Review({
                 )}
 
                 <span>
-                  {productReviewList.length > 0 && productReviewList.length}
-                  {productReviewList.length === 0
+                  {reviewCount > 0 && reviewCount}
+                  {reviewCount === 0
                     ? "No reviews yet."
-                    : productReviewList.length === 1
+                    : reviewCount === 1
                     ? " review"
                     : " reviews"}
                 </span>
@@ -92,7 +92,7 @@ function Review({
             <span>No reviews yet.</span>
           )}
         </div>
-        {!hasUserReviewed && canUserReview ? (
+        {canUserReview ? (
           <div className={styles.reviewLeftRatingAndComment}>
             <h2>Review this product</h2>
             <span>Share your thoughts with other customers</span>
@@ -119,7 +119,11 @@ function Review({
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-              <button className={styles.sendButton} type="submit">
+              <button
+                className={styles.sendButton}
+                type="submit"
+                disabled={!isFormValid}
+              >
                 Send Review
               </button>
             </form>
@@ -135,12 +139,10 @@ function Review({
         <div className={styles.reviewsList}>
           {productReviewList.length > 0 ? (
             productReviewList.map((review) => (
-              <ReviewItem key={review.id} {...review} />
+              <ReviewItem key={review.date} {...review} />
             ))
           ) : (
-            <span className={styles.reviewComments}>
-              Review comments will be shown here.
-            </span>
+            <span>No reviews yet.</span>
           )}
         </div>
       </div>

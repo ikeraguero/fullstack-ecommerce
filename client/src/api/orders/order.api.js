@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+
 import useCheckout from "../../hooks/cart/useCheckout";
 import { apiClient, apiClientPayment } from "../apiClient";
-import { useSelector } from "react-redux";
 import useApiMutation from "../useApiMutation";
+import useUserState from "@hooks/user/useUserState";
 
 async function fetchOrdersByUser(userId) {
   try {
@@ -68,8 +69,7 @@ export function usePayOrder() {
   const navigate = useNavigate();
 
   return useApiMutation(
-    (paymentRequest ) =>
-      payOrder(paymentRequest),
+    (paymentRequest) => payOrder(paymentRequest),
     "cart",
     (variables) => {
       setTimeout(() => {
@@ -90,7 +90,7 @@ export function usePayOrder() {
 }
 
 export function useOrdersByUser() {
-  const userId = useSelector((state) => state.auth.id);
+  const { userId } = useUserState();
 
   return useQuery({
     queryKey: ["userOrders", userId],

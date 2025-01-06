@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import ProductCard from "../ProductCard/ProductCard";
 import styles from "./RelatedProducts.module.css";
 

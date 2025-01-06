@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
-import { validationSchemaPayment } from "../../schemas/validationSchema";
 import { useState, useEffect } from "react";
+import { validationSchemaProduct } from "../../schemas/validationSchema";
 
 function useProductAddForm(onSubmitCallback) {
   const [initialValues, setInitialValues] = useState({
@@ -25,8 +25,8 @@ function useProductAddForm(onSubmitCallback) {
 
   const formik = useFormik({
     initialValues,
-    enableReinitialize: true, 
-    validationSchema: validationSchemaPayment,
+    enableReinitialize: true,
+    validationSchema: validationSchemaProduct,
     onSubmit: onSubmitCallback,
   });
 

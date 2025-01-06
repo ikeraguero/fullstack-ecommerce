@@ -19,7 +19,7 @@ export function useUserActions(editUser, refetch) {
   //   ...(editUser && { userId: editUser.userId }),
   // });
 
-  const create = (userData) => {
+  function create(userData) {
     // const userData = formatUserData(formData);
     registerUser(userData, {
       onSuccess: () => {
@@ -27,9 +27,9 @@ export function useUserActions(editUser, refetch) {
         refetch();
       },
     });
-  };
+  }
 
-  const update = (userData) => {
+  function update(userData) {
     // const userData = formatUserData(formData, editUser);
 
     updateUser(userData, {
@@ -38,14 +38,14 @@ export function useUserActions(editUser, refetch) {
         refetch();
       },
     });
-  };
+  }
 
-  const remove = (userId) => {
+  function remove(userId) {
     if (userId === loggedUserId) return alert("Can't remove logged user");
     deleteUser(userId, {
       onSuccess: refetch,
     });
-  };
+  }
 
   return { create, update, remove };
 }

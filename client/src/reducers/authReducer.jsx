@@ -1,6 +1,4 @@
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGOUT = "LOGOUT";
-export const UPDATE_USER_DATA = "UPDATE_USER_DATA";
+import { LOGIN_SUCCESS, LOGOUT, UPDATE_USER_DATA } from "./constants";
 
 const initialState = {
   isLoggedIn: false,
