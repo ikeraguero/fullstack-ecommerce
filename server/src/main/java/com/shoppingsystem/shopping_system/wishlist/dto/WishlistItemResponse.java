@@ -14,7 +14,7 @@ public class WishlistItemResponse {
     private String productName;
     private String productCategory;
     private double productPrice;
-    private byte[] productImageData;
+    private String productImageData;
     private String productImageType;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date createdAt;

@@ -15,6 +15,6 @@ public class CartItemResponse {
     private String categoryName;
     private int quantity;
     private double price;
-    private byte[] imageData;
+    private String imageData;
     private String imageType;
 }

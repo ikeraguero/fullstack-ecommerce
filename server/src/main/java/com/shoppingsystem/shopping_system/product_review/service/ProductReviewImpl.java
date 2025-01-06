@@ -44,7 +44,8 @@ public class ProductReviewImpl implements ProductReviewService{
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             User user = userService.findById(productReview.getUser().getId());
-            ProductReviewResponse productReviewResponse = new ProductReviewResponse(productReview.getProduct().getId(),
+            ProductReviewResponse productReviewResponse = new ProductReviewResponse(productReview.getProduct()
+                    .getId(),
                     productReview.getRating(),
                     productReview.getComment(), user.getFirstName(), user.getLastName(), dateTime);
             productReviewResponseList.add(productReviewResponse);
@@ -64,7 +65,8 @@ public class ProductReviewImpl implements ProductReviewService{
             User user = userService.findById(productReviewRequest.getUserId());
 
             if (product == null) {
-                throw new ProductNotFoundException("Product not found with ID: " + productReviewRequest.getProductId());
+                throw new ProductNotFoundException("Product not found with ID: " + productReviewRequest
+                        .getProductId());
             }
 
             if (user == null) {

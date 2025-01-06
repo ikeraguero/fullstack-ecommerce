@@ -46,7 +46,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) throws InvalidCredentialsException {
+    public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response)
+            throws InvalidCredentialsException {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
@@ -56,7 +57,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         List<String> roles = List.of(user.getRole().getName());
-
         String token = jwtUtil.generateToken(email, roles);
 
         Cookie cookie = createAuthCookie(token, 3600);

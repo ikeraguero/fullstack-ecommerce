@@ -78,7 +78,6 @@ public class ProductServiceImpl implements ProductService {
             previousPageContent = previousPage.getContent();
         }
 
-
         return new PaginationResponse(
                 currentPageContent,
                 nextPageContent,
@@ -107,11 +106,11 @@ public class ProductServiceImpl implements ProductService {
                 new ProductNotFoundException("Did not find product with productId - " + productId));
 
         boolean canUserReview = canReview(productId, userId);
-
         boolean isInUsersWishlist = wishlistItemService.isProductInWishlist(userId, productId);
 
         WishlistItemResponse wishlistItem = wishlistItemService.getWishlistItemsByUserId(userId).stream()
-                .filter(wishlistItemResponse -> Objects.equals(wishlistItemResponse.getProductId(), productId))
+                .filter(wishlistItemResponse -> Objects.equals(wishlistItemResponse
+                        .getProductId(), productId))
                 .findFirst()
                 .orElse(null);
 
@@ -156,57 +155,72 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<String, List<ProductResponse>> getRandomCategoryProducts() {
+        //todo
+        //get all categories and limit to 6
         List<Category> categories = categoryRepository.findAll();
         Collections.shuffle(categories);
+        List<Category> limitedCategories = categories.stream()
+                .limit(6)
+                .collect(Collectors.toList());
 
-        Map<String, List<ProductResponse>> featuredProducts = new HashMap<>();
+        //create map with categories (ids) that have 5 or more products
+        Map<Integer, List<Product>> categoryProductsMap = limitedCategories.stream()
+                .filter(category -> productRepository.countByCategoryId(category.getId()) >= 5)
+                .collect(Collectors.toMap(
+                        Category::getId,
+                        category -> productRepository.findRandom5ByCategoryId(category.getId())
+                ));
 
-        for (Category category : categories.stream().limit(6).toList()) {
+        //productimageids for batch query
+        Set<Long> productImageIds = categoryProductsMap.values().stream()
+                .flatMap(List::stream)
+                .map(Product::getImageId)
+                .collect(Collectors.toSet());
 
-            long productCount = productRepository.countByCategoryId(category.getId());
+        //batch query
+        Map<Long, ProductImage> productImagesMap = productImageService.findProductImagesByIds(productImageIds);
 
+        return categoryProductsMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> getCategoryNameById(entry.getKey(), limitedCategories),
+                        entry -> entry.getValue().stream()
+                                .map(product -> mapToProductResponse(product, productImagesMap))
+                                .collect(Collectors.toList())
+                ));
+    }
 
-            if (productCount >= 5) {
-                List<Product> products = productRepository.findRandom5ByCategoryId(category.getId());
-                List<ProductResponse> productResponses = products.stream().map(product -> {
-                    ProductImage productImage = productImageService.findByIdEntity(product.getImageId());
-                    return new ProductResponse(
-                            product.getId(),
-                            product.getName(),
-                            product.getPrice(),
-                            product.getStockQuantity(),
-                            product.getCategory().getId(),
-                            product.getCategory().getName(),
-                            product.getProductDescription(),
-                            productImage.getType(),
-                            productImage.getImageData(),
-                            product.getImageId(),
-                            null,
-                            false,
-                            null
-                    );
-                }).collect(Collectors.toList());
+    private String getCategoryNameById(int categoryId, List<Category> categories) {
+        return categories.stream()
+                .filter(category -> category.getId() == categoryId)
+                .map(Category::getName)
+                .findFirst()
+                .orElse("Unknown");
+    }
 
-
-                featuredProducts.put(category.getName(), productResponses);
-            }
-        }
-
-
-        return featuredProducts;
+    private ProductResponse mapToProductResponse(Product product, Map<Long, ProductImage> productImagesMap) {
+        ProductImage productImage = productImagesMap.get(product.getImageId());
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getStockQuantity(),
+                product.getCategory().getId(),
+                product.getCategory().getName(),
+                product.getProductDescription(),
+                productImage.getType(),
+                productImage.getImageData(),
+                product.getImageId(),
+                null,
+                false,
+                null
+        );
     }
 
     public List<ProductResponse> getRandomProductsByCategory(int categoryId) {
-
         List<Product> products = productRepository.findByCategoryId(categoryId);
-
-
         Collections.shuffle(products);
-
         int limit = 5;
         List<Product> randomProducts = products.stream().limit(limit).collect(Collectors.toList());
-
-
         return randomProducts.stream().map(this::convertToProductResponse).collect(Collectors.toList());
     }
 
@@ -232,7 +246,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> searchProducts(String query, int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Product> productPage = productRepository.searchProducts(query, pageable);
@@ -240,7 +253,6 @@ public class ProductServiceImpl implements ProductService {
         Map<Long, ProductImage> productImageMap = generateProductImageMap(productPage.getContent());
         Map<Long, List<ProductReviewResponse>> reviewMap = generateProductReviewsMap(productPage.getContent());
 
-        // Generate the response list
         return generateProductResponseList(productImageMap, reviewMap, productPage.getContent());
     }
 
@@ -328,9 +340,12 @@ public class ProductServiceImpl implements ProductService {
 
         validateImage(image);
 
+        byte[] imageBytes = image.getBytes();
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
         ProductImage productImage = new ProductImage(
                 image.getOriginalFilename(), image.getContentType(),
-                image.getSize(), image.getBytes()
+                image.getSize(), base64Image
         );
 
         productImageService.save(productImage);
@@ -355,9 +370,12 @@ public class ProductServiceImpl implements ProductService {
 
         validateImage(image);
 
+        byte[] imageBytes = image.getBytes();
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
         ProductImage productImage = new ProductImage(
                 image.getOriginalFilename(), image.getContentType(),
-                image.getSize(), image.getBytes()
+                image.getSize(), base64Image
         );
 
         productImageService.save(productImage);
@@ -378,7 +396,7 @@ public class ProductServiceImpl implements ProductService {
         if (image.isEmpty()) {
             throw new IllegalArgumentException("Image cannot be empty");
         }
-        if (image.getSize() > 5 * 1024 * 1024) {  // 5 MB limit
+        if (image.getSize() > 5 * 1024 * 1024) {
             throw new IllegalArgumentException("Image size exceeds 5MB limit");
         }
         if (!List.of("image/png", "image/jpeg", "image/jpg").contains(image.getContentType())) {
@@ -400,7 +418,8 @@ public class ProductServiceImpl implements ProductService {
 
         ProductImage productImage = productImageService.findByIdEntity(product.getImageId());
 
-        List<ProductReviewResponse> productReviewResponseList = productReviewService.findAllReviewsByProduct(product.getId());
+        List<ProductReviewResponse> productReviewResponseList = productReviewService
+                .findAllReviewsByProduct(product.getId());
 
         return new ProductResponse(
                 product.getId(),

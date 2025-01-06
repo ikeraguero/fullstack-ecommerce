@@ -39,7 +39,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByIdEntity(int id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Couldn't found category" +
+        return categoryRepository.findById(id).orElseThrow(() ->
+                new CategoryNotFoundException("Couldn't found category" +
                 "with ID - " + id));
     }
 

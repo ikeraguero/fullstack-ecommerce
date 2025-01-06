@@ -25,9 +25,9 @@ public class ProductImage {
     private long size;
 
     @Column(name = "image_data")
-    private byte[] imageData;
+    private String imageData;
 
-    public ProductImage(String name, String type, long size, byte[] imageData) {
+    public ProductImage(String name, String type, long size, String imageData) {
         this.name = name;
         this.type = type;
         this.size = size;

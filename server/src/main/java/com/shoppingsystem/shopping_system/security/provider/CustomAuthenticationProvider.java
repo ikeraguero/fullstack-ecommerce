@@ -21,7 +21,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if(jwtUtil.validateToken(token, email)) {
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, null);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(email, null, null);
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             return authenticationToken;

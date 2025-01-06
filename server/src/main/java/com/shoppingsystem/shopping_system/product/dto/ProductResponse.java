@@ -17,7 +17,7 @@ public class ProductResponse {
     private String categoryName;
     private String productDescription;
     private String imageType;
-    private byte[] imageData;
+    private String imageData;
     private Long imageId;
     private List<ProductReviewResponse> productReviewList;
     private boolean canUserReview;
@@ -26,7 +26,7 @@ public class ProductResponse {
     private List<?> relatedProducts;
 
     public ProductResponse(Long id, String name, double price, int stockQuantity, int categoryId,
-                           String categoryName, String productDescription, String imageType, byte[] imageData,
+                           String categoryName, String productDescription, String imageType, String imageData,
                            Long imageId, List<ProductReviewResponse> productReviewList, boolean isInUserWishlist,
                            Long wishlistItemId) {
         this.id = id;
@@ -45,7 +45,7 @@ public class ProductResponse {
     }
 
     public ProductResponse(Long id, String name, double price, int stockQuantity, int categoryId,
-                           String categoryName, String productDescription, String imageType, byte[] imageData,
+                           String categoryName, String productDescription, String imageType, String imageData,
                            Long imageId, List<ProductReviewResponse> productReviewList) {
         this.id = id;
         this.name = name;

@@ -21,10 +21,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.id IN :ids")
     List<Product> findByIds(@Param("ids") List<Long> ids);
 
-    @Query(value = "SELECT p.category_id FROM ecommerce_project.product p GROUP BY p.category_id HAVING COUNT(p.id) >= 6", nativeQuery = true)
+    @Query(value = "SELECT p.category_id FROM ecommerce_project.product p GROUP BY p.category_id HAVING COUNT(p.id) " +
+            ">= 6", nativeQuery = true)
     List<Integer> findCategoryIdsWithAtLeast6Products();
 
-    @Query(value = "SELECT * FROM ecommerce_project.product p WHERE p.category_id = :categoryId ORDER BY RANDOM() LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM ecommerce_project.product p WHERE p.category_id = :categoryId ORDER BY RANDOM() " +
+            "LIMIT 5", nativeQuery = true)
     List<Product> findRandom5ByCategoryId(@Param("categoryId") int categoryId);
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.category.id = :categoryId")

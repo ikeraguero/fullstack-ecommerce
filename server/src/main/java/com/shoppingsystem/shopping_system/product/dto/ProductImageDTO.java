@@ -9,5 +9,5 @@ public class ProductImageDTO {
 
     private Long id;
     private String type;
-    private byte[] image_data;
+    private String image_data;
 }

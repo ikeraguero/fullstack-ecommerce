@@ -40,7 +40,8 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     public ProductImage findByIdEntity(Long id) {
-        return productImageRepository.findById(id).orElseThrow(() -> new RuntimeException("Did not find product image"));
+        return productImageRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Did not find product image"));
     }
 
     @Override
@@ -76,7 +77,8 @@ public class ProductImageServiceImpl implements ProductImageService {
 
         byte[] fileBytes = file.getBytes();
 
-        ProductImage productImage = new ProductImage(fileName, fileType, fileSize, fileBytes);
+        String base64Image = Base64.getEncoder().encodeToString(fileBytes);
+        ProductImage productImage = new ProductImage(fileName, fileType, fileSize, base64Image);
 
         return (ProductImage) productImageRepository.save(productImage);
     }

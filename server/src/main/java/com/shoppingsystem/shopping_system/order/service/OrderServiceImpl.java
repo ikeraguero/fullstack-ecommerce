@@ -124,7 +124,8 @@ public class OrderServiceImpl implements OrderService {
         cartItemService.deleteCartItemsByUserId(user.getId());
 
         return new OrderResponse(order.getOrderId(),
-                orderRepository.countItemsInOrder(order.getOrderId()), order.getTotalPrice(), order.getDate(), order.getStatus());
+                orderRepository.countItemsInOrder(order.getOrderId()), order.getTotalPrice(), order.getDate(),
+                order.getStatus());
     }
 
     private void createOrderItems(OrderRequest orderRequest, User user, Order order) {

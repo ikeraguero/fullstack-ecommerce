@@ -105,7 +105,8 @@ public class UserServiceImpl implements UserService {
 
     public void updateUser(UserRequest userRequest) {
         User existingUser = userRepository.findById(userRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("Couldn't find user with ID - " + userRequest.getUserId()));
+                .orElseThrow(() ->
+                        new UserNotFoundException("Couldn't find user with ID - " + userRequest.getUserId()));
         if(userRequest.getRoleId() != 0) {
             existingUser.setRole(roleService.findById(userRequest.getRoleId()));
         }
@@ -145,7 +146,8 @@ public class UserServiceImpl implements UserService {
                 ))
                 .collect(Collectors.toList());
 
-        List<UserResponse> contentNext = userPage.hasNext() ? userRepository.findAll(PageRequest.of(page + 1, size)).getContent().stream()
+        List<UserResponse> contentNext = userPage.hasNext() ?
+                userRepository.findAll(PageRequest.of(page + 1, size)).getContent().stream()
                 .map(user -> new UserResponse(
                         user.getId(),
                         user.getEmail(),
@@ -158,7 +160,8 @@ public class UserServiceImpl implements UserService {
                 ))
                 .collect(Collectors.toList()) : new ArrayList<>();
 
-        List<UserResponse> contentPrevious = page > 0 ? userRepository.findAll(PageRequest.of(page - 1, size)).getContent().stream()
+        List<UserResponse> contentPrevious = page > 0 ?
+                userRepository.findAll(PageRequest.of(page - 1, size)).getContent().stream()
                 .map(user -> new UserResponse(
                         user.getId(),
                         user.getEmail(),
