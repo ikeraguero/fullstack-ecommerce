@@ -39,8 +39,8 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       name: values.productName,
       price: Number(values.productPrice),
       stockQuantity: Number(values.productStockQuantity),
-      categoryId: Number(values.productCategory),
-      categoryName: "",
+      categoryId: 1,
+      categoryName: "TESTE",
       productDescription: values.productDescription,
     };
 
@@ -52,6 +52,8 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
     if (image) {
       formData.append("image", image);
     }
+
+    console.log(productRequest);
 
     const submitFunction = productFormState.isEditingProduct ? onEdit : onAdd;
     submitFunction(formData);

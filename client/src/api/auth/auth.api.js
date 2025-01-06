@@ -23,6 +23,7 @@ async function loginUser(data) {
 
 async function registerUser(data) {
   try {
+    console.log(data);
     const res = await apiClientAuth.post("/register", data);
     return res.data;
   } catch (error) {

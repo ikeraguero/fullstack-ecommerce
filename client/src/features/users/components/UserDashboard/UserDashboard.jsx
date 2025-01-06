@@ -10,7 +10,7 @@ import useUserState from "@hooks/user/useUserState";
 
 function UserDashboard() {
   const dispatch = useDispatch();
-  const userFormState = useUserState();
+  const { userFormState } = useUserState();
   const { isAddingUser, isEditingUser, editUser } = userFormState;
 
   const formRef = useRef();
@@ -59,7 +59,6 @@ function UserDashboard() {
   }, [usersResponse, dispatch]);
 
   const { content, hasPrevious, hasNext } = usersResponse || {};
-
   const userDashboard = useDashboardItem(content, userDashboardActions);
 
   if (userError) return <div>Error loading users: {userError.message}</div>;

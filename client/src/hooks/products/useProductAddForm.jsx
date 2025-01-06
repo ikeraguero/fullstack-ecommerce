@@ -17,7 +17,7 @@ function useProductAddForm(onSubmitCallback) {
       productName: "",
       productPrice: "",
       productStockQuantity: "",
-      productCategory: "",
+      productCategory: 1,
       productDescription: "",
       productImage: "",
     });

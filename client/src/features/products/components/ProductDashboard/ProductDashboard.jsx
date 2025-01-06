@@ -61,6 +61,7 @@ function ProductDashboard() {
   }, [initialProducts, dispatch]);
 
   const { content, hasPrevious, hasNext } = initialProducts || {};
+  console.log(productDashboardActions);
   const productDashboard = useDashboardItem(content, productDashboardActions);
 
   if (productError) {

@@ -10,8 +10,8 @@ import useUserState from "@hooks/user/useUserState";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const dispatch = useDispatch();
-  const userStateForm = useUserState();
-  const { isEditingUser, editUser, isAddingUser } = userStateForm;
+  const { userFormState } = useUserState();
+  const { isEditingUser, editUser, isAddingUser } = userFormState;
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
@@ -21,7 +21,6 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     : userAddForm;
 
   const { data: roles, error, isLoading } = useRoles();
-
 
   useEffect(() => {
     if (isAddingUser) {
@@ -41,7 +40,8 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       roleId: Number(values.roleId),
     };
 
-    if (userStateForm.isEditingUser) {
+
+    if (userFormState.isEditingUser) {
       onEdit(userRequest);
     } else {
       onAdd(userRequest);

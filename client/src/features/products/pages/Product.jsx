@@ -28,17 +28,28 @@ function Product({ refetch }) {
   const { handleAddToWishList, handleRemoveFromWishlist } =
     useWishlistActions();
   const [productReviewList, setProductReviewList] = useState([]);
+  const [initialRelatedProducts, setInitialRelatedProducts] = useState(null);
   const navigate = useNavigate();
-  const { name, imageData, imageType, canUserReview, relatedProducts } =
-    product || {};
+  const { name, imageData, imageType, canUserReview } = product || {};
+
+  useEffect(() => {
+    if (product?.relatedProducts && initialRelatedProducts === null) {
+      setInitialRelatedProducts(product.relatedProducts);
+    }
+  }, [product?.relatedProducts, initialRelatedProducts]);
+
+  const memoizedRelatedProducts = useMemo(
+    () => initialRelatedProducts || [],
+    [initialRelatedProducts]
+  );
 
   const ratingAvg = useMemo(() => {
-    if (productReviewList?.length === 0) return 0;
-    const totalRating = productReviewList?.reduce(
+    if (productReviewList.length === 0) return 0;
+    const totalRating = productReviewList.reduce(
       (sum, review) => sum + review.rating,
       0
     );
-    return totalRating / productReviewList?.length;
+    return totalRating / productReviewList.length;
   }, [productReviewList]);
 
   useEffect(() => {
@@ -104,7 +115,7 @@ function Product({ refetch }) {
         />
       </div>
       <div className={styles.productBottom}>
-        <RelatedProducts products={relatedProducts} />
+        <RelatedProducts products={memoizedRelatedProducts} />
         <Review
           {...product}
           productReviewList={productReviewList}

@@ -30,6 +30,7 @@ async function checkProductInUserCart(productId, userId) {
 }
 
 async function updateCartItem(data) {
+  console.log(data);
   const res = await apiClient.put("/cartItem", data);
   if (res.status !== 200) {
     throw new Error("Error updating the cart item");

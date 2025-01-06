@@ -17,7 +17,7 @@ function useUsersForm(onSubmitCallback) {
       lastName: "",
       email: "",
       password: "",
-      roleId: 2,
+      roleId: 1,
     });
   }, []);
 

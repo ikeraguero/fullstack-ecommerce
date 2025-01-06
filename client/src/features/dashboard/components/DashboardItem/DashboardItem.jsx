@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 
 import styles from "./DashboardItem.module.css";
-import ProductsList from "@features/products/components/ProductForm/ProductsList/ProductsList";
+import ProductsList from "@features/products/components/ProductsList/ProductsList";
 import ProductForm from "@features/products/components/ProductForm/ProductForm";
 import UserList from "@features/users/components/UserList/UserList";
 import UserForm from "@features/users/components/UserForm/UserForm";

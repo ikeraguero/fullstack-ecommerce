@@ -16,8 +16,7 @@ function Cart({ openError }) {
   const { isLoggedIn } = useUserState();
   const { cart, refetch } = useCartData();
 
-  const { cartId, cartItems } = cart;
-
+  const { id, cartItems } = cart;
   const [totalPrice, setTotalPrice] = useState(0);
 
   const itemsLength = cartItems?.length;
@@ -101,7 +100,7 @@ function Cart({ openError }) {
                 {...product}
                 refetch={refetch}
                 key={product.id}
-                cartId={cartId}
+                cartId={id}
                 cartItems={cartItems}
                 setTotalPrice={setTotalPrice}
                 totalPrice={totalPrice}

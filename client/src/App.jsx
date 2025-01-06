@@ -36,8 +36,8 @@ function App() {
       const username = `${firstName} ${lastName}`;
       dispatch(loginSuccess(username, role, id, email, firstName, lastName));
     }
-  }, [userData, dispatch, isLoadingUser, errorUser, isLoggedIn]);
-
+  }, [userData, dispatch, isLoadingUser, errorUser, isLoggedIn]); 
+  
   function handleSearch(products) {
     setSearchProducts(products);
   }
