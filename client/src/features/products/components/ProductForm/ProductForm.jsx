@@ -1,9 +1,7 @@
-import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 
 import styles from "./ProductForm.module.css";
 import useCategories from "@api/categories/categories.api";
-import { resetProductForm } from "../../../../actions/productFormActions";
 import useProductAddForm from "@hooks/products/useProductAddForm";
 import useProductEditForm from "@hooks/products/useProductEditForm";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
@@ -11,10 +9,10 @@ import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import useProductForm from "@hooks/products/useProductForm";
 
 function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
-  const dispatch = useDispatch();
   const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
   const { isEditingProduct, editProduct, isAddingProduct } = useProductForm();
+  const { reset } = useProductForm();
 
   const productAddForm = useProductAddForm((e) => handleSendData(e));
   const productEditForm = useProductEditForm((e) => handleSendData(e));
@@ -52,22 +50,19 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       formData.append("image", image);
     }
 
-    console.log(productRequest);
-
     const submitFunction = isEditingProduct ? onEdit : onAdd;
     submitFunction(formData);
 
-    handleClearForm();
+    reset();
   }
 
   function handleCloseForm() {
-    dispatch(resetProductForm());
+    reset();
+    handleClearForm();
   }
 
   function handleClearForm() {
-    dispatch(resetProductForm);
     resetForm();
-
     if (formRef.current) {
       formRef.current.reset();
     }

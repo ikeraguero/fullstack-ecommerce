@@ -5,6 +5,7 @@ import { AlertProvider } from "../context/AlertContext";
 import store from "../store/store";
 import QueryDevtools from "../features/shared/components/QueryDevtools/QueryDevtools";
 import { SuccessProvider } from "../context/SuccessContext";
+import { CheckoutProvider } from "@context/CheckoutContext";
 
 export const queryClient = new QueryClient();
 
@@ -13,14 +14,16 @@ export const queryClient = new QueryClient();
 const AppProviders = ({ children }) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
-      <SuccessProvider>
-        <AlertProvider>
+      <CheckoutProvider>
+        <SuccessProvider>
+          <AlertProvider>
             <BrowserRouter>
               {children}
               <QueryDevtools />
             </BrowserRouter>
-        </AlertProvider>
-      </SuccessProvider>
+          </AlertProvider>
+        </SuccessProvider>
+      </CheckoutProvider>
     </QueryClientProvider>
   </Provider>
 );

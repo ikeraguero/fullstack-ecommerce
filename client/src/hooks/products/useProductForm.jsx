@@ -1,6 +1,12 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  openEditProduct,
+  resetProductForm,
+  toggleAddProduct,
+} from "../../reducers/productFormSlice";
 
 function useProductForm() {
+  const dispatch = useDispatch();
   const productFormState = useSelector((state) => state.productForm);
   const isEditingProduct = useSelector(
     (state) => state.productForm.isEditingProduct
@@ -11,7 +17,17 @@ function useProductForm() {
   const editProduct = useSelector((state) => state.productForm.editProduct);
   const products = useSelector((state) => state.productForm.products);
 
-  
+  function toggleAddProductForm() {
+    dispatch(toggleAddProduct());
+  }
+
+  function reset() {
+    dispatch(resetProductForm());
+  }
+
+  function editProductOpen(payload) {
+    dispatch(openEditProduct(payload));
+  }
 
   return {
     productFormState,
@@ -19,6 +35,9 @@ function useProductForm() {
     editProduct,
     isAddingProduct,
     products,
+    toggleAddProductForm,
+    reset,
+    editProductOpen,
   };
 }
 

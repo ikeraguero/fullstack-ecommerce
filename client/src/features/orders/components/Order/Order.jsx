@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
-import useCheckout from "@hooks/cart/useCheckout";
+import { useCheckout } from "@context/CheckoutContext";
 
 function Order({ orderItems, orderId, date, totalPrice, status }) {
-  const { setItemsTotalPrice } = useCheckout();
+  const { updateCheckoutState } = useCheckout();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,7 +19,7 @@ function Order({ orderItems, orderId, date, totalPrice, status }) {
   }
 
   function handleCheckout() {
-    setItemsTotalPrice(totalPrice);
+    updateCheckoutState("totalItemsPrice", totalPrice);
     navigate(`/checkout/${orderId}`);
   }
 

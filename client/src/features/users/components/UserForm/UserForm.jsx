@@ -1,7 +1,5 @@
 import { MoonLoader } from "react-spinners";
-import { useDispatch } from "react-redux";
 import { useRoles } from "@api/users/roles.api";
-import { resetUserForm } from "../../../../actions/userFormActions";
 import useUserAddForm from "@hooks/user/useUserAddForm";
 import useUserEditForm from "@hooks/user/useUserEditForm";
 import styles from "./UserForm.module.css";
@@ -9,9 +7,9 @@ import { useEffect } from "react";
 import useUserForm from "@hooks/user/useUserForm";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
-  const dispatch = useDispatch();
   const { userFormState } = useUserForm();
   const { isEditingUser, editUser, isAddingUser } = userFormState;
+  const { reset } = useUserForm();
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
@@ -46,18 +44,20 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       onAdd(userRequest);
     }
 
-    resetForm();
+    reset();
   }
 
   function handleCloseForm() {
-    dispatch(resetUserForm());
+    reset();
+    handleClearForm();
   }
 
-  // // function handleClearForm() {
-  // //   if (formRef.current) {
-  // //     formRef.current.reset();
-  // //   }
-  // // }
+  function handleClearForm() {
+    resetForm();
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  }
 
   if (isLoading) {
     return (

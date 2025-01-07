@@ -1,12 +1,10 @@
-import { useDispatch } from "react-redux";
-
 import styles from "./DashboardItem.module.css";
 import ProductsList from "@features/products/components/ProductsList/ProductsList";
 import ProductForm from "@features/products/components/ProductForm/ProductForm";
 import UserList from "@features/users/components/UserList/UserList";
 import UserForm from "@features/users/components/UserForm/UserForm";
-import { toggleAddProduct } from "../../../../actions/productFormActions";
-import { toggleAddUser } from "../../../../actions/userFormActions";
+import useUserForm from "@hooks/user/useUserForm";
+import useProductForm from "@hooks/products/useProductForm";
 
 const formComponents = {
   Products: ProductForm,
@@ -27,16 +25,17 @@ function DashboardItem({
   formRef,
   isFormOpen,
 }) {
+  const { toggleAddProductForm } = useProductForm();
+  const { toggleAddUserForm } = useUserForm();
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
-  const dispatch = useDispatch();
 
   function handleOpenForm(payload) {
     if (title === "Products") {
       console.log("a");
-      dispatch(toggleAddProduct());
+      toggleAddProductForm();
       return;
     }
-    dispatch(toggleAddUser(payload));
+    toggleAddUserForm(payload);
   }
 
   const FormComponent = formComponents[title];
@@ -47,7 +46,7 @@ function DashboardItem({
       <h2>{titleCapitalized}</h2>
       <span
         className={styles.openAddProductButton}
-        onClick={() => handleOpenForm()}
+        onClick={handleOpenForm}
       >
         Add {titleCapitalized.slice(0, titleCapitalized.length - 1)} +
       </span>

@@ -22,6 +22,7 @@ async function updateUser(data) {
 
 async function fetchUsers(page, size) {
   try {
+    console.log(page, size);
     const res = await apiClient.get(`/users?page=${page}&size=${size}`);
     return res.data;
   } catch (error) {
@@ -61,7 +62,7 @@ export function useDeleteUsers() {
   );
 }
 
-export function useUsers(page, size) {
+export function useUsers(page = 0, size = 10) {
   return useQuery({
     queryKey: ["users", page, size],
     queryFn: () => fetchUsers(page, size),

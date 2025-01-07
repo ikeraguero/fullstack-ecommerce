@@ -68,7 +68,8 @@ function ProductDashboard() {
   if (productError) {
     return <ErrorState error={productError} />;
   }
-  console.log(pendingContent);
+
+  console.log(isAddingProduct, isEditingProduct);
 
   return (
     <>

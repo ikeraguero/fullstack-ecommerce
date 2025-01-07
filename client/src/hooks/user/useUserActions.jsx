@@ -10,17 +10,7 @@ export function useUserActions(editUser, refetch) {
   const { mutate: updateUser } = useUpdateUser();
   const { mutate: deleteUser } = useDeleteUsers();
 
-  // const formatUserData = (formData, editUser) => ({
-  //   email: formData.get("userEmail"),
-  //   password: formData.get("userPassword"),
-  //   firstName: formData.get("userFirstName"),
-  //   lastName: formData.get("userLastName"),
-  //   roleId: Number(formData.get("userRole")),
-  //   ...(editUser && { userId: editUser.userId }),
-  // });
-
   function create(userData) {
-    // const userData = formatUserData(formData);
     registerUser(userData, {
       onSuccess: () => {
         dispatch(toggleAddUser());
@@ -30,7 +20,6 @@ export function useUserActions(editUser, refetch) {
   }
 
   function update(userData) {
-    // const userData = formatUserData(formData, editUser);
 
     updateUser(userData, {
       onSuccess: () => {

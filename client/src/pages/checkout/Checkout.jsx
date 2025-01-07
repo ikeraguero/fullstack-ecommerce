@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import styles from "./Checkout.module.css";
 import { useOrder, usePayOrder } from "@api/orders/order.api";
@@ -8,7 +8,7 @@ import PaymentForm from "./PaymentForm/PaymentForm";
 import useShippingForm from "@hooks/cart/useShippingForm";
 import usePaymentForm from "@hooks/cart/usePaymentForm";
 import OrderSummary from "@features/orders/components/OrderSummary/OrderSummary";
-import useCheckout from "@hooks/cart/useCheckout";
+import { useCheckout } from "@context/CheckoutContext";
 
 function CheckoutShipping() {
   const params = useParams();
@@ -16,13 +16,16 @@ function CheckoutShipping() {
   const { mutate: payOrder } = usePayOrder();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  const { updateOrder } = useCheckout();
+  const { order: updateOrder } = useCheckout();
   const [isPriceLocked, setIsPriceLocked] = useState(false);
+  const initialized = useRef(false);
 
   const STEPS = {
     SHIPPING: "shipping",
     PAYMENT: "payment",
   };
+
+  console.log(order);
 
   const {
     values: shippingValues,
@@ -47,14 +50,15 @@ function CheckoutShipping() {
     checkoutStep,
     isProcessingPayment,
     loading,
-    updateShippingPrice,
-    updateCheckoutStep,
-    setProcessingPayment,
-    setLoadingState,
     calculateShippingPrice,
-  } = useCheckout(shippingValues);
+    updateCheckoutState,
+  } = useCheckout();
 
-  const updateLocalStorage = () => {
+  console.log(isProcessingPayment);
+
+  useEffect(() => {
+    if (initialized.current) return;
+
     const storedShippingPrice = localStorage.getItem("shippingPrice");
     const storedTotalPrice = localStorage.getItem("totalPrice");
     const storedOrderId = localStorage.getItem("orderId");
@@ -64,29 +68,25 @@ function CheckoutShipping() {
       storedTotalPrice &&
       storedOrderId === order?.orderId
     ) {
-      updateShippingPrice(Number(storedShippingPrice));
+      updateCheckoutState("shippingPrice", Number(storedShippingPrice));
       setTotalPrice(Number(storedTotalPrice));
-      return;
+      setIsPriceLocked(true);
+    } else {
+      updateCheckoutState("shippingPrice", 0);
     }
-    updateShippingPrice(0);
-  };
+    initialized.current = true;
+  }, [order, updateCheckoutState]);
 
   useEffect(() => {
-    updateLocalStorage();
-  }, []);
+    if (order && !isPriceLocked) {
+      const updatedTotalPrice = order.totalPrice + shippingPrice;
+      setTotalPrice(updatedTotalPrice);
 
-  useEffect(
-    function () {
-      if (order && !isPriceLocked) {
-        const updatedTotalPrice = order.totalPrice + shippingPrice;
-        setTotalPrice(updatedTotalPrice);
-        localStorage.setItem("orderId", order?.orderId);
-        localStorage.setItem("shippingPrice", shippingPrice);
-        localStorage.setItem("totalPrice", updatedTotalPrice);
-      }
-    },
-    [order, shippingPrice]
-  );
+      localStorage.setItem("orderId", order?.orderId);
+      localStorage.setItem("shippingPrice", shippingPrice);
+      localStorage.setItem("totalPrice", updatedTotalPrice);
+    }
+  }, [order, shippingPrice, isPriceLocked]);
 
   if (!updateOrder) return <div>Loading...</div>;
 
@@ -96,12 +96,13 @@ function CheckoutShipping() {
   }
 
   async function onShippingSubmit() {
+    console.log("a");
     if (shippingPrice === 0) {
-      await calculateShippingPrice();
+      await calculateShippingPrice(shippingValues);
     }
     setIsPriceLocked(true);
-    updateCheckoutStep(STEPS.PAYMENT);
-    setLoadingState(false);
+    updateCheckoutState("checkoutStep", STEPS.PAYMENT);
+    updateCheckoutState("isLoading", true);
   }
 
   function createPaymentRequest() {
@@ -114,9 +115,9 @@ function CheckoutShipping() {
       cardholderName,
     } = paymentValues;
 
-    setProcessingPayment(true);
+    updateCheckoutState("isProcessingPayment", true);
 
-    const paymentRequest = {
+    return {
       orderId: order?.orderId,
       email,
       paymentMethod,
@@ -125,8 +126,6 @@ function CheckoutShipping() {
       cvc: cardCvc,
       cardholderName,
     };
-
-    return paymentRequest;
   }
 
   function sendPayment(paymentRequest) {
@@ -139,14 +138,15 @@ function CheckoutShipping() {
     };
 
     paymentRequest.orderRequest = payData;
-
     payOrder(paymentRequest);
   }
 
   function handleBack() {
-    if (checkoutStep === STEPS.PAYMENT) updateCheckoutStep(STEPS.SHIPPING);
+    if (checkoutStep === STEPS.PAYMENT)
+      updateCheckoutState("checkoutStep", STEPS.SHIPPING);
     if (checkoutStep === STEPS.SHIPPING) navigate("/cart");
   }
+
   return (
     <>
       <div className={styles.cartMainContainer}>

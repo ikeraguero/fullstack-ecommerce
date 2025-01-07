@@ -1,5 +1,5 @@
+import { useCheckout } from "@context/CheckoutContext";
 import styles from "./OrderSummary.module.css";
-import useCheckout from "@hooks/cart/useCheckout";
 
 function OrderSummary({
   order,
@@ -11,6 +11,7 @@ function OrderSummary({
   handlePaymentSubmit,
   handleShippingSubmit,
 }) {
+  console.log(isProcessingPayment);
   const { totalItemsPrice } = useCheckout();
   return (
     <form className={styles.cartRightSide} onSubmit={(e) => e.preventDefault()}>

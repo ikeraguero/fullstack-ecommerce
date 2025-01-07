@@ -8,6 +8,7 @@ import {
   setShippingPrice,
 } from "../../actions/checkoutActions";
 import { useCalculateShipping } from "../../api/orders/shipping.api";
+import { setOrder } from "../../reducers/checkoutReducer";
 
 function useCheckout(shippingValues) {
   const dispatch = useDispatch();
@@ -29,6 +30,10 @@ function useCheckout(shippingValues) {
   const setLoadingState = (isLoading) => dispatch(setLoading(isLoading));
   const setItemsTotalPrice = (price) => dispatch(setItemsPrice(price));
   const resetCheckout = () => dispatch(resetCheckoutData());
+
+  function setCurrentOrder(data) {
+    dispatch(setOrder(data));
+  }
 
   const { mutateAsync: calculateShipping } = useCalculateShipping();
 
@@ -58,6 +63,7 @@ function useCheckout(shippingValues) {
     setItemsTotalPrice,
     updateOrder,
     totalItemsPrice,
+    setCurrentOrder,
   };
 }
 

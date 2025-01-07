@@ -101,7 +101,7 @@ function ShippingForm({
         <button
           className={styles.calculateShippingButton}
           type="button"
-          onClick={handleCalculateShipping}
+          onClick={() => handleCalculateShipping(values)}
         >
           Calculate Shipping
         </button>

@@ -13,6 +13,8 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
+  console.log(isLoggedIn, username, role);
+
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
@@ -35,6 +37,8 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   if (!loadedCategories) {
     return <div>Loading...</div>;
   }
+
+  console.log(formattedUser);
 
   return (
     <nav className={styles.nav}>

@@ -1,18 +1,15 @@
-import { useDispatch } from "react-redux";
 import styles from "./Item.module.css";
-import { openEditProduct } from "../../../../actions/productFormActions";
-import { openEditUser } from "../../../../actions/userFormActions";
+import useProductForm from "@hooks/products/useProductForm";
+import useUserForm from "@hooks/user/useUserForm";
 
 function Item({ item, handleOpenForm, onRemove, itemType }) {
-  const dispatch = useDispatch();
+  const { editProductOpen } = useProductForm();
+  const { editUserOpen } = useUserForm();
   const handleEdit = () => {
     handleOpenForm("openEdit", item);
 
-    dispatch(
-      itemType === "product" ? openEditProduct(item) : openEditUser(item)
-    );
+    itemType === "product" ? editProductOpen(item) : editUserOpen(item);
   };
-
 
   return (
     <li className={styles.itemLine}>

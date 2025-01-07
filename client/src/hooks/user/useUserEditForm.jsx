@@ -1,12 +1,14 @@
 import { useFormik } from "formik";
 import { validationSchemaPayment } from "../../schemas/validationSchema";
-import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import useUserForm from "./useUserForm";
+import { useLocation } from "react-router-dom";
+import useAuth from "@hooks/auth/useAuth";
 
 function useUserEditForm(onSubmitCallback) {
-  const state = useSelector((state) => state.userForm);
-  const { isEditingUser, editUser } = state;
-
+  const { isEditingUser, editUser } = useUserForm();
+  const location = useLocation();
+  const { firstName, lastName, email, roleId } = useAuth();
   const [initialValues, setInitialValues] = useState({
     firstName: "",
     lastName: "",
@@ -16,14 +18,25 @@ function useUserEditForm(onSubmitCallback) {
   });
 
   useEffect(() => {
+    if (location.pathname === "/profile") {
+      setInitialValues({
+        firstName,
+        lastName,
+        email,
+        password: "",
+        roleId,
+      });
+      return;
+    }
+
     setInitialValues({
       firstName: isEditingUser ? editUser?.userFirstName || "" : "",
-      lastName: isEditingUser ? editUser.userLastName || "" : "",
-      email: isEditingUser ? editUser.userEmail || "" : "",
+      lastName: isEditingUser ? editUser?.userLastName || "" : "",
+      email: isEditingUser ? editUser?.userEmail || "" : "",
       password: "",
-      roleId: isEditingUser ? editUser.userRoleId || "" : "",
+      roleId: isEditingUser ? editUser?.userRoleId || "" : "",
     });
-  }, [isEditingUser, editUser]);
+  }, [isEditingUser, editUser, location.pathname]);
 
   const formik = useFormik({
     initialValues,

@@ -26,7 +26,8 @@ function ProfileInformation() {
       roleId: Number(values.roleId),
     };
     await updateUser(userRequest);
-    updateUserProfile(`${firstName} ${lastName}`, firstName, lastName, email);
+    const username = firstName + " " + lastName;
+    updateUserProfile(username, firstName, lastName, email);
     setIsEditingProfile(false);
   }
   return (

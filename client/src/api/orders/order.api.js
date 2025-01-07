@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import useCheckout from "../../hooks/cart/useCheckout";
 import { apiClient, apiClientPayment } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
+import { useCheckout } from "@context/CheckoutContext";
 
 async function fetchOrdersByUser(userId) {
   try {
@@ -65,7 +65,7 @@ async function payOrder(paymentData) {
 
 export function usePayOrder() {
   const queryClient = useQueryClient();
-  const { resetCheckout } = useCheckout();
+  const { resetCheckoutState } = useCheckout();
   const navigate = useNavigate();
 
   return useApiMutation(
@@ -76,13 +76,13 @@ export function usePayOrder() {
         console.log(variables);
         navigate(`/payment/success/${variables}`);
         queryClient.invalidateQueries(["cart"]);
-        resetCheckout();
+        resetCheckoutState();
       }, 3000);
     },
     (error, variables) => {
       setTimeout(() => {
         navigate(`/payment/error/${variables}`);
-        resetCheckout();
+        resetCheckoutState();
       }, 3000);
       console.error("Error processing payment:", error.message);
     }
@@ -112,15 +112,14 @@ export function useOrder(orderId) {
 }
 
 export function useCreateOrder() {
-  const { setItemsTotalPrice } = useCheckout();
-  const queryClient = useQueryClient();
+  const { updateCheckoutState } = useCheckout();
 
   return useApiMutation(
     (orderData) => createOrder(orderData),
-    null,
+    "cart",
     async (order) => {
-      setItemsTotalPrice(order.totalPrice);
-      queryClient.invalidateQueries(["cart"]);
+      const { totalPrice } = order;
+      updateCheckoutState("totalItemsPrice", totalPrice);
     },
     (error) => {
       console.error("Error creating order:", error.message);

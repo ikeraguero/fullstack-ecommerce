@@ -12,6 +12,8 @@ function useAuth() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const userId = useSelector((state) => state.auth.id);
   const email = useSelector((state) => state.auth.email);
+  const firstName = useSelector((state) => state.auth.firstName);
+  const lastName = useSelector((state) => state.auth.lastName);
   const username = useSelector((state) => state.auth.username);
 
   function login(username, role, id, email, firstName, lastName) {
@@ -36,6 +38,8 @@ function useAuth() {
     login,
     logout,
     updateUserProfile,
+    firstName,
+    lastName,
   };
 }
 

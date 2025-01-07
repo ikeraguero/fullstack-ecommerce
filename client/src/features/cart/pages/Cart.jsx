@@ -1,18 +1,19 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import CartItem from "@features/cart/components/CartItem/CartItem";
 import CartSummary from "@features/cart/components/CartSummary/CartSummary";
 import ErrorAlert from "@features/shared/components/ErrorAlert/ErrorAlert";
 import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
-import { setOrder } from "../../../actions/checkoutActions";
 import useCartData from "@hooks/cart/useCartData";
 import useAuth from "@hooks/auth/useAuth";
+import { useCheckout } from "@context/CheckoutContext";
 
 function Cart({ openError }) {
-  const { userId, isLoggedIn } = useAuth;
+  const { updateCheckoutState } = useCheckout();
+
+  const { userId, isLoggedIn } = useAuth();
   const { cart, refetch } = useCartData();
 
   const { id, cartItems } = cart;
@@ -22,7 +23,6 @@ function Cart({ openError }) {
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!userId) {
@@ -70,7 +70,7 @@ function Cart({ openError }) {
       refetch();
       const orderData = generateData();
       const { orderId } = await createOrder(orderData);
-      dispatch(setOrder(orderData));
+      updateCheckoutState("order", orderData);
       navigate(`/checkout/${orderId}`, { replace: true });
     } catch (error) {
       openError();
