@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 async function createWishlistItem(data) {
   try {
@@ -58,7 +58,7 @@ export function useDeleteWishlistItem() {
 }
 
 export function useWishlist() {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
   return useQuery({
     queryFn: () => fetchWishlist(userId),
     queryKey: ["wishlist"],

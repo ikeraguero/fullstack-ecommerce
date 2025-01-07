@@ -70,7 +70,7 @@ function SearchBar({ setSearchProducts }) {
 
   async function handleSearch() {
     const res = await search({
-      query: debouncedQuery,
+      query,
       size: 20,
     });
     setSearchProducts(res);

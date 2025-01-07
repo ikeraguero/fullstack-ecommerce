@@ -5,7 +5,7 @@ import { useState } from "react";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import { loadUsers } from "../../actions/userFormActions";
-import useUserState from "@hooks/user/useUserState";
+import useUserForm from "@hooks/user/useUserForm";
 
 async function updateUser(data) {
   try {
@@ -44,7 +44,7 @@ export function useDeleteUsers() {
   const { refetch } = useUsers();
   const [userIdRemove, setUserIdRemove] = useState();
   const dispatch = useDispatch();
-  const users = useUserState();
+  const users = useUserForm();
   return useApiMutation(
     (userId) => {
       setUserIdRemove(userId);

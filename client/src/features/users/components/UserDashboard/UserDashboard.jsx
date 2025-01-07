@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
 import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
-import { useDispatch } from "react-redux";
-import { loadUsers } from "../../../../actions/userFormActions";
-import useUserState from "@hooks/user/useUserState";
+import useUserForm from "@hooks/user/useUserForm";
 
 function UserDashboard() {
-  const dispatch = useDispatch();
-  const { userFormState } = useUserState();
+  const { userFormState } = useUserForm();
   const { isAddingUser, isEditingUser, editUser } = userFormState;
 
   const formRef = useRef();
@@ -18,7 +15,7 @@ function UserDashboard() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
-
+  const [pendingContent, setPendingContent] = useState(null);
   const {
     data: usersResponse,
     error: userError,
@@ -36,6 +33,7 @@ function UserDashboard() {
 
   function handleNext() {
     if (usersResponse && usersResponse.hasNext) {
+      setPendingContent(usersResponse.contentNext);
       setCurrentPage((prevPage) =>
         Math.min(prevPage + 1, usersResponse.totalPages - 1)
       );
@@ -44,22 +42,27 @@ function UserDashboard() {
 
   function handlePrevious() {
     if (usersResponse && usersResponse.hasPrevious) {
+      setPendingContent(usersResponse.contentPrevious);
       setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
     }
   }
 
-  useEffect(() => {
-    if (
-      usersResponse &&
-      usersResponse.content &&
-      usersResponse.content.length > 0
-    ) {
-      dispatch(loadUsers(usersResponse.content));
-    }
-  }, [usersResponse, dispatch]);
+  // useEffect(() => {
+  //   if (
+  //     usersResponse &&
+  //     usersResponse.content &&
+  //     usersResponse.content.length > 0
+  //   ) {
+  //     dispatch(loadUsers(usersResponse.content));
+  //   }
+  // }, [usersResponse, dispatch]);
 
   const { content, hasPrevious, hasNext } = usersResponse || {};
-  const userDashboard = useDashboardItem(content, userDashboardActions);
+  const displayedContent = pendingContent || content;
+  const userDashboard = useDashboardItem(
+    displayedContent,
+    userDashboardActions
+  );
 
   if (userError) return <div>Error loading users: {userError.message}</div>;
 

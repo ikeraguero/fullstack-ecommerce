@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import TopNav from "../TopNav/TopNav";
 import SearchBar from "../../../search/components/SearchBar/SearchBar";
 import styles from "./Nav.module.css";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
-  const { isLoggedIn, username, role } = useUserState();
+  const { isLoggedIn, username, role } = useAuth();
   const [isBottomOpen, setIsBottomOpen] = useState(false);
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);

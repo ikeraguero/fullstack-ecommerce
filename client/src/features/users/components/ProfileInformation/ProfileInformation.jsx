@@ -1,14 +1,11 @@
-import { useDispatch } from "react-redux";
 import styles from "./ProfileInformation.module.css";
 import { useState } from "react";
-import useUserEditForm from "@hooks/cart/useUserEditForm";
+import useUserEditForm from "@hooks/user/useUserEditForm";
 import { useUpdateUser } from "@api/users/user.api";
-import { updateUserData } from "../../../../actions/authActions";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function ProfileInformation() {
-  const { userId, email, username } = useUserState();
-  const dispatch = useDispatch();
+  const { userId, email, username, updateUserProfile } = useAuth();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const userEditForm = useUserEditForm(handleSubmitForm);
   const { values, handleChange } = userEditForm;
@@ -29,9 +26,7 @@ function ProfileInformation() {
       roleId: Number(values.roleId),
     };
     await updateUser(userRequest);
-    dispatch(
-      updateUserData(`${firstName} ${lastName}`, firstName, lastName, email)
-    );
+    updateUserProfile(`${firstName} ${lastName}`, firstName, lastName, email);
     setIsEditingProfile(false);
   }
   return (

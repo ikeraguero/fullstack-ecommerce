@@ -3,10 +3,10 @@ import {
   useDeleteWishlistItem,
 } from "@api/users/wishlist.api";
 import { useSuccess } from "@context/SuccessContext";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function useWishlistActions() {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
   const { displaySuccess } = useSuccess();
   const { mutate: removeWishlistItem } = useDeleteWishlistItem();
   const { mutate: addToWishlist } = useCreateWishlistItem();

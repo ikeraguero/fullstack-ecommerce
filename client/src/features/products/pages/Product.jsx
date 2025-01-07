@@ -11,11 +11,11 @@ import useWishlistActions from "@hooks/wishlist/useWishlistActions";
 import useProductActions from "@hooks/products/useProductActions";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function Product({ refetch }) {
   const { id } = useParams();
-  const { userId } = useUserState();
+  const { userId, isLoggedIn } = useAuth();
   const {
     data: product,
     error,
@@ -23,7 +23,7 @@ function Product({ refetch }) {
     isLoading,
   } = useProduct(id);
   const [quantity, setQuantity] = useState(1);
-  const { isLoggedIn } = useUserState();
+
   const { handleAddToCart } = useProductActions();
   const { handleAddToWishList, handleRemoveFromWishlist } =
     useWishlistActions();
@@ -37,6 +37,10 @@ function Product({ refetch }) {
       setInitialRelatedProducts(product.relatedProducts);
     }
   }, [product?.relatedProducts, initialRelatedProducts]);
+
+  const handleNewReview = (review) => {
+    setProductReviewList((prevReviews) => [...prevReviews, review]);
+  };
 
   const memoizedRelatedProducts = useMemo(
     () => initialRelatedProducts || [],
@@ -120,6 +124,7 @@ function Product({ refetch }) {
           {...product}
           productReviewList={productReviewList}
           canUserReview={canUserReview}
+          onNewReview={handleNewReview}
           ratingAvg={ratingAvg}
           userId={userId}
         />

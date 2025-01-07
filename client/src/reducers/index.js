@@ -1,14 +1,14 @@
 import { combineReducers } from "redux";
-import authReducer from "./authReducer";
 import checkoutReducer from "./checkoutReducer";
-import userFormReducer from "./userFormReducer";
-import productFormReducer from "./productFormReducer";
+import authSlice from "./authSlice";
+import productFormSlice from "./productFormSlice";
+import userFormSlice from "./userFormSlice";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth: authSlice,
   checkout: checkoutReducer,
-  userForm: userFormReducer,
-  productForm: productFormReducer,
+  userForm: userFormSlice,
+  productForm: productFormSlice,
 });
 
 export default rootReducer;

@@ -1,25 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import styles from "./ProductDashboard.module.css";
 import { useProducts } from "@api/products/products.api";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import useProductActions from "@hooks/products/useProductActions";
-import { loadProducts } from "../../../../actions/productFormActions";
-import useProductState from "@hooks/products/useProductState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
+import useProductForm from "@hooks/products/useProductForm";
 
 function ProductDashboard() {
-  const dispatch = useDispatch();
-  const { productFormState } = useProductState();
-  const { isAddingProduct, isEditingProduct, editProduct } = productFormState;
+  const { isAddingProduct, isEditingProduct, editProduct } = useProductForm();
 
   const formRef = useRef();
   const isProductFormOpen = isAddingProduct || isEditingProduct;
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
+  const [pendingContent, setPendingContent] = useState(null);
 
   const {
     data: initialProducts,
@@ -44,6 +41,7 @@ function ProductDashboard() {
 
   function handleNext() {
     if (initialProducts && initialProducts.hasNext) {
+      setPendingContent(contentNext);
       setCurrentPage(currentPage + 1);
     }
   }
@@ -54,19 +52,23 @@ function ProductDashboard() {
     }
   }
 
-  useEffect(() => {
-    if (initialProducts?.content?.length) {
-      dispatch(loadProducts(initialProducts.content));
-    }
-  }, [initialProducts, dispatch]);
+  const { content, hasPrevious, hasNext, contentNext } = initialProducts || {};
+  const displayedContent = pendingContent || content;
+  const productDashboard = useDashboardItem(
+    displayedContent,
+    productDashboardActions
+  );
 
-  const { content, hasPrevious, hasNext } = initialProducts || {};
-  console.log(productDashboardActions);
-  const productDashboard = useDashboardItem(content, productDashboardActions);
+  useEffect(() => {
+    if (!isLoading && content && currentPage > 0) {
+      setPendingContent(null);
+    }
+  }, [isLoading, currentPage, content]);
 
   if (productError) {
     return <ErrorState error={productError} />;
   }
+  console.log(pendingContent);
 
   return (
     <>

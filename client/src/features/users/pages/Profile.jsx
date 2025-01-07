@@ -1,18 +1,15 @@
 // import { useState } from "react";
 import { useState } from "react";
 import styles from "./Profile.module.css";
-import { useDispatch } from "react-redux";
-import { logoutSuccess } from "../../../actions/authActions";
 import { Navigate, useNavigate } from "react-router-dom";
 import ProfileInformation from "../components/ProfileInformation/ProfileInformation";
 import OrderInformation from "@features/orders/components/OrderInformation/OrderInformation";
 import Wishlist from "@features/wishlist/components/Wishlist/Wishlist";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function Profile() {
-  const { isLoggedIn } = useUserState();
+  const { isLoggedIn, logout } = useAuth();
   const [active, setActive] = useState("profile");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   function handleClick(e) {
@@ -27,7 +24,7 @@ function Profile() {
   }
 
   function handleLogout() {
-    dispatch(logoutSuccess());
+    logout();
     navigate("/");
   }
 

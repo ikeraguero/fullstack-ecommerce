@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import { loadProducts } from "../../actions/productFormActions";
-import useProductState from "@hooks/products/useProductState";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
+import useProductForm from "@hooks/products/useProductForm";
 
 async function updateProduct(data) {
   try {
@@ -45,6 +45,7 @@ async function fetchHomeProducts() {
 async function fetchProducts(page, size) {
   try {
     const res = await apiClient.get(`/products?page=${page}&size=${size}`);
+    console.log("fetched");
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching products");
@@ -110,9 +111,8 @@ export function useCreateProduct() {
 }
 
 export function useRemoveProduct() {
-  const { productFormState } = useProductState();
   const dispatch = useDispatch();
-  const { products } = productFormState;
+  const { products } = useProductForm();
   return useApiMutation(
     (productId) => removeProduct(productId),
     "products",
@@ -139,6 +139,9 @@ export function useProducts(page, size) {
   return useQuery({
     queryKey: ["products", page, size],
     queryFn: () => fetchProducts(page, size),
+    onSuccess: () => {
+      console.log("products fetched");
+    },
     onError: (error) => {
       console.error("Error fetching products:", error.message);
     },
@@ -156,7 +159,7 @@ export function useProductsByCategory(categoryName) {
 }
 
 export function useProduct(productId) {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
   return useQuery({
     queryKey: ["product", productId, userId],
     queryFn: () => fetchProductById(productId, userId ? userId : 0),

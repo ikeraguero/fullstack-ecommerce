@@ -6,11 +6,11 @@ import useUserAddForm from "@hooks/user/useUserAddForm";
 import useUserEditForm from "@hooks/user/useUserEditForm";
 import styles from "./UserForm.module.css";
 import { useEffect } from "react";
-import useUserState from "@hooks/user/useUserState";
+import useUserForm from "@hooks/user/useUserForm";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const dispatch = useDispatch();
-  const { userFormState } = useUserState();
+  const { userFormState } = useUserForm();
   const { isEditingUser, editUser, isAddingUser } = userFormState;
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
@@ -39,7 +39,6 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       password: values.password,
       roleId: Number(values.roleId),
     };
-
 
     if (userFormState.isEditingUser) {
       onEdit(userRequest);

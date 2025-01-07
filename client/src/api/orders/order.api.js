@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useCheckout from "../../hooks/cart/useCheckout";
 import { apiClient, apiClientPayment } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 async function fetchOrdersByUser(userId) {
   try {
@@ -90,7 +90,7 @@ export function usePayOrder() {
 }
 
 export function useOrdersByUser() {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
 
   return useQuery({
     queryKey: ["userOrders", userId],

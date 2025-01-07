@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
-import { loginSuccess, logoutSuccess } from "../../actions/authActions";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 async function loginUser(data) {
   try {
@@ -61,14 +59,13 @@ async function logoutUser() {
 
 export function useRegisterUser() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { role: userRole } = useUserState();
+  const { role: userRole, login } = useAuth();
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN") {
       const { firstName, lastName, email, role, id } = data;
       const username = `${firstName} ${lastName}`;
-      dispatch(loginSuccess(username, role, id, email, firstName, lastName));
+      login(username, role, id, email, firstName, lastName);
       navigate("/");
     }
   }
@@ -98,14 +95,14 @@ export function useAuthStatus() {
 }
 
 export function useLoginUser() {
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   function handleSuccess(data) {
     const { firstName, lastName, email, role, id } = data;
     const username = `${firstName} ${lastName}`;
 
-    dispatch(loginSuccess(username, role, id, email, firstName, lastName));
+    login(username, role, id, email, firstName, lastName);
     navigate("/");
   }
 
@@ -117,10 +114,10 @@ export function useLoginUser() {
 }
 
 export function useLogoutUser() {
-  const dispatch = useDispatch();
+  const { logout } = useAuth();
 
   function handleSuccess() {
-    dispatch(logoutSuccess());
+    logout();
   }
 
   function handleError(error) {

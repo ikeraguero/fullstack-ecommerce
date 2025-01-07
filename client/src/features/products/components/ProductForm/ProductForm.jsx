@@ -6,16 +6,15 @@ import useCategories from "@api/categories/categories.api";
 import { resetProductForm } from "../../../../actions/productFormActions";
 import useProductAddForm from "@hooks/products/useProductAddForm";
 import useProductEditForm from "@hooks/products/useProductEditForm";
-import useProductState from "@hooks/products/useProductState";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
+import useProductForm from "@hooks/products/useProductForm";
 
 function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
   const dispatch = useDispatch();
-  const { productFormState } = useProductState();
   const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
-  const { isEditingProduct, editProduct, isAddingProduct } = productFormState;
+  const { isEditingProduct, editProduct, isAddingProduct } = useProductForm();
 
   const productAddForm = useProductAddForm((e) => handleSendData(e));
   const productEditForm = useProductEditForm((e) => handleSendData(e));
@@ -55,7 +54,7 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
 
     console.log(productRequest);
 
-    const submitFunction = productFormState.isEditingProduct ? onEdit : onAdd;
+    const submitFunction = isEditingProduct ? onEdit : onAdd;
     submitFunction(formData);
 
     handleClearForm();

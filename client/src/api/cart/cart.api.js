@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 async function fetchCart(userId) {
   if (userId == null) {
@@ -53,7 +53,7 @@ async function deleteCartItem(cartItemId) {
 }
 
 export function useIsProductInUserCart(productId) {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
 
   return useQuery({
     queryKey: ["isProductInUserCart", productId, userId],
@@ -72,7 +72,7 @@ export function useAddToCart() {
 }
 
 export function useUpdateCartItem() {
-  const { userId } = useUserState();
+  const { userId } = useAuth();
   const { refetch } = useCart(userId);
 
   return useApiMutation(
@@ -102,7 +102,7 @@ export function useDeleteCartItem(refetch) {
 
 export function useCart() {
   const dispatch = useDispatch();
-  const { userId } = useUserState();
+  const { userId } = useAuth();
   return useQuery({
     queryKey: ["cart", userId],
     queryFn: () => fetchCart(userId ?? null, dispatch),

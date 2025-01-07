@@ -1,11 +1,10 @@
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
-import useProductState from "./useProductState";
 import { validationSchemaProduct } from "../../schemas/validationSchema";
+import useProductForm from "./useProductForm";
 
 function useProductEditForm(onSubmitCallback) {
-  const { productFormState } = useProductState();
-  const { isEditingProduct, editProduct } = productFormState;
+  const { isEditingProduct, editProduct } = useProductForm();
 
   const [initialValues, setInitialValues] = useState({
     productName: "",

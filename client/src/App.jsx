@@ -1,23 +1,20 @@
 import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import Nav from "./features/navigation/components/Nav/Nav";
 import useCartData from "./hooks/cart/useCartData";
 import useCategories from "./api/categories/categories.api";
 import { AppRoutes } from "./routes/AppRoutes";
 import { useAuthStatus } from "@api/auth/auth.api";
-import { loginSuccess } from "./actions/authActions";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import Alerts from "@features/shared/components/Alerts/Alerts";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 const MemoizedNav = React.memo(Nav);
 
 function App() {
-  const { isLoggedIn } = useUserState();
-  const dispatch = useDispatch();
+  const { isLoggedIn, login } = useAuth();
   const { data: userData, isLoadingUser, errorUser } = useAuthStatus();
   const AUTH_ROUTES = ["/login", "/register"];
 
@@ -34,10 +31,10 @@ function App() {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
       const { firstName, lastName, role, id, email } = userData;
       const username = `${firstName} ${lastName}`;
-      dispatch(loginSuccess(username, role, id, email, firstName, lastName));
+      login(username, role, id, email, firstName, lastName);
     }
-  }, [userData, dispatch, isLoadingUser, errorUser, isLoggedIn]); 
-  
+  }, [userData, login, isLoadingUser, errorUser, isLoggedIn]);
+
   function handleSearch(products) {
     setSearchProducts(products);
   }

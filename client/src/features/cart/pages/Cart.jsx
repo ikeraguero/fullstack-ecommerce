@@ -9,11 +9,10 @@ import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
 import { setOrder } from "../../../actions/checkoutActions";
 import useCartData from "@hooks/cart/useCartData";
-import useUserState from "@hooks/user/useUserState";
+import useAuth from "@hooks/auth/useAuth";
 
 function Cart({ openError }) {
-  const { userId } = useUserState();
-  const { isLoggedIn } = useUserState();
+  const { userId, isLoggedIn } = useAuth;
   const { cart, refetch } = useCartData();
 
   const { id, cartItems } = cart;
