@@ -249,7 +249,6 @@ public class ProductServiceImpl implements ProductService {
         if (query == null || query.trim().isEmpty()) {
             return Collections.emptyList();
         }
-        System.out.println(query);
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = productRepository.searchProducts(query, pageable);
         if (productPage.isEmpty()) {
