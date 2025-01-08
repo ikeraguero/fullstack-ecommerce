@@ -1,7 +1,5 @@
-import { useFormik } from "formik";
-import { validationSchemaPayment } from "../../schemas/validationSchema";
-import { useState, useEffect } from "react";
 import useUserForm from "./useUserForm";
+import useUserFormBase from "./useUserFormBase";
 import { useLocation } from "react-router-dom";
 import useAuth from "@hooks/auth/useAuth";
 
@@ -9,43 +7,21 @@ function useUserEditForm(onSubmitCallback) {
   const { isEditingUser, editUser } = useUserForm();
   const location = useLocation();
   const { firstName, lastName, email, roleId } = useAuth();
-  const [initialValues, setInitialValues] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    roleId: "",
-  });
 
-  useEffect(() => {
-    if (location.pathname === "/profile") {
-      setInitialValues({
-        firstName,
-        lastName,
-        email,
-        password: "",
-        roleId,
-      });
-      return;
-    }
+  const initialData =
+    location.pathname === "/profile"
+      ? { firstName, lastName, email, password: "", roleId }
+      : isEditingUser
+      ? {
+          firstName: editUser?.userFirstName || "",
+          lastName: editUser?.userLastName || "",
+          email: editUser?.userEmail || "",
+          password: "",
+          roleId: editUser?.userRoleId || "",
+        }
+      : {};
 
-    setInitialValues({
-      firstName: isEditingUser ? editUser?.userFirstName || "" : "",
-      lastName: isEditingUser ? editUser?.userLastName || "" : "",
-      email: isEditingUser ? editUser?.userEmail || "" : "",
-      password: "",
-      roleId: isEditingUser ? editUser?.userRoleId || "" : "",
-    });
-  }, [isEditingUser, editUser, location.pathname]);
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema: validationSchemaPayment,
-    onSubmit: onSubmitCallback,
-  });
-
-  return formik;
+  return useUserFormBase(onSubmitCallback, initialData);
 }
 
 export default useUserEditForm;

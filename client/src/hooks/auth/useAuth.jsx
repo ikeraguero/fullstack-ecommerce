@@ -26,7 +26,8 @@ function useAuth() {
   }
 
   function updateUserProfile(username, firstName, lastName, email) {
-    dispatch(updateUserData(username, firstName, lastName, email));
+    const userData = { username, firstName, lastName, email };
+    dispatch(updateUserData(userData));
   }
 
   return {

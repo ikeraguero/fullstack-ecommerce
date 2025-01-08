@@ -7,9 +7,10 @@ import { useEffect } from "react";
 import useUserForm from "@hooks/user/useUserForm";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
-  const { userFormState } = useUserForm();
-  const { isEditingUser, editUser, isAddingUser } = userFormState;
+  const { isEditingUser, editUser, isAddingUser } = useUserForm();
   const { reset } = useUserForm();
+
+  console.log(editUser);
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
@@ -38,12 +39,13 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       roleId: Number(values.roleId),
     };
 
-    if (userFormState.isEditingUser) {
+    if (isEditingUser) {
       onEdit(userRequest);
-    } else {
-      onAdd(userRequest);
+      reset();
+      return;
     }
 
+    onAdd(userRequest);
     reset();
   }
 

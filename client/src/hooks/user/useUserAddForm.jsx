@@ -1,34 +1,7 @@
-import { useFormik } from "formik";
-import { validationSchemaPayment } from "../../schemas/validationSchema";
-import { useState, useEffect } from "react";
+import useUserFormBase from "./useUserFormBase";
 
-function useUsersForm(onSubmitCallback) {
-  const [initialValues, setInitialValues] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    roleId: "",
-  });
-
-  useEffect(() => {
-    setInitialValues({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      roleId: 1,
-    });
-  }, []);
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema: validationSchemaPayment,
-    onSubmit: onSubmitCallback,
-  });
-
-  return formik;
+function useUserAddForm(onSubmitCallback) {
+  return useUserFormBase(onSubmitCallback);
 }
 
-export default useUsersForm;
+export default useUserAddForm;

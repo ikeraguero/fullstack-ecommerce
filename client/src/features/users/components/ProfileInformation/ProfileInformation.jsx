@@ -25,8 +25,10 @@ function ProfileInformation() {
       password: "",
       roleId: Number(values.roleId),
     };
+    console.log(userRequest);
     await updateUser(userRequest);
     const username = firstName + " " + lastName;
+    console.log(username, firstName, lastName, email);
     updateUserProfile(username, firstName, lastName, email);
     setIsEditingProfile(false);
   }

@@ -1,43 +1,21 @@
-import { useFormik } from "formik";
-import { useState, useEffect } from "react";
-import { validationSchemaProduct } from "../../schemas/validationSchema";
+import useProductFormBase from "./useProductFormBase";
 import useProductForm from "./useProductForm";
 
 function useProductEditForm(onSubmitCallback) {
   const { isEditingProduct, editProduct } = useProductForm();
 
-  const [initialValues, setInitialValues] = useState({
-    productName: "",
-    productPrice: "",
-    productStockQuantity: "",
-    productCategory: "",
-    productDescription: "",
-    productImage: "",
-  });
+  const initialData = isEditingProduct
+    ? {
+        productName: editProduct?.name || "",
+        productPrice: editProduct?.price || "",
+        productStockQuantity: editProduct?.stockQuantity || "",
+        productCategory: editProduct?.categoryId || 1,
+        productDescription: editProduct?.productDescription || "",
+        productImage: editProduct?.image || "",
+      }
+    : {};
 
-  useEffect(() => {
-    setInitialValues({
-      productName: isEditingProduct ? editProduct?.name || "" : "",
-      productPrice: isEditingProduct ? editProduct?.price || "" : "",
-      productStockQuantity: isEditingProduct
-        ? editProduct?.stockQuantity || ""
-        : "",
-      productCategory: isEditingProduct ? editProduct?.categoryId || "" : "",
-      productDescription: isEditingProduct
-        ? editProduct?.productDescription || ""
-        : "",
-      productImage: "",
-    });
-  }, [isEditingProduct, editProduct]);
-
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema: validationSchemaProduct,
-    onSubmit: onSubmitCallback,
-  });
-
-  return formik;
+  return useProductFormBase(onSubmitCallback, initialData);
 }
 
 export default useProductEditForm;

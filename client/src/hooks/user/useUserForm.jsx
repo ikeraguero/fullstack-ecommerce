@@ -4,6 +4,8 @@ import { openEdit, resetForm, toggleAdd } from "../../reducers/userFormSlice";
 function useUserForm() {
   const dispatch = useDispatch();
   const userFormState = useSelector((state) => state.userForm);
+  const isEditingUser = useSelector((state) => state.userForm.isEditingUser);
+  const isAddingUser = useSelector((state) => state.userForm.isAddingUser);
   const editUser = useSelector((state) => state.userForm.editUser);
   const users = useSelector((state) => state.userForm.users);
 
@@ -26,6 +28,8 @@ function useUserForm() {
     editUserOpen,
     reset,
     editUser,
+    isAddingUser,
+    isEditingUser,
   };
 }
 
