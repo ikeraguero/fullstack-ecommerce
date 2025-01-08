@@ -4,9 +4,12 @@ import com.shoppingsystem.shopping_system.cart.dto.CartItemResponse;
 import com.shoppingsystem.shopping_system.cart.dto.CartResponse;
 import com.shoppingsystem.shopping_system.cart.model.Cart;
 import com.shoppingsystem.shopping_system.cart.model.CartItem;
+import com.shoppingsystem.shopping_system.cart.repository.CartItemRepository;
 import com.shoppingsystem.shopping_system.cart.repository.CartRepository;
 import com.shoppingsystem.shopping_system.product.model.Product;
 import com.shoppingsystem.shopping_system.product.model.ProductImage;
+import com.shoppingsystem.shopping_system.product.repository.ProductImageRepository;
+import com.shoppingsystem.shopping_system.product.repository.ProductRepository;
 import com.shoppingsystem.shopping_system.product.service.ProductImageService;
 import com.shoppingsystem.shopping_system.product.service.ProductService;
 import com.shoppingsystem.shopping_system.user.model.User;
@@ -14,9 +17,8 @@ import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -32,6 +34,16 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
 
     @Autowired
     private UserService userService;
@@ -60,14 +72,35 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
-    private List<CartItemResponse> getCartItemsForCart(Cart cart) {
-        List<CartItem> cartItems = cartItemService.findByCartId(cart.getId());
+    public List<CartItemResponse> getCartItemsForCart(Cart cart) {
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        List<Long> productIds = cartItems.stream()
+                .map(cartItem -> cartItem.getProduct().getId())
+                .distinct()
+                .toList();
+
+        List<Product> products = productRepository.findByIds(productIds);
+
+        Map<Long, Product> productMap = products.stream()
+                .collect(Collectors.toMap(Product::getId, product -> product));
+
+        List<Long> imageIds = products.stream()
+                .map(Product::getImageId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+
+        List<ProductImage> productImages = productImageRepository.findByIds(imageIds);
+
+        Map<Long, ProductImage> imageMap = productImages.stream()
+                .collect(Collectors.toMap(ProductImage::getId, image -> image));
+
         List<CartItemResponse> cartItemResponseList = new LinkedList<>();
 
-        for(CartItem cartItem : cartItems) {
-            Product product = productService.findByIdEntity(cartItem.getProduct().getId());
-
-            ProductImage productImage = productImageService.findByIdEntity(product.getImageId());
+        for (CartItem cartItem : cartItems) {
+            Product product = productMap.get(cartItem.getProduct().getId());
+            ProductImage productImage = product != null ? imageMap.get(product.getImageId()) : null;
 
             CartItemResponse cartItemResponse = new CartItemResponse(
                     cartItem.getCartItemId(),
@@ -77,11 +110,13 @@ public class CartServiceImpl implements CartService {
                     product.getCategory().getName(),
                     cartItem.getQuantity(),
                     cartItem.getPrice(),
-                    productImage.getImageData(),
-                    productImage.getType());
+                    productImage != null ? productImage.getImageData() : null,
+                    productImage != null ? productImage.getType() : null
+            );
 
             cartItemResponseList.add(cartItemResponse);
         }
+
         return cartItemResponseList;
     }
 
@@ -104,4 +139,6 @@ public class CartServiceImpl implements CartService {
         }
         return cartRepository.save(cart);
     }
+
+
 }

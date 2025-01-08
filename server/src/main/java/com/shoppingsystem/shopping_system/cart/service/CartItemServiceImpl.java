@@ -88,12 +88,6 @@ public class CartItemServiceImpl implements CartItemService {
         return cartItemRepository.findCartItemsByUser(userId);
     }
 
-    @Transactional
-    @Override
-    public void deleteCartItemsByUserId(Long userId) {
-        cartItemRepository.deleteCartItemsByUserId(userId);
-    }
-
     @Override
     public List<CartItem> findByCartId(Long cartId) {
         return cartItemRepository.findByCartId(cartId);
@@ -151,6 +145,12 @@ public class CartItemServiceImpl implements CartItemService {
 
         cartItem.setQuantity(cartItemRequest.getQuantity());
         return convertToDTO(cartItemRepository.save(cartItem));
+    }
+
+    @Transactional
+    @Override
+    public void deleteCartItemsByUserId(Long userId) {
+        cartItemRepository.deleteByUserId(userId);
     }
 
 

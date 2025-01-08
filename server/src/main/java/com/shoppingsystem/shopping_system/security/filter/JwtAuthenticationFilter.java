@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     break;
                 }
             }
-        }
 
         if(token != null) {
             String email = jwtUtil.extractEmail(token);

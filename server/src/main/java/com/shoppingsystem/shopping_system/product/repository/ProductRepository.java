@@ -14,7 +14,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p JOIN Category c ON p.category.id = c.id WHERE c.name LIKE %:categoryName%")
     List<Product> findProductsByCategory(@Param("categoryName") String categoryName);
-    
+
     @Query("SELECT p FROM Product p WHERE p.name LIKE %:query%")
     List<Product> searchProducts(@Param("query") String query);
 
