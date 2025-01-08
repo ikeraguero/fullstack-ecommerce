@@ -3,6 +3,7 @@ import {
   openEditProduct,
   resetProductForm,
   toggleAddProduct,
+  toggleDeleteProduct,
 } from "../../reducers/productFormSlice";
 
 function useProductForm() {
@@ -14,11 +15,21 @@ function useProductForm() {
   const isAddingProduct = useSelector(
     (state) => state.productForm.isAddingProduct
   );
+  const isDeletingProduct = useSelector(
+    (state) => state.productForm.isDeletingProduct
+  );
+  const deleteProductId = useSelector(
+    (state) => state.productForm.deleteProductId
+  );
   const editProduct = useSelector((state) => state.productForm.editProduct);
   const products = useSelector((state) => state.productForm.products);
 
   function toggleAddProductForm() {
     dispatch(toggleAddProduct());
+  }
+
+  function toggleDeleteProductForm(itemId) {
+    dispatch(toggleDeleteProduct(itemId));
   }
 
   function reset() {
@@ -32,12 +43,15 @@ function useProductForm() {
   return {
     productFormState,
     isEditingProduct,
+    isDeletingProduct,
     editProduct,
     isAddingProduct,
     products,
     toggleAddProductForm,
     reset,
     editProductOpen,
+    deleteProductId,
+    toggleDeleteProductForm,
   };
 }
 

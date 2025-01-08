@@ -7,9 +7,16 @@ import { useUserActions } from "@hooks/user/useUserActions";
 import useUserForm from "@hooks/user/useUserForm";
 
 function UserDashboard() {
-  const { userFormState } = useUserForm();
-  const { isAddingUser, isEditingUser, editUser } = userFormState;
+  const {
+    isAddingUser,
+    isEditingUser,
+    editUser,
+    deleteUserId,
+    toggleDeleteUserForm,
+    isDeletingUser,
+  } = useUserForm();
 
+  console.log(isDeletingUser);
   const formRef = useRef();
   const isUsersFormOpen = isAddingUser || isEditingUser;
 
@@ -47,6 +54,14 @@ function UserDashboard() {
     }
   }
 
+  function handleDelete() {
+    userDashboard.handleRemove(deleteUserId);
+  }
+
+  function handleCancel() {
+    toggleDeleteUserForm();
+  }
+
   // useEffect(() => {
   //   if (
   //     usersResponse &&
@@ -68,6 +83,21 @@ function UserDashboard() {
 
   return (
     <>
+      <div
+        className={isDeletingUser ? styles.confirmationModal : styles.hidden}
+      >
+        <h1 className={styles.confirmationTitle}>
+          Are you sure you want to delete this item?
+        </h1>
+        <div className={styles.confirmationButtons}>
+          <button className={styles.confirmationButton} onClick={handleCancel}>
+            Back
+          </button>
+          <button className={styles.confirmationButton} onClick={handleDelete}>
+            Confirm
+          </button>
+        </div>
+      </div>
       <DashboardItem
         title="Users"
         data={userDashboard.data}

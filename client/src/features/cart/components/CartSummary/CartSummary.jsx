@@ -21,7 +21,7 @@ function CartSummary({ itemsLength, totalPrice, handleCreateOrder }) {
           <div className="cartItemName">
             <h2>TOTAL PRICE</h2>
           </div>
-          <div className="cartItemPrice">R${totalPrice}</div>
+          <div className="cartItemPrice">${totalPrice}</div>
         </div>
         <button className={styles.checkoutButton} onClick={handleCreateOrder}>
           CHECKOUT

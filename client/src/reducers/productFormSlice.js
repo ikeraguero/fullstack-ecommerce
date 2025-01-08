@@ -5,6 +5,8 @@ const initialState = {
   image: null,
   isAddingProduct: false,
   isEditingProduct: false,
+  isDeletingProduct: false,
+  deleteProductId: null,
   editProduct: null,
   productName: null,
   productPrice: null,
@@ -22,6 +24,10 @@ const productFormSlice = createSlice({
     },
     toggleAddProduct: (state) => {
       state.isAddingProduct = !state.isAddingProduct;
+    },
+    toggleDeleteProduct: (state, action) => {
+      state.isDeletingProduct = !state.isDeletingProduct;
+      state.deleteProductId = action.payload;
     },
     setImage: (state, action) => {
       state.image = action.payload;
@@ -69,6 +75,7 @@ export const {
   loadProducts,
   toggleAddProduct,
   setImage,
+  toggleDeleteProduct,
   openEditProduct,
   closeEditProduct,
   changeProductName,

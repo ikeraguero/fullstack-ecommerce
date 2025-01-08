@@ -3,13 +3,19 @@ import useProductForm from "@hooks/products/useProductForm";
 import useUserForm from "@hooks/user/useUserForm";
 
 function Item({ item, handleOpenForm, onRemove, itemType }) {
-  const { editProductOpen } = useProductForm();
-  const { editUserOpen } = useUserForm();
-  const handleEdit = () => {
+  const { editProductOpen, toggleDeleteProductForm } = useProductForm();
+  const { editUserOpen, toggleDeleteUserForm } = useUserForm();
+  function handleEdit() {
     handleOpenForm("openEdit", item);
 
     itemType === "product" ? editProductOpen(item) : editUserOpen(item);
-  };
+  }
+
+  function handleDelete(itemId) {
+    itemType === "product"
+      ? toggleDeleteProductForm(itemId)
+      : toggleDeleteUserForm(itemId);
+  }
 
   return (
     <li className={styles.itemLine}>
@@ -18,7 +24,7 @@ function Item({ item, handleOpenForm, onRemove, itemType }) {
       </div>
       {itemType === "product" ? (
         <>
-          <div className={styles.itemPrice}>R${item.price}</div>
+          <div className={styles.itemPrice}>${item.price}</div>
           <div className={styles.itemCategory}>{item.categoryName}</div>
           <div className={styles.itemStockQuantity}>
             {item.stockQuantity} units
@@ -34,7 +40,7 @@ function Item({ item, handleOpenForm, onRemove, itemType }) {
       <div className={styles.itemButtons}>
         <button
           className={styles.removeButton}
-          onClick={() => onRemove(item.id)}
+          onClick={() => handleDelete(item.id)}
         >
           <ion-icon name="trash-outline"></ion-icon>
         </button>

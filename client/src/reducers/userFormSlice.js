@@ -1,10 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   users: [],
   image: {},
   isAddingUser: false,
   isEditingUser: false,
+  isDeletingUser: false,
+  deleteUserId: false,
   editUser: null,
   userFirstName: null,
   userLastName: null,
@@ -15,7 +17,7 @@ const initialState = {
 };
 
 const userFormSlice = createSlice({
-  name: 'userForm',
+  name: "userForm",
   initialState,
   reducers: {
     loadUsers(state, action) {
@@ -25,7 +27,12 @@ const userFormSlice = createSlice({
     toggleAdd(state) {
       state.isAddingUser = !state.isAddingUser;
     },
-
+    toggleDeleteUser: (state, action) => {
+      console.log(action.payload);
+      console.log(!state.isDeletingUser);
+      state.isDeletingUser = !state.isDeletingUser;
+      state.deleteUserId = action.payload;
+    },
     openEdit(state, action) {
       const user = action.payload;
       state.isAddingUser = false;
@@ -36,7 +43,7 @@ const userFormSlice = createSlice({
       state.userEmail = user.userEmail;
       state.userRole = user.userRoleId;
       state.userStatus = user.userStatus;
-      state.userPassword = ''; 
+      state.userPassword = "";
     },
     closeEdit(state) {
       state.isEditingUser = false;
@@ -82,7 +89,7 @@ export const {
   changeRole,
   changePassword,
   resetForm,
+  toggleDeleteUser,
 } = userFormSlice.actions;
-
 
 export default userFormSlice.reducer;

@@ -83,7 +83,7 @@ function CartItem({
           onClick={() => handleQuantityUpdate("increase")}
         ></ion-icon>
       </div>
-      <div className={styles.totalPrice}>R${localQuantity * price}</div>
+      <div className={styles.totalPrice}>${localQuantity * price}</div>
       <div className={styles.cartItemRemove}>
         <ion-icon name="close-circle-outline" onClick={handleDelete}></ion-icon>
       </div>

@@ -45,7 +45,7 @@ export function useDeleteUsers() {
   const { refetch } = useUsers();
   const [userIdRemove, setUserIdRemove] = useState();
   const dispatch = useDispatch();
-  const users = useUserForm();
+  const { users, toggleDeleteUserForm } = useUserForm();
   return useApiMutation(
     (userId) => {
       setUserIdRemove(userId);
@@ -54,6 +54,7 @@ export function useDeleteUsers() {
     "users",
     () => {
       refetch();
+      toggleDeleteUserForm(null);
       dispatch(loadUsers(users.filter((user) => user.id !== userIdRemove)));
     },
     (error) => {

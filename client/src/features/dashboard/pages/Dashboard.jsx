@@ -9,18 +9,20 @@ import useUserForm from "@hooks/user/useUserForm";
 import useProductForm from "@hooks/products/useProductForm";
 
 function Dashboard({ requiredRole }) {
-  const { userFormState } = useUserForm();
   const { role } = useAuth();
-  const { isAddingUser, isEditingUser } = userFormState;
-  const { isAddingProduct, isEditingProduct } = useProductForm();
+  const { isAddingUser, isEditingUser, isDeletingUser } = useUserForm();
+  const { isAddingProduct, isEditingProduct, isDeletingProduct } =
+    useProductForm();
   const isUsersFormOpen = isEditingUser || isAddingUser;
   const isProductFormOpen = isAddingProduct || isEditingProduct;
+  const isDeleting = isDeletingUser || isDeletingProduct;
+  console.log(isDeletingUser, isDeletingProduct);
   const isAuthorized = role === requiredRole;
 
   return isAuthorized ? (
     <>
       <Main>
-        {(isProductFormOpen || isUsersFormOpen) && (
+        {(isProductFormOpen || isUsersFormOpen || isDeleting) && (
           <div className={styles.overlay} />
         )}
         <h1>Dashboard</h1>

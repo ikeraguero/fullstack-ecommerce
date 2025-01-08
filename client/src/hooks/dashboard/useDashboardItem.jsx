@@ -4,7 +4,6 @@ function useDashboardItem(initialData, actions) {
   const { create, edit: update, remove, refetch } = actions;
   const [data, setData] = useState([]);
 
-
   useEffect(function () {
     if (initialData && initialData.length > 0) {
       setData(initialData);

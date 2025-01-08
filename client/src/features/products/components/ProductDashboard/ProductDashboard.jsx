@@ -9,7 +9,14 @@ import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import useProductForm from "@hooks/products/useProductForm";
 
 function ProductDashboard() {
-  const { isAddingProduct, isEditingProduct, editProduct } = useProductForm();
+  const {
+    isAddingProduct,
+    isEditingProduct,
+    editProduct,
+    isDeletingProduct,
+    toggleDeleteProductForm,
+    deleteProductId,
+  } = useProductForm();
 
   const formRef = useRef();
   const isProductFormOpen = isAddingProduct || isEditingProduct;
@@ -59,6 +66,14 @@ function ProductDashboard() {
     productDashboardActions
   );
 
+  function handleDelete() {
+    productDashboard.handleRemove(deleteProductId);
+  }
+
+  function handleCancel() {
+    toggleDeleteProductForm();
+  }
+
   useEffect(() => {
     if (!isLoading && content && currentPage > 0) {
       setPendingContent(null);
@@ -69,10 +84,23 @@ function ProductDashboard() {
     return <ErrorState error={productError} />;
   }
 
-  console.log(isAddingProduct, isEditingProduct);
-
   return (
     <>
+      <div
+        className={isDeletingProduct ? styles.confirmationModal : styles.hidden}
+      >
+        <h1 className={styles.confirmationTitle}>
+          Are you sure you want to delete this item?
+        </h1>
+        <div className={styles.confirmationButtons}>
+          <button className={styles.confirmationButton} onClick={handleCancel}>
+            Back
+          </button>
+          <button className={styles.confirmationButton} onClick={handleDelete}>
+            Confirm
+          </button>
+        </div>
+      </div>
       <DashboardItem
         title="Products"
         data={productDashboard.data}

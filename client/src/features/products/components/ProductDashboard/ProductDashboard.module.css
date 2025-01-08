@@ -28,10 +28,82 @@
   color: #fff;
 }
 
+.confirmationModal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  border-radius: 0.4rem;
+  padding: 3.2rem;
+  width: 50%;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.confirmationButtons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.confirmationButton {
+  width: 5.2rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: #f42b56;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.confirmationButton:hover {
+  background-color: #fd466d;
+}
+
+.confirmationTitle {
+  font-size: 1.4rem;
+}
+
 .paginationButton:hover ion-icon {
   color: #fff;
 }
 
 .hidden {
   visibility: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
 }

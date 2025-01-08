@@ -112,6 +112,7 @@ export function useCreateProduct() {
 
 export function useRemoveProduct() {
   const dispatch = useDispatch();
+  const { toggleDeleteProductForm } = useProductForm();
   const { products } = useProductForm();
   return useApiMutation(
     (productId) => removeProduct(productId),
@@ -120,6 +121,7 @@ export function useRemoveProduct() {
       dispatch(
         loadProducts(products.filter((product) => product.id !== productId))
       );
+      toggleDeleteProductForm(null);
     },
     (error) => console.error("Error removing product:", error.message)
   );
