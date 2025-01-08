@@ -14,11 +14,13 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
   console.log(username);
+  console.log(loadedCategories);
 
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
     }
+    console.log(categories);
   }, [categories]);
 
   function handleOpenBottom() {

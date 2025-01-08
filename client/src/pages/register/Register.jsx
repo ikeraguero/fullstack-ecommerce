@@ -32,6 +32,7 @@ function Register() {
       setError("An error ocurred. Please try again");
       console.log(error);
     }
+    setIsLoading(false);
   }
 
   return (

@@ -12,6 +12,11 @@ export function AlertProvider({ children }) {
     }, 4000);
   };
 
+  function displayError(message) {
+    setErrorMessage(message);
+    openError();
+  }
+
   return (
     <AlertContext.Provider
       value={{
@@ -20,6 +25,7 @@ export function AlertProvider({ children }) {
         openError,
         setErrorMessage,
         errorMessage,
+        displayError,
       }}
     >
       {children}

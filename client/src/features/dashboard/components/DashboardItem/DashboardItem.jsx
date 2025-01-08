@@ -44,10 +44,7 @@ function DashboardItem({
   return (
     <div className={styles.addProductContainer}>
       <h2>{titleCapitalized}</h2>
-      <span
-        className={styles.openAddProductButton}
-        onClick={handleOpenForm}
-      >
+      <span className={styles.openAddProductButton} onClick={handleOpenForm}>
         Add {titleCapitalized.slice(0, titleCapitalized.length - 1)} +
       </span>
       <div className={isFormOpen ? styles.form : styles.hide}>

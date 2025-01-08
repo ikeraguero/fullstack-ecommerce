@@ -22,6 +22,7 @@ function App() {
   const [searchProducts, setSearchProducts] = useState([]);
 
   const { data: categories } = useCategories();
+  console.log(categories);
   const { cart, error, refetch, isLoading } = useCartData();
 
   const location = useLocation();

@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import CartItem from "@features/cart/components/CartItem/CartItem";
 import CartSummary from "@features/cart/components/CartSummary/CartSummary";
-import ErrorAlert from "@features/shared/components/ErrorAlert/ErrorAlert";
 import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
 import useCartData from "@hooks/cart/useCartData";
 import useAuth from "@hooks/auth/useAuth";
 import { useCheckout } from "@context/CheckoutContext";
+import { useAlert } from "@context/AlertContext";
 
 function Cart({ openError }) {
   const { updateCheckoutState } = useCheckout();
@@ -16,6 +16,7 @@ function Cart({ openError }) {
   const { userId, isLoggedIn } = useAuth();
   const { cart, refetch } = useCartData();
 
+  const { displayError } = useAlert();
   const { id, cartItems } = cart;
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -62,8 +63,7 @@ function Cart({ openError }) {
 
   async function handleCreateOrder() {
     if (itemsLength === 0) {
-      <ErrorAlert />;
-      openError();
+      displayError("Your cart is currently empty");
       return;
     }
     try {

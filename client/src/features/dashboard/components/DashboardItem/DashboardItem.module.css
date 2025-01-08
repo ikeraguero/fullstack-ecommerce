@@ -1,6 +1,7 @@
 .addProductContainer {
   display: flex;
   flex-direction: column;
+  position: relative;
   gap: 1.4rem;
   width: 100%;
   margin-bottom: 3.5rem;
@@ -15,12 +16,20 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 90%;
   gap: 1.6rem;
   background-color: #fafafa;
   padding: 1.2rem 3.2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 200;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-bottom: 4.6rem;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .hide {
@@ -32,4 +41,26 @@
   font-size: 1.4rem;
   display: flex;
   justify-content: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
 }
