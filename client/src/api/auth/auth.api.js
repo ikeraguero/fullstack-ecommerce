@@ -21,7 +21,6 @@ async function loginUser(data) {
 
 async function registerUser(data) {
   try {
-    console.log(data);
     const res = await apiClientAuth.post("/register", data);
     return res.data;
   } catch (error) {
@@ -64,7 +63,6 @@ export function useRegisterUser() {
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN" || null) {
-      console.log("oi");
       const { firstName, lastName, email, role, id } = data;
       const username = `${firstName} ${lastName}`;
       login(username, role, id, email, firstName, lastName);
@@ -120,7 +118,6 @@ export function useLogoutUser() {
   const { logout } = useAuth();
 
   function handleSuccess() {
-    console.log("aaaaaa");
     logout();
   }
 
