@@ -11,7 +11,7 @@ export default function useApiMutation(
     mutationFn: apiFn,
     onSuccess: (data) => {
       if (queryKey) {
-        queryClient.invalidateQueries([queryKey]);
+        queryClient.invalidateQueries({ queryKey: [queryKey], exact: false });
       }
       if (onSuccessCallback) {
         onSuccessCallback(data);

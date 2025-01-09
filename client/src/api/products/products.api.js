@@ -1,13 +1,13 @@
-import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { loadProducts } from "../../actions/productFormActions";
 import useAuth from "@hooks/auth/useAuth";
-import useProductForm from "@hooks/products/useProductForm";
+import { useProductForm } from "@context/useProductFormContext";
 
 async function updateProduct(data) {
+  data.forEach((key, value) => console.log(key, value));
+  console.log(data);
   try {
     const res = await apiClient.put(`/products`, data, {
       headers: {
@@ -111,17 +111,12 @@ export function useCreateProduct() {
 }
 
 export function useRemoveProduct() {
-  const dispatch = useDispatch();
-  const { toggleDeleteProductForm } = useProductForm();
-  const { products } = useProductForm();
+  const { toggleDeleteProduct } = useProductForm();
   return useApiMutation(
     (productId) => removeProduct(productId),
     "products",
-    (productId) => {
-      dispatch(
-        loadProducts(products.filter((product) => product.id !== productId))
-      );
-      toggleDeleteProductForm(null);
+    () => {
+      toggleDeleteProduct(null);
     },
     (error) => console.error("Error removing product:", error.message)
   );

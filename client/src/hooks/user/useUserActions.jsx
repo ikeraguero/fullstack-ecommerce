@@ -1,7 +1,7 @@
 import { useDeleteUsers, useUpdateUser } from "../../api/users/user.api";
 import { useRegisterUser } from "../../api/auth/auth.api";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUserForm, toggleAddUser } from "../../actions/userFormActions";
+import { resetForm, toggleAdd } from "../../slices/userFormSlice";
 
 export function useUserActions(editUser, refetch) {
   const loggedUserId = useSelector((state) => state.auth.id);
@@ -13,17 +13,16 @@ export function useUserActions(editUser, refetch) {
   function create(userData) {
     registerUser(userData, {
       onSuccess: () => {
-        dispatch(toggleAddUser());
+        dispatch(toggleAdd());
         refetch();
       },
     });
   }
 
   function update(userData) {
-
     updateUser(userData, {
       onSuccess: () => {
-        dispatch(resetUserForm());
+        dispatch(resetForm());
         refetch();
       },
     });
@@ -32,7 +31,7 @@ export function useUserActions(editUser, refetch) {
   function remove(userId) {
     if (userId === loggedUserId) return alert("Can't remove logged user");
     deleteUser(userId, {
-      onSuccess: refetch,
+      onSuccess: refetch(),
     });
   }
 

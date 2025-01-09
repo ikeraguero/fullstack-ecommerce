@@ -6,13 +6,13 @@ import useProductAddForm from "@hooks/products/useProductAddForm";
 import useProductEditForm from "@hooks/products/useProductEditForm";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
-import useProductForm from "@hooks/products/useProductForm";
+import { useProductForm } from "@context/useProductFormContext";
 
 function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
   const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
-  const { isEditingProduct, editProduct, isAddingProduct } = useProductForm();
-  const { reset } = useProductForm();
+  const { isEditingProduct, editProduct, isAddingProduct, resetProductForm } =
+    useProductForm();
 
   const productAddForm = useProductAddForm((e) => handleSendData(e));
   const productEditForm = useProductEditForm((e) => handleSendData(e));
@@ -36,10 +36,11 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       name: values.productName,
       price: Number(values.productPrice),
       stockQuantity: Number(values.productStockQuantity),
-      categoryId: 1,
+      categoryId: Number(values.productCategory),
       categoryName: "TESTE",
       productDescription: values.productDescription,
     };
+    console.log(productRequest);
 
     formData.append(
       "product",
@@ -53,11 +54,11 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
     const submitFunction = isEditingProduct ? onEdit : onAdd;
     submitFunction(formData);
 
-    reset();
+    resetProductForm();
   }
 
   function handleCloseForm() {
-    reset();
+    resetProductForm();
     handleClearForm();
   }
 

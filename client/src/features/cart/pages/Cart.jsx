@@ -10,7 +10,7 @@ import useAuth from "@hooks/auth/useAuth";
 import { useCheckout } from "@context/CheckoutContext";
 import { useAlert } from "@context/AlertContext";
 
-function Cart({ openError }) {
+function Cart() {
   const { updateCheckoutState } = useCheckout();
 
   const { userId, isLoggedIn } = useAuth();
@@ -73,8 +73,7 @@ function Cart({ openError }) {
       updateCheckoutState("order", orderData);
       navigate(`/checkout/${orderId}`, { replace: true });
     } catch (error) {
-      openError();
-      console.log("Error creating order: ", error);
+      displayError("Error creating order: ", error);
     }
   }
 

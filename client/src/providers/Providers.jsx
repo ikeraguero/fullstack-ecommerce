@@ -6,6 +6,8 @@ import store from "../store/store";
 import QueryDevtools from "../features/shared/components/QueryDevtools/QueryDevtools";
 import { SuccessProvider } from "../context/SuccessContext";
 import { CheckoutProvider } from "@context/CheckoutContext";
+import { UserFormProvider } from "@context/useUserFormContext";
+import { ProductFormProvider } from "@context/useProductFormContext";
 
 export const queryClient = new QueryClient();
 
@@ -15,14 +17,18 @@ const AppProviders = ({ children }) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <CheckoutProvider>
-        <SuccessProvider>
-          <AlertProvider>
-            <BrowserRouter>
-              {children}
-              <QueryDevtools />
-            </BrowserRouter>
-          </AlertProvider>
-        </SuccessProvider>
+        <UserFormProvider>
+          <ProductFormProvider>
+            <SuccessProvider>
+              <AlertProvider>
+                <BrowserRouter>
+                  {children}
+                  <QueryDevtools />
+                </BrowserRouter>
+              </AlertProvider>
+            </SuccessProvider>
+          </ProductFormProvider>
+        </UserFormProvider>
       </CheckoutProvider>
     </QueryClientProvider>
   </Provider>

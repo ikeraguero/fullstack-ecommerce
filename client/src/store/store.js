@@ -1,8 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "../reducers";
+import authSlice from "../slices/authSlice";
+import productFormSlice from "../slices/productFormSlice";
+import userFormSlice from "../slices/userFormSlice";
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    auth: authSlice,
+    userForm: userFormSlice,
+    productForm: productFormSlice,
+  },
 });
 
 export default store;

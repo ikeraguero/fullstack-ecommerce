@@ -4,7 +4,7 @@ import {
   resetProductForm,
   toggleAddProduct,
   toggleDeleteProduct,
-} from "../../reducers/productFormSlice";
+} from "../../slices/productFormSlice";
 
 function useProductForm() {
   const dispatch = useDispatch();

@@ -3,8 +3,9 @@ import ProductsList from "@features/products/components/ProductsList/ProductsLis
 import ProductForm from "@features/products/components/ProductForm/ProductForm";
 import UserList from "@features/users/components/UserList/UserList";
 import UserForm from "@features/users/components/UserForm/UserForm";
-import useUserForm from "@hooks/user/useUserForm";
-import useProductForm from "@hooks/products/useProductForm";
+
+import { useProductForm } from "@context/useProductFormContext";
+import { useUserForm } from "@context/useUserFormContext";
 
 const formComponents = {
   Products: ProductForm,
@@ -25,18 +26,20 @@ function DashboardItem({
   formRef,
   isFormOpen,
 }) {
-  const { toggleAddProductForm } = useProductForm();
-  const { toggleAddUserForm } = useUserForm();
+  const { toggleAddProduct } = useProductForm();
+  const { toggleAddUser } = useUserForm();
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
 
   function handleOpenForm(payload) {
     if (title === "Products") {
       console.log("a");
-      toggleAddProductForm();
+      toggleAddProduct();
       return;
     }
-    toggleAddUserForm(payload);
+    toggleAddUser(payload);
   }
+
+  console.log(data);
 
   const FormComponent = formComponents[title];
   const ListComponent = listComponents[title];

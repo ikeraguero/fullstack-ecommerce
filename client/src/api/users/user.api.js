@@ -1,11 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
 
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { loadUsers } from "../../actions/userFormActions";
-import useUserForm from "@hooks/user/useUserForm";
+import { useUserForm } from "@context/useUserFormContext";
 
 async function updateUser(data) {
   try {
@@ -42,20 +39,14 @@ async function deleteUser(userId) {
 }
 
 export function useDeleteUsers() {
-  const { refetch } = useUsers();
-  const [userIdRemove, setUserIdRemove] = useState();
-  const dispatch = useDispatch();
-  const { users, toggleDeleteUserForm } = useUserForm();
+  const { toggleDeleteUser } = useUserForm();
   return useApiMutation(
     (userId) => {
-      setUserIdRemove(userId);
       deleteUser(userId);
     },
     "users",
     () => {
-      refetch();
-      toggleDeleteUserForm(null);
-      dispatch(loadUsers(users.filter((user) => user.id !== userIdRemove)));
+      toggleDeleteUser(null);
     },
     (error) => {
       console.error("Error deleting user:", error.message);

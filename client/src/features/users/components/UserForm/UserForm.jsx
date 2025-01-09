@@ -4,11 +4,11 @@ import useUserAddForm from "@hooks/user/useUserAddForm";
 import useUserEditForm from "@hooks/user/useUserEditForm";
 import styles from "./UserForm.module.css";
 import { useEffect } from "react";
-import useUserForm from "@hooks/user/useUserForm";
+import { useUserForm } from "@context/useUserFormContext";
 
 function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
-  const { isEditingUser, editUser, isAddingUser } = useUserForm();
-  const { reset } = useUserForm();
+  const { isEditingUser, editUser, isAddingUser, resetUserForm } =
+    useUserForm();
 
   console.log(editUser);
 
@@ -41,16 +41,16 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
 
     if (isEditingUser) {
       onEdit(userRequest);
-      reset();
+      resetUserForm();
       return;
     }
 
     onAdd(userRequest);
-    reset();
+    resetUserForm();
   }
 
   function handleCloseForm() {
-    reset();
+    resetUserForm();
     handleClearForm();
   }
 

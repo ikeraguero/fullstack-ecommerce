@@ -1,19 +1,13 @@
 import useCartData from "@hooks/cart/useCartData";
 import {
-  closeEditProduct,
-  toggleAddProduct,
-} from "../../actions/productFormActions";
-import {
   useCreateProduct,
   useRemoveProduct,
   useUpdateProduct,
 } from "../../api/products/products.api";
-import { useDispatch } from "react-redux";
 import { useSuccess } from "@context/SuccessContext";
 import { useAddToCart } from "@api/cart/cart.api";
 
 export function useProductActions(editProduct, refetch) {
-  const dispatch = useDispatch();
   const { displaySuccess } = useSuccess();
   const { cart } = useCartData();
   const { mutate: createProduct } = useCreateProduct();
@@ -22,27 +16,15 @@ export function useProductActions(editProduct, refetch) {
   const { mutate: addToCart } = useAddToCart();
 
   function create(sendData) {
-    createProduct(sendData, {
-      onSuccess: () => {
-        dispatch(toggleAddProduct());
-        refetch();
-      },
-    });
+    createProduct(sendData);
   }
 
   function update(sendData) {
-    updateProduct(sendData, {
-      onSuccess: () => {
-        dispatch(closeEditProduct());
-        refetch();
-      },
-    });
+    updateProduct(sendData);
   }
 
-  function remove(userId) {
-    deleteProduct(userId, {
-      onSuccess: () => refetch(),
-    });
+  function remove(productId) {
+    deleteProduct(productId);
   }
 
   async function handleAddToCart(product, quantity) {

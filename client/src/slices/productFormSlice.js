@@ -23,6 +23,7 @@ const productFormSlice = createSlice({
       state.products = action.payload;
     },
     toggleAddProduct: (state) => {
+      console.log(!state.isAddingProduct);
       state.isAddingProduct = !state.isAddingProduct;
     },
     toggleDeleteProduct: (state, action) => {

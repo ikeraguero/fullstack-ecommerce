@@ -1,5 +1,5 @@
+import { useProductForm } from "@context/useProductFormContext";
 import useProductFormBase from "./useProductFormBase";
-import useProductForm from "./useProductForm";
 
 function useProductEditForm(onSubmitCallback) {
   const { isEditingProduct, editProduct } = useProductForm();

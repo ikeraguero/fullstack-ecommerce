@@ -4,7 +4,7 @@ import {
   resetForm,
   toggleAdd,
   toggleDeleteUser,
-} from "../../reducers/userFormSlice";
+} from "../../slices/userFormSlice";
 
 function useUserForm() {
   const dispatch = useDispatch();

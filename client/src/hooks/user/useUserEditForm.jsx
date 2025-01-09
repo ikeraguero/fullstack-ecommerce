@@ -1,7 +1,7 @@
-import useUserForm from "./useUserForm";
 import useUserFormBase from "./useUserFormBase";
 import { useLocation } from "react-router-dom";
 import useAuth from "@hooks/auth/useAuth";
+import { useUserForm } from "@context/useUserFormContext";
 
 function useUserEditForm(onSubmitCallback) {
   const { isEditingUser, editUser } = useUserForm();

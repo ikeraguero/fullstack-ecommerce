@@ -3,7 +3,7 @@ import {
   loginSuccess,
   logoutSuccess,
   updateUserData,
-} from "../../reducers/authSlice";
+} from "../../slices/authSlice";
 
 function useAuth() {
   const dispatch = useDispatch();

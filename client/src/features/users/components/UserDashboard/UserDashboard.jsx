@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
 import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
-import useUserForm from "@hooks/user/useUserForm";
+import { useUserForm } from "@context/useUserFormContext";
 
 function UserDashboard() {
   const {
@@ -12,11 +12,10 @@ function UserDashboard() {
     isEditingUser,
     editUser,
     deleteUserId,
-    toggleDeleteUserForm,
+    toggleDeleteUser,
     isDeletingUser,
   } = useUserForm();
 
-  console.log(isDeletingUser);
   const formRef = useRef();
   const isUsersFormOpen = isAddingUser || isEditingUser;
 
@@ -24,33 +23,35 @@ function UserDashboard() {
   const [pageSize] = useState(10);
   const [pendingContent, setPendingContent] = useState(null);
   const {
-    data: usersResponse,
+    data: initialUsers,
     error: userError,
     isLoading,
     refetch: refetchUsers,
   } = useUsers(currentPage, pageSize);
 
+  console.log(initialUsers);
+
   const { create, update, remove } = useUserActions(editUser, refetchUsers);
 
-  const userDashboardActions = {
-    create,
-    edit: update,
-    remove,
-  };
+  const userDashboardActions = useMemo(
+    () => ({
+      create,
+      edit: update,
+      remove,
+    }),
+    [create, update, remove]
+  );
 
   function handleNext() {
-    if (usersResponse && usersResponse.hasNext) {
-      setPendingContent(usersResponse.contentNext);
-      setCurrentPage((prevPage) =>
-        Math.min(prevPage + 1, usersResponse.totalPages - 1)
-      );
+    if (initialUsers && initialUsers.hasNext) {
+      setPendingContent(contentNext);
+      setCurrentPage(currentPage + 1);
     }
   }
 
   function handlePrevious() {
-    if (usersResponse && usersResponse.hasPrevious) {
-      setPendingContent(usersResponse.contentPrevious);
-      setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+    if (initialUsers && initialUsers.hasPrevious) {
+      setCurrentPage(currentPage - 1);
     }
   }
 
@@ -59,20 +60,20 @@ function UserDashboard() {
   }
 
   function handleCancel() {
-    toggleDeleteUserForm();
+    toggleDeleteUser();
   }
 
   // useEffect(() => {
   //   if (
-  //     usersResponse &&
-  //     usersResponse.content &&
-  //     usersResponse.content.length > 0
+  //     initialUsers &&
+  //     initialUsers.content &&
+  //     initialUsers.content.length > 0
   //   ) {
-  //     dispatch(loadUsers(usersResponse.content));
+  //     dispatch(loadUsers(initialUsers.content));
   //   }
-  // }, [usersResponse, dispatch]);
+  // }, [initialUsers, dispatch]);
 
-  const { content, hasPrevious, hasNext } = usersResponse || {};
+  const { content, hasPrevious, hasNext, contentNext } = initialUsers || {};
   const displayedContent = pendingContent || content;
   const userDashboard = useDashboardItem(
     displayedContent,

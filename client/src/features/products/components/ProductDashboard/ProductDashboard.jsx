@@ -6,7 +6,7 @@ import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import useProductActions from "@hooks/products/useProductActions";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
-import useProductForm from "@hooks/products/useProductForm";
+import { useProductForm } from "@context/useProductFormContext";
 
 function ProductDashboard() {
   const {
@@ -14,7 +14,7 @@ function ProductDashboard() {
     isEditingProduct,
     editProduct,
     isDeletingProduct,
-    toggleDeleteProductForm,
+    toggleDeleteProduct,
     deleteProductId,
   } = useProductForm();
 
@@ -71,7 +71,7 @@ function ProductDashboard() {
   }
 
   function handleCancel() {
-    toggleDeleteProductForm();
+    toggleDeleteProduct();
   }
 
   useEffect(() => {

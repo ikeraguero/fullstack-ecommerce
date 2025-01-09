@@ -1,20 +1,20 @@
+import { useProductForm } from "@context/useProductFormContext";
 import styles from "./Item.module.css";
-import useProductForm from "@hooks/products/useProductForm";
-import useUserForm from "@hooks/user/useUserForm";
+import { useUserForm } from "@context/useUserFormContext";
 
 function Item({ item, handleOpenForm, onRemove, itemType }) {
-  const { editProductOpen, toggleDeleteProductForm } = useProductForm();
-  const { editUserOpen, toggleDeleteUserForm } = useUserForm();
+  const { openEditProduct, toggleDeleteProduct } = useProductForm();
+  const { openEditUser, toggleDeleteUser } = useUserForm();
   function handleEdit() {
     handleOpenForm("openEdit", item);
 
-    itemType === "product" ? editProductOpen(item) : editUserOpen(item);
+    itemType === "product" ? openEditProduct(item) : openEditUser(item);
   }
 
   function handleDelete(itemId) {
     itemType === "product"
-      ? toggleDeleteProductForm(itemId)
-      : toggleDeleteUserForm(itemId);
+      ? toggleDeleteProduct(itemId)
+      : toggleDeleteUser(itemId);
   }
 
   return (
