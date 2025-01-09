@@ -25,9 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             ">= 6", nativeQuery = true)
     List<Integer> findCategoryIdsWithAtLeast6Products();
 
-    @Query(value = "SELECT * FROM ecommerce_db.product p WHERE p.id = :categoryId ORDER BY RANDOM() " +
-            "LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM ecommerce_db.product p WHERE p.category_id = :categoryId ORDER BY RANDOM() LIMIT 5", nativeQuery = true)
     List<Product> findRandom5ByCategoryId(@Param("categoryId") int categoryId);
+
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.category.id = :categoryId")
     long countByCategoryId(@Param("categoryId") int categoryId);

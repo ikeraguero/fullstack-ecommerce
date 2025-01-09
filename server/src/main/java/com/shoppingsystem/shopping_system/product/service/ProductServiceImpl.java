@@ -155,13 +155,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Map<String, List<ProductResponse>> getRandomCategoryProducts() {
-        //todo
         //get all categories and limit to 6
         List<Category> categories = categoryRepository.findAll();
         Collections.shuffle(categories);
         List<Category> limitedCategories = categories.stream()
                 .limit(6)
                 .collect(Collectors.toList());
+
 
         //create map with categories (ids) that have 5 or more products
         Map<Integer, List<Product>> categoryProductsMap = limitedCategories.stream()
@@ -170,6 +170,7 @@ public class ProductServiceImpl implements ProductService {
                         Category::getId,
                         category -> productRepository.findRandom5ByCategoryId(category.getId())
                 ));
+
 
         //productimageids for batch query
         Set<Long> productImageIds = categoryProductsMap.values().stream()
@@ -180,6 +181,7 @@ public class ProductServiceImpl implements ProductService {
         //batch query
         Map<Long, ProductImage> productImagesMap = productImageService.findProductImagesByIds(productImageIds);
 
+        System.out.println(productImagesMap);
         return categoryProductsMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> getCategoryNameById(entry.getKey(), limitedCategories),

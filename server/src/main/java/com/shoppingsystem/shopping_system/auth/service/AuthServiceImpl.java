@@ -1,5 +1,7 @@
 package com.shoppingsystem.shopping_system.auth.service;
 
+import com.shoppingsystem.shopping_system.address.model.Address;
+import com.shoppingsystem.shopping_system.address.service.AddressService;
 import com.shoppingsystem.shopping_system.auth.dto.LoginRequest;
 import com.shoppingsystem.shopping_system.auth.dto.LoginResponse;
 import com.shoppingsystem.shopping_system.auth.dto.RegisterRequest;
@@ -37,12 +39,16 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private final RoleService roleService;
 
+    @Autowired
+    private final AddressService addressService;
+
     public AuthServiceImpl(JwtUtil jwtUtil, PasswordEncoder passwordEncoder,
-                           UserService userService, RoleService roleService) {
+                           UserService userService, RoleService roleService, AddressService addressService) {
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.roleService = roleService;
+        this.addressService = addressService;
     }
 
     @Override
@@ -60,10 +66,13 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.generateToken(email, roles);
 
         Cookie cookie = createAuthCookie(token, 3600);
+        //no headers
         response.addCookie(cookie);
 
+        Address address = addressService.findAddressByUserId(user.getId());
+
         return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
-                    user.getEmail(), user.getRole().getName());
+                    user.getEmail(), user.getRole().getName(), address);
     }
 
     private Cookie createAuthCookie(String token, int maxAge) {
@@ -130,10 +139,17 @@ public class AuthServiceImpl implements AuthService {
 
         String token = authTokenCookie.getValue();
         String email = jwtUtil.extractEmail(token);
+
         if (jwtUtil.validateToken(token, email)) {
             User user = userService.findByEmail(email);
+            Address address = addressService.findAddressByUserId(user.getId());
+
+            if(address==null) {
+                address = new Address();
+            }
+
             return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
-                    user.getEmail(), user.getRole().getName());
+                    user.getEmail(), user.getRole().getName(), address);
         }
         throw new InvalidTokenException("Invalid token");
     }

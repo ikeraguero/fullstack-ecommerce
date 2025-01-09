@@ -2,7 +2,9 @@ package com.shoppingsystem.shopping_system.address.model;
 
 import com.shoppingsystem.shopping_system.user.model.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(schema = "ecommerce_db", name = "address")
 public class Address {
