@@ -5,8 +5,8 @@ import ProductDashboard from "@features/products/components/ProductDashboard/Pro
 import UserDashboard from "@features/users/components/UserDashboard/UserDashboard";
 import Main from "@features/shared/components/Main/Main";
 import useAuth from "@hooks/auth/useAuth";
-import useUserForm from "@hooks/user/useUserForm";
 import { useProductForm } from "@context/useProductFormContext";
+import { useUserForm } from "@context/useUserFormContext";
 
 function Dashboard({ requiredRole }) {
   const { role } = useAuth();
@@ -17,10 +17,10 @@ function Dashboard({ requiredRole }) {
   const isUsersFormOpen = isEditingUser || isAddingUser;
   const isProductFormOpen = isAddingProduct || isEditingProduct;
   const isDeleting = isDeletingUser || isDeletingProduct;
-  console.log(isDeletingUser, isDeletingProduct);
   const isAuthorized = role === requiredRole;
 
   console.log(isEditingProduct, isAddingProduct);
+  console.log(isEditingUser, isAddingUser);
 
   return isAuthorized ? (
     <>

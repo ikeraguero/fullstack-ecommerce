@@ -1,6 +1,5 @@
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
-import { useProduct } from "./products.api";
 
 async function createReview(data) {
   const res = await apiClient.post("/review", data);
@@ -11,15 +10,12 @@ async function createReview(data) {
 }
 
 export function useCreateReview(id) {
-  const { refetch } = useProduct(id);
   return useApiMutation(
     (data) => {
       createReview(data);
     },
-    "products",
-    () => {
-      refetch();
-    },
+    "product",
+    null,
     (error) => console.error("Error creating review:", error.message)
   );
 }

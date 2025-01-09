@@ -25,7 +25,7 @@
 }
 
 .productPhoto {
-  width: 36.2rem;
+  max-width: 36.2rem;
   height: 28.6rem;
   z-index: -1;
   align-self: flex-start;

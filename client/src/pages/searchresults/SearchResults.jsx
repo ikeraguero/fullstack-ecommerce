@@ -24,7 +24,7 @@ function SearchResults({ searchProducts }) {
         <div className={styles.productGrid}>
           {searchProducts?.map((product) => (
             <Link
-              to={`products/${product.id}`}
+              to={`/products/${product.id}`}
               key={product.id}
               className={styles.productLink}
             >

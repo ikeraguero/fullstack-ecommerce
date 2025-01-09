@@ -29,7 +29,14 @@ const authSlice = createSlice({
       state.email = email;
     },
     logoutSuccess(state) {
-      return initialState;
+      state.isLoggedIn = false;
+      state.username = null;
+      state.token = null;
+      state.id = null;
+      state.role = null;
+      state.firstName = null;
+      state.lastName = null;
+      state.email = null;
     },
     updateUserData(state, action) {
       console.log(action.payload);

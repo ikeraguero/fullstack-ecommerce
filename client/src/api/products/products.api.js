@@ -36,6 +36,7 @@ async function createProduct(data) {
 async function fetchHomeProducts() {
   try {
     const res = await apiClient.get(`/products/featured`);
+    console.log(res);
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching products");

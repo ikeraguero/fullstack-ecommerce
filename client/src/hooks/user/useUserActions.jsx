@@ -1,10 +1,11 @@
 import { useDeleteUsers, useUpdateUser } from "../../api/users/user.api";
 import { useRegisterUser } from "../../api/auth/auth.api";
 import { useDispatch, useSelector } from "react-redux";
-import { resetForm, toggleAdd } from "../../slices/userFormSlice";
+import { useUserForm } from "@context/useUserFormContext";
 
 export function useUserActions(editUser, refetch) {
   const loggedUserId = useSelector((state) => state.auth.id);
+  const { resetForm, toggleAdd } = useUserForm();
   const dispatch = useDispatch();
   const { mutate: registerUser } = useRegisterUser();
   const { mutate: updateUser } = useUpdateUser();

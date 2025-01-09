@@ -25,7 +25,7 @@ function ProductDetails({
       <div className={styles.productDetailsTop}>
         <h3 className={styles.productCategory}>{category}</h3>
         <h1>{name}</h1>
-        <span>Rating | In stock</span>
+        <span>In stock</span>
         <h2>${price}</h2>
         <div className={styles.productDescription}>{productDescription}</div>
       </div>

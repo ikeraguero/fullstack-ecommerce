@@ -6,9 +6,11 @@ import ProfileInformation from "../components/ProfileInformation/ProfileInformat
 import OrderInformation from "@features/orders/components/OrderInformation/OrderInformation";
 import Wishlist from "@features/wishlist/components/Wishlist/Wishlist";
 import useAuth from "@hooks/auth/useAuth";
+import { useLogoutUser } from "@api/auth/auth.api";
 
 function Profile() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn } = useAuth();
+  const { mutate: logout } = useLogoutUser();
   const [active, setActive] = useState("profile");
   const navigate = useNavigate();
 

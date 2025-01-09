@@ -26,7 +26,7 @@ function Product({ refetch }) {
 
   const { handleAddToCart } = useProductActions();
   const { handleAddToWishList, handleRemoveFromWishlist } =
-    useWishlistActions();
+    useWishlistActions(refetchProduct);
   const [productReviewList, setProductReviewList] = useState([]);
   const [initialRelatedProducts, setInitialRelatedProducts] = useState(null);
   const navigate = useNavigate();
@@ -90,6 +90,8 @@ function Product({ refetch }) {
   if (error) {
     return <ErrorState error={error} retry={refetch} />;
   }
+
+  console.log(product);
 
   return (
     <div className={styles.mainContainer}>

@@ -8,6 +8,8 @@ function BestDeals({ products, message, onCategoryChange }) {
   const category = words[words.length - 1];
   const formattedMessage = words.slice(0, -1).join(" ");
 
+  console.log(products);
+
   return (
     <section className={styles.bestDeals}>
       <div className={styles.bestDealsHeader}>

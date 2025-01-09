@@ -49,11 +49,12 @@ async function deleteWishlistItem(id) {
 export function useDeleteWishlistItem() {
   return useApiMutation(
     (id) => deleteWishlistItem(id),
-    "wishlist",
+    "product",
     null,
     (error) => {
       console.error("Error deleting wishlist item:", error.message);
-    }
+    },
+    ["wishlist", "products"]
   );
 }
 
@@ -68,7 +69,7 @@ export function useWishlist() {
 export function useCreateWishlistItem() {
   return useApiMutation(
     (data) => createWishlistItem(data),
-    "wishlist",
+    "product",
     null,
     (error) => {
       console.error("Error creating wishlist item:", error.message);

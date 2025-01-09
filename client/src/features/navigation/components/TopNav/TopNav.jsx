@@ -9,7 +9,7 @@ function TopNav() {
           <div className={styles.optionIcon}>
             <ion-icon name="location-outline"></ion-icon>
           </div>
-          <div className="optionText">Deliver to zip-code </div>
+          <div className="optionText">Deliver to your zip-code </div>
         </div>
         <span>|</span>
         <div className={styles.rightSideOption}>

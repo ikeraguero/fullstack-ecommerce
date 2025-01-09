@@ -19,6 +19,7 @@ function Review({
   const [productReviewList, setProductReviewList] = useState(
     initialProductReviewList || []
   );
+  const [hasUserReviewed, setHasUserReviewed] = useState(false);
   const { mutate: createReview } = useCreateReview(id);
   const { displaySuccess } = useSuccess();
   const isFormValid = rating > 0 && comment.trim().length > 0;
@@ -49,6 +50,7 @@ function Review({
         setProductReviewList((prevReviews) => [...prevReviews, reviewObject]);
         setRating(0);
         setComment("");
+        setHasUserReviewed(true);
         onNewReview(reviewObject);
       },
       onError: (error) => {
@@ -56,6 +58,8 @@ function Review({
       },
     });
   }
+
+  console.log(canUserReview || !hasUserReviewed);
 
   return (
     <div className={styles.reviewContainer}>
@@ -92,7 +96,7 @@ function Review({
             <span>No reviews yet.</span>
           )}
         </div>
-        {canUserReview ? (
+        {canUserReview && !hasUserReviewed ? (
           <div className={styles.reviewLeftRatingAndComment}>
             <h2>Review this product</h2>
             <span>Share your thoughts with other customers</span>
@@ -130,7 +134,7 @@ function Review({
           </div>
         ) : (
           <div className={styles.reviewMessages}>
-            {!canUserReview && "You cannot review this product."}
+            {"You cannot review this product."}
           </div>
         )}
       </div>

@@ -8,6 +8,7 @@ import {
 function useAuth() {
   const dispatch = useDispatch();
 
+  const state = useSelector((state) => state.auth);
   const role = useSelector((state) => state.auth.role);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const userId = useSelector((state) => state.auth.id);
@@ -22,6 +23,7 @@ function useAuth() {
   }
 
   function logout() {
+    console.log("a");
     dispatch(logoutSuccess());
   }
 
@@ -41,6 +43,7 @@ function useAuth() {
     updateUserProfile,
     firstName,
     lastName,
+    state,
   };
 }
 

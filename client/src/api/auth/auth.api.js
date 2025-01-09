@@ -59,10 +59,12 @@ async function logoutUser() {
 
 export function useRegisterUser() {
   const navigate = useNavigate();
-  const { role: userRole, login } = useAuth();
+  const { role: userRole, login, state } = useAuth();
+  console.log(state);
 
   function handleSuccess(data) {
-    if (userRole !== "ADMIN") {
+    if (userRole !== "ADMIN" || null) {
+      console.log("oi");
       const { firstName, lastName, email, role, id } = data;
       const username = `${firstName} ${lastName}`;
       login(username, role, id, email, firstName, lastName);
@@ -95,8 +97,9 @@ export function useAuthStatus() {
 }
 
 export function useLoginUser() {
-  const { login } = useAuth();
+  const { login, state } = useAuth();
   const navigate = useNavigate();
+  console.log(state);
 
   function handleSuccess(data) {
     const { firstName, lastName, email, role, id } = data;
@@ -117,6 +120,7 @@ export function useLogoutUser() {
   const { logout } = useAuth();
 
   function handleSuccess() {
+    console.log("aaaaaa");
     logout();
   }
 
