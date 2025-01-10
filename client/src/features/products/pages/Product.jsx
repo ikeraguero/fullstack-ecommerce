@@ -91,8 +91,6 @@ function Product({ refetch }) {
     return <ErrorState error={error} retry={refetch} />;
   }
 
-  console.log(product);
-
   return (
     <div className={styles.mainContainer}>
       <div className={styles.productTop}>

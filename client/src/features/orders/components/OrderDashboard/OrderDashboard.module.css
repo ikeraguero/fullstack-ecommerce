@@ -1,0 +1,61 @@
+.cardStats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.2rem 1.2rem;
+  background-color: #f7f7f7;
+  font-size: 1.4rem;
+  width: 15.2rem;
+  border-radius: 0.4rem;
+}
+
+.orderDashboard {
+  margin-top: 2.6rem;
+}
+
+.dashboardTop {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.cardValue {
+  font-weight: 600;
+}
+
+.paginationButtons {
+  display: flex;
+  justify-content: center;
+
+  gap: 1.2rem;
+}
+
+.paginationButtons ion-icon {
+  width: 1.2rem;
+  color: #f42b56;
+}
+
+.paginationButton {
+  padding: 0.4rem 1.2rem;
+  border: 0.1rem solid #f42b56;
+  border-radius: 0.9rem;
+  display: flex;
+  align-items: center;
+  background-color: #ffff;
+  color: #f42b56;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.paginationButton:hover {
+  background-color: #f42b56;
+  font-weight: 500;
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+.paginationButton:hover ion-icon {
+  color: #fff;
+}

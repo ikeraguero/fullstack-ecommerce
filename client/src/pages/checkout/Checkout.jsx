@@ -25,7 +25,6 @@ function CheckoutShipping() {
     PAYMENT: "payment",
   };
 
-  console.log(order);
 
   const {
     values: shippingValues,
@@ -54,7 +53,6 @@ function CheckoutShipping() {
     updateCheckoutState,
   } = useCheckout();
 
-  console.log(isProcessingPayment);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -96,7 +94,6 @@ function CheckoutShipping() {
   }
 
   async function onShippingSubmit() {
-    console.log("a");
     if (shippingPrice === 0) {
       await calculateShippingPrice(shippingValues);
     }

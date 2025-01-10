@@ -16,7 +16,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess(state, action) {
-      console.log(action);
       const { id, username, role, token, firstName, lastName, email } =
         action.payload;
       state.isLoggedIn = true;
@@ -39,7 +38,6 @@ const authSlice = createSlice({
       state.email = null;
     },
     updateUserData(state, action) {
-      console.log(action.payload);
       const { firstName, lastName, email, username } = action.payload;
       state.firstName = firstName;
       state.lastName = lastName;

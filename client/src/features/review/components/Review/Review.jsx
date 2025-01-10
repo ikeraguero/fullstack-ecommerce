@@ -59,8 +59,6 @@ function Review({
     });
   }
 
-  console.log(canUserReview || !hasUserReviewed);
-
   return (
     <div className={styles.reviewContainer}>
       <div className={styles.reviewLeft}>

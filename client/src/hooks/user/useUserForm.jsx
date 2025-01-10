@@ -25,7 +25,6 @@ function useUserForm() {
   }
 
   function toggleDeleteUserForm(itemId) {
-    console.log(itemId);
     dispatch(toggleDeleteUser(itemId));
   }
 

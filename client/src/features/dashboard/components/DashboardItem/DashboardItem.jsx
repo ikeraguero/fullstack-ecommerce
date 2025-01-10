@@ -32,14 +32,11 @@ function DashboardItem({
 
   function handleOpenForm(payload) {
     if (title === "Products") {
-      console.log("a");
       toggleAddProduct();
       return;
     }
     toggleAddUser(payload);
   }
-
-  console.log(data);
 
   const FormComponent = formComponents[title];
   const ListComponent = listComponents[title];

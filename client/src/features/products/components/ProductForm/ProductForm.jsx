@@ -40,7 +40,6 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       categoryName: "TESTE",
       productDescription: values.productDescription,
     };
-    console.log(productRequest);
 
     formData.append(
       "product",

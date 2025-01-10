@@ -12,7 +12,6 @@ function Home({ onCategoryChange }) {
   const [marketingInfo, setMarketingInfo] = useState(null);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  console.log(products);
 
   useEffect(() => {
     if (products && isFirstLoad) {

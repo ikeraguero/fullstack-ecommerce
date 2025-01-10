@@ -10,8 +10,6 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const { isEditingUser, editUser, isAddingUser, resetUserForm } =
     useUserForm();
 
-  console.log(editUser);
-
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
 

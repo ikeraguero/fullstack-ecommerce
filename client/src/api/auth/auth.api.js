@@ -58,8 +58,7 @@ async function logoutUser() {
 
 export function useRegisterUser() {
   const navigate = useNavigate();
-  const { role: userRole, login, state } = useAuth();
-  console.log(state);
+  const { role: userRole, login } = useAuth();
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN" || null) {
@@ -95,9 +94,8 @@ export function useAuthStatus() {
 }
 
 export function useLoginUser() {
-  const { login, state } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  console.log(state);
 
   function handleSuccess(data) {
     const { firstName, lastName, email, role, id } = data;

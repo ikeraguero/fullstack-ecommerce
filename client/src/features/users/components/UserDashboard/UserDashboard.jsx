@@ -29,8 +29,6 @@ function UserDashboard() {
     refetch: refetchUsers,
   } = useUsers(currentPage, pageSize);
 
-  console.log(initialUsers);
-
   const { create, update, remove } = useUserActions(editUser, refetchUsers);
 
   const userDashboardActions = useMemo(

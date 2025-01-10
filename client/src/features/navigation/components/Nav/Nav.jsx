@@ -13,14 +13,10 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const formattedUser =
     username?.toUpperCase().slice(0, 1) + username?.toLowerCase().slice(1);
 
-  console.log(username);
-  console.log(loadedCategories);
-
   useEffect(() => {
     if (categories && categories.length > 0) {
       setLoadedCategories(categories);
     }
-    console.log(categories);
   }, [categories]);
 
   function handleOpenBottom() {
@@ -32,15 +28,12 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
       e.preventDefault();
       return;
     }
-    console.log(category);
     onCategoryChange(category);
   }
 
   if (!loadedCategories) {
     return <div>Loading...</div>;
   }
-
-  console.log(formattedUser);
 
   return (
     <nav className={styles.nav}>

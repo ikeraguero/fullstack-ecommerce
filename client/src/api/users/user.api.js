@@ -19,7 +19,6 @@ async function updateUser(data) {
 
 async function fetchUsers(page, size) {
   try {
-    console.log(page, size);
     const res = await apiClient.get(`/users?page=${page}&size=${size}`);
     return res.data;
   } catch (error) {

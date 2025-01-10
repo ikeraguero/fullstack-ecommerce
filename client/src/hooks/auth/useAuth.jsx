@@ -23,7 +23,6 @@ function useAuth() {
   }
 
   function logout() {
-    console.log("a");
     dispatch(logoutSuccess());
   }
 

@@ -17,6 +17,17 @@ async function fetchOrdersByUser(userId) {
   }
 }
 
+async function fetchOrders(page, size) {
+  try {
+    const res = await apiClient.get(`/orders?page=${page}&size=${size}`);
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Error fetching orders details"
+    );
+  }
+}
+
 async function fetchOrder(orderId) {
   try {
     const res = await apiClient.get(`/order/${orderId}`);
@@ -45,7 +56,6 @@ async function createOrder(data) {
 
 async function payOrder(paymentData) {
   try {
-    console.log(paymentData);
     const res = await apiClientPayment.post(`/process`, paymentData, {
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +83,6 @@ export function usePayOrder() {
     "cart",
     (variables) => {
       setTimeout(() => {
-        console.log(variables);
         navigate(`/payment/success/${variables}`);
         queryClient.invalidateQueries(["cart"]);
         resetCheckoutState();
@@ -97,6 +106,16 @@ export function useOrdersByUser() {
     queryFn: () => fetchOrdersByUser(userId),
     onError: (error) => {
       console.error("Error fetching orders by user:", error.message);
+    },
+  });
+}
+
+export function useOrders(page, size) {
+  return useQuery({
+    queryKey: ["orders", page, size],
+    queryFn: () => fetchOrders(page, size),
+    onError: (error) => {
+      console.error("Error fetching order:", error.message);
     },
   });
 }

@@ -8,7 +8,6 @@ export default function useApiMutation(
   additionalQueryKeys = []
 ) {
   const queryClient = useQueryClient();
-  console.log(additionalQueryKeys);
   return useMutation({
     mutationFn: apiFn,
     onSuccess: (data) => {

@@ -11,7 +11,6 @@ function OrderSummary({
   handlePaymentSubmit,
   handleShippingSubmit,
 }) {
-  console.log(isProcessingPayment);
   const { totalItemsPrice } = useCheckout();
   return (
     <form className={styles.cartRightSide} onSubmit={(e) => e.preventDefault()}>

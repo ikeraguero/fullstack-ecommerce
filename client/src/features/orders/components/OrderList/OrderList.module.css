@@ -1,0 +1,113 @@
+.itemLine {
+  border-bottom: 0.1rem solid #b9b9b9;
+  padding: 1.2rem 1.2rem;
+  text-transform: uppercase;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.itemLine div {
+  justify-self: center;
+}
+
+.itemName,
+.itemPrice,
+.itemPrice {
+  width: 5.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-content: flex-start;
+  display: block;
+}
+
+.itemName,
+.itemPrice,
+.itemStockQuantity,
+.itemCategory {
+  display: flex;
+  align-items: center;
+}
+
+.itemButtons {
+  display: flex;
+  gap: 1.2rem;
+}
+.removeButton,
+.editButton {
+  width: 2rem;
+  height: 2rem;
+  background-color: #f42b56;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeButton ion-icon,
+.editButton ion-icon {
+  width: 1.2rem;
+  background-color: #f42b56;
+  color: #ffff;
+}
+
+.removeButton:hover .editButton:hover {
+  background-color: #fc6182;
+  transition: all 0.2s;
+}
+
+.editForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.statusPaid {
+  background-color: #58984827;
+  color: #589848;
+  font-weight: 500;
+  text-transform: uppercase;
+  width: 5.6rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 0.8rem;
+  display: flex;
+  justify-content: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.1rem;
+}
+
+.statusPending {
+  background-color: #ffeb3b6b;
+  color: #a09320;
+  font-weight: 500;
+  font-size: 0.8rem;
+
+  text-transform: uppercase;
+  width: 5.6rem;
+  padding: 0.4rem 0.2rem;
+  border-radius: 0.8rem;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.editInputForm {
+  padding: 0.4rem 5.4rem 0.4rem 0.4rem;
+  border-radius: 0.4rem;
+  border: 1px solid #646464;
+}
+
+.orderList {
+  border: 0.1rem #b9b9b9 solid;
+  border-radius: 0.4rem;
+  margin-top: 2.6rem;
+  margin-bottom: 5.6rem;
+}
+
+.orderPrice {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}

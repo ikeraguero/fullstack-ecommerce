@@ -7,6 +7,7 @@ import Main from "@features/shared/components/Main/Main";
 import useAuth from "@hooks/auth/useAuth";
 import { useProductForm } from "@context/useProductFormContext";
 import { useUserForm } from "@context/useUserFormContext";
+import OrderDashboard from "@features/orders/components/OrderDashboard/OrderDashboard";
 
 function Dashboard({ requiredRole }) {
   const { role } = useAuth();
@@ -19,9 +20,6 @@ function Dashboard({ requiredRole }) {
   const isDeleting = isDeletingUser || isDeletingProduct;
   const isAuthorized = role === requiredRole;
 
-  console.log(isEditingProduct, isAddingProduct);
-  console.log(isEditingUser, isAddingUser);
-
   return isAuthorized ? (
     <>
       <Main>
@@ -29,6 +27,7 @@ function Dashboard({ requiredRole }) {
           <div className={styles.overlay} />
         )}
         <h1>Dashboard</h1>
+        <OrderDashboard />
         <ProductDashboard />
         <UserDashboard />
       </Main>

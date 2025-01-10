@@ -6,8 +6,6 @@ import useAuth from "@hooks/auth/useAuth";
 import { useProductForm } from "@context/useProductFormContext";
 
 async function updateProduct(data) {
-  data.forEach((key, value) => console.log(key, value));
-  console.log(data);
   try {
     const res = await apiClient.put(`/products`, data, {
       headers: {
@@ -46,7 +44,6 @@ async function fetchHomeProducts() {
 async function fetchProducts(page, size) {
   try {
     const res = await apiClient.get(`/products?page=${page}&size=${size}`);
-    console.log("fetched");
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error fetching products");
