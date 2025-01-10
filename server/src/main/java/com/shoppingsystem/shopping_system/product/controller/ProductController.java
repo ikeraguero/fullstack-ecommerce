@@ -133,7 +133,6 @@ public class ProductController {
     public ResponseEntity<?> getFeaturedProducts() {
         try {
             Map<String, List<ProductResponse>> featuredProducts = productService.getRandomCategoryProducts();
-            System.out.println(featuredProducts);
             return ResponseEntity.ok(featuredProducts);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());

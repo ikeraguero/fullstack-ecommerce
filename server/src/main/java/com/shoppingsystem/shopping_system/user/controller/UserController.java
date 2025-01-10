@@ -46,7 +46,6 @@ public class UserController {
     @DeleteMapping("/users/{userId}")
     ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         try {
-            System.out.println(userId);
             userService.delete(userId);
             return ResponseEntity.ok("User successfully deleted");
         } catch (InvalidCredentialsException e) {

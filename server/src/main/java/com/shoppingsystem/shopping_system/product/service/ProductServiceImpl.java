@@ -181,7 +181,6 @@ public class ProductServiceImpl implements ProductService {
         //batch query
         Map<Long, ProductImage> productImagesMap = productImageService.findProductImagesByIds(productImageIds);
 
-        System.out.println(productImagesMap);
         return categoryProductsMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> getCategoryNameById(entry.getKey(), limitedCategories),
