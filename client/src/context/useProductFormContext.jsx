@@ -1,7 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 
 const initialState = {
-  products: [],
   image: null,
   isAddingProduct: false,
   isEditingProduct: false,
@@ -17,8 +16,6 @@ const initialState = {
 
 const productFormReducer = (state, action) => {
   switch (action.type) {
-    case "LOAD_PRODUCTS":
-      return { ...state, products: action.payload };
     case "TOGGLE_ADD_PRODUCT":
       return { ...state, isAddingProduct: !state.isAddingProduct };
     case "TOGGLE_DELETE_PRODUCT":

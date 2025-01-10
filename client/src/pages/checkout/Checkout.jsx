@@ -25,7 +25,6 @@ function CheckoutShipping() {
     PAYMENT: "payment",
   };
 
-
   const {
     values: shippingValues,
     handleChange: handleShippingChange,
@@ -52,7 +51,6 @@ function CheckoutShipping() {
     calculateShippingPrice,
     updateCheckoutState,
   } = useCheckout();
-
 
   useEffect(() => {
     if (initialized.current) return;
@@ -87,6 +85,7 @@ function CheckoutShipping() {
   }, [order, shippingPrice, isPriceLocked]);
 
   if (!updateOrder) return <div>Loading...</div>;
+  console.log(order);
 
   function onPaymentSubmit() {
     const paymentRequest = createPaymentRequest();

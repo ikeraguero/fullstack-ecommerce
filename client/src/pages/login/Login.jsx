@@ -9,6 +9,7 @@ function Login({ refetchCart }) {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const { mutateAsync: loginUser } = useLoginUser();
 
   async function handleSubmit(e) {
@@ -23,7 +24,6 @@ function Login({ refetchCart }) {
 
     try {
       await loginUser(loginData);
-      refetchCart();
     } catch (err) {
       setError("Invalid credentials or server error. Please try again.");
       console.log(error);
@@ -31,6 +31,8 @@ function Login({ refetchCart }) {
       setIsLoading(false);
     }
   }
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <div className={styles.mainContainer}>
@@ -48,15 +50,30 @@ function Login({ refetchCart }) {
             />
           </div>
           <div className={styles.loginField}>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              id=""
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className={styles.password}>
+              <div className={styles.passwordInput}>
+                <label>Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id=""
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.passwordToggleButton}
+              >
+                {showPassword ? (
+                  <ion-icon name="eye-off-outline"></ion-icon>
+                ) : (
+                  <ion-icon name="eye-outline"></ion-icon>
+                )}
+              </button>
+            </div>
           </div>
           <div className={styles.buttons}>
             <button

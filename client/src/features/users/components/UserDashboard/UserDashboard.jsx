@@ -61,16 +61,6 @@ function UserDashboard() {
     toggleDeleteUser();
   }
 
-  // useEffect(() => {
-  //   if (
-  //     initialUsers &&
-  //     initialUsers.content &&
-  //     initialUsers.content.length > 0
-  //   ) {
-  //     dispatch(loadUsers(initialUsers.content));
-  //   }
-  // }, [initialUsers, dispatch]);
-
   const { content, hasPrevious, hasNext, contentNext } = initialUsers || {};
   const displayedContent = pendingContent || content;
   const userDashboard = useDashboardItem(

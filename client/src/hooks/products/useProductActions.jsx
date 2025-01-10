@@ -7,7 +7,7 @@ import {
 import { useSuccess } from "@context/SuccessContext";
 import { useAddToCart } from "@api/cart/cart.api";
 
-export function useProductActions(editProduct, refetch) {
+export function useProductActions() {
   const { displaySuccess } = useSuccess();
   const { cart } = useCartData();
   const { mutate: createProduct } = useCreateProduct();

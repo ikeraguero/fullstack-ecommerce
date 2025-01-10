@@ -74,14 +74,20 @@ export const UserFormProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userFormReducer, initialState);
 
   const loadUsers = (users) => dispatch({ type: "LOAD_USERS", payload: users });
+
   const toggleAddUser = () => dispatch({ type: "TOGGLE_ADD_USER" });
+
   const toggleDeleteUser = (userId) =>
     dispatch({ type: "TOGGLE_DELETE_USER", payload: userId });
+
   const openEditUser = (user) =>
     dispatch({ type: "OPEN_EDIT_USER", payload: user });
+
   const closeEditUser = () => dispatch({ type: "CLOSE_EDIT_USER" });
+
   const changeUserData = (field, value) =>
     dispatch({ type: "CHANGE_USER_FIELD", payload: { field, value } });
+  
   const resetUserForm = () => dispatch({ type: "RESET_FORM" });
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./SearchBar.module.css";
@@ -18,30 +18,35 @@ function SearchBar({ setSearchProducts }) {
   const searchSize = 6;
 
   const debouncedSearch = useDebounce((query) => {
-    if (query) {
-      search({ query, size: searchSize }).then((res) => {
-        setResults(res);
-      });
-    } else {
+    if (!query) {
       setResults([]);
+      return;
     }
+
+    search({ query, size: searchSize }).then((res) => {
+      setResults(res);
+    });
   }, debounceTimeout);
 
   const getSearchResults = (query, size) => {
-    if (query) {
-      search({ query, size }).then((res) => {
-        setResults(res);
-      });
-    } else {
+    if (!query) {
       setResults([]);
+      return;
     }
+
+    search({ query, size }).then((res) => {
+      setResults(res);
+    });
   };
 
-  function handleInputChange(e) {
-    const value = e.target.value;
-    setQuery(value);
-    debouncedSearch(value);
-  }
+  const handleInputChange = useCallback(
+    (e) => {
+      const value = e.target.value;
+      setQuery(value);
+      debouncedSearch(value);
+    },
+    [debouncedSearch]
+  );
 
   useEffect(() => {
     getSearchResults(debouncedQuery, searchSize);

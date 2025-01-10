@@ -79,7 +79,6 @@ function Review({
                     <span>•</span>
                   </>
                 )}
-
                 <span>
                   {reviewCount > 0 && reviewCount}
                   {reviewCount === 0

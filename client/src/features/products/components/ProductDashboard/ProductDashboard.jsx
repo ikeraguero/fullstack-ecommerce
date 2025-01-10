@@ -12,7 +12,6 @@ function ProductDashboard() {
   const {
     isAddingProduct,
     isEditingProduct,
-    editProduct,
     isDeletingProduct,
     toggleDeleteProduct,
     deleteProductId,
@@ -28,14 +27,10 @@ function ProductDashboard() {
   const {
     data: initialProducts,
     error: productError,
-    refetch: refetchProducts,
     isLoading,
   } = useProducts(currentPage, pageSize);
 
-  const { create, update, remove } = useProductActions(
-    editProduct,
-    refetchProducts
-  );
+  const { create, update, remove } = useProductActions();
 
   const productDashboardActions = useMemo(
     () => ({

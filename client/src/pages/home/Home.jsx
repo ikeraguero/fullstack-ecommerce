@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import Main from "@features/shared/components/Main/Main";
 import Carousel from "@features/carousel/components/Carousel/Carousel";
@@ -12,7 +12,6 @@ function Home({ onCategoryChange }) {
   const [marketingInfo, setMarketingInfo] = useState(null);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-
   useEffect(() => {
     if (products && isFirstLoad) {
       const result = generateMarketingMessages(products);
@@ -20,21 +19,7 @@ function Home({ onCategoryChange }) {
       setIsFirstLoad(false);
     }
     onCategoryChange(null);
-  }, [products, isFirstLoad, onCategoryChange]);
-
-  if (isLoading) {
-    return (
-      <>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </>
-    );
-  }
-
-  if (error) {
-    return <div>Error loading products: {error.message}</div>;
-  }
+  }, [products]);
 
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -43,7 +28,7 @@ function Home({ onCategoryChange }) {
     }
   }
 
-  function generateMarketingMessages(products) {
+  const generateMarketingMessages = useCallback((products) => {
     const messages = [
       "Explore the latest trends in ",
       "Uncover top picks from the world of ",
@@ -73,10 +58,23 @@ function Home({ onCategoryChange }) {
     });
 
     return marketingInfo;
-  }
+  }, []);
 
   if (!marketingInfo) {
     return null;
+  }
+  if (isLoading) {
+    return (
+      <>
+        <div className={styles.spinnerContainer}>
+          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading products: {error.message}</div>;
   }
 
   const categoriesArray = Object.values(marketingInfo);

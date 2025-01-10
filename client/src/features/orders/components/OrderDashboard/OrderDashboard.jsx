@@ -56,8 +56,6 @@ function OrderDashboard() {
 
   const displayedOrders = pendingContent || currentOrders;
 
-  console.log(currentOrders);
-
   return (
     <div className={styles.orderDashboard}>
       <h2>Orders</h2>

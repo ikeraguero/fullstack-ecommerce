@@ -37,7 +37,7 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       price: Number(values.productPrice),
       stockQuantity: Number(values.productStockQuantity),
       categoryId: Number(values.productCategory),
-      categoryName: "TESTE",
+      categoryName: "",
       productDescription: values.productDescription,
     };
 
