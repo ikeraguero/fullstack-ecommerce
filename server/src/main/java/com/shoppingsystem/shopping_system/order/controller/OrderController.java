@@ -4,6 +4,7 @@ import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.category.service.CategoryService;
 import com.shoppingsystem.shopping_system.order.dto.OrderRequest;
 import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
+import com.shoppingsystem.shopping_system.order.dto.OrdersResponse;
 import com.shoppingsystem.shopping_system.order.exception.OrderNotFoundException;
 import com.shoppingsystem.shopping_system.order.service.OrderItemService;
 import com.shoppingsystem.shopping_system.order.service.OrderService;
@@ -50,6 +51,18 @@ public class OrderController {
             return ResponseEntity.ok(orderResponse);
         } catch (OrderNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<?> findAllOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            OrdersResponse ordersResponse = orderService.findAll(page, size);
+            return ResponseEntity.ok(ordersResponse);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An unexpected error occurred: " + e.getMessage());
         }

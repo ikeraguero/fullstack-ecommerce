@@ -14,13 +14,15 @@ public class OrderResponse {
     private double totalPrice;
     private List<OrderItemResponse> orderItems;
     private Date date;
+    private Long userId;
     private String status;
 
-    public OrderResponse(Long orderId, Long items, double totalPrice, Date date, String status) {
+    public OrderResponse(Long orderId, Long items, double totalPrice, Date date, Long userId, String status) {
         this.orderId = orderId;
         this.items = items;
         this.totalPrice = totalPrice;
         this.date = date;
+        this.userId = userId;
         this.status = status;
     }
 }

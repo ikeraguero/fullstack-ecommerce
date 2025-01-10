@@ -5,6 +5,7 @@ import com.shoppingsystem.shopping_system.cart.service.CartItemService;
 import com.shoppingsystem.shopping_system.order.dto.OrderItemResponse;
 import com.shoppingsystem.shopping_system.order.dto.OrderRequest;
 import com.shoppingsystem.shopping_system.order.dto.OrderResponse;
+import com.shoppingsystem.shopping_system.order.dto.OrdersResponse;
 import com.shoppingsystem.shopping_system.order.exception.OrderNotFoundException;
 import com.shoppingsystem.shopping_system.order.model.Order;
 import com.shoppingsystem.shopping_system.order.model.OrderItem;
@@ -18,6 +19,8 @@ import com.shoppingsystem.shopping_system.product.service.ProductService;
 import com.shoppingsystem.shopping_system.user.model.User;
 import com.shoppingsystem.shopping_system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -48,6 +51,48 @@ public class OrderServiceImpl implements OrderService {
     private ProductImageRepository productImageRepository;
 
     @Override
+    public OrdersResponse findAll(int page, int size) {
+        // paginated orders
+        Page<Order> paginatedOrders = orderRepository.findAll(PageRequest.of(page, size));
+        List<OrderResponse> currentContent = paginatedOrders.getContent().stream()
+                .map(order -> {
+                    OrderResponse orderResponse = createOrderResponse(order);
+                    List<OrderItemResponse> orderItems = createOrderItems(order.getId());
+                    orderResponse.setOrderItems(orderItems);
+                    return orderResponse;
+                })
+                .toList();
+
+        List<OrderResponse> previousContent = page > 0
+                ? orderRepository.findAll(PageRequest.of(page - 1, size)).getContent().stream()
+                .map(order -> createOrderResponse(order))
+                .toList()
+                : Collections.emptyList();
+
+        List<OrderResponse> nextContent = page < paginatedOrders.getTotalPages() - 1
+                ? orderRepository.findAll(PageRequest.of(page + 1, size)).getContent().stream()
+                .map(order -> createOrderResponse(order))
+                .toList()
+                : Collections.emptyList();
+
+        // totals
+        long totalOrders = orderRepository.count();
+        double totalRevenue = orderRepository.sumTotalRevenue();
+        long totalUniqueProducts = orderItemService.countDistinctProducts();
+
+        return new OrdersResponse(
+                currentContent,
+                previousContent,
+                nextContent,
+                totalUniqueProducts,
+                totalOrders,
+                totalRevenue,
+                page,
+                paginatedOrders.getTotalPages()
+        );
+    }
+
+    @Override
     public void save(Order order) {
         orderRepository.save(order);
     }
@@ -64,9 +109,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Couldn't find order with ID - " + orderId));
 
-        OrderResponse orderResponse = new OrderResponse(order.getOrderId(),
-                orderRepository.countItemsInOrder(order.getOrderId()),
-                order.getTotalPrice(), order.getDate(), order.getStatus());
+        OrderResponse orderResponse = new OrderResponse(order.getId(),
+                orderRepository.countItemsInOrder(order.getId()),
+                order.getTotalPrice(), order.getDate(), order.getUser().getId(), order.getStatus());
 
         List<OrderItemResponse> orderItemList = findAllOrderItemsWithProductImages(orderResponse.getOrderId());
         orderResponse.setOrderItems(orderItemList);
@@ -123,8 +168,9 @@ public class OrderServiceImpl implements OrderService {
 
         cartItemService.deleteCartItemsByUserId(user.getId());
 
-        return new OrderResponse(order.getOrderId(),
-                orderRepository.countItemsInOrder(order.getOrderId()), order.getTotalPrice(), order.getDate(),
+        return new OrderResponse(order.getId(),
+                orderRepository.countItemsInOrder(order.getId()), order.getTotalPrice(), order.getDate(),
+                order.getUser().getId(),
                 order.getStatus());
     }
 
@@ -162,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void updateProductProperties(Order existingOrder) {
-        List<OrderItem> orderItemList = orderRepository.findAllOrderItems(existingOrder.getOrderId());
+        List<OrderItem> orderItemList = orderRepository.findAllOrderItems(existingOrder.getId());
 
         List<Long> productsIds = orderItemList.stream().map(orderItem ->
                 orderItem.getProduct().getId())
@@ -205,7 +251,7 @@ public class OrderServiceImpl implements OrderService {
         return orderList.stream()
                 .map(order->{
                     OrderResponse orderResponse = createOrderResponse(order);
-                    List<OrderItemResponse> orderItems = createOrderItems(order.getOrderId());
+                    List<OrderItemResponse> orderItems = createOrderItems(order.getId());
                     orderResponse.setOrderItems(orderItems);
                     return orderResponse;
                 })
@@ -213,9 +259,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderResponse createOrderResponse(Order order) {
-        return new OrderResponse(order.getOrderId(),
-                orderRepository.countItemsInOrder(order.getOrderId()),
-                order.getTotalPrice(), order.getDate(), order.getStatus());
+        return new OrderResponse(order.getId(),
+                orderRepository.countItemsInOrder(order.getId()),
+                order.getTotalPrice(), order.getDate(), order.getUser().getId(), order.getStatus());
     }
 
     private List<OrderItemResponse> createOrderItems(Long orderId) {

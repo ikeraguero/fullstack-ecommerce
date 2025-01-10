@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("SELECT COUNT(oi) FROM OrderItem oi WHERE oi.order.orderId = :orderId")
+    @Query("SELECT COUNT(oi) FROM OrderItem oi WHERE oi.order.id = :orderId")
     long countItemsInOrder(@Param("orderId") Long orderId);
 
-    @Query("SELECT oi FROM OrderItem oi WHERE oi.order.orderId = :orderId")
+    @Query("SELECT oi FROM OrderItem oi WHERE oi.order.id = :orderId")
     List<OrderItem> findAllOrderItems(@Param("orderId") Long orderId);
 
     @Query("SELECT o FROM Order o WHERE o.user.id = :userId")
@@ -21,7 +21,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT oi FROM OrderItem oi " +
             "JOIN FETCH oi.product p " +
             "JOIN FETCH ProductImage pi ON pi.id = p.imageId " +
-            "WHERE oi.order.orderId = :orderId")
+            "WHERE oi.order.id = :orderId")
     List<OrderItem> findOrderItemsWithProductImages(@Param("orderId") Long orderId);
+
+    @Query("SELECT SUM(o.totalPrice) FROM Order o")
+    Double sumTotalRevenue();
 
 }

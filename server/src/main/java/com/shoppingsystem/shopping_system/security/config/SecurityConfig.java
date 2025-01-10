@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/auth/login",
                         "/auth/register",
+                        "auth/logout",
                         "/api/cart/**",
                         "/api/categories",
                         "/api/products/**",
@@ -48,6 +49,7 @@ public class SecurityConfig {
                         "/api/wishlist/**",
                         "/payment/process",
                         "/api/users/**",
+                        "/api/orders",
                         "/auth/status",
                         "/products/featured",
                         "/api/roles"
