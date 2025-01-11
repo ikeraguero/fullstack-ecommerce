@@ -7,6 +7,7 @@ import useAuth from "@hooks/auth/useAuth";
 
 async function loginUser(data) {
   try {
+    console.log(data);
     const res = await apiClientAuth.post("/login", data);
     if (res.status !== 200) {
       return new Error("Problem logging user");

@@ -92,3 +92,28 @@
   display: flex;
   gap: 0.4rem;
 }
+
+.password {
+  display: flex;
+  position: relative;
+}
+
+.passwordInput {
+  width: 100%;
+}
+
+.passwordToggleButton {
+  position: absolute;
+  right: 0.5rem;
+  top: 2rem;
+  width: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  border-radius: 0.4rem;
+  background-color: none;
+  cursor: pointer;
+  height: 1.6rem;
+}

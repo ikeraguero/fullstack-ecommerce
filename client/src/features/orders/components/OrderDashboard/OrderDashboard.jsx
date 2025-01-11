@@ -61,7 +61,7 @@ function OrderDashboard() {
       <h2>Orders</h2>
       <div className={styles.dashboardTop}>
         <div className={styles.cardStats}>
-          <span>Total Revenue</span>
+          <span className={styles.cardStatsTitle}>Total Revenue</span>
           <span className={styles.cardValue}>
             $
             <CountUp
@@ -73,13 +73,13 @@ function OrderDashboard() {
           </span>
         </div>
         <div className={styles.cardStats}>
-          <span>Total Orders</span>
+          <span className={styles.cardStatsTitle}>Total Orders</span>
           <span className={styles.cardValue}>
             <CountUp end={totalOrders} duration={1} separator="," />
           </span>
         </div>
         <div className={styles.cardStats}>
-          <span>Total Products</span>
+          <span className={styles.cardStatsTitle}>Total Products</span>
           <span className={styles.cardValue}>
             <CountUp end={totalUniqueProducts} duration={1} separator="," />
           </span>

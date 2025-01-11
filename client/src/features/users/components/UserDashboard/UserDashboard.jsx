@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
 import styles from "./UserDashboard.module.css";
@@ -53,6 +53,13 @@ function UserDashboard() {
     }
   }
 
+  const { content, hasPrevious, hasNext, contentNext } = initialUsers || {};
+  const displayedContent = pendingContent || content;
+  const userDashboard = useDashboardItem(
+    displayedContent,
+    userDashboardActions
+  );
+
   function handleDelete() {
     userDashboard.handleRemove(deleteUserId);
   }
@@ -61,12 +68,11 @@ function UserDashboard() {
     toggleDeleteUser();
   }
 
-  const { content, hasPrevious, hasNext, contentNext } = initialUsers || {};
-  const displayedContent = pendingContent || content;
-  const userDashboard = useDashboardItem(
-    displayedContent,
-    userDashboardActions
-  );
+  useEffect(() => {
+    if (!isLoading && content && currentPage > 0) {
+      setPendingContent(null);
+    }
+  }, [isLoading, currentPage, content]);
 
   if (userError) return <div>Error loading users: {userError.message}</div>;
 

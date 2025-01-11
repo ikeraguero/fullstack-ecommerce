@@ -9,6 +9,10 @@
   border-radius: 0.4rem;
 }
 
+.cardStatsTitle {
+  font-size: 1.2rem;
+}
+
 .orderDashboard {
   margin-top: 2.6rem;
 }

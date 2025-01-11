@@ -8,6 +8,7 @@ function Register() {
   const { mutateAsync: registerUser } = useRegisterUser();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,6 +35,8 @@ function Register() {
     }
     setIsLoading(false);
   }
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <div className={styles.mainContainer}>
@@ -78,19 +81,34 @@ function Register() {
             />
           </div>
           <div className={styles.loginField}>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              id=""
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
+            <div className={styles.password}>
+              <div className={styles.passwordInput}>
+                <label>Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id=""
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.passwordToggleButton}
+              >
+                {showPassword ? (
+                  <ion-icon name="eye-off-outline"></ion-icon>
+                ) : (
+                  <ion-icon name="eye-outline"></ion-icon>
+                )}
+              </button>
+            </div>
           </div>
           <div className={styles.buttons}>
             <button className={styles.registerButton}>
-              {isLoading ? "Creating your account" : "Sign Up"}
+              {isLoading ? "Creating your account..." : "Sign Up"}
             </button>
             <div className={styles.linkContainer}>
               <span>Already have an account?</span>

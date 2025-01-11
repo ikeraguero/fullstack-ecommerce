@@ -40,9 +40,7 @@ async function deleteUser(userId) {
 export function useDeleteUsers() {
   const { toggleDeleteUser } = useUserForm();
   return useApiMutation(
-    (userId) => {
-      deleteUser(userId);
-    },
+    (userId) => deleteUser(userId),
     "users",
     () => {
       toggleDeleteUser(null);
