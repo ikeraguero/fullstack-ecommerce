@@ -63,9 +63,9 @@ export function useRegisterUser() {
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN" || null) {
-      const { firstName, lastName, email, role, id } = data;
+      const { firstName, lastName, email, role, id, address } = data;
       const username = `${firstName} ${lastName}`;
-      login(username, role, id, email, firstName, lastName);
+      login(username, role, id, email, firstName, lastName, address);
       navigate("/");
     }
   }
@@ -99,10 +99,10 @@ export function useLoginUser() {
   const navigate = useNavigate();
 
   function handleSuccess(data) {
-    const { firstName, lastName, email, role, id } = data;
+    const { firstName, lastName, email, role, id, address } = data;
     const username = `${firstName} ${lastName}`;
 
-    login(username, role, id, email, firstName, lastName);
+    login(username, role, id, email, firstName, lastName, address);
     navigate("/");
   }
 

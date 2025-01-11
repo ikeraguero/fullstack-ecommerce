@@ -9,6 +9,10 @@ function useUserFormBase(onSubmitCallback, initialData = {}) {
     email: "",
     password: "",
     roleId: "",
+    postalCode: "",
+    address: "",
+    country: "",
+    city: "",
     ...initialData,
   });
 
