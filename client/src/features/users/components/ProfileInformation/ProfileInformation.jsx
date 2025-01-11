@@ -16,7 +16,16 @@ function ProfileInformation() {
   }
 
   async function handleSubmitForm() {
-    const { firstName, lastName, email } = values;
+    const {
+      firstName,
+      lastName,
+      email,
+      addressId,
+      address,
+      postalCode,
+      country,
+      city,
+    } = values;
     const userRequest = {
       userId,
       firstName,
@@ -24,6 +33,13 @@ function ProfileInformation() {
       email,
       password: "",
       roleId: Number(values.roleId),
+      address: {
+        addressId,
+        address,
+        postalCode,
+        country,
+        city,
+      },
     };
     await updateUser(userRequest);
     const username = firstName + " " + lastName;
@@ -94,19 +110,43 @@ function ProfileInformation() {
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="postalCode">Postal Code</label>
-            <input type="text" disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="postalCode"
+              value={values.postalCode}
+              onChange={handleChange}
+              disabled={!isEditingProfile}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="Address">Address</label>
-            <input type="text" disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+              disabled={!isEditingProfile}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="country">Country</label>
-            <input type="text" disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="country"
+              value={values.country}
+              onChange={handleChange}
+              disabled={!isEditingProfile}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="city">City</label>
-            <input type="text" disabled={!isEditingProfile} />
+            <input
+              type="text"
+              name="city"
+              value={values.city}
+              onChange={handleChange}
+              disabled={!isEditingProfile}
+            />
           </div>
         </form>
       </div>

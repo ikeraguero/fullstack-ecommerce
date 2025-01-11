@@ -16,9 +16,19 @@ function useAuth() {
   const firstName = useSelector((state) => state.auth.firstName);
   const lastName = useSelector((state) => state.auth.lastName);
   const username = useSelector((state) => state.auth.username);
+  const address = useSelector((state) => state.auth.address);
 
-  function login(username, role, id, email, firstName, lastName) {
-    const userData = { username, role, id, email, firstName, lastName };
+  console.log(address);
+  function login(username, role, id, email, firstName, lastName, address) {
+    const userData = {
+      username,
+      role,
+      id,
+      email,
+      firstName,
+      lastName,
+      address,
+    };
     dispatch(loginSuccess(userData));
   }
 
@@ -43,6 +53,7 @@ function useAuth() {
     firstName,
     lastName,
     state,
+    address,
   };
 }
 

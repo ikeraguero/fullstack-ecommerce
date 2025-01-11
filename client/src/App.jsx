@@ -29,9 +29,11 @@ function App() {
 
   useEffect(() => {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
-      const { firstName, lastName, role, id, email } = userData;
+      console.log(userData);
+      const { firstName, lastName, role, id, email, address } = userData;
       const username = `${firstName} ${lastName}`;
-      login(username, role, id, email, firstName, lastName);
+      console.log(address);
+      login(username, role, id, email, firstName, lastName, address);
     }
   }, [userData, login, isLoadingUser, errorUser, isLoggedIn]);
 
