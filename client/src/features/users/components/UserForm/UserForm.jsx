@@ -13,15 +13,13 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
 
-  const { values, handleChange, resetForm } = isEditingUser
-    ? userEditForm
-    : userAddForm;
+  const { values, handleChange } = isEditingUser ? userEditForm : userAddForm;
 
   const { data: roles, error, isLoading } = useRoles();
 
   useEffect(() => {
     if (isAddingUser) {
-      resetForm();
+      resetUserForm();
     }
   }, [isAddingUser]);
 
@@ -35,7 +33,16 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       email: values.email,
       password: values.password,
       roleId: Number(values.roleId),
+      address: {
+        addressId: editUser?.userAddress.id || null,
+        address: values.address,
+        postalCode: values.postalCode,
+        country: values.country,
+        city: values.city,
+      },
     };
+
+    console.log(userRequest);
 
     if (isEditingUser) {
       onEdit(userRequest);
@@ -53,7 +60,7 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
   }
 
   function handleClearForm() {
-    resetForm();
+    resetUserForm();
     if (formRef.current) {
       formRef.current.reset();
     }
@@ -136,6 +143,46 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
               name="email"
               type="email"
               value={values.email}
+              onChange={handleChange}
+              className={styles.addFormInput}
+            />
+          </div>
+          <div className={styles.formItem}>
+            <label htmlFor="postalCode">Postal Code</label>
+            <input
+              name="postalCode"
+              type="postalCode"
+              value={values.postalCode}
+              onChange={handleChange}
+              className={styles.addFormInput}
+            />
+          </div>
+          <div className={styles.formItem}>
+            <label htmlFor="address">Address</label>
+            <input
+              name="address"
+              type="address"
+              value={values.address}
+              onChange={handleChange}
+              className={styles.addFormInput}
+            />
+          </div>
+          <div className={styles.formItem}>
+            <label htmlFor="country">Country</label>
+            <input
+              name="country"
+              type="country"
+              value={values.country}
+              onChange={handleChange}
+              className={styles.addFormInput}
+            />
+          </div>
+          <div className={styles.formItem}>
+            <label htmlFor="city">City</label>
+            <input
+              name="city"
+              type="city"
+              value={values.city}
               onChange={handleChange}
               className={styles.addFormInput}
             />
