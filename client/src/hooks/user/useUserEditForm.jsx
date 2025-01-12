@@ -8,7 +8,6 @@ function useUserEditForm(onSubmitCallback) {
   const location = useLocation();
   const { firstName, lastName, email, roleId, address } = useAuth();
 
-  console.log(address);
   const initialData =
     location.pathname === "/profile"
       ? {
@@ -30,10 +29,14 @@ function useUserEditForm(onSubmitCallback) {
           email: editUser?.userEmail || "",
           password: "",
           roleId: editUser?.userRoleId || "",
+          addressId: editUser?.userAddress?.id,
+          address: editUser?.userAddress?.address,
+          postalCode: editUser?.userAddress?.postalCode,
+          country: editUser?.userAddress?.country,
+          city: editUser?.userAddress?.city,
         }
       : {};
 
-  console.log(editUser);
   return useUserFormBase(onSubmitCallback, initialData);
 }
 

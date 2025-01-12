@@ -18,7 +18,6 @@ function useAuth() {
   const username = useSelector((state) => state.auth.username);
   const address = useSelector((state) => state.auth.address);
 
-  console.log(address);
   function login(username, role, id, email, firstName, lastName, address) {
     const userData = {
       username,
