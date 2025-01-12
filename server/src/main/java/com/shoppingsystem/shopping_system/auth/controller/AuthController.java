@@ -37,6 +37,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         try {
+            System.out.println(loginRequest);
             LoginResponse loginResponse = authService.login(loginRequest, response);
             return ResponseEntity.ok(loginResponse);
         } catch (Exception e) {

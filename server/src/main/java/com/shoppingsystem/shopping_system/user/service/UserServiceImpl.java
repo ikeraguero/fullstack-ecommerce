@@ -1,5 +1,7 @@
 package com.shoppingsystem.shopping_system.user.service;
 
+import com.shoppingsystem.shopping_system.address.model.Address;
+import com.shoppingsystem.shopping_system.address.service.AddressService;
 import com.shoppingsystem.shopping_system.auth.exceptions.InvalidCredentialsException;
 import com.shoppingsystem.shopping_system.pagination.dto.PaginationUserResponse;
 import com.shoppingsystem.shopping_system.role.model.Role;
@@ -33,12 +35,14 @@ public class UserServiceImpl implements UserService {
     private RoleService roleService;
 
     @Autowired
+    private AddressService addressService;
+
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public void registerUser(User user) {
-
         String hashedPassword = BCrypt.hashpw(user.getPasswordHash(), BCrypt.gensalt());
         user.setPasswordHash(hashedPassword);
 
@@ -52,7 +56,8 @@ public class UserServiceImpl implements UserService {
 
     public boolean loginUser(String enteredPassword, String email) {
         User user = userRepository.findByEmail(email);
-        if (user != null && validatePassword(enteredPassword, user.getPasswordHash())) {
+        System.out.println(user.getPasswordHash());
+        if (validatePassword(enteredPassword, user.getPasswordHash())) {
             return true;
         }
         return false;
@@ -91,7 +96,8 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     Role role = roleMap.get(user.getRole().getId());
                     return new UserResponse(user.getId(), user.getEmail(), "active", user.getFirstName(),
-                            user.getLastName(), user.getPasswordHash(), role.getId(), role.getName());
+                            user.getLastName(), user.getPasswordHash(), role.getId(), role.getName(),
+                            addressService.findAddressByUserId(user.getId()));
                 }).toList();
     }
 
@@ -110,10 +116,27 @@ public class UserServiceImpl implements UserService {
         if(userRequest.getRoleId() != 0) {
             existingUser.setRole(roleService.findById(userRequest.getRoleId()));
         }
-        existingUser.setEmail(userRequest.getEmail());
-        existingUser.setFirstName(userRequest.getFirstName());
-        existingUser.setLastName(userRequest.getLastName());
-        existingUser.setUpdatedAt(Date.from(Instant.now()));
+
+        Address address = addressService.findAddressByUserId(existingUser.getId());
+        if(address != null) {
+            System.out.println(userRequest.getAddress().getAddress());
+            address.setAddress(userRequest.getAddress().getAddress());
+            address.setCity(userRequest.getAddress().getCity());
+            address.setCountry(userRequest.getAddress().getPostalCode());
+            existingUser.setEmail(userRequest.getEmail());
+            existingUser.setFirstName(userRequest.getFirstName());
+            existingUser.setLastName(userRequest.getLastName());
+            existingUser.setUpdatedAt(Date.from(Instant.now()));
+        }
+        System.out.println(address);
+
+        if(address == null) {
+            address = new Address(userRequest.getAddress().getAddress(), userRequest.getAddress().getPostalCode(),
+                    userRequest.getAddress().getCountry(), userRequest.getAddress().getCity(), existingUser);
+            addressService.save(address);
+        }
+
+
         if(userRequest.getPassword()!=null) {
         updatePassword(userRequest.getUserId(), userRequest.getPassword());
         }
@@ -142,7 +165,8 @@ public class UserServiceImpl implements UserService {
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getRole().getId(),
-                        user.getRole().getName()
+                        user.getRole().getName(),
+                        addressService.findAddressByUserId(user.getId())
                 ))
                 .collect(Collectors.toList());
 
@@ -156,7 +180,8 @@ public class UserServiceImpl implements UserService {
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getRole().getId(),
-                        user.getRole().getName()
+                        user.getRole().getName(),
+                        addressService.findAddressByUserId(user.getId())
                 ))
                 .collect(Collectors.toList()) : new ArrayList<>();
 
@@ -170,7 +195,8 @@ public class UserServiceImpl implements UserService {
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getRole().getId(),
-                        user.getRole().getName()
+                        user.getRole().getName(),
+                        addressService.findAddressByUserId(user.getId())
                 ))
                 .collect(Collectors.toList()) : new ArrayList<>();
 

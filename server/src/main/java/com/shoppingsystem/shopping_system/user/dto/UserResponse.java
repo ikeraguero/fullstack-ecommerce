@@ -17,4 +17,5 @@ public class UserResponse {
     private String passwordHash;
     private int userRoleId;
     private String userRoleName;
+    private Address userAddress;
 }

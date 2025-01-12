@@ -15,4 +15,14 @@ public class AddressServiceImpl implements AddressService{
     public Address findAddressByUserId(Long userId) {
         return addressRepository.findAddressByUserId(userId);
     }
+
+    @Override
+    public Address findById(Long addressId) {
+        return addressRepository.findById(addressId).orElseThrow(() -> new RuntimeException("Address not found"));
+    }
+
+    @Override
+    public void save(Address address) {
+        addressRepository.save(address);
+    }
 }
