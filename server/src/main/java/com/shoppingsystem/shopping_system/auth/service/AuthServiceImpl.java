@@ -70,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
         response.addCookie(cookie);
 
         Address address = addressService.findAddressByUserId(user.getId());
+        System.out.println(address);
 
         return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
                     user.getEmail(), user.getRole().getName(), address);
@@ -92,6 +93,7 @@ public class AuthServiceImpl implements AuthService {
 
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
+        System.out.println(registerRequest.getPassword());
         newUser.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setFirstName(registerRequest.getFirstName());
         newUser.setLastName(registerRequest.getLastName());
