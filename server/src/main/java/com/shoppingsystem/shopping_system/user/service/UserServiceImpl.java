@@ -128,7 +128,6 @@ public class UserServiceImpl implements UserService {
             existingUser.setLastName(userRequest.getLastName());
             existingUser.setUpdatedAt(Date.from(Instant.now()));
         }
-        System.out.println(address);
 
         if(address == null) {
             address = new Address(userRequest.getAddress().getAddress(), userRequest.getAddress().getPostalCode(),
