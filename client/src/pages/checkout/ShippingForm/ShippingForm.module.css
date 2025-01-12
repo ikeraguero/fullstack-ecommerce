@@ -53,6 +53,10 @@
   border-radius: 0.4rem;
 }
 
+.calculateShippingButton:hover {
+  background-color: #ff577c;
+}
+
 .inputError {
   border: 0.1rem solid #cd022e !important;
 }

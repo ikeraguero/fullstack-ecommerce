@@ -68,6 +68,10 @@
   border-radius: 0.4rem;
 }
 
+.checkoutButton:hover {
+  background-color: #ff577c;
+}
+
 .cartSummaryTotal {
   padding: 2.8rem 0 0 0;
 }

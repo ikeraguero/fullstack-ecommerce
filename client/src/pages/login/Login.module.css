@@ -1,20 +1,34 @@
 .mainContainer {
-  margin: 2.4rem 0;
-  width: 100%;
+  width: 90%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
+  justify-self: center;
 }
 
 .loginBox {
   display: flex;
   flex-direction: column;
   gap: 2.1rem;
-
   align-items: center;
   width: 40%;
-  padding: 2rem;
+  padding: 4rem 0.2rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 1rem #d4d4d4;
+  border-radius: 0.9em;
+}
+
+.loginSubtitle {
+  color: #6e6e6e;
+  display: flex;
+  justify-content: center;
+}
+
+.loginTitle {
+  display: flex;
+  justify-content: center;
 }
 
 .loginField {
@@ -100,9 +114,10 @@
 .linkContainer {
   display: flex;
   gap: 0.4rem;
+  margin-top: 1.2rem;
 }
 
 .btnLink button {
   width: 100%;
-  text-decoration: non;
+  text-decoration: none;
 }

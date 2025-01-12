@@ -46,7 +46,7 @@ function PaymentForm({
 
     //formt cvc
     if (name === "cardCvc") {
-      let formattedValue = value.replace(/\D/g, ""); 
+      let formattedValue = value.replace(/\D/g, "");
       if (formattedValue.length > 4) {
         formattedValue = formattedValue.slice(0, 4);
       }
@@ -87,7 +87,7 @@ function PaymentForm({
             <p className={styles.error}>{errors.email}</p>
           )}
         </div>
-        <div className={styles.formItem}>
+        <div className={styles.formItemCard}>
           <label htmlFor="cardNumber">Card Information</label>
           <input
             type="text"
@@ -137,6 +137,10 @@ function PaymentForm({
             (errors.cardCvc && touched.cardCvc && (
               <p className={styles.error}>Card information is required</p>
             ))}
+          <div className={styles.cardFlags}>
+            <img src="../../public/visaImg.png" />
+            <img src="../../public/mastercardImg.png" />
+          </div>
         </div>
         <div className={styles.formItem}>
           <label htmlFor="Cardholder Name">Cardholder Name</label>

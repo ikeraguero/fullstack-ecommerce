@@ -10,10 +10,12 @@
   display: flex;
   flex-direction: column;
   gap: 2.1rem;
-
   align-items: center;
   width: 40%;
-  padding: 2rem;
+  padding: 4rem 4.2rem;
+  border: none;
+  box-shadow: 0.1rem 0.1rem 1rem #d4d4d4;
+  border-radius: 0.9em;
 }
 
 .loginField {
@@ -40,6 +42,17 @@
   text-transform: uppercase;
   cursor: pointer;
   border-radius: 0.4rem;
+}
+
+.registerTitle {
+  display: flex;
+  justify-content: center;
+}
+
+.registerSubtitle {
+  display: flex;
+  justify-content: center;
+  color: #6e6e6e;
 }
 
 .loginButton {
@@ -72,7 +85,7 @@
 
 .loginFieldNames {
   display: flex;
-  gap: 1.2rem;
+  gap: 0.8rem;
 }
 
 .loginFieldNames input {
@@ -91,6 +104,7 @@
 .linkContainer {
   display: flex;
   gap: 0.4rem;
+  margin-top: 1.2rem;
 }
 
 .password {

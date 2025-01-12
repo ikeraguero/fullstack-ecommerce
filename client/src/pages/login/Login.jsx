@@ -38,7 +38,12 @@ function Login({ refetchCart }) {
     <div className={styles.mainContainer}>
       <form className={styles.loginBox} onSubmit={handleSubmit}>
         <div className={styles.loginBoxContainer}>
-          <h1>Sign In</h1>
+          <span className={styles.loginTitle}>
+            <h1>Sign In</h1>
+          </span>
+          <span className={styles.loginSubtitle}>
+            Enter your account details to sign in
+          </span>
           <div className={styles.loginField}>
             <label>Email</label>
             <input

@@ -47,7 +47,13 @@ function Register() {
         }}
       >
         <div className={styles.loginBoxContainer}>
-          <h1>Sign Up</h1>
+          <span className={styles.registerTitle}>
+            <h1>Sign Up</h1>
+          </span>
+          <span className={styles.registerSubtitle}>
+            Enter your details to create an account
+          </span>
+          <span></span>
           <div className={styles.loginFieldNames}>
             <div className={styles.nameField}>
               <label>First Name</label>
