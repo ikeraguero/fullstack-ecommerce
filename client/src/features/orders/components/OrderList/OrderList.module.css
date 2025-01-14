@@ -1,5 +1,4 @@
 .itemLine {
-  border-bottom: 0.1rem solid #b9b9b9;
   padding: 1.2rem 1.2rem;
   text-transform: uppercase;
   display: grid;
@@ -13,7 +12,7 @@
 .itemName,
 .itemPrice,
 .itemPrice {
-  width: 5.6rem;
+  max-width: 5.6rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,8 +100,9 @@
 
 .orderList {
   border: 0.1rem #b9b9b9 solid;
-  border-radius: 0.4rem;
-  margin-top: 2.6rem;
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+
   margin-bottom: 5.6rem;
 }
 
@@ -110,4 +110,22 @@
   font-weight: 600;
   display: flex;
   align-items: center;
+}
+
+.listHeader {
+  margin-top: 2.6rem;
+  display: grid;
+  padding: 1.2rem;
+  grid-template-columns: repeat(5, 1fr);
+  font-weight: 600;
+  background-color: #c57373;
+  border-top-left-radius: 0.9rem;
+  border-top-right-radius: 0.9rem;
+  background-color: #f7f7f7;
+  border: 0.1rem #b9b9b9 solid;
+}
+
+.listHeader span {
+  display: flex;
+  justify-content: center;
 }

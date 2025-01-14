@@ -6,17 +6,26 @@ function UserList({ items, handleOpenForm, onRemove }) {
     return <div>No products available</div>;
   }
   return (
-    <ul className={styles.usersList}>
-      {items?.map((user) => (
-        <Item
-          item={user}
-          key={user.id}
-          handleOpenForm={handleOpenForm}
-          onRemove={onRemove}
-          itemType="user"
-        />
-      ))}
-    </ul>
+    <div>
+      <div className={styles.listHeader}>
+        <span>Email</span>
+        <span>Status</span>
+        <span>Role</span>
+        <span>Id</span>
+        <span>Actions</span>
+      </div>
+      <ul className={styles.usersList}>
+        {items?.map((user) => (
+          <Item
+            item={user}
+            key={user.id}
+            handleOpenForm={handleOpenForm}
+            onRemove={onRemove}
+            itemType="user"
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
 

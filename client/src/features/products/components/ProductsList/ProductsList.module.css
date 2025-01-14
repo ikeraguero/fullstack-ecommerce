@@ -9,10 +9,29 @@
 }
 
 .productsList {
-  border: 0.1rem solid #b6b6b6;
-  border-radius: 0.4rem;
+  border: 0.1rem solid #b9b9b9;
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
 }
 
-.productsList:not(:last-child) {
+/* .productsList:not(:last-child) {
   border-bottom: 0.1rem solid #b6b6b6 !important;
+} */
+
+.listHeader {
+  margin-top: 2.6rem;
+  display: grid;
+  padding: 1.2rem;
+  grid-template-columns: repeat(5, 1fr);
+  font-weight: 600;
+  background-color: #c57373;
+  border-top-left-radius: 0.9rem;
+  border-top-right-radius: 0.9rem;
+  background-color: #f7f7f7;
+  border: 0.1rem #b9b9b9 solid;
+}
+
+.listHeader span {
+  display: flex;
+  justify-content: center;
 }

@@ -1,5 +1,4 @@
 .itemLine {
-  border-bottom: 0.1rem solid #b9b9b9;
   padding: 1.2rem 1.2rem;
   text-transform: uppercase;
   display: grid;
@@ -10,10 +9,15 @@
   justify-self: center;
 }
 
+.itemPrice {
+  display: flex;
+  text-align: center;
+}
+
 .itemName,
 .itemPrice,
 .itemPrice {
-  width: 5.6rem;
+  max-width: 5.6rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

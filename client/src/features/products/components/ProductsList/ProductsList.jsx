@@ -6,17 +6,26 @@ function ProductsList({ items, handleOpenForm, onRemove }) {
     return <div>No products available</div>;
   }
   return (
-    <ul className={styles.productsList}>
-      {items?.map((product) => (
-        <Item
-          item={product}
-          key={product.id}
-          handleOpenForm={handleOpenForm}
-          onRemove={onRemove}
-          itemType="product"
-        />
-      ))}
-    </ul>
+    <div>
+      <div className={styles.listHeader}>
+        <span>Name</span>
+        <span>Price</span>
+        <span>Category</span>
+        <span>Quantity</span>
+        <span>Actions</span>
+      </div>
+      <ul className={styles.productsList}>
+        {items?.map((product) => (
+          <Item
+            item={product}
+            key={product.id}
+            handleOpenForm={handleOpenForm}
+            onRemove={onRemove}
+            itemType="product"
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
 
