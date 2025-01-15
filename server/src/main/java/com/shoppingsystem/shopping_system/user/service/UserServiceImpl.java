@@ -135,8 +135,7 @@ public class UserServiceImpl implements UserService {
             addressService.save(address);
         }
 
-
-        if(userRequest.getPassword()!=null) {
+        if(!userRequest.getPassword().isEmpty()) {
         updatePassword(userRequest.getUserId(), userRequest.getPassword());
         }
     }

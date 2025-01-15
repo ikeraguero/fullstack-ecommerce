@@ -52,6 +52,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrdersResponse findAll(int page, int size) {
+        // get the total number of orders
+        long totalOrders = orderRepository.count();
+
+        if (totalOrders == 0) {
+            return new OrdersResponse(
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    0L,
+                    0L,
+                    0.0,
+                    page,
+                    0  
+            );
+        }
+
         // paginated orders
         Page<Order> paginatedOrders = orderRepository.findAll(PageRequest.of(page, size));
         List<OrderResponse> currentContent = paginatedOrders.getContent().stream()
@@ -76,7 +92,6 @@ public class OrderServiceImpl implements OrderService {
                 : Collections.emptyList();
 
         // totals
-        long totalOrders = orderRepository.count();
         double totalRevenue = orderRepository.sumTotalRevenue();
         long totalUniqueProducts = orderItemService.countDistinctProducts();
 
@@ -91,6 +106,7 @@ public class OrderServiceImpl implements OrderService {
                 paginatedOrders.getTotalPages()
         );
     }
+
 
     @Override
     public void save(Order order) {
