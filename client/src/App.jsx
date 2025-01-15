@@ -29,7 +29,6 @@ function App() {
 
   useEffect(() => {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
-      console.log(userData);
       const { firstName, lastName, role, id, email, address } = userData;
       const username = `${firstName} ${lastName}`;
       console.log(address);

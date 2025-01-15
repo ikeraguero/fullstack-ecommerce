@@ -25,13 +25,15 @@ function ProfileInformation() {
       postalCode,
       country,
       city,
+      password,
     } = values;
+
     const userRequest = {
       userId,
       firstName,
       lastName,
       email,
-      password: "",
+      password,
       roleId: Number(values.roleId),
       address: {
         addressId,
@@ -43,7 +45,13 @@ function ProfileInformation() {
     };
     await updateUser(userRequest);
     const username = firstName + " " + lastName;
-    updateUserProfile(username, firstName, lastName, email);
+    updateUserProfile(
+      username,
+      firstName,
+      lastName,
+      email,
+      userRequest.address
+    );
     setIsEditingProfile(false);
   }
   return (
@@ -106,7 +114,13 @@ function ProfileInformation() {
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="password">Password</label>
-            <input type="password" disabled={!isEditingProfile} />
+            <input
+              name="password"
+              type="password"
+              disabled={!isEditingProfile}
+              onChange={handleChange}
+              value={values.password}
+            />
           </div>
           <div className={styles.profileFormItem}>
             <label htmlFor="postalCode">Postal Code</label>

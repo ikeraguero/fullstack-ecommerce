@@ -4,26 +4,31 @@ import { useState } from "react";
 import styles from "./Login.module.css";
 import { useLoginUser } from "../../api/auth/auth.api";
 
-function Login({ refetchCart }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const { mutateAsync: loginUser } = useLoginUser();
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const loginData = {
-      email: email,
-      password: password,
-    };
-
     setIsLoading(true);
     setError(null);
 
     try {
-      await loginUser(loginData);
+      await loginUser(formData);
     } catch (err) {
       setError("Invalid credentials or server error. Please try again.");
       console.log(error);
@@ -49,9 +54,9 @@ function Login({ refetchCart }) {
             <input
               type="email"
               name="email"
-              value={email}
+              value={formData.email}
               required
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
             />
           </div>
           <div className={styles.loginField}>
@@ -62,8 +67,8 @@ function Login({ refetchCart }) {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id=""
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={(e) => handleInputChange(e)}
                   required
                 />
               </div>

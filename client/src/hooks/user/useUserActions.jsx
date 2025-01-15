@@ -5,13 +5,11 @@ import { useUserForm } from "@context/useUserFormContext";
 
 export function useUserActions(editUser, refetch) {
   const loggedUserId = useSelector((state) => state.auth.id);
-  const { resetUserForm, toggleAdd } = useUserForm();
+  const { toggleAdd } = useUserForm();
   const dispatch = useDispatch();
   const { mutate: registerUser } = useRegisterUser();
   const { mutate: updateUser } = useUpdateUser();
   const { mutate: deleteUser } = useDeleteUsers();
-
-  console.log(resetUserForm, toggleAdd);
 
   function create(userData) {
     registerUser(userData, {

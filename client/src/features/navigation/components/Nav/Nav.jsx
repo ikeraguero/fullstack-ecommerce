@@ -5,6 +5,7 @@ import TopNav from "../TopNav/TopNav";
 import SearchBar from "../../../search/components/SearchBar/SearchBar";
 import styles from "./Nav.module.css";
 import useAuth from "@hooks/auth/useAuth";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
@@ -32,7 +33,7 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   }
 
   if (!loadedCategories) {
-    return <div>Loading...</div>;
+    return <LoadingState />;
   }
 
   return (
@@ -40,7 +41,10 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
       <TopNav />
       <div className={styles.navTop}>
         <div className={styles.leftSide}>
-          <ion-icon name="menu-outline" onClick={handleOpenBottom}></ion-icon>
+          <ion-icon
+            name="pricetags-outline"
+            onClick={handleOpenBottom}
+          ></ion-icon>
           <Link to={"/"} className={styles.navLink}>
             E-commerce
           </Link>

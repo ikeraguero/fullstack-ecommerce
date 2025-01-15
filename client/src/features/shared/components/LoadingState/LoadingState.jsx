@@ -1,10 +1,10 @@
-import { Spinner } from "@nextui-org/react";
 import styles from "./LoadingState.module.css";
+import { MoonLoader } from "react-spinners";
 
 function LoadingState() {
   return (
     <div className={styles.loadingContainer}>
-      <Spinner size="lg" />
+      <MoonLoader />
     </div>
   );
 }

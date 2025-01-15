@@ -9,6 +9,7 @@ import useShippingForm from "@hooks/cart/useShippingForm";
 import usePaymentForm from "@hooks/cart/usePaymentForm";
 import OrderSummary from "@features/orders/components/OrderSummary/OrderSummary";
 import { useCheckout } from "@context/CheckoutContext";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 
 function CheckoutShipping() {
   const params = useParams();
@@ -67,9 +68,12 @@ function CheckoutShipping() {
       updateCheckoutState("shippingPrice", Number(storedShippingPrice));
       setTotalPrice(Number(storedTotalPrice));
       setIsPriceLocked(true);
-    } else {
-      updateCheckoutState("shippingPrice", 0);
+      initialized.current = true;
+      return;
     }
+
+    updateCheckoutState("shippingPrice", 0);
+
     initialized.current = true;
   }, [order, updateCheckoutState]);
 
@@ -84,7 +88,7 @@ function CheckoutShipping() {
     }
   }, [order, shippingPrice, isPriceLocked]);
 
-  if (!updateOrder) return <div>Loading...</div>;
+  if (!updateOrder) return <LoadingState />;
   console.log(order);
 
   function onPaymentSubmit() {

@@ -85,9 +85,13 @@ function OrderDashboard() {
           </span>
         </div>
       </div>
-      <div>
+      {displayedOrders && displayedOrders.length === 0 ? (
+        <div className={styles.emptyMessage}>
+          No orders available at the moment.
+        </div>
+      ) : (
         <OrderList data={displayedOrders} />
-      </div>
+      )}
       <div className={styles.paginationButtons}>
         <button
           onClick={handlePrevious}

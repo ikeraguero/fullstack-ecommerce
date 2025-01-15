@@ -1,16 +1,18 @@
-import { MoonLoader } from "react-spinners";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useProductsByCategory } from "@api/products/products.api";
 import styles from "./CategoryPage.module.css";
 import ProductCard from "@features/products/components/ProductCard/ProductCard";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function CategoryPage({ activeCategory }) {
   const {
     data: categoryProducts,
     isLoading,
     refetch,
+    error,
   } = useProductsByCategory(activeCategory);
 
   useEffect(
@@ -21,21 +23,11 @@ function CategoryPage({ activeCategory }) {
   );
 
   if (isLoading) {
-    return (
-      <div>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
-  if (categoryProducts.length === 0) {
-    return (
-      <div className={styles.mainContainer}>
-        <h1>No products available in this category.</h1>
-      </div>
-    );
+  if (error) {
+    return <ErrorState error={error} retry={refetch} />;
   }
 
   return (

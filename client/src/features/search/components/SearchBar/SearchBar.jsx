@@ -107,15 +107,17 @@ function SearchBar({ setSearchProducts }) {
           id="input"
         ></input>
         <ion-icon name="search-outline" onClick={handleSearch}></ion-icon>
-        <div className={styles.results}>
-          {results?.map((result) => (
+        <ul className={styles.results}>
+          {results?.map((result, index) => (
             <SearchItem
               key={result.id}
               {...result}
               handleItemClick={handleItemClick}
+              index={index}
+              length={results.length}
             />
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

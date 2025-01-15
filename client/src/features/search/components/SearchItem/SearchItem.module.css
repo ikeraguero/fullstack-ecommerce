@@ -8,6 +8,22 @@
   cursor: pointer;
 }
 
+.searchResultLast {
+  border-bottom-right-radius: 0.9rem;
+  border-bottom-left-radius: 0.9rem;
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.searchResultLast img {
+  border-bottom-left-radius: 0.9rem;
+}
+
 .searchResultImg {
   display: flex;
 }
@@ -19,4 +35,8 @@
 
 .searchItemLink {
   text-decoration: none;
+}
+
+.item {
+  border-radius: 0.4rem;
 }

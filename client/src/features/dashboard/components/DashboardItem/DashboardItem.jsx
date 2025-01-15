@@ -23,7 +23,6 @@ function DashboardItem({
   onAdd,
   onEdit,
   onRemove,
-  formRef,
   isFormOpen,
 }) {
   const { toggleAddProduct } = useProductForm();
@@ -50,7 +49,6 @@ function DashboardItem({
       <div className={isFormOpen ? styles.form : styles.hide}>
         {FormComponent && (
           <FormComponent
-            formRef={formRef}
             handleOpenForm={handleOpenForm}
             onAdd={onAdd}
             onEdit={onEdit}

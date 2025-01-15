@@ -8,7 +8,7 @@ import LoadingState from "@features/shared/components/LoadingState/LoadingState"
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import { useProductForm } from "@context/useProductFormContext";
 
-function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
+function ProductForm({ onEdit, onAdd }) {
   const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
   const { isEditingProduct, editProduct, isAddingProduct, resetProductForm } =
@@ -50,22 +50,12 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
       formData.append("image", image);
     }
 
+    console.log(formData);
+
     const submitFunction = isEditingProduct ? onEdit : onAdd;
     submitFunction(formData);
 
     resetProductForm();
-  }
-
-  function handleCloseForm() {
-    resetProductForm();
-    handleClearForm();
-  }
-
-  function handleClearForm() {
-    resetForm();
-    if (formRef.current) {
-      formRef.current.reset();
-    }
   }
 
   async function handleImageChange(e) {
@@ -85,10 +75,9 @@ function ProductForm({ formRef, onEdit, onAdd, handleOpenForm }) {
     <div>
       <span className={styles.formTop}>
         {!isEditingProduct ? "Add New Product" : `Edit ${editProduct?.name}`}
-        <ion-icon name="close-outline" onClick={handleCloseForm}></ion-icon>
+        <ion-icon name="close-outline" onClick={resetProductForm}></ion-icon>
       </span>
       <form
-        ref={formRef}
         className={styles.formBody}
         onSubmit={(e) => {
           e.preventDefault();

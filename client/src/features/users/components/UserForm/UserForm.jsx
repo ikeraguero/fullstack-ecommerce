@@ -1,31 +1,33 @@
-import { MoonLoader } from "react-spinners";
 import { useRoles } from "@api/users/roles.api";
 import useUserAddForm from "@hooks/user/useUserAddForm";
 import useUserEditForm from "@hooks/user/useUserEditForm";
 import styles from "./UserForm.module.css";
 import { useEffect } from "react";
 import { useUserForm } from "@context/useUserFormContext";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
-function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
+function UserForm({ onAdd, onEdit }) {
   const { isEditingUser, editUser, isAddingUser, resetUserForm } =
     useUserForm();
 
   const userAddForm = useUserAddForm((e) => handleSendData(e));
   const userEditForm = useUserEditForm((e) => handleSendData(e));
 
-  const { values, handleChange } = isEditingUser ? userEditForm : userAddForm;
+  const { values, handleChange, resetForm } = isEditingUser
+    ? userEditForm
+    : userAddForm;
 
-  const { data: roles, error, isLoading } = useRoles();
+  const { data: roles, error, isLoading, refetch } = useRoles();
 
   useEffect(() => {
     if (isAddingUser) {
-      resetUserForm();
+      resetForm();
     }
-  }, [isAddingUser]);
+  }, [isAddingUser, resetForm]);
 
-  function handleSendData(e) {
-    e.preventDefault();
-
+  function handleSendData() {
+    console.log(editUser);
     const userRequest = {
       userId: editUser?.id || null,
       firstName: values.firstName,
@@ -34,7 +36,7 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
       password: values.password,
       roleId: Number(values.roleId),
       address: {
-        addressId: editUser?.userAddress.id || null,
+        addressId: editUser?.userAddress?.id || null,
         address: values.address,
         postalCode: values.postalCode,
         country: values.country,
@@ -54,40 +56,21 @@ function UserForm({ formRef, onAdd, onEdit, handleOpenForm }) {
     resetUserForm();
   }
 
-  function handleCloseForm() {
-    resetUserForm();
-    handleClearForm();
-  }
-
-  function handleClearForm() {
-    resetUserForm();
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-  }
-
   if (isLoading) {
-    return (
-      <div>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div>Error loading users: {error.message}</div>;
+    return <ErrorState error={error} retry={refetch} />;
   }
 
   return (
     <div>
       <span className={styles.formTop}>
         {!isEditingUser ? "Add New User" : `Edit ${editUser?.userEmail}`}
-        <ion-icon name="close-outline" onClick={handleCloseForm}></ion-icon>
+        <ion-icon name="close-outline" onClick={resetUserForm}></ion-icon>
       </span>
       <form
-        ref={formRef}
         onSubmit={(e) => {
           e.preventDefault();
           handleSendData(e);

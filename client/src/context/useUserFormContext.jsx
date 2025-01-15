@@ -17,6 +17,7 @@ const initialState = {
 
 const userFormReducer = (state, action) => {
   const user = action.payload;
+  console.log(action);
   switch (action.type) {
     case "LOAD_USERS":
       return { ...state, users: action.payload };
@@ -87,7 +88,7 @@ export const UserFormProvider = ({ children }) => {
 
   const changeUserData = (field, value) =>
     dispatch({ type: "CHANGE_USER_FIELD", payload: { field, value } });
-  
+
   const resetUserForm = () => dispatch({ type: "RESET_FORM" });
 
   return (

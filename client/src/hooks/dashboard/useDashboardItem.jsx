@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 function useDashboardItem(initialData, actions) {
   const { create, edit: update, remove, refetch } = actions;
   const [data, setData] = useState([]);
+  console.log(data);
 
   useEffect(function () {
     if (initialData && initialData.length > 0) {

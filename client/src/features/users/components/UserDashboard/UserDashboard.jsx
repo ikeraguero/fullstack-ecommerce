@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DashboardItem from "@features/dashboard/components/DashboardItem/DashboardItem";
 import { useUsers } from "@api/users/user.api";
 import styles from "./UserDashboard.module.css";
@@ -16,7 +16,6 @@ function UserDashboard() {
     isDeletingUser,
   } = useUserForm();
 
-  const formRef = useRef();
   const isUsersFormOpen = isAddingUser || isEditingUser;
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -96,11 +95,10 @@ function UserDashboard() {
       <DashboardItem
         title="Users"
         data={userDashboard.data}
-        onAdd={userDashboardActions.create}
-        onEdit={userDashboardActions.edit}
-        onRemove={userDashboardActions.remove}
+        onAdd={userDashboard.handleCreate}
+        onEdit={userDashboard.handleEdit}
+        onRemove={userDashboard.handleRemove}
         isFormOpen={isUsersFormOpen}
-        formRef={formRef}
       />
 
       <div className={styles.paginationButtons}>

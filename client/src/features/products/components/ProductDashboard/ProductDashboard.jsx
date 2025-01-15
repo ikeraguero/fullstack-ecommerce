@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import styles from "./ProductDashboard.module.css";
 import { useProducts } from "@api/products/products.api";
@@ -17,7 +17,6 @@ function ProductDashboard() {
     deleteProductId,
   } = useProductForm();
 
-  const formRef = useRef();
   const isProductFormOpen = isAddingProduct || isEditingProduct;
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -103,7 +102,6 @@ function ProductDashboard() {
         onEdit={productDashboard.handleEdit}
         onRemove={productDashboard.handleRemove}
         isFormOpen={isProductFormOpen}
-        formRef={formRef}
       />
 
       <div className={styles.paginationButtons}>

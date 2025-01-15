@@ -35,8 +35,8 @@ function useAuth() {
     dispatch(logoutSuccess());
   }
 
-  function updateUserProfile(username, firstName, lastName, email) {
-    const userData = { username, firstName, lastName, email };
+  function updateUserProfile(username, firstName, lastName, email, address) {
+    const userData = { username, firstName, lastName, email, address};
     dispatch(updateUserData(userData));
   }
 

@@ -3,12 +3,13 @@ import { useState, useEffect, useCallback } from "react";
 import Main from "@features/shared/components/Main/Main";
 import Carousel from "@features/carousel/components/Carousel/Carousel";
 import styles from "./Home.module.css";
-import { MoonLoader } from "react-spinners";
 import { useHomeProducts } from "@api/products/products.api";
 import HomeProducts from "@features/products/components/HomeProducts/HomeProducts";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function Home({ onCategoryChange }) {
-  const { data: products, error, isLoading } = useHomeProducts();
+  const { data: products, error, isLoading, refetch } = useHomeProducts();
   const [marketingInfo, setMarketingInfo] = useState(null);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -63,20 +64,16 @@ function Home({ onCategoryChange }) {
   if (!marketingInfo) {
     return null;
   }
+
   if (isLoading) {
-    return (
-      <>
-        <div className={styles.spinnerContainer}>
-          <MoonLoader size={50} color="#000000" speedMultiplier={1} />
-        </div>
-      </>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div>Error loading products: {error.message}</div>;
+    return <ErrorState error={error} retry={refetch} />;
   }
 
+  
   const categoriesArray = Object.values(marketingInfo);
 
   return (

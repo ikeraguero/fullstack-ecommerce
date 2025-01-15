@@ -1,11 +1,12 @@
 import { useOrdersByUser } from "@api/orders/order.api";
 import Order from "../Order/Order";
 import styles from "./OrderInformation.module.css";
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 
 function OrderInformation() {
   const { data: orders, isLoading } = useOrdersByUser();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingState />;
 
   return (
     <div>

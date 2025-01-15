@@ -41,11 +41,12 @@ const authSlice = createSlice({
       state.email = null;
     },
     updateUserData(state, action) {
-      const { firstName, lastName, email, username } = action.payload;
+      const { firstName, lastName, email, username, address } = action.payload;
       state.firstName = firstName;
       state.lastName = lastName;
       state.email = email;
       state.username = username;
+      state.address = address;
     },
   },
 });
