@@ -138,6 +138,7 @@ export function useCreateOrder() {
     "cart",
     async (order) => {
       const { totalPrice } = order;
+      console.log(order);
       updateCheckoutState("totalItemsPrice", totalPrice);
     },
     (error) => {

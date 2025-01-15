@@ -1,7 +1,7 @@
 import ErrorBoundary from "../ErrorBoundary/ErrorBoudary";
 import styles from "./ErrorState.module.css";
 
-function ErrorState({ error, retry }) {
+function ErrorState({ error }) {
   return (
     <div className={styles.errorContainer}>
       {error ? (
@@ -10,7 +10,7 @@ function ErrorState({ error, retry }) {
           <p>{error.message}, try again later!</p>
         </>
       ) : (
-        <ErrorBoundary error={error} retry={retry}></ErrorBoundary>
+        <ErrorBoundary error={error}></ErrorBoundary>
       )}
     </div>
   );

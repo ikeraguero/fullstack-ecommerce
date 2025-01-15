@@ -31,6 +31,7 @@ const authSlice = createSlice({
       state.address = address;
     },
     logoutSuccess(state) {
+      console.log("oi");
       state.isLoggedIn = false;
       state.username = null;
       state.token = null;

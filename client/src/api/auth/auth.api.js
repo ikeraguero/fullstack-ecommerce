@@ -110,7 +110,7 @@ export function useLoginUser() {
     console.error("Login error:", error.message);
   }
 
-  return useApiMutation(loginUser, undefined, handleSuccess, handleError);
+  return useApiMutation(loginUser, null, handleSuccess, handleError);
 }
 
 export function useLogoutUser() {
@@ -124,5 +124,5 @@ export function useLogoutUser() {
     console.error("Logout error:", error.message);
   }
 
-  return useApiMutation(logoutUser, undefined, handleSuccess, handleError);
+  return useApiMutation(logoutUser, null, handleSuccess, handleError);
 }

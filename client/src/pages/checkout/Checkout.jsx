@@ -10,10 +10,11 @@ import usePaymentForm from "@hooks/cart/usePaymentForm";
 import OrderSummary from "@features/orders/components/OrderSummary/OrderSummary";
 import { useCheckout } from "@context/CheckoutContext";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function CheckoutShipping() {
   const params = useParams();
-  const { data: order } = useOrder(params.id);
+  const { data: order, isLoading, error } = useOrder(params.id);
   const { mutate: payOrder } = usePayOrder();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
@@ -55,41 +56,29 @@ function CheckoutShipping() {
 
   useEffect(() => {
     if (initialized.current) return;
-
-    const storedShippingPrice = localStorage.getItem("shippingPrice");
-    const storedTotalPrice = localStorage.getItem("totalPrice");
-    const storedOrderId = localStorage.getItem("orderId");
-
-    if (
-      storedShippingPrice &&
-      storedTotalPrice &&
-      storedOrderId === order?.orderId
-    ) {
-      updateCheckoutState("shippingPrice", Number(storedShippingPrice));
-      setTotalPrice(Number(storedTotalPrice));
-      setIsPriceLocked(true);
-      initialized.current = true;
-      return;
-    }
-
-    updateCheckoutState("shippingPrice", 0);
-
     initialized.current = true;
   }, [order, updateCheckoutState]);
 
   useEffect(() => {
-    if (order && !isPriceLocked) {
+    if (initialized.current && !isPriceLocked && order) {
       const updatedTotalPrice = order.totalPrice + shippingPrice;
       setTotalPrice(updatedTotalPrice);
-
-      localStorage.setItem("orderId", order?.orderId);
-      localStorage.setItem("shippingPrice", shippingPrice);
-      localStorage.setItem("totalPrice", updatedTotalPrice);
     }
   }, [order, shippingPrice, isPriceLocked]);
 
-  if (!updateOrder) return <LoadingState />;
-  console.log(order);
+  useEffect(() => {
+    localStorage.setItem("checkoutStep", checkoutStep);
+  }, [checkoutStep]);
+
+  
+
+  if (!initialized.current || isLoading) {
+    return <LoadingState />;
+  }
+
+  if (error) {
+    return <ErrorState error={error} />;
+  }
 
   function onPaymentSubmit() {
     const paymentRequest = createPaymentRequest();
