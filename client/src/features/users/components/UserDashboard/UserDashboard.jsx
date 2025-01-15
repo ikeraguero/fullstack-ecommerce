@@ -5,6 +5,7 @@ import styles from "./UserDashboard.module.css";
 import useDashboardItem from "@hooks/dashboard/useDashboardItem";
 import { useUserActions } from "@hooks/user/useUserActions";
 import { useUserForm } from "@context/useUserFormContext";
+import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
 function UserDashboard() {
   const {
@@ -73,7 +74,9 @@ function UserDashboard() {
     }
   }, [isLoading, currentPage, content]);
 
-  if (userError) return <div>Error loading users: {userError.message}</div>;
+  if (userError) {
+    return <ErrorState error={userError} />;
+  }
 
   return (
     <>

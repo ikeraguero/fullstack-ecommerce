@@ -4,3 +4,11 @@
   flex-direction: column;
   gap: 1.2rem;
 }
+
+.emptyMessage {
+  margin: 3.6rem 0 3.6rem 0;
+  color: #646464;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+}

@@ -11,11 +11,17 @@ function OrderInformation() {
   return (
     <div>
       <h1>Your Orders</h1>
-      <div className={styles.ordersContainer}>
-        {orders?.map((order) => (
-          <Order key={order.id} {...order} />
-        ))}
-      </div>
+      {orders.length > 0 ? (
+        <div className={styles.ordersContainer}>
+          {orders?.map((order) => (
+            <Order key={order.id} {...order} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.emptyMessage}>
+          No orders available at the moment.
+        </div>
+      )}
     </div>
   );
 }

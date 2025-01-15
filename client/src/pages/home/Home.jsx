@@ -73,7 +73,6 @@ function Home({ onCategoryChange }) {
     return <ErrorState error={error} retry={refetch} />;
   }
 
-  
   const categoriesArray = Object.values(marketingInfo);
 
   return (

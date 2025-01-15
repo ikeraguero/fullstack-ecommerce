@@ -5,7 +5,6 @@ import TopNav from "../TopNav/TopNav";
 import SearchBar from "../../../search/components/SearchBar/SearchBar";
 import styles from "./Nav.module.css";
 import useAuth from "@hooks/auth/useAuth";
-import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 
 function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   const [loadedCategories, setLoadedCategories] = useState(null);
@@ -33,7 +32,7 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
   }
 
   if (!loadedCategories) {
-    return <LoadingState />;
+    return <div>aaaaaaaaaa</div>;
   }
 
   return (
