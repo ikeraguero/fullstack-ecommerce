@@ -21,6 +21,7 @@ function CheckoutShipping() {
   const { order: updateOrder } = useCheckout();
   const [isPriceLocked, setIsPriceLocked] = useState(false);
   const initialized = useRef(false);
+  const PAID = "paid";
 
   const STEPS = {
     SHIPPING: "shipping",
@@ -69,8 +70,6 @@ function CheckoutShipping() {
   useEffect(() => {
     localStorage.setItem("checkoutStep", checkoutStep);
   }, [checkoutStep]);
-
-  
 
   if (!initialized.current || isLoading) {
     return <LoadingState />;
@@ -121,7 +120,7 @@ function CheckoutShipping() {
     const { address } = shippingValues;
     const payData = {
       ...updateOrder,
-      status: "paid",
+      status: PAID,
       shippingAddress: address,
       totalPrice,
     };

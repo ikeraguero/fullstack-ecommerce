@@ -42,7 +42,7 @@ function Nav({ categories, onSearch, onCategoryChange, activeCategory }) {
       <div className={styles.navTop}>
         <div className={styles.leftSide}>
           <ion-icon
-            name="pricetags-outline"
+            name="reorder-three-outline"
             onClick={handleOpenBottom}
           ></ion-icon>
           <Link to={"/"} className={styles.navLink}>

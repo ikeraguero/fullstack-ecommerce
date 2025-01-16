@@ -35,3 +35,7 @@
   display: flex;
   justify-content: center;
 }
+
+.productsTable {
+  width: 100%;
+}

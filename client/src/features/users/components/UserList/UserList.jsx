@@ -3,28 +3,32 @@ import styles from "./UserList.module.css";
 
 function UserList({ items, handleOpenForm, onRemove }) {
   if (!items?.length) {
-    return <div>No products available</div>;
+    return <div>No users available</div>;
   }
   return (
     <div>
-      <div className={styles.listHeader}>
-        <span>Email</span>
-        <span>Status</span>
-        <span>Role</span>
-        <span>Id</span>
-        <span>Actions</span>
-      </div>
-      <ul className={styles.usersList}>
-        {items?.map((user) => (
-          <Item
-            item={user}
-            key={user.id}
-            handleOpenForm={handleOpenForm}
-            onRemove={onRemove}
-            itemType="user"
-          />
-        ))}
-      </ul>
+      <table className={styles.usersTable}>
+        <thead>
+          <tr className={styles.listHeader}>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Id</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items?.map((user) => (
+            <Item
+              item={user}
+              key={user.id}
+              handleOpenForm={handleOpenForm}
+              onRemove={onRemove}
+              itemType="user"
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

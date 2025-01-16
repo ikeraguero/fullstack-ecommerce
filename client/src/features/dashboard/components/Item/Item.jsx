@@ -5,6 +5,7 @@ import { useUserForm } from "@context/useUserFormContext";
 function Item({ item, handleOpenForm, itemType }) {
   const { openEditProduct, toggleDeleteProduct } = useProductForm();
   const { openEditUser, toggleDeleteUser } = useUserForm();
+
   function handleEdit() {
     handleOpenForm("openEdit", item);
 
@@ -18,26 +19,24 @@ function Item({ item, handleOpenForm, itemType }) {
   }
 
   return (
-    <li className={styles.itemLine}>
-      <div className={styles.itemName}>
-        {itemType === "product" ? item?.name : item?.userEmail}
-      </div>
+    <tr className={styles.itemLine}>
+      <td>{itemType === "product" ? item?.name : item?.userEmail}</td>
       {itemType === "product" ? (
         <>
-          <div className={styles.itemPrice}>${item.price}</div>
-          <div className={styles.itemCategory}>{item.categoryName}</div>
-          <div className={styles.itemStockQuantity}>
+          <td>${item.price}</td>
+          <td className={styles.itemCategory}>{item.categoryName}</td>
+          <td className={styles.itemStockQuantity}>
             {item.stockQuantity} units
-          </div>
+          </td>
         </>
       ) : (
         <>
-          <div className={styles.itemStatus}>{item?.userStatus}</div>
-          <div className={styles.itemRole}>{item?.userRoleName}</div>
-          <div className={styles.itemPassword}>#{item?.id}</div>
+          <td className={styles.itemStatus}>{item?.userStatus}</td>
+          <td className={styles.itemRole}>{item?.userRoleName}</td>
+          <td className={styles.itemPassword}>#{item?.id}</td>
         </>
       )}
-      <div className={styles.itemButtons}>
+      <td className={styles.itemButtons}>
         <button
           className={styles.removeButton}
           onClick={() => handleDelete(item.id)}
@@ -47,8 +46,8 @@ function Item({ item, handleOpenForm, itemType }) {
         <button className={styles.editButton} onClick={handleEdit}>
           <ion-icon name="pencil-outline"></ion-icon>
         </button>
-      </div>
-    </li>
+      </td>
+    </tr>
   );
 }
 

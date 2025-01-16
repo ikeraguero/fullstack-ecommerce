@@ -138,8 +138,9 @@ export function useCreateOrder() {
     "cart",
     async (order) => {
       const { totalPrice } = order;
-      console.log(order);
       updateCheckoutState("totalItemsPrice", totalPrice);
+      updateCheckoutState("checkoutStep", "shipping");
+      updateCheckoutState("shippingPrice", 0);
     },
     (error) => {
       console.error("Error creating order:", error.message);

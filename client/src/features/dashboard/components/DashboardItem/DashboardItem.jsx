@@ -17,20 +17,14 @@ const listComponents = {
   Users: UserList,
 };
 
-function DashboardItem({
-  title,
-  data,
-  onAdd,
-  onEdit,
-  onRemove,
-  isFormOpen,
-}) {
+function DashboardItem({ title, data, onAdd, onEdit, onRemove, isFormOpen }) {
   const { toggleAddProduct } = useProductForm();
   const { toggleAddUser } = useUserForm();
   const titleCapitalized = title[0].toUpperCase() + title.slice(1);
+  const PRODUCTS = "Products";
 
   function handleOpenForm(payload) {
-    if (title === "Products") {
+    if (title === PRODUCTS) {
       toggleAddProduct();
       return;
     }

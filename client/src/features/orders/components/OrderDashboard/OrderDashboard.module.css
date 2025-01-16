@@ -48,6 +48,7 @@
   color: #f42b56;
   font-weight: 500;
   cursor: pointer;
+  margin-top: 2.4rem;
 }
 
 .paginationButton:hover {

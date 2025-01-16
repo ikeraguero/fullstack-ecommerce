@@ -5,7 +5,7 @@ import {
 import { useSuccess } from "@context/SuccessContext";
 import useAuth from "@hooks/auth/useAuth";
 
-function useWishlistActions(refetchProduct) {
+function useWishlistActions() {
   const { userId } = useAuth();
   const { displaySuccess } = useSuccess();
   const { mutate: removeWishlistItem } = useDeleteWishlistItem();
@@ -17,13 +17,11 @@ function useWishlistActions(refetchProduct) {
       productId,
     };
     addToWishlist(data);
-    refetchProduct();
     displaySuccess("Product added to wishlist");
   }
 
   function handleRemoveFromWishlist(wishlistItemId) {
     removeWishlistItem(wishlistItemId);
-    refetchProduct();
     displaySuccess("Product removed from wishlist");
   }
 

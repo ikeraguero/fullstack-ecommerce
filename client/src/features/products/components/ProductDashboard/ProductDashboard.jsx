@@ -22,6 +22,7 @@ function ProductDashboard() {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
   const [pendingContent, setPendingContent] = useState(null);
+  const PRODUCTS = "Products";
 
   const {
     data: initialProducts,
@@ -49,12 +50,16 @@ function ProductDashboard() {
 
   function handlePrevious() {
     if (initialProducts && initialProducts.hasPrevious) {
+      setPendingContent(contentPrevious);
       setCurrentPage(currentPage - 1);
     }
   }
 
-  const { content, hasPrevious, hasNext, contentNext } = initialProducts || {};
+  const { content, hasPrevious, hasNext, contentNext, contentPrevious } =
+    initialProducts || {};
+
   const displayedContent = pendingContent || content;
+
   const productDashboard = useDashboardItem(
     displayedContent,
     productDashboardActions
@@ -96,7 +101,7 @@ function ProductDashboard() {
         </div>
       </div>
       <DashboardItem
-        title="Products"
+        title={PRODUCTS}
         data={productDashboard.data}
         onAdd={productDashboard.handleAdd}
         onEdit={productDashboard.handleEdit}

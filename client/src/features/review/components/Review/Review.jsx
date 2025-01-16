@@ -140,7 +140,13 @@ function Review({
         <div className={styles.reviewsList}>
           {productReviewList.length > 0 ? (
             productReviewList.map((review) => (
-              <ReviewItem key={review.date} {...review} />
+              <ReviewItem
+                key={review.date}
+                rating={review.rating}
+                comment={review.comment}
+                userFullName={review.userFullName}
+                formattedDate={review.formattedDate}
+              />
             ))
           ) : (
             <span>No reviews yet.</span>

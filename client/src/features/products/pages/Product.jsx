@@ -26,9 +26,12 @@ function Product({ refetch }) {
 
   const { handleAddToCart } = useProductActions();
   const { handleAddToWishList, handleRemoveFromWishlist } =
-    useWishlistActions(refetchProduct);
+    useWishlistActions();
+
   const [productReviewList, setProductReviewList] = useState([]);
+
   const [initialRelatedProducts, setInitialRelatedProducts] = useState(null);
+
   const navigate = useNavigate();
   const { name, imageData, imageType, canUserReview } = product || {};
 

@@ -31,7 +31,6 @@ function App() {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
       const { firstName, lastName, role, id, email, address } = userData;
       const username = `${firstName} ${lastName}`;
-      console.log(address);
       login(username, role, id, email, firstName, lastName, address);
     }
   }, [userData, login, isLoadingUser, errorUser, isLoggedIn]);

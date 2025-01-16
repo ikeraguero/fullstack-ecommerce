@@ -19,7 +19,6 @@ const authSlice = createSlice({
     loginSuccess(state, action) {
       const { id, username, role, token, firstName, lastName, email, address } =
         action.payload;
-      console.log(address, action);
       state.isLoggedIn = true;
       state.id = id;
       state.username = username;
@@ -31,7 +30,6 @@ const authSlice = createSlice({
       state.address = address;
     },
     logoutSuccess(state) {
-      console.log("oi");
       state.isLoggedIn = false;
       state.username = null;
       state.token = null;

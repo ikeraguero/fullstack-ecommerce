@@ -20,7 +20,6 @@ function Dashboard({ requiredRole }) {
   const isDeleting = isDeletingUser || isDeletingProduct;
   const isAuthorized = role === requiredRole;
 
-  console.log(role);
 
   return isAuthorized ? (
     <>

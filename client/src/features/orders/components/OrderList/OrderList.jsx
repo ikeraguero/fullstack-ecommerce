@@ -7,37 +7,40 @@ function OrderList({ data }) {
   };
   return (
     <>
-      <div className={styles.listHeader}>
-        <span>Id</span>
-        <span>Items</span>
-        <span>Date</span>
-        <span>Status</span>
-        <span>Total Price</span>
-      </div>
-      <ul className={styles.orderList}>
-        {data.map((order) => (
-          <li className={styles.itemLine} key={order}>
-            <div className={styles.itemName}>#{order.orderId}</div>
-            <>
-              <div className={styles.itemStatus}>
+      <table className={styles.orderTable}>
+        <thead>
+          <tr className={styles.listHeader}>
+            <th>Id</th>
+            <th>Items</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total Price</th>
+          </tr>
+        </thead>
+        <tbody className={styles.orderTableBody}>
+          {data.map((order) => (
+            <tr className={styles.itemLine} key={order.orderId}>
+              <td>#{order.orderId}</td>
+              <td>
                 {order.items} {order.items > 1 ? "items" : "item"}
-              </div>
-              <div className={styles.itemRole}>{order.date.split("T")[0]}</div>
-              <div
-                className={
-                  order.status === status.PENDING
-                    ? styles.statusPending
-                    : styles.statusPaid
-                }
-              >
-                {" "}
-                {order.status}
-              </div>
-            </>
-            <div className={styles.orderPrice}>${order.totalPrice}</div>
-          </li>
-        ))}
-      </ul>
+              </td>
+              <td>{order.date.split("T")[0]}</td>
+              <td>
+                <span
+                  className={
+                    order.status === status.PENDING
+                      ? styles.statusPending
+                      : styles.statusPaid
+                  }
+                >
+                  {order.status}
+                </span>
+              </td>
+              <td>${order.totalPrice}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }

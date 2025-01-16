@@ -9,6 +9,11 @@
   justify-self: center;
 }
 
+.itemLine td {
+  display: flex;
+  justify-content: center;
+}
+
 .itemPrice {
   display: flex;
   text-align: center;

@@ -35,6 +35,7 @@ function CartItem({
   }
 
   function handleQuantityUpdate(type) {
+    if (type !== "increase" && localQuantity - 1 === 0) return;
     const newQuantity =
       type === "increase" ? localQuantity + 1 : localQuantity - 1;
 

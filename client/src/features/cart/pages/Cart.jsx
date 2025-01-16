@@ -24,6 +24,7 @@ function Cart() {
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
+  const PENDING = "pending";
 
   useEffect(() => {
     if (!userId) {
@@ -50,7 +51,7 @@ function Cart() {
       userId,
       totalPrice,
       date: new Date().toISOString(),
-      status: "pending",
+      status: PENDING,
       discount: 0,
       shippingAddress: "",
       cartItemsList: cartItems.map((item) => ({
@@ -67,7 +68,6 @@ function Cart() {
       return;
     }
     try {
-      refetch();
       const orderData = generateData();
       const { orderId } = await createOrder(orderData);
       updateCheckoutState("order", orderData);

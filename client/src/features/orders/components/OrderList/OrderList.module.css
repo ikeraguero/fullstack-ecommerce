@@ -3,6 +3,12 @@
   text-transform: uppercase;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-content: center;
+}
+
+.itemLine td {
+  display: flex;
+  justify-content: center;
 }
 
 .itemLine div {
@@ -128,4 +134,14 @@
 .listHeader span {
   display: flex;
   justify-content: center;
+}
+
+.orderTable {
+  width: 100%;
+}
+
+.orderTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }

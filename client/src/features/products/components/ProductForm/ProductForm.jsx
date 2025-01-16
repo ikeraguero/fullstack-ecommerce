@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import styles from "./ProductForm.module.css";
 import useCategories from "@api/categories/categories.api";
@@ -7,9 +7,9 @@ import useProductEditForm from "@hooks/products/useProductEditForm";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import { useProductForm } from "@context/useProductFormContext";
+import useProductFormSubmission from "@hooks/products/useProductFormSubmission";
 
 function ProductForm({ onEdit, onAdd }) {
-  const [image, setImage] = useState(null);
   const { data: categories, error, isLoading } = useCategories();
   const { isEditingProduct, editProduct, isAddingProduct, resetProductForm } =
     useProductForm();
@@ -21,47 +21,19 @@ function ProductForm({ onEdit, onAdd }) {
     ? productEditForm
     : productAddForm;
 
+  const { handleSendData, handleImageChange } = useProductFormSubmission(
+    isEditingProduct,
+    editProduct,
+    resetProductForm,
+    onAdd,
+    onEdit
+  );
+
   useEffect(() => {
     if (isAddingProduct) {
       resetForm();
     }
   }, [isAddingProduct]);
-
-  function handleSendData(e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-    const productRequest = {
-      id: editProduct?.id || null,
-      name: values.productName,
-      price: Number(values.productPrice),
-      stockQuantity: Number(values.productStockQuantity),
-      categoryId: Number(values.productCategory),
-      categoryName: "",
-      productDescription: values.productDescription,
-    };
-
-    formData.append(
-      "product",
-      new Blob([JSON.stringify(productRequest)], { type: "application/json" })
-    );
-
-    if (image) {
-      formData.append("image", image);
-    }
-
-    console.log(formData);
-
-    const submitFunction = isEditingProduct ? onEdit : onAdd;
-    submitFunction(formData);
-
-    resetProductForm();
-  }
-
-  async function handleImageChange(e) {
-    const file = e.target.files[0];
-    setImage(file);
-  }
 
   if (isLoading) {
     return <LoadingState />;
@@ -81,7 +53,7 @@ function ProductForm({ onEdit, onAdd }) {
         className={styles.formBody}
         onSubmit={(e) => {
           e.preventDefault();
-          handleSendData(e);
+          handleSendData(values);
         }}
       >
         <div className={styles.formItem}>

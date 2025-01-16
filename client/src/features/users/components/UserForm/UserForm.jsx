@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useUserForm } from "@context/useUserFormContext";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
+import useUserFormSubmission from "@hooks/user/useUserFormSubmission";
 
 function UserForm({ onAdd, onEdit }) {
   const { isEditingUser, editUser, isAddingUser, resetUserForm } =
@@ -20,41 +21,19 @@ function UserForm({ onAdd, onEdit }) {
 
   const { data: roles, error, isLoading, refetch } = useRoles();
 
+  const { handleSendData } = useUserFormSubmission(
+    isEditingUser,
+    editUser,
+    resetUserForm,
+    onAdd,
+    onEdit
+  );
+
   useEffect(() => {
     if (isAddingUser) {
       resetForm();
     }
   }, [isAddingUser, resetForm]);
-
-  function handleSendData() {
-    console.log(editUser);
-    const userRequest = {
-      userId: editUser?.id || null,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-      roleId: Number(values.roleId),
-      address: {
-        addressId: editUser?.userAddress?.id || null,
-        address: values.address,
-        postalCode: values.postalCode,
-        country: values.country,
-        city: values.city,
-      },
-    };
-
-    console.log(userRequest);
-
-    if (isEditingUser) {
-      onEdit(userRequest);
-      resetUserForm();
-      return;
-    }
-
-    onAdd(userRequest);
-    resetUserForm();
-  }
 
   if (isLoading) {
     return <LoadingState />;
