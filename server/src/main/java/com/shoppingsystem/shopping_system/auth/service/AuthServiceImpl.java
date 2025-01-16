@@ -70,7 +70,6 @@ public class AuthServiceImpl implements AuthService {
         response.addCookie(cookie);
 
         Address address = addressService.findAddressByUserId(user.getId());
-        System.out.println(address);
 
         return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(),
                     user.getEmail(), user.getRole().getName(), address);
@@ -86,14 +85,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public RegisterResponse register(RegisterRequest registerRequest) throws EmailAlreadyExistsException {
+    public RegisterResponse register(RegisterRequest registerRequest, HttpServletResponse response) 
+            throws EmailAlreadyExistsException {
         if (userService.existsByEmail(registerRequest.getEmail())) {
             throw new EmailAlreadyExistsException("Email is already taken");
         }
 
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
-        System.out.println(registerRequest.getPassword());
         newUser.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setFirstName(registerRequest.getFirstName());
         newUser.setLastName(registerRequest.getLastName());
@@ -106,6 +105,9 @@ public class AuthServiceImpl implements AuthService {
 
         List<String> roles = List.of(newUser.getRole().getName());
         String token = jwtUtil.generateToken(newUser.getEmail(), roles);
+
+        Cookie cookie = createAuthCookie(token, 3600);
+        response.addCookie(cookie);
 
         return new RegisterResponse(newUser.getId(), token,
                 newUser.getFirstName(), newUser.getLastName(),

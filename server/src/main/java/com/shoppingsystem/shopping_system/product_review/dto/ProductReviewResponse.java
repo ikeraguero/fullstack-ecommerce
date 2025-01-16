@@ -34,16 +34,22 @@ public class ProductReviewResponse {
 
         if (minutesAgo < 1) {
             return "Just now";
-        } else if (minutesAgo < 60) {
-            return minutesAgo + " minute" + (minutesAgo > 1 ? "s" : "") + " ago";
-        } else if (hoursAgo < 24) {
-            return hoursAgo + " hour" + (hoursAgo > 1 ? "s" : "") + " ago";
-        } else if (daysAgo <= 31) {
-            return daysAgo + " day" + (daysAgo > 1 ? "s" : "") + " ago";
-        } else {
-            // Return formatted date for older reviews
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            return date.format(formatter);
         }
+        if (minutesAgo < 60) {
+            return formatTime(minutesAgo, "minute");
+        }
+        if (hoursAgo < 24) {
+            return formatTime(hoursAgo, "hour");
+        }
+        if (daysAgo <= 31) {
+            return formatTime(daysAgo, "day");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
     }
+
+    private String formatTime(long amount, String unit) {
+        return amount + " " + unit + (amount > 1 ? "s" : "") + " ago";
+    }
+
 }

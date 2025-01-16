@@ -46,9 +46,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest, HttpServletResponse response) {
         try {
-            RegisterResponse  registerResponse = authService.register(registerRequest);
+            RegisterResponse  registerResponse = authService.register(registerRequest, response);
             return ResponseEntity.ok(registerResponse);
         } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

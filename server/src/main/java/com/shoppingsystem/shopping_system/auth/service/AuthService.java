@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface AuthService {
     LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) throws Exception;
-    RegisterResponse register(RegisterRequest registerRequest) throws Exception;
+    RegisterResponse register(RegisterRequest registerRequest, HttpServletResponse response) throws Exception;
     ResponseEntity<?> logout(HttpServletResponse response);
     LoginResponse getAuthStatus(HttpServletRequest request);
 }
