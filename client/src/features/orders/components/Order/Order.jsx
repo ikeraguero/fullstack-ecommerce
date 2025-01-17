@@ -9,6 +9,10 @@ function Order({ orderItems, orderId, date, totalPrice, status }) {
   const { updateCheckoutState } = useCheckout();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const STATUS = {
+    PENDING: "pending",
+    PAID: "paid",
+  };
 
   const items = orderItems
     .map((orderItem) => orderItem.quantity)
@@ -31,14 +35,16 @@ function Order({ orderItems, orderId, date, totalPrice, status }) {
       >
         <div className={styles.orderGrid}>
           <span>Order #{orderId}</span>
-          <span>{date.split("T")[0]}</span>
+          <span>{date?.split("T")[0]}</span>
           <span>
             {items < 9 ? `0${items}` : items} {items > 1 ? "items" : "item"}
           </span>
           <span>${totalPrice}</span>
 
-          {status === "paid" && <span className={styles.statusPaid}>Paid</span>}
-          {status === "pending" && (
+          {status === STATUS.PAID && (
+            <span className={styles.statusPaid}>Paid</span>
+          )}
+          {status === STATUS.PENDING && (
             <span className={styles.statusPending} onClick={handleCheckout}>
               Checkout
             </span>

@@ -117,6 +117,7 @@ export function useLogoutUser() {
   const { logout } = useAuth();
 
   function handleSuccess() {
+    window.location.reload();
     logout();
   }
 

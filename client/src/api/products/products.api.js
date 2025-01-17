@@ -134,12 +134,10 @@ export function useProducts(page, size) {
   return useQuery({
     queryKey: ["products", page, size],
     queryFn: () => fetchProducts(page, size),
-    onSuccess: () => {
-      console.log("products fetched");
-    },
-    onError: (error) => {
-      console.error("Error fetching products:", error.message);
-    },
+    keepPreviousData: true,
+    staleTime: 1000 * 60,
+    onError: (error) =>
+      console.error("Error fetching products:", error.message),
   });
 }
 

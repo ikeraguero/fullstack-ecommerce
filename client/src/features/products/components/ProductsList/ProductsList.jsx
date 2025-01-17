@@ -6,7 +6,7 @@ function ProductsList({ items, handleOpenForm, onRemove }) {
     return <div>No products available</div>;
   }
   return (
-    <div>
+    <div className={styles.tableWrapper}>
       <table className={styles.productsTable}>
         <thead>
           <tr className={styles.listHeader}>
@@ -17,7 +17,7 @@ function ProductsList({ items, handleOpenForm, onRemove }) {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tableBody}>
           {items?.map((product) => (
             <Item
               item={product}

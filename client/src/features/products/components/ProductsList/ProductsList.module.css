@@ -19,7 +19,6 @@
 } */
 
 .listHeader {
-  margin-top: 2.6rem;
   display: grid;
   padding: 1.2rem;
   grid-template-columns: repeat(5, 1fr);
@@ -38,4 +37,17 @@
 
 .productsTable {
   width: 100%;
+  border: #b9b9b9 0.1rem solid;
+  border-collapse: collapse;
+  border-style: hidden;
+}
+
+.tableBody {
+  border: #b9b9b9 0.1rem solid;
+}
+
+.tableWrapper {
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #b9b9b9;
 }

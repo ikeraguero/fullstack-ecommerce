@@ -6,7 +6,7 @@ function UserList({ items, handleOpenForm, onRemove }) {
     return <div>No users available</div>;
   }
   return (
-    <div>
+    <div className={styles.tableWrapper}>
       <table className={styles.usersTable}>
         <thead>
           <tr className={styles.listHeader}>

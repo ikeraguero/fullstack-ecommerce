@@ -55,6 +55,8 @@ export function useUsers(page = 0, size = 10) {
   return useQuery({
     queryKey: ["users", page, size],
     queryFn: () => fetchUsers(page, size),
+    keepPreviousData: true,
+    staleTime: 1000 * 60,
     onError: (error) => {
       console.error("Error deleting user:", error.message);
     },

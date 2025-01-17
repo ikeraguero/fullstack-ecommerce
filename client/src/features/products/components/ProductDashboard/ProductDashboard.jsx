@@ -7,6 +7,7 @@ import DashboardItem from "@features/dashboard/components/DashboardItem/Dashboar
 import useProductActions from "@hooks/products/useProductActions";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import { useProductForm } from "@context/useProductFormContext";
+const PRODUCTS = "Products";
 
 function ProductDashboard() {
   const {
@@ -22,7 +23,6 @@ function ProductDashboard() {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(10);
   const [pendingContent, setPendingContent] = useState(null);
-  const PRODUCTS = "Products";
 
   const {
     data: initialProducts,

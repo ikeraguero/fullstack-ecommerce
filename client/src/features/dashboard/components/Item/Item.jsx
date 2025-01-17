@@ -6,25 +6,29 @@ function Item({ item, handleOpenForm, itemType }) {
   const { openEditProduct, toggleDeleteProduct } = useProductForm();
   const { openEditUser, toggleDeleteUser } = useUserForm();
 
+  const PRODUCT = "product";
+
   function handleEdit() {
     handleOpenForm("openEdit", item);
 
-    itemType === "product" ? openEditProduct(item) : openEditUser(item);
+    itemType === PRODUCT ? openEditProduct(item) : openEditUser(item);
   }
 
   function handleDelete(itemId) {
-    itemType === "product"
+    itemType === PRODUCT
       ? toggleDeleteProduct(itemId)
       : toggleDeleteUser(itemId);
   }
 
   return (
     <tr className={styles.itemLine}>
-      <td>{itemType === "product" ? item?.name : item?.userEmail}</td>
-      {itemType === "product" ? (
+      <td className={styles.userName}>
+        {itemType === PRODUCT ? item?.name : item?.userEmail}
+      </td>
+      {itemType === PRODUCT ? (
         <>
           <td>${item.price}</td>
-          <td className={styles.itemCategory}>{item.categoryName}</td>
+          <td className={styles.itemCategory}>{item?.categoryName}</td>
           <td className={styles.itemStockQuantity}>
             {item.stockQuantity} units
           </td>

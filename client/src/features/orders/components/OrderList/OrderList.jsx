@@ -6,7 +6,7 @@ function OrderList({ data }) {
     PENDING: "pending",
   };
   return (
-    <>
+    <div className={styles.tableWrapper}>
       <table className={styles.orderTable}>
         <thead>
           <tr className={styles.listHeader}>
@@ -24,7 +24,7 @@ function OrderList({ data }) {
               <td>
                 {order.items} {order.items > 1 ? "items" : "item"}
               </td>
-              <td>{order.date.split("T")[0]}</td>
+              <td>{order?.date?.split("T")[0]}</td>
               <td>
                 <span
                   className={
@@ -41,7 +41,7 @@ function OrderList({ data }) {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 

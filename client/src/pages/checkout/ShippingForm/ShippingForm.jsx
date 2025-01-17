@@ -1,3 +1,4 @@
+import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import { useCountries } from "../../../api/countries/countries.api";
 import styles from "./ShippingForm.module.css";
 
@@ -10,7 +11,10 @@ function ShippingForm({
   touched,
   handleBlur,
 }) {
-  const { data: countries } = useCountries();
+  const { data: countries, isLoading } = useCountries();
+
+  if (isLoading) return <LoadingState />;
+
   const POSTAL_CODE_MAX = 7;
   return (
     <form className={styles.cartLeftSideList}>
@@ -58,14 +62,20 @@ function ShippingForm({
           <select
             name="country"
             id=""
-            value={1}
+            value={values.country}
+            onChange={handleChange}
             className={
               errors.country && touched.country ? styles.inputError : ""
             }
           >
-            {countries?.map((country) => (
-              <option key={country.flag}>{country.name.common}</option>
-            ))}
+            {countries
+              ?.slice()
+              .sort((a, b) => a.name.common.localeCompare(b.name.common))
+              .map((country) => (
+                <option key={country.flag} value={country.name.common}>
+                  {country.name.common}
+                </option>
+              ))}
           </select>
         </div>
         <div className={styles.formItem}>

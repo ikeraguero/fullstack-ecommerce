@@ -8,6 +8,7 @@ export function useShippingForm(onSubmitCallback) {
       postalCode: "",
       city: "",
       state: "",
+      country: "",
     },
     validationSchema: validationSchemaShipping,
     onSubmit: onSubmitCallback,

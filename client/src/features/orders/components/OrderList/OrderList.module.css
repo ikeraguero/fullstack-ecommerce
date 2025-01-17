@@ -119,7 +119,6 @@
 }
 
 .listHeader {
-  margin-top: 2.6rem;
   display: grid;
   padding: 1.2rem;
   grid-template-columns: repeat(5, 1fr);
@@ -144,4 +143,12 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+}
+
+.tableWrapper {
+  margin-top: 2.6rem;
+  margin-bottom: 5.6rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #b9b9b9;
 }
