@@ -25,6 +25,7 @@
     "axios": "^1.7.9",
     "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
+    "mixpanel-browser": "^2.58.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-countup": "^6.5.3",

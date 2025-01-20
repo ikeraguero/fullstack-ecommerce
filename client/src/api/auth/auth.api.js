@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
+import mixpanel from "mixpanel-browser";
 
 async function loginUser(data) {
   try {
@@ -66,6 +67,14 @@ export function useRegisterUser() {
       const { firstName, lastName, email, role, id, address } = data;
       const username = `${firstName} ${lastName}`;
       login(username, role, id, email, firstName, lastName, address);
+      mixpanel.identify("USER_ID");
+
+      mixpanel.people.set({
+        $name: username,
+        $email: email,
+        plan: "Premium",
+      });
+
       navigate("/");
     }
   }
@@ -103,6 +112,14 @@ export function useLoginUser() {
     const username = `${firstName} ${lastName}`;
 
     login(username, role, id, email, firstName, lastName, address);
+    mixpanel.identify(id);
+
+    mixpanel.people.set({
+      $name: username,
+      $email: email,
+      plan: "Premium",
+    });
+
     navigate("/");
   }
 
