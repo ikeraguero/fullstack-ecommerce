@@ -10,6 +10,7 @@ import LoadingState from "@features/shared/components/LoadingState/LoadingState"
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 import Alerts from "@features/shared/components/Alerts/Alerts";
 import useAuth from "@hooks/auth/useAuth";
+import initializeMixpanel from "./analytics/mixpanelConfig";
 
 const MemoizedNav = React.memo(Nav);
 
@@ -27,6 +28,9 @@ function App() {
   const location = useLocation();
   const isAuthPage = AUTH_ROUTES.includes(location.pathname);
 
+  useEffect(() => {
+    initializeMixpanel();
+  });
   useEffect(() => {
     if (userData && !isLoadingUser && !errorUser && !isLoggedIn) {
       const { firstName, lastName, role, id, email, address } = userData;
