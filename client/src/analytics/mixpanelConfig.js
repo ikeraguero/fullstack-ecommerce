@@ -5,7 +5,7 @@ import mixpanel from "mixpanel-browser";
 export default function initializeMixpanel() {
   mixpanel.init("87ce4777213c995bb9f22760be1e19c1", {
     debug: true,
-    track_pageview: true,
+    track_pageview: "url-with-path",
     persistence: "localStorage",
   });
 }

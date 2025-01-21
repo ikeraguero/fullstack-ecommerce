@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { apiClientAuth } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
-import mixpanel from "mixpanel-browser";
+import useMixpanel from "@hooks/tracker/useMixpanel";
 
 async function loginUser(data) {
   try {
@@ -61,19 +61,17 @@ async function logoutUser() {
 export function useRegisterUser() {
   const navigate = useNavigate();
   const { role: userRole, login } = useAuth();
+  const { mixpanelLogin, mixpanelTrack } = useMixpanel();
 
   function handleSuccess(data) {
     if (userRole !== "ADMIN" || null) {
       const { firstName, lastName, email, role, id, address } = data;
       const username = `${firstName} ${lastName}`;
       login(username, role, id, email, firstName, lastName, address);
-      mixpanel.identify("USER_ID");
 
-      mixpanel.people.set({
-        $name: username,
-        $email: email,
-        plan: "Premium",
-      });
+      //mixpanel calls
+      mixpanelLogin(username, email, id);
+      mixpanelTrack("Sign-up");
 
       navigate("/");
     }
@@ -106,19 +104,16 @@ export function useAuthStatus() {
 export function useLoginUser() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { mixpanelLogin, mixpanelTrack } = useMixpanel();
 
   function handleSuccess(data) {
     const { firstName, lastName, email, role, id, address } = data;
     const username = `${firstName} ${lastName}`;
 
     login(username, role, id, email, firstName, lastName, address);
-    mixpanel.identify(id);
 
-    mixpanel.people.set({
-      $name: username,
-      $email: email,
-      plan: "Premium",
-    });
+    mixpanelLogin(username, email, id);
+    mixpanelTrack("Sign-in");
 
     navigate("/");
   }

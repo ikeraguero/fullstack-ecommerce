@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
+import useMixpanel from "@hooks/tracker/useMixpanel";
 
 async function fetchCart(userId) {
   if (userId == null) {
@@ -65,9 +66,17 @@ export function useIsProductInUserCart(productId) {
 
 //hook for createCartItem
 export function useAddToCart() {
-  return useApiMutation(createCartItem, "cart", null, (error) => {
-    console.error("Error adding item to cart:", error.message);
-  });
+  const { mixpanelTrack } = useMixpanel();
+  return useApiMutation(
+    createCartItem,
+    "cart",
+    () => {
+      mixpanelTrack("Add Item to Cart");
+    },
+    (error) => {
+      console.error("Error adding item to cart:", error.message);
+    }
+  );
 }
 
 export function useUpdateCartItem() {

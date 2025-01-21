@@ -5,6 +5,7 @@ import { apiClient, apiClientPayment } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
 import { useCheckout } from "@context/CheckoutContext";
+import useMixpanel from "@hooks/tracker/useMixpanel";
 
 async function fetchOrdersByUser(userId) {
   try {
@@ -77,6 +78,7 @@ export function usePayOrder() {
   const queryClient = useQueryClient();
   const { resetCheckoutState } = useCheckout();
   const navigate = useNavigate();
+  const { mixpanelTrack } = useMixpanel();
 
   return useApiMutation(
     (paymentRequest) => payOrder(paymentRequest),
@@ -85,6 +87,7 @@ export function usePayOrder() {
       setTimeout(() => {
         navigate(`/payment/success/${variables}`);
         queryClient.invalidateQueries(["cart"]);
+        mixpanelTrack("Complete Order");
         resetCheckoutState();
       }, 3000);
     },

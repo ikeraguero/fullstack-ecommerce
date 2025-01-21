@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import { useUserForm } from "@context/useUserFormContext";
+import useMixpanel from "@hooks/tracker/useMixpanel";
 
 async function updateUser(data) {
   try {
@@ -39,11 +40,13 @@ async function deleteUser(userId) {
 
 export function useDeleteUsers() {
   const { toggleDeleteUser } = useUserForm();
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (userId) => deleteUser(userId),
     "users",
     () => {
       toggleDeleteUser(null);
+      mixpanelTrack("User Update")
     },
     (error) => {
       console.error("Error deleting user:", error.message);
@@ -64,10 +67,11 @@ export function useUsers(page = 0, size = 10) {
 }
 
 export function useUpdateUser() {
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (data) => updateUser(data),
     "users",
-    null,
+    () => mixpanelTrack("User Update"),
     (error) => {
       console.error("Error deleting user:", error.message);
     }

@@ -1,3 +1,4 @@
+import useMixpanel from "@hooks/tracker/useMixpanel";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 
@@ -15,10 +16,12 @@ async function search(query, size) {
 }
 
 export function useSearch() {
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     ({ query, size }) => search(query, size),
     null,
     (data) => {
+      mixpanelTrack("Item Search");
       console.log("Search success:", data);
     }
   );

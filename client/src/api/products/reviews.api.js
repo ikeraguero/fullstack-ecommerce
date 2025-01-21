@@ -1,3 +1,4 @@
+import useMixpanel from "@hooks/tracker/useMixpanel";
 import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 
@@ -9,13 +10,14 @@ async function createReview(data) {
   return res.data;
 }
 
-export function useCreateReview(id) {
+export function useCreateReview() {
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (data) => {
       createReview(data);
     },
     "product",
-    null,
+    () => mixpanelTrack("Review Create"),
     (error) => console.error("Error creating review:", error.message)
   );
 }

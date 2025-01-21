@@ -4,6 +4,7 @@ import { apiClient } from "../apiClient";
 import useApiMutation from "../useApiMutation";
 import useAuth from "@hooks/auth/useAuth";
 import { useProductForm } from "@context/useProductFormContext";
+import useMixpanel from "@hooks/tracker/useMixpanel";
 
 async function updateProduct(data) {
   try {
@@ -91,30 +92,34 @@ async function removeProduct(productId) {
 }
 
 export function useUpdateProduct() {
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (data) => updateProduct(data),
     "products",
-    null,
+    () => mixpanelTrack("Product Update"),
     (error) => console.error("Error updating product:", error.message)
   );
 }
 
 export function useCreateProduct() {
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (data) => createProduct(data),
     "products",
-    null,
+    () => mixpanelTrack("Product Add"),
     (error) => console.error("Error creating product:", error.message)
   );
 }
 
 export function useRemoveProduct() {
   const { toggleDeleteProduct } = useProductForm();
+  const { mixpanelTrack } = useMixpanel();
   return useApiMutation(
     (productId) => removeProduct(productId),
     "products",
     () => {
       toggleDeleteProduct(null);
+      mixpanelTrack("Product Remove");
     },
     (error) => console.error("Error removing product:", error.message)
   );
