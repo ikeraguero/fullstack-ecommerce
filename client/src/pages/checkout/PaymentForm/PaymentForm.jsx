@@ -1,5 +1,8 @@
 import styles from "./PaymentForm.module.css";
 
+const CARD_NUMBER_MAX = 19;
+const CARD_CVC_MAX = 4;
+
 function PaymentForm({
   values,
   handleChange,
@@ -8,8 +11,6 @@ function PaymentForm({
   errors,
   touched,
 }) {
-  const CARD_NUMBER_MAX = 19;
-  const CARD_CVC_MAX = 4;
 
   const handleFormattedChange = (e) => {
     const { name, value } = e.target;

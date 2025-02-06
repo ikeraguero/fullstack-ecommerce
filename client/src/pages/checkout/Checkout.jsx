@@ -12,6 +12,13 @@ import { useCheckout } from "@context/CheckoutContext";
 import LoadingState from "@features/shared/components/LoadingState/LoadingState";
 import ErrorState from "@features/shared/components/ErrorState/ErrorState";
 
+const PAID = "paid";
+
+const STEPS = {
+  SHIPPING: "shipping",
+  PAYMENT: "payment",
+};
+
 function CheckoutShipping() {
   const params = useParams();
   const { data: order, isLoading, error } = useOrder(params.id);
@@ -21,12 +28,6 @@ function CheckoutShipping() {
   const { order: updateOrder } = useCheckout();
   const [isPriceLocked, setIsPriceLocked] = useState(false);
   const initialized = useRef(false);
-  const PAID = "paid";
-
-  const STEPS = {
-    SHIPPING: "shipping",
-    PAYMENT: "payment",
-  };
 
   const {
     values: shippingValues,

@@ -5,14 +5,15 @@ import OrderItem from "../OrderItem/OrderItem";
 import styles from "./Order.module.css";
 import { useCheckout } from "@context/CheckoutContext";
 
+const STATUS = {
+  PENDING: "pending",
+  PAID: "paid",
+};
+
 function Order({ orderItems, orderId, date, totalPrice, status }) {
   const { updateCheckoutState } = useCheckout();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const STATUS = {
-    PENDING: "pending",
-    PAID: "paid",
-  };
 
   const items = orderItems
     .map((orderItem) => orderItem.quantity)

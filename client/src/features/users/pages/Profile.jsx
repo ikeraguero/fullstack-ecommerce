@@ -8,10 +8,15 @@ import Wishlist from "@features/wishlist/components/Wishlist/Wishlist";
 import useAuth from "@hooks/auth/useAuth";
 import { useLogoutUser } from "@api/auth/auth.api";
 
+const PROFILE = "profile";
+const ORDERS = "orders";
+const WISHLIST = "wishlist";
+const LOGOUT = "logout";
+
 function Profile() {
   const { isLoggedIn } = useAuth();
   const { mutate: logout } = useLogoutUser();
-  const [active, setActive] = useState("profile");
+  const [active, setActive] = useState(PROFILE);
   const navigate = useNavigate();
 
   function handleClick(e) {
@@ -35,7 +40,7 @@ function Profile() {
       <div className={styles.leftPanel}>
         <div
           className={
-            active === "profile"
+            active === PROFILE
               ? styles.leftPanelOptionActive
               : styles.leftPanelOption
           }
@@ -46,7 +51,7 @@ function Profile() {
         </div>
         <div
           className={
-            active === "orders"
+            active === ORDERS
               ? styles.leftPanelOptionActive
               : styles.leftPanelOption
           }
@@ -57,7 +62,7 @@ function Profile() {
         </div>
         <div
           className={
-            active === "wishlist"
+            active === WISHLIST
               ? styles.leftPanelOptionActive
               : styles.leftPanelOption
           }
@@ -68,7 +73,7 @@ function Profile() {
         </div>
         <div
           className={
-            active === "logout"
+            active === LOGOUT
               ? styles.leftPanelOptionActive
               : styles.leftPanelOption
           }
@@ -79,9 +84,9 @@ function Profile() {
         </div>
       </div>
       <div className={styles.rightContent}>
-        {active === "profile" && <ProfileInformation />}
-        {active === "orders" && <OrderInformation />}
-        {active === "wishlist" && <Wishlist />}
+        {active === PROFILE && <ProfileInformation />}
+        {active === ORDERS && <OrderInformation />}
+        {active === WISHLIST && <Wishlist />}
       </div>
     </div>
   ) : (

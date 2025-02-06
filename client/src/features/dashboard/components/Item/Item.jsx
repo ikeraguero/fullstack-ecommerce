@@ -2,11 +2,11 @@ import { useProductForm } from "@context/useProductFormContext";
 import styles from "./Item.module.css";
 import { useUserForm } from "@context/useUserFormContext";
 
+const PRODUCT = "product";
+
 function Item({ item, handleOpenForm, itemType }) {
   const { openEditProduct, toggleDeleteProduct } = useProductForm();
   const { openEditUser, toggleDeleteUser } = useUserForm();
-
-  const PRODUCT = "product";
 
   function handleEdit() {
     handleOpenForm("openEdit", item);

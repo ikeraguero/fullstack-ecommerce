@@ -1,10 +1,11 @@
 import styles from "./OrderList.module.css";
 
+const status = {
+  PAID: "paid",
+  PENDING: "pending",
+};
+
 function OrderList({ data }) {
-  const status = {
-    PAID: "paid",
-    PENDING: "pending",
-  };
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.orderTable}>

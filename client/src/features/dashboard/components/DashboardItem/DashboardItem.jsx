@@ -18,6 +18,7 @@ const listComponents = {
 };
 
 const PRODUCTS = "Products";
+
 function DashboardItem({ title, data, onAdd, onEdit, onRemove, isFormOpen }) {
   const { toggleAddProduct } = useProductForm();
   const { toggleAddUser } = useUserForm();

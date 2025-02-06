@@ -10,7 +10,6 @@ function SearchItem({
   length,
 }) {
   const isLast = index === length - 1;
-  console.log(isLast, index, length - 1);
   return (
     <li className={styles.item}>
       <Link

@@ -2,13 +2,14 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import CartItem from "@features/cart/components/CartItem/CartItem";
-import CartSummary from "@features/cart/components/CartSummary/CartSummary";
+import CartSummary from "@features/cart/pages/components/CartSummary/CartSummary";
 import { useCreateOrder } from "@api/orders/order.api";
 import styles from "./Cart.module.css";
 import useCartData from "@hooks/cart/useCartData";
 import useAuth from "@hooks/auth/useAuth";
 import { useCheckout } from "@context/CheckoutContext";
 import { useAlert } from "@context/AlertContext";
+const PENDING = "pending";
 
 function Cart() {
   const { updateCheckoutState } = useCheckout();
@@ -24,7 +25,6 @@ function Cart() {
   const [shippingPrice, setShippingPrice] = useState(0);
   const { mutateAsync: createOrder } = useCreateOrder();
   const navigate = useNavigate();
-  const PENDING = "pending";
 
   useEffect(() => {
     if (!userId) {
